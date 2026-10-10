@@ -245,7 +245,7 @@
         el("li", null, ["Set in Geist and Geist Mono. ", link("License", "/static/lab/fonts/LICENSE.txt")])
       ])),
       files.firstChild ? labelled("Data in this session", files) : null,
-      el("p", { class: "drawer-actions" }, [link("Read the report", "/report"), link("Research workbench", "/research")])
+      el("p", { class: "drawer-actions" }, [link("Read the report", "/report")])
     ]);
   }
 

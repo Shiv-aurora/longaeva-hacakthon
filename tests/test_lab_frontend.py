@@ -249,7 +249,7 @@ def test_the_three_views_and_their_switcher_are_in_the_page():
     for view in ("simulator", "behaviour", "reality"):   # the hash routes keep their first spelling
         assert f'data-view="{view}"' in page and f'data-value="{view}"' in page
     assert 'id="view-nav"' in page and "gooey-nav.js" in page
-    assert 'href="/report"' in page and 'href="/research"' in page
+    assert 'href="/report"' in page and 'href="/research"' not in page   # the earlier workstation is not linked
     assert 'id="fixture-pill"' in page and 'id="about-btn"' in page
 
 
