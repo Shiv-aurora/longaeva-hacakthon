@@ -1,0 +1,1312 @@
+{
+ "area": "fares_2022",
+ "builder": "scripts/lab/build_fares_2022.py",
+ "raw_dir": "data/lab_raw/fares2022",
+ "raw_note": "The archive is kept byte-exact and is never unpacked to disk: itineraries.csv (31 GB) is streamed out of it with `unzip -p` into duckdb, which buffers the pipe in its temporary directory under raw_dir (about 22 GB at the peak, removed when the stage ends). Files under raw_dir are untracked.",
+ "entries": [
+  {
+   "source": "kaggle:dilwong/flightprices",
+   "url": "https://www.kaggle.com/datasets/dilwong/flightprices",
+   "download_url": "https://storage.googleapis.com/kaggle-data-sets/2560255/4349289/bundle/archive.zip",
+   "download_note": "Signed link issued by the Kaggle API (download_dataset) for this account; the signature is not stored. Fetched with curl in one stream.",
+   "dataset_version": 1,
+   "dataset_last_updated": "2022-10-18T22:40:44.053Z",
+   "title": "Flight Prices",
+   "subtitle": "One-way flights found on Expedia between 2022-04-16 and 2022-10-05",
+   "creator": "Dillon Wong",
+   "licence": "Attribution 4.0 International (CC BY 4.0)",
+   "licence_id": "CC-BY-4.0",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "licence_source": "licence name as returned by the Kaggle API (get_dataset_info and get_dataset_metadata) on the retrieval date",
+   "attribution": "Dillon Wong, 'Flight Prices', Kaggle dataset dilwong/flightprices, version 1 (2022-10-18), licensed CC BY 4.0. The uploader states the source as 'Data from Expedia'.",
+   "terms_note": "The uploader's licence is CC BY 4.0. The quotes were collected from Expedia by the uploader; Expedia's own terms for its site are a separate matter this project has not cleared. Research use; only aggregated index values are redistributed here, never quote rows.",
+   "members": [
+    {
+     "name": "itineraries.csv",
+     "bytes": 31091834438
+    }
+   ],
+   "retrieved_at": "2026-10-10T05:41:39+00:00",
+   "sha256": "e662b08ebe58ba8cd9fa25938e7cb6476997d071949cb629fa45588aaf8dedcf",
+   "bytes": 5920770411,
+   "path": "data/lab_raw/fares2022/archive.zip",
+   "header": [
+    "legId",
+    "searchDate",
+    "flightDate",
+    "startingAirport",
+    "destinationAirport",
+    "fareBasisCode",
+    "travelDuration",
+    "elapsedDays",
+    "isBasicEconomy",
+    "isRefundable",
+    "isNonStop",
+    "baseFare",
+    "totalFare",
+    "seatsRemaining",
+    "totalTravelDistance",
+    "segmentsDepartureTimeEpochSeconds",
+    "segmentsDepartureTimeRaw",
+    "segmentsArrivalTimeEpochSeconds",
+    "segmentsArrivalTimeRaw",
+    "segmentsArrivalAirportCode",
+    "segmentsDepartureAirportCode",
+    "segmentsAirlineName",
+    "segmentsAirlineCode",
+    "segmentsEquipmentDescription",
+    "segmentsDurationInSeconds",
+    "segmentsDistance",
+    "segmentsCabinCode"
+   ]
+  }
+ ],
+ "derived": [
+  {
+   "rows_written": 82138753,
+   "rows_rejected_by_csv_reader": 0,
+   "columns_kept": [
+    "searchDate",
+    "flightDate",
+    "startingAirport",
+    "destinationAirport",
+    "isBasicEconomy",
+    "isRefundable",
+    "isNonStop",
+    "baseFare",
+    "totalFare",
+    "seatsRemaining",
+    "totalTravelDistance",
+    "segmentsAirlineCode",
+    "segmentsCabinCode"
+   ],
+   "path": "data/lab_raw/fares2022/itineraries_slim.parquet",
+   "bytes": 391972542,
+   "sha256": "4bf7efffb512394645b187dea38d01cd5c0d1aada8e28034ab9c6fab31c9d15a",
+   "from": "e662b08ebe58ba8cd9fa25938e7cb6476997d071949cb629fa45588aaf8dedcf",
+   "seconds": 340,
+   "note": "Every row of itineraries.csv, 13 of its 27 columns, cast with try_cast. Not byte-reproducible: Parquet row-group layout depends on the duckdb version."
+  }
+ ],
+ "profile": {
+  "rows": 82138753,
+  "rows_unparsed_dates": 0,
+  "rows_unparsed_fares": 0,
+  "rows_unparsed_flags": 0,
+  "rows_without_distance": 6094532,
+  "search_dates": {
+   "first": "2022-04-16",
+   "last": "2022-10-05",
+   "days_with_quotes": 171,
+   "calendar_days": 173,
+   "missing_days": [
+    "2022-05-15",
+    "2022-05-16"
+   ],
+   "rows_per_day": {
+    "min": 14443,
+    "median": 522964,
+    "max": 747995
+   },
+   "thin_days": [
+    {
+     "date": "2022-04-16",
+     "rows": 87657
+    },
+    {
+     "date": "2022-04-24",
+     "rows": 232588
+    },
+    {
+     "date": "2022-05-10",
+     "rows": 150199
+    },
+    {
+     "date": "2022-05-11",
+     "rows": 112312
+    },
+    {
+     "date": "2022-05-14",
+     "rows": 174054
+    },
+    {
+     "date": "2022-05-17",
+     "rows": 35129
+    },
+    {
+     "date": "2022-05-23",
+     "rows": 155932
+    },
+    {
+     "date": "2022-05-24",
+     "rows": 162344
+    },
+    {
+     "date": "2022-05-31",
+     "rows": 208537
+    },
+    {
+     "date": "2022-06-01",
+     "rows": 220863
+    },
+    {
+     "date": "2022-06-05",
+     "rows": 193572
+    },
+    {
+     "date": "2022-06-06",
+     "rows": 166321
+    },
+    {
+     "date": "2022-06-08",
+     "rows": 218818
+    },
+    {
+     "date": "2022-08-19",
+     "rows": 228933
+    },
+    {
+     "date": "2022-08-29",
+     "rows": 14443
+    },
+    {
+     "date": "2022-09-20",
+     "rows": 47960
+    }
+   ]
+  },
+  "flight_dates": {
+   "first": "2022-04-17",
+   "last": "2022-11-19"
+  },
+  "days_to_departure": {
+   "min": 1,
+   "max": 60
+  },
+  "airports": {
+   "origins": [
+    "ATL",
+    "BOS",
+    "CLT",
+    "DEN",
+    "DFW",
+    "DTW",
+    "EWR",
+    "IAD",
+    "JFK",
+    "LAX",
+    "LGA",
+    "MIA",
+    "OAK",
+    "ORD",
+    "PHL",
+    "SFO"
+   ],
+   "destinations": [
+    "ATL",
+    "BOS",
+    "CLT",
+    "DEN",
+    "DFW",
+    "DTW",
+    "EWR",
+    "IAD",
+    "JFK",
+    "LAX",
+    "LGA",
+    "MIA",
+    "OAK",
+    "ORD",
+    "PHL",
+    "SFO"
+   ],
+   "directional_routes": 235
+  },
+  "nonstop_rows": 22066888,
+  "nonstop_share": 0.268654,
+  "basic_economy_rows": 11825266,
+  "basic_economy_share": 0.143967,
+  "rows_by_carrier": [
+   {
+    "key": "AA",
+    "rows": 24845967,
+    "share": 0.302488
+   },
+   {
+    "key": "DL",
+    "rows": 17241769,
+    "share": 0.20991
+   },
+   {
+    "key": "UA",
+    "rows": 15199461,
+    "share": 0.185046
+   },
+   {
+    "key": "more than one carrier",
+    "rows": 9136397,
+    "share": 0.111231
+   },
+   {
+    "key": "B6",
+    "rows": 6816917,
+    "share": 0.082993
+   },
+   {
+    "key": "NK",
+    "rows": 5130720,
+    "share": 0.062464
+   },
+   {
+    "key": "AS",
+    "rows": 2352573,
+    "share": 0.028641
+   },
+   {
+    "key": "F9",
+    "rows": 1169857,
+    "share": 0.014242
+   },
+   {
+    "key": "SY",
+    "rows": 223453,
+    "share": 0.00272
+   },
+   {
+    "key": "KG",
+    "rows": 11532,
+    "share": 0.00014
+   },
+   {
+    "key": "9K",
+    "rows": 9782,
+    "share": 0.000119
+   },
+   {
+    "key": "HA",
+    "rows": 325,
+    "share": 4e-06
+   }
+  ],
+  "rows_by_carrier_note": "A row counts for a carrier when every segment carries that carrier's code.",
+  "nonstop_economy_rows_by_carrier": [
+   {
+    "key": "AA",
+    "rows": 7439525,
+    "share": 0.337988,
+    "basic_economy_share": 0.120967
+   },
+   {
+    "key": "DL",
+    "rows": 4851365,
+    "share": 0.220405,
+    "basic_economy_share": 0.296278
+   },
+   {
+    "key": "UA",
+    "rows": 4495795,
+    "share": 0.204251,
+    "basic_economy_share": 0.248395
+   },
+   {
+    "key": "B6",
+    "rows": 3576876,
+    "share": 0.162503,
+    "basic_economy_share": 0.0
+   },
+   {
+    "key": "NK",
+    "rows": 735728,
+    "share": 0.033425,
+    "basic_economy_share": 0.0
+   },
+   {
+    "key": "F9",
+    "rows": 466926,
+    "share": 0.021213,
+    "basic_economy_share": 0.0
+   },
+   {
+    "key": "AS",
+    "rows": 444964,
+    "share": 0.020215,
+    "basic_economy_share": 0.260021
+   }
+  ],
+  "nonstop_rows_by_cabin_code": [
+   {
+    "key": "coach",
+    "rows": 22011179,
+    "share": 0.997475
+   },
+   {
+    "key": "premium coach",
+    "rows": 28144,
+    "share": 0.001275
+   },
+   {
+    "key": "first",
+    "rows": 17602,
+    "share": 0.000798
+   },
+   {
+    "key": "business",
+    "rows": 9963,
+    "share": 0.000451
+   }
+  ],
+  "nonstop_economy_base_fare_by_carrier": [
+   {
+    "carrier": "AA",
+    "rows": 7439525,
+    "min_base_fare": 36.28,
+    "share_base_fare_under_15": 0.0,
+    "min_total_fare": 53.6
+   },
+   {
+    "carrier": "DL",
+    "rows": 4851365,
+    "min_base_fare": 22.33,
+    "share_base_fare_under_15": 0.0,
+    "min_total_fare": 38.61
+   },
+   {
+    "carrier": "UA",
+    "rows": 4495795,
+    "min_base_fare": 22.33,
+    "share_base_fare_under_15": 0.0,
+    "min_total_fare": 38.61
+   },
+   {
+    "carrier": "B6",
+    "rows": 3576876,
+    "min_base_fare": 22.33,
+    "share_base_fare_under_15": 0.0,
+    "min_total_fare": 38.61
+   },
+   {
+    "carrier": "NK",
+    "rows": 735728,
+    "min_base_fare": 0.01,
+    "share_base_fare_under_15": 0.270851,
+    "min_total_fare": 19.59
+   },
+   {
+    "carrier": "F9",
+    "rows": 466926,
+    "min_base_fare": 8.72,
+    "share_base_fare_under_15": 0.008158,
+    "min_total_fare": 22.47
+   },
+   {
+    "carrier": "AS",
+    "rows": 444964,
+    "min_base_fare": 22.33,
+    "share_base_fare_under_15": 0.0,
+    "min_total_fare": 38.61
+   }
+  ],
+  "basic_economy_share_of_nonstop_economy_rows_by_month": [
+   {
+    "month": "2022-04",
+    "carrier": "AA",
+    "rows": 645841,
+    "basic_economy_share": 0.0431
+   },
+   {
+    "month": "2022-04",
+    "carrier": "DL",
+    "rows": 425517,
+    "basic_economy_share": 0.2403
+   },
+   {
+    "month": "2022-04",
+    "carrier": "UA",
+    "rows": 396640,
+    "basic_economy_share": 0.1092
+   },
+   {
+    "month": "2022-05",
+    "carrier": "AA",
+    "rows": 1200287,
+    "basic_economy_share": 0.0272
+   },
+   {
+    "month": "2022-05",
+    "carrier": "DL",
+    "rows": 781629,
+    "basic_economy_share": 0.1685
+   },
+   {
+    "month": "2022-05",
+    "carrier": "UA",
+    "rows": 738315,
+    "basic_economy_share": 0.0912
+   },
+   {
+    "month": "2022-06",
+    "carrier": "AA",
+    "rows": 1373418,
+    "basic_economy_share": 0.0251
+   },
+   {
+    "month": "2022-06",
+    "carrier": "DL",
+    "rows": 896336,
+    "basic_economy_share": 0.2121
+   },
+   {
+    "month": "2022-06",
+    "carrier": "UA",
+    "rows": 850352,
+    "basic_economy_share": 0.0886
+   },
+   {
+    "month": "2022-07",
+    "carrier": "AA",
+    "rows": 1621178,
+    "basic_economy_share": 0.0364
+   },
+   {
+    "month": "2022-07",
+    "carrier": "DL",
+    "rows": 1052095,
+    "basic_economy_share": 0.3225
+   },
+   {
+    "month": "2022-07",
+    "carrier": "UA",
+    "rows": 975034,
+    "basic_economy_share": 0.2576
+   },
+   {
+    "month": "2022-08",
+    "carrier": "AA",
+    "rows": 1220909,
+    "basic_economy_share": 0.2576
+   },
+   {
+    "month": "2022-08",
+    "carrier": "DL",
+    "rows": 796264,
+    "basic_economy_share": 0.4164
+   },
+   {
+    "month": "2022-08",
+    "carrier": "UA",
+    "rows": 721873,
+    "basic_economy_share": 0.4261
+   },
+   {
+    "month": "2022-09",
+    "carrier": "AA",
+    "rows": 1183653,
+    "basic_economy_share": 0.3155
+   },
+   {
+    "month": "2022-09",
+    "carrier": "DL",
+    "rows": 772523,
+    "basic_economy_share": 0.38
+   },
+   {
+    "month": "2022-09",
+    "carrier": "UA",
+    "rows": 696714,
+    "basic_economy_share": 0.4603
+   },
+   {
+    "month": "2022-10",
+    "carrier": "AA",
+    "rows": 194239,
+    "basic_economy_share": 0.2991
+   },
+   {
+    "month": "2022-10",
+    "carrier": "DL",
+    "rows": 127001,
+    "basic_economy_share": 0.3841
+   },
+   {
+    "month": "2022-10",
+    "carrier": "UA",
+    "rows": 116867,
+    "basic_economy_share": 0.4387
+   }
+  ]
+ },
+ "index": {
+  "spec": {
+   "buckets": [
+    [
+     7,
+     13
+    ],
+    [
+     14,
+     20
+    ],
+    [
+     21,
+     34
+    ],
+    [
+     35,
+     48
+    ]
+   ],
+   "min_lead_share": 0.85,
+   "min_coverage": 0.95,
+   "weights": "equal",
+   "price": "minimum"
+  },
+  "primary": "main_economy",
+  "variants": {
+   "main_economy": "cheapest economy quote that is not basic economy, total fare including taxes and fees",
+   "any_economy": "cheapest economy quote of either kind (basic or not), total fare including taxes and fees",
+   "basic_economy": "cheapest basic-economy quote, total fare including taxes and fees",
+   "main_economy_base_fare": "cheapest economy quote that is not basic economy, base fare before taxes and fees"
+  },
+  "elementary_prices": 3573319,
+  "search_days_with_an_elementary_price": 168,
+  "cell_counts": {
+   "main_economy": {
+    "UA|7-13": {
+     "cells_seen": 106,
+     "cells_kept": 46,
+     "routes_kept": 46,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|14-20": {
+     "cells_seen": 104,
+     "cells_kept": 33,
+     "routes_kept": 33,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|21-34": {
+     "cells_seen": 104,
+     "cells_kept": 22,
+     "routes_kept": 22,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|35-48": {
+     "cells_seen": 106,
+     "cells_kept": 19,
+     "routes_kept": 19,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|all": {
+     "cells_seen": 420,
+     "cells_kept": 120,
+     "routes_kept": 47,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "DL|7-13": {
+     "cells_seen": 110,
+     "cells_kept": 53,
+     "routes_kept": 53,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|14-20": {
+     "cells_seen": 110,
+     "cells_kept": 40,
+     "routes_kept": 40,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|21-34": {
+     "cells_seen": 107,
+     "cells_kept": 22,
+     "routes_kept": 22,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|35-48": {
+     "cells_seen": 108,
+     "cells_kept": 19,
+     "routes_kept": 19,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|all": {
+     "cells_seen": 435,
+     "cells_kept": 134,
+     "routes_kept": 56,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "AA|7-13": {
+     "cells_seen": 152,
+     "cells_kept": 106,
+     "routes_kept": 106,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|14-20": {
+     "cells_seen": 152,
+     "cells_kept": 80,
+     "routes_kept": 80,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|21-34": {
+     "cells_seen": 152,
+     "cells_kept": 78,
+     "routes_kept": 78,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|35-48": {
+     "cells_seen": 152,
+     "cells_kept": 70,
+     "routes_kept": 70,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|all": {
+     "cells_seen": 608,
+     "cells_kept": 334,
+     "routes_kept": 110,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "ALL|7-13": {
+     "cells_seen": 573,
+     "cells_kept": 341,
+     "routes_kept": 183,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|14-20": {
+     "cells_seen": 571,
+     "cells_kept": 297,
+     "routes_kept": 170,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|21-34": {
+     "cells_seen": 565,
+     "cells_kept": 265,
+     "routes_kept": 157,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|35-48": {
+     "cells_seen": 578,
+     "cells_kept": 248,
+     "routes_kept": 150,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|all": {
+     "cells_seen": 2287,
+     "cells_kept": 1151,
+     "routes_kept": 184,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    }
+   },
+   "any_economy": {
+    "UA|7-13": {
+     "cells_seen": 106,
+     "cells_kept": 102,
+     "routes_kept": 102,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|14-20": {
+     "cells_seen": 104,
+     "cells_kept": 104,
+     "routes_kept": 104,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|21-34": {
+     "cells_seen": 106,
+     "cells_kept": 104,
+     "routes_kept": 104,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|35-48": {
+     "cells_seen": 106,
+     "cells_kept": 100,
+     "routes_kept": 100,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|all": {
+     "cells_seen": 422,
+     "cells_kept": 410,
+     "routes_kept": 104,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "DL|7-13": {
+     "cells_seen": 110,
+     "cells_kept": 108,
+     "routes_kept": 108,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|14-20": {
+     "cells_seen": 110,
+     "cells_kept": 108,
+     "routes_kept": 108,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|21-34": {
+     "cells_seen": 110,
+     "cells_kept": 108,
+     "routes_kept": 108,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|35-48": {
+     "cells_seen": 110,
+     "cells_kept": 108,
+     "routes_kept": 108,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|all": {
+     "cells_seen": 440,
+     "cells_kept": 432,
+     "routes_kept": 108,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "AA|7-13": {
+     "cells_seen": 152,
+     "cells_kept": 147,
+     "routes_kept": 147,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|14-20": {
+     "cells_seen": 152,
+     "cells_kept": 148,
+     "routes_kept": 148,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|21-34": {
+     "cells_seen": 152,
+     "cells_kept": 148,
+     "routes_kept": 148,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|35-48": {
+     "cells_seen": 152,
+     "cells_kept": 146,
+     "routes_kept": 146,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|all": {
+     "cells_seen": 608,
+     "cells_kept": 589,
+     "routes_kept": 149,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "ALL|7-13": {
+     "cells_seen": 574,
+     "cells_kept": 501,
+     "routes_kept": 196,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|14-20": {
+     "cells_seen": 572,
+     "cells_kept": 516,
+     "routes_kept": 196,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|21-34": {
+     "cells_seen": 572,
+     "cells_kept": 520,
+     "routes_kept": 196,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|35-48": {
+     "cells_seen": 580,
+     "cells_kept": 510,
+     "routes_kept": 196,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|all": {
+     "cells_seen": 2298,
+     "cells_kept": 2047,
+     "routes_kept": 196,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    }
+   },
+   "basic_economy": {
+    "UA|7-13": {
+     "cells_seen": 69,
+     "cells_kept": 1,
+     "routes_kept": 1,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|14-20": {
+     "cells_seen": 83,
+     "cells_kept": 4,
+     "routes_kept": 4,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|21-34": {
+     "cells_seen": 87,
+     "cells_kept": 3,
+     "routes_kept": 3,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|35-48": {
+     "cells_seen": 87,
+     "cells_kept": 2,
+     "routes_kept": 2,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|all": {
+     "cells_seen": 326,
+     "cells_kept": 10,
+     "routes_kept": 4,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "DL|7-13": {
+     "cells_seen": 87,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "DL|14-20": {
+     "cells_seen": 90,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "DL|21-34": {
+     "cells_seen": 99,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "DL|35-48": {
+     "cells_seen": 102,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "DL|all": {
+     "cells_seen": 378,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "AA|7-13": {
+     "cells_seen": 67,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "AA|14-20": {
+     "cells_seen": 85,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "AA|21-34": {
+     "cells_seen": 83,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "AA|35-48": {
+     "cells_seen": 82,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "AA|all": {
+     "cells_seen": 317,
+     "cells_kept": 0,
+     "routes_kept": 0,
+     "carriers_kept": []
+    },
+    "ALL|7-13": {
+     "cells_seen": 235,
+     "cells_kept": 1,
+     "routes_kept": 1,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "ALL|14-20": {
+     "cells_seen": 272,
+     "cells_kept": 4,
+     "routes_kept": 4,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "ALL|21-34": {
+     "cells_seen": 284,
+     "cells_kept": 3,
+     "routes_kept": 3,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "ALL|35-48": {
+     "cells_seen": 284,
+     "cells_kept": 2,
+     "routes_kept": 2,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "ALL|all": {
+     "cells_seen": 1075,
+     "cells_kept": 10,
+     "routes_kept": 4,
+     "carriers_kept": [
+      "UA"
+     ]
+    }
+   },
+   "main_economy_base_fare": {
+    "UA|7-13": {
+     "cells_seen": 106,
+     "cells_kept": 46,
+     "routes_kept": 46,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|14-20": {
+     "cells_seen": 104,
+     "cells_kept": 33,
+     "routes_kept": 33,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|21-34": {
+     "cells_seen": 104,
+     "cells_kept": 22,
+     "routes_kept": 22,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|35-48": {
+     "cells_seen": 106,
+     "cells_kept": 19,
+     "routes_kept": 19,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "UA|all": {
+     "cells_seen": 420,
+     "cells_kept": 120,
+     "routes_kept": 47,
+     "carriers_kept": [
+      "UA"
+     ]
+    },
+    "DL|7-13": {
+     "cells_seen": 110,
+     "cells_kept": 53,
+     "routes_kept": 53,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|14-20": {
+     "cells_seen": 110,
+     "cells_kept": 40,
+     "routes_kept": 40,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|21-34": {
+     "cells_seen": 107,
+     "cells_kept": 22,
+     "routes_kept": 22,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|35-48": {
+     "cells_seen": 108,
+     "cells_kept": 19,
+     "routes_kept": 19,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "DL|all": {
+     "cells_seen": 435,
+     "cells_kept": 134,
+     "routes_kept": 56,
+     "carriers_kept": [
+      "DL"
+     ]
+    },
+    "AA|7-13": {
+     "cells_seen": 152,
+     "cells_kept": 106,
+     "routes_kept": 106,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|14-20": {
+     "cells_seen": 152,
+     "cells_kept": 80,
+     "routes_kept": 80,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|21-34": {
+     "cells_seen": 152,
+     "cells_kept": 78,
+     "routes_kept": 78,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|35-48": {
+     "cells_seen": 152,
+     "cells_kept": 70,
+     "routes_kept": 70,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "AA|all": {
+     "cells_seen": 608,
+     "cells_kept": 334,
+     "routes_kept": 110,
+     "carriers_kept": [
+      "AA"
+     ]
+    },
+    "ALL|7-13": {
+     "cells_seen": 573,
+     "cells_kept": 341,
+     "routes_kept": 183,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|14-20": {
+     "cells_seen": 571,
+     "cells_kept": 297,
+     "routes_kept": 170,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|21-34": {
+     "cells_seen": 565,
+     "cells_kept": 265,
+     "routes_kept": 157,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|35-48": {
+     "cells_seen": 578,
+     "cells_kept": 248,
+     "routes_kept": 150,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    },
+    "ALL|all": {
+     "cells_seen": 2287,
+     "cells_kept": 1151,
+     "routes_kept": 184,
+     "carriers_kept": [
+      "AA",
+      "AS",
+      "B6",
+      "DL",
+      "F9",
+      "NK",
+      "UA"
+     ]
+    }
+   }
+  },
+  "cell_counts_note": "Keyed carrier|lead_bucket. cells_seen: cells that count on at least one search day. cells_kept: cells that meet min_coverage and enter the index."
+ },
+ "outputs": [
+  {
+   "path": "data/lab/fares_daily_2022.csv",
+   "rows": 10940,
+   "sha256": "cef2b6959d5aa32215c04e815df9a1402d7a863cd596c7aa705f2c2bd144e5f6",
+   "bytes": 576279,
+   "columns": [
+    "date",
+    "carrier",
+    "lead_bucket",
+    "index",
+    "n_cells",
+    "n_quotes",
+    "variant"
+   ],
+   "note": "index = 100 on the first search day with a matched cell. n_cells: cells in that day's link. n_quotes: quote rows behind those cells that day. carrier ALL = every carrier with a kept cell; lead_bucket all = every bucket. Filter variant == 'main_economy' for the primary index."
+  }
+ ]
+}
