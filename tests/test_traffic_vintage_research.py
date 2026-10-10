@@ -65,3 +65,11 @@ def test_corruption_gates_all_three_routes(monkeypatch):
     for suffix in ('status','record','audit'):
         r=client.get('/api/traffic-vintages/'+suffix)
         assert r.status_code==503 and 'failed verification' in r.json()['detail']
+
+
+def test_missing_local_study_reads_as_not_built(monkeypatch):
+    def absent():raise FileNotFoundError('/somewhere/local/manifest.json')
+    monkeypatch.setattr('app.server.vintage_research_status',absent)
+    client=TestClient(app);r=client.get('/api/traffic-vintages/status')
+    assert r.status_code==200 and r.json()['status']=='not_built' and '/somewhere' not in r.text
+    assert client.get('/api/traffic-vintages/record').status_code==404

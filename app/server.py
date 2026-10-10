@@ -65,6 +65,9 @@ def monthly_traffic_record():
 def monthly_traffic_vintage_status():
     try:
         return vintage_research_status()
+    except FileNotFoundError:
+        # The reviewed study is a local research store; a fresh clone has the review record but not the study.
+        return {"status": "not_built", "message": "Reviewed traffic source comparison is not available in this copy."}
     except (ValueError, OSError, KeyError, TypeError) as error:
         raise HTTPException(status_code=503, detail="Traffic source comparison failed verification: " + str(error)) from error
 

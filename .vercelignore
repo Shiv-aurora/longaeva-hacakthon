@@ -23,6 +23,9 @@
 !/data/*_fields.txt
 !/data/eia_2026_weekly_source.txt
 /data/user_quotes.csv
+# Small tidy inputs the lab reads at run time (the raw downloads in /data/lab_raw/ stay local).
+!/data/lab/
+!/data/lab/**
 .vercel
 .env*
 
