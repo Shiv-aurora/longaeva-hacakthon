@@ -1,0 +1,189 @@
+{
+ "generated_at": "2026-10-10T06:40:40Z",
+ "as_of": "2026-10-10",
+ "inputs": [
+  {
+   "path": "data/lab/ual_guidance.json",
+   "sha256": "e1e02f1acf73e1b6593e655f96e6558d46fb92a97d47e7211be339895da9191b"
+  },
+  {
+   "path": "data/lab/ual_filings_index.csv",
+   "sha256": "4e835919a19f6d64017c8146226bed4b9f0f8b1bc1d83a96d0c07421954b098b"
+  },
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000014/ual_12312025erex992.htm",
+   "sha256": "5f74b0c28cb01343641cdf889e5309a60c26f27a9e636f370101b3315cc417ff"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000089/ual_erx03312026xex991.htm",
+   "sha256": "ae1be3d2a0d5211a2238047b4038c7309a2201be7e57b94ad441dbc4b5203059"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000089/ual_erx03312026xex992.htm",
+   "sha256": "b7fa0b9845cf5b5685feeed7a6256fd14e210aff3ae31a32d7bb077f2e97ab06"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex991.htm",
+   "sha256": "0d64287bc34fd7664bd0fbd8fd749760d0412d73f15c554ea637388d671fb4ef"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex992.htm",
+   "sha256": "c4cc6beb1994c66370a93b8cf63191f0a18113125c0d9b7053bcfaa7dc570f9a"
+  },
+  {
+   "path": "data/lab/literature.json",
+   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+  },
+  {
+   "path": "data/lab/ual_quarterly_sources.json",
+   "sha256": "c349ef4b1eee5c3b174ec3ea02b3e8b5bb9ba5b2320273173c663bc9eea5e919"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-25-000190/ual_09302025erex991.htm",
+   "sha256": "9b3b515478324da062e9d36df29acecf420764155b7b963ef0bd33b0b1f7afd5"
+  },
+  {
+   "path": "data/lab/dal_check.json",
+   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+  },
+  {
+   "path": "data/lab_raw/sec/0000027904-26-000029/deltaairlinesannouncesjune.htm",
+   "sha256": "0210e7bb4917f099d8caef627f126fbfe3ceeac832576bff678c5cca094e2fe6"
+  },
+  {
+   "path": "data/lab_raw/sec/0000027904-26-000035/deltaairlinesannouncessept.htm",
+   "sha256": "a9b5f563d4aef8f7738826c9a19b3e8159fa98d3bebe8084b14443590bab0097"
+  }
+ ],
+ "company": "UAL",
+ "report_date": "2026-10-20",
+ "report_date_source": {
+  "timing": "after market close",
+  "call_date": "2026-10-21",
+  "published_on": "2026-09-30",
+  "source_url": "https://finviz.com/news/397198/united-to-hold-webcast-of-third-quarter-2026-financial-results",
+  "retrieved_on": "2026-10-10",
+  "read_via": "page text returned by a web reader (a language model); wording not machine-checked",
+  "evidence_ids": [
+   "ual-2026q3-news-release-report-date"
+  ]
+ },
+ "guidance": {
+  "made_on": "2026-07-15",
+  "period": "2026Q3",
+  "eps_low": 2.5,
+  "eps_high": 3.5,
+  "fuel_assumed_usd_gal": 3.69,
+  "evidence_ids": [
+   "ual-2026q2-ex992-adj-eps-2026q3",
+   "ual-2026q2-ex992-fuel-assumption-2026q3"
+  ]
+ },
+ "promises": [
+  {
+   "made_on": "2026-07-15",
+   "period": "2026Q3",
+   "recovery_low": 0.8,
+   "recovery_high": 0.9,
+   "evidence_ids": [
+    "ual-2026q2-ex992-fuel-recovery-2026q3",
+    "ual-2026q2-ex991-fuel-recovery-2026q3"
+   ],
+   "outcome": null,
+   "superseded_on": null
+  },
+  {
+   "made_on": "2026-07-15",
+   "period": "2026Q4",
+   "recovery_low": 1.0,
+   "recovery_high": 1.0,
+   "evidence_ids": [
+    "ual-2026q2-ex992-fuel-recovery-2026q4"
+   ],
+   "outcome": null,
+   "superseded_on": null
+  },
+  {
+   "made_on": "2026-04-21",
+   "period": "2026Q2",
+   "recovery_low": 0.4,
+   "recovery_high": 0.5,
+   "evidence_ids": [
+    "ual-2026q1-ex992-fuel-recovery-2026q2"
+   ],
+   "outcome": null,
+   "superseded_on": null,
+   "management_reported": {
+    "value": 0.5,
+    "stated_on": "2026-07-15",
+    "approximate": true,
+    "evidence_ids": [
+     "ual-2026q2-ex991-fuel-recovery-reported-2026q2"
+    ]
+   }
+  },
+  {
+   "made_on": "2026-04-21",
+   "period": "2026Q3",
+   "recovery_low": 0.7,
+   "recovery_high": 0.8,
+   "evidence_ids": [
+    "ual-2026q1-ex992-fuel-recovery-2026q3"
+   ],
+   "outcome": null,
+   "superseded_on": "2026-07-15"
+  },
+  {
+   "made_on": "2026-04-21",
+   "period": "2026Q4",
+   "recovery_low": 0.85,
+   "recovery_high": 1.0,
+   "evidence_ids": [
+    "ual-2026q1-ex992-fuel-recovery-2026q4"
+   ],
+   "outcome": null,
+   "superseded_on": "2026-07-15"
+  }
+ ],
+ "comparators": {
+  "consensus_eps": {
+   "value": 2.84,
+   "as_of": "2026-10-10",
+   "source_url": "https://tickzen.app/stocks/ual/earnings",
+   "quote": "Analysts expect EPS of $2.84.",
+   "as_of_note": "The page prints no date; as_of is the day it was read.",
+   "provider_note": "Tickzen, which says its estimates come from Yahoo Finance. It does not name the quarter (\"the next report\") or say whether the figure is adjusted.",
+   "also_stated_by": {
+    "source_url": "https://gamma-api.polymarket.com/public-search?q=United%20Airlines%20UAL%20earnings",
+    "quote": "The Street consensus estimate for United Airlines\u2019s non-GAAP EPS for the relevant quarter is $2.84",
+    "note": "The threshold written into the prediction market below, which opened on 2026-10-07."
+   },
+   "note": "Aggregators do not agree on this figure. Other values seen in search snippets were not read on their pages and are not recorded.",
+   "retrieved_on": "2026-10-10",
+   "read_via": "page text returned by a web reader (a language model); wording not machine-checked"
+  },
+  "market_odds_beat": {
+   "value": 0.6,
+   "as_of": "2026-10-10",
+   "volume_usd": 689.9,
+   "source_url": "https://polymarket.com/event/ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
+   "api_url": "https://gamma-api.polymarket.com/events?slug=ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
+   "question": "Will United Airlines (UAL) beat quarterly earnings?",
+   "threshold_eps": 2.84,
+   "price_basis": "the Yes price the market publishes; it equals the midpoint of the best bid and best ask",
+   "best_bid": 0.52,
+   "best_ask": 0.68,
+   "last_trade": 0.43,
+   "liquidity_usd": 100.66,
+   "market_updated_at": "2026-10-10T06:22:33Z",
+   "resolves_on": "2026-10-20",
+   "note": "A thin market: about $690 traded in total, about $100 resting in the book and 16 points between bid and ask, with the last trade at 43%. Treat the price as a weak signal.",
+   "retrieved_on": "2026-10-10",
+   "read_via": "page text returned by a web reader (a language model); wording not machine-checked"
+  }
+ }
+}
