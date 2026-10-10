@@ -230,6 +230,13 @@ def index():
 def lab_index():
     return FileResponse(STATIC / "lab" / "index.html")
 
+@app.get("/report")
+def report_index():
+    page = STATIC / "lab" / "report.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="The report has not been built yet")
+    return FileResponse(page)
+
 @app.get("/research")
 def research_index():
     return FileResponse(STATIC / "monthly.html")
