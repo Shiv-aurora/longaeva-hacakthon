@@ -2,12 +2,10 @@ from copy import deepcopy
 import csv
 from dataclasses import replace
 import hashlib
-import html
 import json
 import math
 from pathlib import Path
 import platform
-import re
 
 import numpy as np
 import pytest
@@ -41,13 +39,20 @@ def example_response() -> dict:
     .venv/bin/python -c "import json, tests.test_lab_scenario as t; t.EXAMPLE.write_text(json.dumps(t.example_response(), indent=1) + '\\n')"
     """
     S.clear_cache()
-    S.META = FIXTURES / "absent_meta.json"
+    R.CAPACITY_RESPONSE = FIXTURES / "absent_capacity_response.json"
     return S.run_scenario(DEFAULT_REQUEST, {"measured": synthetic_measured()})
+
+
+def capacity_file(path, curve=(0, -.3, -.6, -.8, -.8), spread=.2) -> None:
+    """A synthetic capacity response: the given curve with a common shift, as the builder would write it."""
+    draws = np.array(curve) + np.random.default_rng(3).uniform(-spread, spread, size=(200, 1)) * (np.array(curve) != 0)
+    rows = [{"quarters_after": q, **{f"p{k}": float(np.quantile(draws[:, q], k / 100)) for k in (10, 50, 90)}} for q in range(5)]
+    path.write_text(json.dumps({"as_of": "2026-09-30", "curve": rows, "curve_draws": draws.tolist()}))
 
 
 @pytest.fixture(autouse=True)
 def pinned_inputs(tmp_path, monkeypatch):
-    """Other builders write the measured curve, meta and quarterly table; tests must not depend on their state."""
+    """Other builders write the measured curves, clocks and quarterly table; tests must not depend on their state."""
     table = tmp_path / "ual_quarterly.csv"
     with table.open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=QUARTERLY_COLUMNS, restval="")
@@ -58,8 +63,10 @@ def pinned_inputs(tmp_path, monkeypatch):
             writer.writerow({"period_end": period_end, "filed_on": filed_on, "accession": "synthetic-test-row",
                              "pretax_income_musd": pretax, "net_income_musd": net, "diluted_shares_m": shares})
     monkeypatch.setattr(S, "QUARTERLY_CSV", table)
-    monkeypatch.setattr(S, "META", tmp_path / "meta.json")
     monkeypatch.setattr(R, "FARE_CLOCK", tmp_path / "fare_clock.json")
+    monkeypatch.setattr(R, "CAPACITY_RESPONSE", tmp_path / "capacity_response.json")
+    monkeypatch.setattr(S, "COST_CLOCK", tmp_path / "cost_clock.json")
+    monkeypatch.setattr(S, "DEMAND_SIGNAL", tmp_path / "demand_signal.json")
     S.clear_cache()
     yield
     S.clear_cache()
@@ -227,6 +234,7 @@ def test_response_constructors_sampling_and_monthly_rule():
     assert .8 <= first.min() < .805 and .895 < first.max() <= .9 and first.mean() == pytest.approx(.85, abs=.005)
     assert np.quantile(first, [.25, .5, .75]) == pytest.approx([.825, .85, .875], abs=.006)  # uniform within the range
     assert (promise.draws[:, 1:] == 1).all()  # later quarters hold the last stated value
+    assert R.flat(.3).draws.tolist() == [[.3] * 5] and R.flat(.3).source["kind"] == "flat override"
     keyed = R.management([{"quarters_after": 1, "recovery_low": .9, "recovery_high": 1.0}, {"quarters_after": 0, "low": .5, "high": .7}])
     position = (keyed.draws[:, 0] - .5) / .2
     assert keyed.draws[:, 1] == pytest.approx(.9 + .1 * position) and np.array_equal(keyed.draws[:, 1], keyed.draws[:, 4])
@@ -282,20 +290,16 @@ def test_measured_mode_reports_not_computed_while_the_other_modes_run():
     assert result["bridge_per_share"] is None and "measured" not in result["response_used"]
     assert result["modes"]["costs_only"]["status"] == result["modes"]["management"]["status"] == "ok"
     assert "synthetic_response" not in result
-    costs, promise = (result["modes"][m]["quarters"][0]["operating_income_change_musd"]["p50"] for m in ("costs_only", "management"))
-    assert costs < 0 and costs < promise < 0 and promise == pytest.approx(.15 * costs, rel=.15)  # 80-90% recovered in the first quarter
-    assert result["response_used"]["management"]["source"]["accession"] == "0000100517-26-000135"
-    # A built meta.json supersedes the filing sentence; a placeholder or a broken one does not.
-    promises = [{"period": "2026Q4", "recovery_low": 1.0, "recovery_high": 1.0, "evidence_ids": ["b"]},
-                {"period": "2026Q3", "recovery_low": .5, "recovery_high": .7, "evidence_ids": ["a"]}]
-    S.META.write_text(json.dumps({"promises": promises}))
-    used = S.run_scenario(small())["response_used"]["management"]
-    assert used["source"]["periods"] == ["2026Q3", "2026Q4"] and used["source"]["evidence_ids"] == ["a", "b"]
-    assert .5 <= used["curve_p10"][0] <= used["curve_p90"][0] <= .7 and used["curve_p50"][1:] == [1.0] * 4
-    for unusable in ({"fixture": True, "promises": promises}, {"promises": [{"period": "2026Q3"}]}, {}):
-        S.META.write_text(json.dumps(unusable))
-        source = S.run_scenario(small())["response_used"]["management"]["source"]
-        assert source["quote"] == S.PROMISE_SOURCE["quote"] and "meta_json_not_used" in source
+    costs, stated = (result["modes"][m]["quarters"] for m in ("costs_only", "management"))
+    first = [q[0]["operating_income_change_musd"]["p50"] for q in (costs, stated)]
+    assert first[0] < first[1] < 0 and first[1] == pytest.approx(.55 * first[0], rel=.1)  # 40-50% recovered in quarter 0
+    second = [q[1]["operating_income_change_musd"]["p50"] for q in (costs, stated)]
+    assert second[1] == pytest.approx(.15 * second[0], rel=.15)  # 80-90% in quarter 1
+    source = result["response_used"]["management"]["source"]
+    assert source["literature_ids"] == ["ual-2026q1-investor-update", "ual-2026q2-investor-update", "ual-2026q2-earnings-release"]
+    assert source["path_name"] == "july_2026" and source["mapping"] == R.MANAGEMENT_MAPPING
+    assert any(R.MANAGEMENT_MAPPING in line for line in result["assumptions"])
+    assert any("symmetric: a falling fuel price is given back at the same speed" in line for line in result["assumptions"])
     assert S.run_scenario(small(), {"measured": None})["modes"]["measured"] == {"status": "not_computed", "reason": "no response was supplied"}
 
 
@@ -391,6 +395,7 @@ def test_nonsense_requests_return_invalid_with_explicit_bounds_and_never_raise()
         "delay half given": ({"delivery_delay": {"aircraft": 5, "months": 0}}, "both aircraft and months above zero"),
         "delay too many": ({"delivery_delay": {"aircraft": 500, "months": 6}}, "delivery_delay.aircraft must be at most"),
         "delay outside window": ({"fuel_shock_months": 1, "delivery_delay": {"aircraft": 1, "months": 6}}, "at most 0"),
+        "capacity option": ({"capacity_response": "fitted"}, 'capacity_response must be "none" or "measured"'),
     }
     for name, (request, message) in cases.items():
         result = S.run_scenario(request)
@@ -485,14 +490,261 @@ def test_monte_carlo_error_is_reported_and_shrinks_with_paths():
     assert gap < 5 * math.hypot(a, b)
 
 
-def test_stated_promise_is_the_sentence_in_the_filing(require_local_cache):
-    source = S.PROMISE_SOURCE
-    path = require_local_cache(source["path"], "docs/lab_contract.md", what="raw SEC exhibit")
-    raw = path.read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == source["sha256"]
-    text = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", raw.decode("utf-8", "ignore"))))
-    assert source["quote"] in text
-    assert [(p["low"], p["high"]) for p in S.STATED_PROMISE] == [(.8, .9), (1.0, 1.0)]
-    built = S.promises_in_order([{"period": "2026Q3", "recovery_low": .8, "recovery_high": .9},
-                                 {"period": "2026Q4", "recovery_low": 1.0, "recovery_high": 1.0}])
-    assert built == [dict(p) for p in S.STATED_PROMISE]
+def test_management_paths_are_united_statements_on_quarters_after_the_shock():
+    expected = {"july_2026": [(.40, .50), (.80, .90), (1, 1), (1, 1), (1, 1)],
+                "april_2026": [(.40, .50), (.70, .80), (.85, 1), (1, 1), (1, 1)]}
+    assert R.management().source["path_name"] == "july_2026" and set(R.MANAGEMENT_PATHS) == set(expected)
+    for name, ranges in expected.items():
+        path = R.management(name)
+        assert path.draws.shape == (R.MANAGEMENT_DRAWS, 5) and path.name == "management"
+        for quarter, (low, high) in enumerate(ranges):
+            column = path.draws[:, quarter]
+            assert low <= column.min() and column.max() <= high
+            assert column.mean() == pytest.approx((low + high) / 2, abs=.005)  # uniform within the stated range
+            if high > low:
+                assert np.quantile(column, [.25, .75]) == pytest.approx([low + .25 * (high - low), low + .75 * (high - low)], abs=.008)
+        assert path.source["mapping"] == R.MANAGEMENT_MAPPING and path.source["path"] == "data/lab/literature.json"
+        assert [r["low"] for r in path.source["ranges"]] == [low for low, _ in ranges]
+    assert R.management("april_2026").source["literature_ids"] == ["ual-2026q1-investor-update"]
+    assert R.management().fingerprint != R.management("april_2026").fingerprint
+    with pytest.raises(ValueError, match="Unknown management path"):
+        R.management("october_2026")
+    # The ranges are the numbers quoted in the literature file, entry by entry.
+    entries = {e["id"]: e for e in json.loads(R.LITERATURE.read_text())["entries"]}
+    def stated(entry_id, word):
+        return {n["value"] for n in entries[entry_id]["numbers"] if word in n["label"].lower() and "percent" in n["unit"]}
+    assert {40, 50, 70, 80, 85, 100} <= stated("ual-2026q1-investor-update", "recovery")
+    assert {80, 90, 100} <= stated("ual-2026q2-investor-update", "recovery")
+    assert 50 in stated("ual-2026q2-earnings-release", "recovered")
+    april = S.run_scenario(small(), {"management": R.management("april_2026")})
+    assert april["response_used"]["management"]["source"]["path_name"] == "april_2026"
+    july = S.run_scenario(small())
+    second = [run["modes"]["management"]["quarters"][1]["operating_income_change_musd"]["p50"] for run in (april, july)]
+    assert second[0] < second[1] < 0  # 70-80% recovered is worse than 80-90%
+
+
+# ------------------------------------------------------------------ grid
+
+GRID = {"x": {"driver": "fuel_shock_pct", "values": [40, 0, 20, -20]}, "y": {"driver": "demand_shock_pct", "values": [-6, 0]},
+        "metric": "fcf_12m_musd", "threshold": 0, "direction": "below", "mode": "costs_only", "base": {"horizon_months": 12, "paths": 600}}
+
+
+def rows(grid, key):
+    width = len(grid["x"]["values"])
+    return [[cell[key] for cell in grid["cells"][i:i + width]] for i in range(0, len(grid["cells"]), width)]
+
+
+def test_grid_is_monotonic_in_fuel_and_matches_the_scenario_runner_on_the_same_worlds():
+    grid = S.run_grid(GRID)
+    assert set(grid) == {"status", "run_id", "elapsed_ms", "cached", "x", "y", "metric", "period", "threshold", "direction", "mode",
+                         "base", "cells", "boundary", "boundary_method", "prob_definition", "paths", "monte_carlo",
+                         "response_used", "capacity_response", "notes"}
+    assert grid["status"] == "ok" and grid["period"] == "12m" and grid["paths"] == 600 and grid["mode"] == "costs_only"
+    assert grid["x"]["values"] == [-20, 0, 20, 40] and grid["y"]["values"] == [-6, 0]  # sorted
+    assert [(c["x"], c["y"]) for c in grid["cells"]] == [(x, y) for y in (-6, 0) for x in (-20, 0, 20, 40)]
+    assert all(set(c) == {"x", "y", "prob", "p50"} for c in grid["cells"])
+    for prob, p50 in zip(rows(grid, "prob"), rows(grid, "p50")):
+        assert prob == sorted(prob) and prob[0] < prob[-1]  # dearer fuel, more runs with negative cash flow
+        assert p50 == sorted(p50, reverse=True)
+    assert all(low >= high for low, high in zip(*rows(grid, "prob")))  # weaker demand is never safer
+    run = S.run_scenario(small(paths=600, fuel_shock_pct=20, demand_shock_pct=-6))["modes"]["costs_only"]
+    cell = next(c for c in grid["cells"] if (c["x"], c["y"]) == (20, -6))
+    assert cell["prob"] == run["prob"]["fcf_negative_12m"] and cell["p50"] == run["next_12m"]["fcf_musd"]["p50"]
+    assert grid["monte_carlo"]["prob_standard_error_at_half"] == pytest.approx(.5 / math.sqrt(600), abs=1e-4)
+    assert 0 < grid["monte_carlo"]["prob_standard_error_max"] <= grid["monte_carlo"]["prob_standard_error_at_half"]
+    assert "not the probability of the event in the world" in grid["prob_definition"] and "linear interpolation" in grid["boundary_method"]
+    again = S.run_grid({**GRID, "x": {"driver": "fuel_shock_pct", "values": [-20.0, 0, 20, 40]}})
+    assert again["cached"] is True and stable(again) == stable(grid)
+    S.clear_cache()
+    assert stable(S.run_grid(GRID)) == stable(grid)
+    flipped = S.run_grid({**GRID, "direction": "at_or_above"})
+    assert rows(flipped, "prob") == [[pytest.approx(1 - p, abs=1e-4) for p in row] for row in rows(grid, "prob")]
+    json.dumps(grid, allow_nan=False)
+
+
+def test_boundary_is_linear_interpolation_between_tested_points():
+    found = S.boundary([0, 10, 20], [0, 1], [[.2, .4, .8], [.5, .9, 1.0]])
+    assert found == [{"x": 0, "y": 1}, {"x": 10, "y": .2}, {"x": 12.5, "y": 0}]
+    assert S.boundary([0, 1], [0, 1], [[.1, .2], [.3, .4]]) == [] and S.boundary([5], [7], [[.5]]) == [{"x": 5, "y": 7}]
+    # A plane prob = 0.05 x + 0.07 y is linear, so every interpolated point lies exactly where it crosses one half.
+    xs, ys = [0, 4, 8, 12], [0, 1, 2, 3]
+    plane = S.boundary(xs, ys, [[.05 * x + .07 * y for x in xs] for y in ys])
+    assert len(plane) == 5 and all(.05 * point["x"] + .07 * point["y"] == pytest.approx(.5, abs=1e-4) for point in plane)
+    grid = S.run_grid(GRID)
+    prob = {(c["x"], c["y"]): c["prob"] for c in grid["cells"]}
+    xs = grid["x"]["values"]
+    for point in grid["boundary"]:
+        if point["y"] in grid["y"]["values"] and point["x"] not in xs:
+            left = max(x for x in xs if x < point["x"])
+            right = min(x for x in xs if x > point["x"])
+            low, high = prob[left, point["y"]], prob[right, point["y"]]
+            assert low < .5 < high
+            assert point["x"] == pytest.approx(left + (.5 - low) / (high - low) * (right - left), abs=.2)  # cells are rounded to 4 places
+    assert any(point["x"] not in xs for point in grid["boundary"])
+
+
+def test_recovery_share_override_spans_costs_only_to_a_full_offset():
+    request = {"x": {"driver": "fuel_shock_pct", "values": [0, 30]}, "y": {"driver": "recovery_share", "values": [0, .5, 1]},
+               "metric": "operating_income_12m_musd", "threshold": 3000, "base": {"paths": 500}}
+    grid = S.run_grid(request)  # no mode's curve is needed, so the missing measured response does not matter
+    assert grid["status"] == "ok" and grid["response_used"]["name"] == "recovery_share"
+    costs_only = S.run_grid({**request, "y": {"driver": "demand_shock_pct", "values": [0]}, "mode": "costs_only"})
+    assert [(c["prob"], c["p50"]) for c in grid["cells"][:2]] == [(c["prob"], c["p50"]) for c in costs_only["cells"]]
+    none, half, full = rows(grid, "p50")
+    assert none[1] < half[1] < full[1] and none[1] < none[0] - 1000
+    change = S.run_grid({**request, "metric": "eps_change", "threshold": -.001})
+    none, half, full = rows(change, "p50")
+    assert full == [0, 0] and rows(change, "prob")[2] == [0, 0]  # share 1: the shock is offset on every path
+    assert none[1] < half[1] < 0 and half[1] == pytest.approx(.5 * none[1], rel=.02) and rows(change, "prob")[0] == [0, 1]
+    assert change["boundary"] == [{"x": 15, "y": 0}, {"x": 15, "y": .5}, {"x": 30, "y": .75}]
+    quarter = S.run_grid({**request, "metric": "eps_change", "period": "2027Q1", "threshold": -1})
+    assert quarter["period"] == "2027Q1" and rows(quarter, "p50")[0][1] > rows(change, "p50")[0][1]
+
+
+def test_grid_refuses_nonsense_caps_cells_and_lowers_paths_by_a_fixed_rule(monkeypatch, tmp_path):
+    cases = {
+        "not an object": ([1, 2], "JSON object"),
+        "missing axis": ({"x": GRID["x"]}, "y must be an object"),
+        "unknown driver": ({**GRID, "y": {"driver": "oil", "values": [1]}}, "y.driver must be one of"),
+        "same driver": ({**GRID, "y": GRID["x"]}, "x and y must be different drivers"),
+        "two fuel drivers": ({**GRID, "y": {"driver": "fuel_usd_gal", "values": [4, 5]}}, "only one of them may be a fuel driver"),
+        "too many cells": ({**GRID, "x": {"driver": "fuel_shock_pct", "values": list(range(41))}, "y": {"driver": "demand_shock_pct", "values": [0, 1, 2]}}, "the limit is 81"),
+        "repeated value": ({**GRID, "x": {"driver": "fuel_shock_pct", "values": [10, 10]}}, "x.values must not repeat"),
+        "text value": ({**GRID, "x": {"driver": "fuel_shock_pct", "values": ["high"]}}, "x.values must be a non-empty list of numbers"),
+        "value out of range": ({**GRID, "x": {"driver": "fuel_shock_pct", "values": [0, 300]}}, "fuel_shock_pct must be between -50 and 80"),
+        "metric": ({**GRID, "metric": "share_price"}, "metric must be one of"),
+        "direction": ({**GRID, "direction": "under"}, 'direction must be "below" or "at_or_above"'),
+        "threshold": ({**GRID, "threshold": "zero"}, "threshold must be a number"),
+        "mode": ({**GRID, "mode": "hopeful"}, "mode must be one of"),
+        "period": ({**GRID, "metric": "operating_margin", "period": "2031Q1"}, "period for operating_margin must be one of"),
+        "period for a 12-month metric": ({**GRID, "period": "2026Q4"}, "period for fcf_12m_musd must be one of ['12m']"),
+        "driver also in base": ({**GRID, "base": {"fuel_usd_gal": 5}}, "remove fuel_usd_gal from base"),
+        "delay without aircraft": ({**GRID, "y": {"driver": "delivery_delay_months", "values": [0, 6]}}, "set base.delivery_delay.aircraft"),
+        "share out of range": ({**GRID, "y": {"driver": "recovery_share", "values": [0, 3]}}, "recovery_share values must be between -0.5 and 1.5"),
+        "unknown field": ({**GRID, "colour": "red"}, "unknown field(s)"),
+        "bad base": ({**GRID, "base": {"seed": -4}}, "seed must be between 0 and 1000000000"),
+    }
+    for name, (request, message) in cases.items():
+        result = S.run_grid(request)
+        assert result["status"] == "invalid" and any(message in e for e in result["errors"]), (name, result)
+    assert S.run_grid({**GRID, "mode": "measured"}) == {"status": "not_computed", "reason": S.run_scenario(small())["modes"]["measured"]["reason"]}
+    delays = S.run_grid({**GRID, "y": {"driver": "delivery_delay_months", "values": [0, 12]}, "base": {"paths": 300, "delivery_delay": {"aircraft": 36}}})
+    assert delays["status"] == "ok" and delays["base"]["delivery_delay"] == {"aircraft": 36} and rows(delays, "p50")[0] != rows(delays, "p50")[1]
+    assert rows(delays, "p50")[0] == rows(S.run_grid({**GRID, "y": {"driver": "demand_shock_pct", "values": [0]}, "base": {"paths": 300}}), "p50")[0]
+    level = S.run_grid({**GRID, "x": {"driver": "fuel_usd_gal", "values": [4, 5, 6]}, "metric": "operating_margin", "threshold": .02})
+    assert level["period"] == "2026Q4" and "fuel_shock_pct" not in level["base"] and level["base"]["fuel_shock_months"] == 6
+    assert rows(level, "p50")[1] == sorted(rows(level, "p50")[1], reverse=True)
+    monkeypatch.setattr(S, "GRID_PATH_MONTHS", 9 * 14 * 700)
+    lowered = S.run_grid({**GRID, "x": {"driver": "fuel_shock_pct", "values": [0, 20, 40]}, "y": {"driver": "demand_shock_pct", "values": [-4, 0, 4]}, "base": {}})
+    assert lowered["paths"] == 700 and lowered["monte_carlo"]["paths_requested"] == S.DEFAULT_PATHS
+    assert any("lowered from 10000 to 700" in note for note in lowered["notes"])
+    assert lowered["monte_carlo"]["prob_standard_error_at_half"] == pytest.approx(.5 / math.sqrt(700), abs=1e-4)
+    monkeypatch.setattr(S, "QUARTERLY_CSV", tmp_path / "absent.csv")
+    assert S.run_grid({**GRID, "metric": "eps_change"})["status"] == "not_computed"
+    assert S.run_grid(GRID)["status"] == "ok"  # other metrics do not need per-share inputs
+
+
+# ------------------------------------------------------------------ capacity response
+
+def test_capacity_response_is_optional_and_runs_without_the_file():
+    plain = S.run_scenario(small(fuel_shock_pct=40))
+    assert plain["capacity_response"] == {"status": "not_requested"} and plain["request"]["capacity_response"] == "none"
+    asked = S.run_scenario(small(fuel_shock_pct=40, capacity_response="measured"))
+    assert S.validate_response(asked) == [] and asked["run_id"] != plain["run_id"]
+    assert asked["capacity_response"]["status"] == "not_computed" and "has not been built" in asked["capacity_response"]["reason"]
+    assert asked["modes"] == plain["modes"]  # ran without it
+    assert any("capacity follows the plan" in line for line in asked["assumptions"])
+
+
+def test_measured_capacity_response_cuts_capacity_by_group_on_the_same_worlds():
+    capacity_file(R.CAPACITY_RESPONSE)
+    request = small(paths=800, fuel_shock_pct=40, fuel_shock_months=12, capacity_response="measured")
+    plain = S.run_scenario({**request, "capacity_response": "none"}, {"measured": synthetic_measured()})
+    cut = S.run_scenario(request, {"measured": synthetic_measured()})
+    block = cut["capacity_response"]
+    assert S.validate_response(cut) == [] and block["status"] == "ok" and block["groups"] == S.CAPACITY_GROUPS
+    assert block["source"]["kind"] == "measured" and {"path": block["source"]["path"], "sha256": block["source"]["sha256"]} in cut["inputs"]
+    assert "groups of paths" in block["approximation"] and block["approximation"] in cut["assumptions"]
+    changes = block["capacity_change_pct"]
+    assert [q["period"] for q in changes] == ["2026Q4", "2027Q1", "2027Q2", "2027Q3"]
+    assert changes[0] == {"period": "2026Q4", "p10": 0, "p50": 0, "p90": 0}  # the curve starts at zero in quarter 0
+    assert changes[1]["p50"] == pytest.approx(-.3 * 4, abs=.15) and changes[3]["p50"] == pytest.approx(-.8 * 4, abs=.15)  # per 10% of a 40% shock
+    assert all(q["p10"] <= q["p50"] <= q["p90"] <= 0 for q in changes) and changes[3]["p10"] < changes[3]["p90"]
+    for mode in S.MODES:
+        steps, before = ({row["step"]: row["operating_income_musd"] for row in run["modes"][mode]["bridge"]} for run in (cut, plain))
+        assert steps["fuel cost"] == before["fuel cost"] and steps["fare recovery"] == before["fare recovery"]  # same worlds
+        assert before["capacity"] == 0 and steps["capacity"] != 0
+        assert sum(steps[name] for name in ("fuel cost", "fare recovery", "capacity", "demand")) == pytest.approx(steps["net"], abs=.21)
+        assert cut["modes"][mode]["quarters"][0] == plain["modes"][mode]["quarters"][0]  # no cut yet in quarter 0
+        assert cut["modes"][mode]["quarters"][3] != plain["modes"][mode]["quarters"][3]
+    # Stitching groups back together loses nothing: a zero cut reproduces the plain rollout exactly.
+    c = S._context()
+    req, _, engine_pct, _ = S._checked(request, c)
+    s = S._engine_scenario(req, c, engine_pct)
+    raw = S._worlds(s, c)
+    recovery = synthetic_measured().monthly_shares(s.paths, s.horizon_months, s.seed)
+    whole = S._roll(raw, s, recovery)
+    order = np.random.default_rng(5).permutation(s.paths)
+    parts = S._roll(raw, s, recovery, groups=[(index, np.zeros(s.horizon_months)) for index in np.array_split(order, 8)])
+    assert set(whole) == set(parts) and all(np.array_equal(whole[name], parts[name]) for name in whole)
+    groups, change = S._capacity_groups(R.capacity(), s, 40.0, c["lead"])
+    assert len(groups) == 8 and sorted(np.concatenate([index for index, _ in groups]).tolist()) == list(range(s.paths))
+    means = [cuts[c["lead"]:c["lead"] + 12].mean() for _, cuts in groups]
+    assert means == sorted(means) and change.shape == (s.paths, s.horizon_months) and (change <= 0).all()
+    assert np.mean([cuts for _, cuts in groups], axis=0) == pytest.approx(change.mean(axis=0), abs=1e-9)  # groups are equal-sized
+    # The simulator models cuts only: cheaper fuel, or a curve that adds capacity, changes nothing.
+    cheaper = S.run_scenario({**request, "fuel_shock_pct": -30}, {"measured": synthetic_measured()})
+    assert all(q["p10"] == q["p90"] == 0 for q in cheaper["capacity_response"]["capacity_change_pct"])
+    assert cheaper["modes"] == S.run_scenario({**request, "fuel_shock_pct": -30, "capacity_response": "none"}, {"measured": synthetic_measured()})["modes"]
+    capacity_file(R.CAPACITY_RESPONSE, curve=(0, .3, .6, .8, .8))
+    adding = S.run_scenario(request, {"measured": synthetic_measured()})
+    assert adding["modes"] == plain["modes"] and adding["run_id"] != cut["run_id"]
+    grid = S.run_grid({**GRID, "mode": "measured", "base": {"paths": 400, "capacity_response": "measured"}}, {"measured": synthetic_measured()})
+    assert grid["status"] == "ok" and grid["capacity_response"]["status"] == "ok" and grid["synthetic_response"] is True
+
+
+# ------------------------------------------------------------------ today
+
+def test_today_request_states_where_each_number_came_from(tmp_path, monkeypatch):
+    fuel = tmp_path / "fuel_daily.csv"
+    fuel.write_text("date,usd_per_gallon\n2026-10-01,4.000\n2026-10-02,4.500\n")
+    monkeypatch.setattr(S, "FUEL_DAILY", fuel)
+    bare = S.today_request()
+    assert bare["status"] == "ok" and bare["request"] == {"fuel_usd_gal": 4.5, "fuel_shock_months": 12, "horizon_months": 12}
+    assert bare["information_cutoff"] == S.INFORMATION_CUTOFF  # the cutoff does not move
+    assert [(b["field"], b["value"], b["date"]) for b in bare["basis"]] == [("fuel_usd_gal", 4.5, "2026-10-02"), ("fuel_shock_months", 12, None)]
+    assert bare["basis"][0]["source"] == [{"path": str(fuel), "sha256": hashlib.sha256(fuel.read_bytes()).hexdigest()}]
+    assert bare["context"]["fuel"]["converted_with_cost_clock"] is False and bare["context"]["fuel"]["spot_usd_gal"] == 4.5
+    assert bare["context"]["fuel"]["shock_pct"] == pytest.approx((4.5 / (5110 / 1219) - 1) * 100, abs=1e-3)
+    assert any("raw spot price" in line for line in bare["assumptions"])
+    assert bare["context"]["demand"]["status"] == "not_computed"
+    assert any("no demand reading is built" in line for line in S.today_request(apply_demand=True)["assumptions"])
+    run = S.run_scenario({**bare["request"], "paths": 300})
+    assert run["status"] == "ok" and run["fuel"]["level_usd_gal"] == 4.5 and run["fuel"]["held_months"] == 12
+    # With the cost clock the spot print is converted to the price United pays.
+    S.COST_CLOCK.write_text(json.dumps({"fixture": True, "fit": {"basis_usd_gal": 9, "slope": 9}}))
+    assert S.today_request()["request"] == bare["request"]  # a placeholder is not used
+    S.COST_CLOCK.write_text(json.dumps({"fit": {"spec": "test", "lag_days": 20, "basis_usd_gal": .25, "slope": 1.1}}))
+    clocked = S.today_request()
+    assert clocked["request"]["fuel_usd_gal"] == pytest.approx(.25 + 1.1 * 4.5) and clocked["context"]["fuel"]["converted_with_cost_clock"] is True
+    assert [s["path"] for s in clocked["basis"][0]["source"]] == [str(fuel), str(S.COST_CLOCK)] and "0.25 + 1.1 x spot" in clocked["basis"][0]["how"]
+    assert not any("raw spot price" in line for line in clocked["assumptions"])
+    # The demand reading is context unless the caller asks for it to be applied.
+    S.DEMAND_SIGNAL.write_text(json.dumps({"as_of": "2026-10-08", "source": {"series": "test travellers"}, "quarterly": [
+        {"period": "2026Q3", "yoy": -.03, "days_used": 92, "days_in_period": 92, "complete": True},
+        {"period": "2026Q4", "yoy": .0125, "days_used": 8, "days_in_period": 92, "complete": False},
+        {"period": "2027Q1", "yoy": None}]}))
+    context = S.today_request()
+    assert "demand_shock_pct" not in context["request"] and len(context["basis"]) == 2
+    assert {k: context["context"]["demand"][k] for k in ("status", "yoy_pct", "period", "as_of", "days_used", "complete", "applied")} == {
+        "status": "ok", "yoy_pct": 1.25, "period": "2026Q4", "as_of": "2026-10-08", "days_used": 8, "complete": False, "applied": False}
+    assert any("Demand is left at plan" in line and "+1.25%" in line for line in context["assumptions"])
+    applied = S.today_request(apply_demand=True)
+    assert applied["request"]["demand_shock_pct"] == 1.25 and applied["context"]["demand"]["applied"] is True
+    assert (applied["basis"][2]["field"], applied["basis"][2]["date"]) == ("demand_shock_pct", "2026-10-08") and "Approximation" in applied["basis"][2]["how"]
+    assert S.run_scenario({**applied["request"], "paths": 300})["request"]["demand_shock_pct"] == 1.25
+    # A level the simulator cannot take is refused, and a missing fuel file is not invented.
+    fuel.write_text("date,usd_per_gallon\n2026-10-02,19.0\n")
+    assert S.today_request()["status"] == "invalid" and "fuel_usd_gal must be between" in S.today_request()["errors"][0]
+    monkeypatch.setattr(S, "FUEL_DAILY", tmp_path / "absent.csv")
+    assert S.today_request()["status"] == "not_computed"

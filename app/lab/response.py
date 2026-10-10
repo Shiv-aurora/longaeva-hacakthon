@@ -19,7 +19,13 @@ seed gives the same worlds under every response.
 Management ranges (`management`): each draw takes one uniform position u in
 [0, 1] and uses low + u * (high - low) in every stated quarter. That is uniform
 within each stated range and keeps a draw equally optimistic in all quarters.
-Quarters after the last stated one hold its value.
+Quarters after the last stated one hold its value. The named paths in
+MANAGEMENT_PATHS are United's own statements about one shock, the 2026 fuel
+increase, placed on quarters after that shock by MANAGEMENT_MAPPING.
+
+The same container carries the measured capacity response (`capacity`): change in
+capacity growth, in percentage points per 10% fuel price increase, by quarter
+after the shock. It is sampled on its own random stream (CAPACITY_STREAM).
 """
 from __future__ import annotations
 
@@ -32,9 +38,27 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 FARE_CLOCK = ROOT / "app" / "static" / "data" / "fare_clock.json"
+CAPACITY_RESPONSE = ROOT / "app" / "static" / "data" / "capacity_response.json"
+LITERATURE = ROOT / "data" / "lab" / "literature.json"
 QUARTERS = 5
 RESPONSE_STREAM = 0x52455350  # "RESP"
+CAPACITY_STREAM = 0x43415041  # "CAPA"
 MANAGEMENT_DRAWS = 2000
+# United's statements about the 2026 fuel increase, as (low, high) shares by quarter
+# after the shock. Entry ids are those of data/lab/literature.json, which holds the quotes.
+MANAGEMENT_MAPPING = ("The fuel increase began in spring 2026, so 2026Q2 is quarter 0 of that shock, 2026Q3 quarter 1 "
+                      "and 2026Q4 quarter 2. Later quarters are taken as full recovery.")
+MANAGEMENT_PATHS = {
+    "july_2026": {
+        "ranges": ((.40, .50), (.80, .90), (1.0, 1.0), (1.0, 1.0), (1.0, 1.0)),
+        "literature_ids": ("ual-2026q1-investor-update", "ual-2026q2-investor-update", "ual-2026q2-earnings-release"),
+        "stated": "April 2026 guidance assumed 40-50% recovered in 2026Q2 and the July release says about half was; "
+                  "July 2026 guidance: 80-90% in 2026Q3 and 100% by 2026Q4."},
+    "april_2026": {
+        "ranges": ((.40, .50), (.70, .80), (.85, 1.0), (1.0, 1.0), (1.0, 1.0)),
+        "literature_ids": ("ual-2026q1-investor-update",),
+        "stated": "April 2026 guidance assumed 40-50% recovered in 2026Q2, 70-80% in 2026Q3 and 85-100% in 2026Q4."},
+}
 
 
 class NotComputed(RuntimeError):
@@ -76,11 +100,11 @@ class Response:
     def curve(self, quantile: float = .5) -> list[float]:
         return [round(float(v), 6) for v in np.quantile(self.draws, quantile, axis=0)]
 
-    def sample(self, paths: int, seed: int) -> np.ndarray:
+    def sample(self, paths: int, seed: int, stream: int = RESPONSE_STREAM) -> np.ndarray:
         """One quarterly curve per path, shape (paths, 5)."""
         if isinstance(seed, bool) or not isinstance(seed, (int, np.integer)) or seed < 0:
             raise ValueError("seed must be a non-negative integer")
-        rng = np.random.default_rng([RESPONSE_STREAM, int(seed)])
+        rng = np.random.default_rng([stream, int(seed)])
         return self.draws[rng.integers(0, len(self.draws), size=paths)]
 
     def monthly_shares(self, paths: int, months: int, seed: int) -> np.ndarray:
@@ -99,6 +123,12 @@ def from_draws(draws, name: str = "custom", source: dict | None = None, note: st
 def costs_only() -> Response:
     return Response("costs_only", np.zeros((1, QUARTERS)), {"kind": "definition"},
                     "No revenue response: the fuel cost falls through to profit.")
+
+
+def flat(share: float) -> Response:
+    """The same recovery share in every quarter on every path."""
+    return Response("recovery_share", np.full((1, QUARTERS), float(share)), {"kind": "flat override", "share": float(share)},
+                    "Every quarter's recovery share is set to this value on all paths.")
 
 
 def _ranges(promises) -> list[tuple[float, float]]:
@@ -128,12 +158,20 @@ def _ranges(promises) -> list[tuple[float, float]]:
     return ranges
 
 
-def management(promises, draws: int = MANAGEMENT_DRAWS, seed: int = 0, source: dict | None = None) -> Response:
+def management(promises="july_2026", draws: int = MANAGEMENT_DRAWS, seed: int = 0, source: dict | None = None) -> Response:
     """Stated recovery ranges by quarter after the shock, sampled uniformly within each range.
 
-    `promises` is a sequence in quarter order of (low, high) pairs, single shares, or
-    dicts with low/high (or recovery_low/recovery_high) and an optional quarters_after.
+    `promises` is the name of a path in MANAGEMENT_PATHS, or a sequence in quarter
+    order of (low, high) pairs, single shares, or dicts with low/high (or
+    recovery_low/recovery_high) and an optional quarters_after.
     """
+    if isinstance(promises, str):
+        if promises not in MANAGEMENT_PATHS:
+            raise ValueError(f"Unknown management path {promises!r}; choose from {sorted(MANAGEMENT_PATHS)}")
+        named = MANAGEMENT_PATHS[promises]
+        source = {"path_name": promises, "literature_ids": list(named["literature_ids"]), "stated": named["stated"],
+                  "mapping": MANAGEMENT_MAPPING, **_cited(LITERATURE), **({} if source is None else source)}
+        promises = named["ranges"]
     ranges = np.array(_ranges(promises))
     position = np.random.default_rng([RESPONSE_STREAM, int(seed)]).uniform(size=(draws, 1))
     values = ranges[:, 0] + position * (ranges[:, 1] - ranges[:, 0])
@@ -143,12 +181,18 @@ def management(promises, draws: int = MANAGEMENT_DRAWS, seed: int = 0, source: d
                     "Uniform within each stated range; one position per draw shared by all quarters; later quarters hold the last stated range.")
 
 
-def measured(path: Path | None = None) -> Response:
-    """The fitted recovery curve and its joint draws from the fare clock output."""
-    path = FARE_CLOCK if path is None else Path(path)
-    shown = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
+def _shown(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
+
+
+def _cited(path: Path) -> dict:
+    return {"path": _shown(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} if path.is_file() else {}
+
+
+def _curve_file(path: Path, name: str, builder: str, note: str) -> Response:
+    shown = _shown(path)
     if not path.is_file():
-        raise NotComputed(f"{shown} has not been built yet; the fare clock writes `curve` and `curve_draws`")
+        raise NotComputed(f"{shown} has not been built yet; {builder} writes `curve` and `curve_draws`")
     raw = path.read_bytes()
     data = json.loads(raw)
     if not isinstance(data, dict) or data.get("fixture"):
@@ -163,7 +207,18 @@ def measured(path: Path | None = None) -> Response:
     for row in curve:
         if not all(isinstance(row.get(k), (int, float)) and np.isfinite(row[k]) for k in ("p10", "p50", "p90")):
             raise ValueError(f"{shown}: `curve` needs finite p10, p50 and p90 in every quarter")
-    return Response("measured", data["curve_draws"],
+    return Response(name, data["curve_draws"],
                     {"kind": "measured", "path": shown, "sha256": hashlib.sha256(raw).hexdigest(),
-                     "as_of": data.get("as_of"), "published_curve": curve},
-                    "Fitted by the fare clock; one joint draw per simulated path.")
+                     "as_of": data.get("as_of"), "published_curve": curve}, note)
+
+
+def measured(path: Path | None = None) -> Response:
+    """The fitted recovery curve and its joint draws from the fare clock output."""
+    return _curve_file(FARE_CLOCK if path is None else Path(path), "measured", "the fare clock",
+                       "Fitted by the fare clock; one joint draw per simulated path.")
+
+
+def capacity(path: Path | None = None) -> Response:
+    """The fitted capacity response: percentage points of capacity growth per 10% fuel price increase."""
+    return _curve_file(CAPACITY_RESPONSE if path is None else Path(path), "capacity", "the capacity response builder",
+                       "Change in capacity growth, percentage points per 10% fuel price increase, by quarter after the shock.")
