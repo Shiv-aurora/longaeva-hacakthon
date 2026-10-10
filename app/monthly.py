@@ -22,6 +22,12 @@ from .cash_bridge import FLOW_OUTPUTS, STOCK_OUTPUTS, month_events, opening_stat
 
 MARKETS = ("domestic", "atlantic", "pacific", "latin_america")
 VERSION = "monthly-fleet-0.7.0"
+# Rollout mode driven by a supplied recovery curve (simulate_recovery). It is not a
+# MonthlyScenario.response_mode: archived runs keep frozen and assumed_constrained only.
+RECOVERY_MODE = "recovery_curve"
+SHOCK_FIELDS = ("fuel_shock_pct", "demand_shock_pct", "capacity_shock_pct", "delivery_delay_months",
+                "delivery_aircraft_count", "delivery_group", "aircraft_unavailable_pct", "availability_group",
+                "regional_contract_shock_pct")
 
 
 @dataclass(frozen=True)
@@ -215,7 +221,8 @@ def shock_weights(s: MonthlyScenario) -> np.ndarray:
 
 
 def _rollout(b: dict, s: MonthlyScenario, fuel_world: np.ndarray, demand_world: np.ndarray,
-             spot: float, intervention: bool, mode: str, fleet: dict | None = None) -> dict[str, np.ndarray]:
+             spot: float, intervention: bool, mode: str, fleet: dict | None = None,
+             recovery: np.ndarray | None = None) -> dict[str, np.ndarray]:
     asm = np.array([m["asm_million"] for m in b["markets"]])
     rpm = np.array([m["rpm_million"] for m in b["markets"]])
     yields = np.array([m["yield_usd_per_rpm"] for m in b["markets"]])
@@ -253,6 +260,12 @@ def _rollout(b: dict, s: MonthlyScenario, fuel_world: np.ndarray, demand_world: 
     if s.retention_plan is not None:
         result.update({name: np.empty((s.paths, s.horizon_months)) for name in (*RETENTION_FLOWS, "retained_aircraft")})
     alpha = 1 - 2 ** (-1 / s.response_half_life_months)
+    curve_mode = mode == RECOVERY_MODE
+    if curve_mode:
+        if recovery is None or recovery.shape != (s.paths, s.horizon_months):
+            raise ValueError("Recovery-curve mode needs one monthly recovery curve per path")
+        price_steps = np.zeros((s.paths, s.horizon_months, 4))
+        prior_price = np.full((s.paths, 4), b["paid_fuel_usd_per_gallon"])
     for t in range(s.horizon_months):
         w = weights[t] * geography
         operated = components[t] * (1 + s.capacity_shock_pct / 100 * w[:, None])
@@ -270,8 +283,26 @@ def _rollout(b: dict, s: MonthlyScenario, fuel_world: np.ndarray, demand_world: 
         target = np.clip(s.pass_through_fraction * pressure / pax, -.5, .5)
         if mode == "assumed_constrained" and t + 1 > s.response_lag_months:
             response += np.clip(alpha * (target - response), -s.max_yield_step_pct / 100, s.max_yield_step_pct / 100)
+        if curve_mode:
+            # Each month's change in the delivered fuel price starts its own clock:
+            # k months later, recovery[:, k] of that change, times the gallons burned
+            # that month, comes back as revenue. The share is defined on revenue net
+            # of any volume effect, so this mode switches off the fare-demand
+            # elasticity (response is zero when demand is computed below), the
+            # pass-through fraction with its lag and half-life, the +/-50% target
+            # clip and the monthly yield-step cap. Fuel price falls are passed back
+            # with the same curve.
+            price_steps[:, t] = delivered - prior_price
+            prior_price = delivered
+            recovered_price = np.einsum("pk,pkm->pm", recovery[:, t::-1], price_steps[:, :t + 1])
+            burn = operated * gallons_per_asm if retention is None else operated * gallons_per_asm * (1 + premium)
+            recovered = recovered_price * burn.sum(axis=1)
+            response = np.zeros((s.paths, 4))
         desired = rpm * (committed[t] / asm) * demand_world[:, t, None] * (1 + s.demand_shock_pct / 100 * w) * (1 + response) ** (-s.demand_elasticity)
         served = np.minimum(desired, capacity)
+        if curve_mode:
+            # Implied unit-revenue change that delivers the recovered dollars.
+            response = np.divide(recovered, served * yields, out=np.zeros((s.paths, 4)), where=served * yields > 0)
         market_revenue = served * yields * (1 + response)
         group_fuel = (operated[None, :, :] * gallons_per_asm * delivered[:, :, None]).sum(axis=1)
         if retention is not None:
@@ -435,3 +466,44 @@ def simulate_monthly(s: MonthlyScenario, snapshot: dict | None = None, fuel: lis
                 "Retention maintenance and rent/other carrying rates are ADDITIONAL operating expenses over the existing modeled nonfuel costs, not gross historical maintenance costs. They accrue for each retained aircraft from the month after its planned exit through its effective exit month, including unavailable/idle aircraft. Their OCF effect uses the model's existing assumed marginal cash-tax bridge; no capitalized overhaul, depreciation or lease liability is inferred.",
                 "Retention plan basis: " + s.retention_plan["basis"]] if s.retention_plan is not None else []),
             "readiness": "monthly fleet and accounting sensitivity / behavioral and historical validation pending"}
+
+
+def simulate_recovery(s: MonthlyScenario, responses: dict, snapshot: dict | None = None,
+                      fuel: list[dict] | None = None, cases: dict | None = None) -> dict:
+    """Raw paired paths under supplied recovery-curve responses.
+
+    Each response supplies one monthly recovery curve per path through
+    monthly_shares(paths, months, seed). Every response and every case runs on the
+    worlds simulate_monthly would draw for s, so differences between them come from
+    the response or the shock alone. `cases` are further shocked scenarios that may
+    differ from s only in SHOCK_FIELDS. Research entry point: no run archive or replay.
+    """
+    s.validate()
+    shocked = {"intervention": s, **({} if cases is None else cases)}
+    if len(shocked) != 1 + len(cases or {}) or {"control", "recovery"} & set(shocked):
+        raise ValueError("Case names control, intervention and recovery are reserved")
+    world = {k: v for k, v in asdict(s).items() if k not in SHOCK_FIELDS}
+    for case in shocked.values():
+        case.validate()
+        if {k: v for k, v in asdict(case).items() if k not in SHOCK_FIELDS} != world:
+            raise ValueError("Cases may differ from the scenario only in shock sizes")
+    snapshot = load_snapshot() if snapshot is None else snapshot
+    b = baseline(snapshot, s.information_cutoff, s.cash_plan, s.purchase_plan)
+    fuel = load_fuel() if fuel is None else fuel
+    fuel = [r for r in fuel if r["date"] <= s.information_cutoff]
+    if len(fuel) < 30:
+        raise ValueError("At least 30 fuel observations at or before the cutoff are required")
+    spot = fuel[-1]["usd_per_gallon"]
+    worlds = _world(s, spot, fuel_volatility(fuel) * math.sqrt(21))
+    months = month_sequence(s.information_cutoff, s.horizon_months)
+    fleets = {label: capacity_paths(b, case, b["fleet_plan"], months, shock_weights(case)) for label, case in shocked.items()}
+    result = {}
+    for name, response in responses.items():
+        recovery = response.monthly_shares(s.paths, s.horizon_months, s.seed)
+        result[name] = {"recovery": recovery,
+                        "control": _rollout(b, s, *worlds, spot, False, RECOVERY_MODE, fleets["intervention"], recovery),
+                        **{label: _rollout(b, case, *worlds, spot, True, RECOVERY_MODE, fleets[label], recovery)
+                           for label, case in shocked.items()}}
+    return {"months": months, "baseline_inputs": b, "spot_usd_per_gallon": spot,
+            "fuel_last_observation": fuel[-1]["date"], "evidence_snapshot_id": digest(snapshot),
+            "fuel_snapshot_id": digest(fuel), "fuel_world": worlds[0], "demand_world": worlds[1], "responses": result}

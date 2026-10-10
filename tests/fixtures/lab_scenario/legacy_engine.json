@@ -1,0 +1,2085 @@
+{
+ "what": "Outputs of app/monthly.py captured before the recovery-curve mode was added. simulate_monthly digests cover every deterministic field (all but summary.runtime_seconds and the manifest's code_sha256 and run_id, which hash the source file itself).",
+ "captured_from_monthly_py_sha256": "0ee3bf978747dcf94a53f9650beb0314278b495c76af2a3b5f781f6f2ee3229c",
+ "captured_at_commit": "4e463b0",
+ "environment": {
+  "python": "3.12.8",
+  "numpy": "2.5.3",
+  "system": "Darwin",
+  "machine": "arm64"
+ },
+ "inputs": {
+  "snapshot": {
+   "schema_version": 1,
+   "review_note": "Numeric transcription checked against the issuer earnings table and SEC 10-Q rendered by the web tool on 2026-10-09. Source passages below are normalized table transcriptions, not verbatim quotations. Raw download unavailable in this session; original URLs remain authoritative. Fleet plan quarter-end net entries/exits are distinct from purchase-delivery guidance; monthly event timing and grouping are assumptions. 2025 regional capacity share is carried forward only as a disclosed assumption.",
+   "sources": [
+    {
+     "source_id": "ual_q2_2026_release",
+     "url": "https://united.mediaroom.com/2026-07-15-United-Posts-Q2-Results-Above-Wall-Street-Expectations-and-Raises-Full-Year-2026-Adjusted-EPS-Guidance1-Despite-a-Nearly-6-Billion-Increase-In-Anticipated-Fuel-Costs",
+     "published_on": "2026-07-15",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "Passenger revenue information and statistics; consolidated operations",
+     "extraction_method": "manually checked normalized table transcription",
+     "license_status": "Public issuer release; redistribution terms not independently reviewed"
+    },
+    {
+     "source_id": "ual_q2_2026_10q",
+     "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000139/ual-20260630.htm",
+     "published_on": "2026-07-16",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "Pages 5-6 consolidated balance sheets/cash flows; page 27 expected aircraft deliveries",
+     "extraction_method": "manually checked normalized table transcription",
+     "license_status": "Public SEC filing; terms recorded as public-source access, not a vendor license"
+    },
+    {
+     "source_id": "ual_july_2026_fleet_plan",
+     "url": "https://ir.united.com/static-files/bbcc202b-3988-4e38-824b-df21fbde597d",
+     "published_on": "2026-07-15",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "Investor Update page 2, fleet plan",
+     "extraction_method": "manually checked normalized table transcription",
+     "license_status": "Public issuer disclosure; redistribution terms not independently reviewed"
+    },
+    {
+     "source_id": "ual_2025_10k",
+     "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000023/ual-20251231.htm",
+     "published_on": "2026-02-12",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "Business Regional; Note 12 Regional CPAs",
+     "extraction_method": "manually checked normalized disclosure transcription",
+     "license_status": "Public SEC filing; public-source access, not a vendor license"
+    },
+    {
+     "source_id": "ual_q1_2026_10q",
+     "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000091/ual-20260331.htm",
+     "published_on": "2026-04-22",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "Consolidated cash flow statement; SEC Company Facts standard US-GAAP facts for January 1\u2013March 31",
+     "extraction_method": "parsed original SEC Company Facts records; filing table checked independently",
+     "license_status": "Public SEC filing and API; public-source access, not a vendor license",
+     "raw_companyfacts_sha256": "6621f43f61efe96e02f2aada43fbed7ea989332e4fad2c6c453f9abe139e6d32",
+     "raw_companyfacts_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000100517.json"
+    },
+    {
+     "source_id": "ual_q2_2026_cash_ledger",
+     "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000139/ual-20260630.htm",
+     "published_on": "2026-07-16",
+     "retrieved_on": "2026-10-09",
+     "entity": "United Airlines Holdings, Inc.",
+     "locator": "UAL consolidated balance sheet page 5; cash reconciliation page 6; loyalty roll-forward page 14; debt principal/undrawn facility page 17",
+     "extraction_method": "Reviewed normalized transcription of official filing rendered through web; standard-tag facts independently checked against preserved Company Facts. Original filing byte download returned HTTP 403; no original HTML archive is claimed.",
+     "raw_companyfacts_sha256": "6621f43f61efe96e02f2aada43fbed7ea989332e4fad2c6c453f9abe139e6d32",
+     "license_status": "Public SEC filing and API; public-source access, not a vendor license"
+    }
+   ],
+   "records": [
+    {
+     "record_id": "domestic.passenger_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "domestic",
+     "variable": "passenger_revenue",
+     "value": 9506,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "domestic: Q2 2026 passenger revenue 9506; ASMs 48330; RPMs 40375. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "domestic.asm.2026-04-01.ual_q2_2026_release",
+     "entity": "domestic",
+     "variable": "asm",
+     "value": 48330,
+     "units": "ASM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "domestic: Q2 2026 passenger revenue 9506; ASMs 48330; RPMs 40375. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "domestic.rpm.2026-04-01.ual_q2_2026_release",
+     "entity": "domestic",
+     "variable": "rpm",
+     "value": 40375,
+     "units": "RPM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "domestic: Q2 2026 passenger revenue 9506; ASMs 48330; RPMs 40375. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "atlantic.passenger_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "atlantic",
+     "variable": "passenger_revenue",
+     "value": 3424,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "atlantic: Q2 2026 passenger revenue 3424; ASMs 18579; RPMs 15246. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "atlantic.asm.2026-04-01.ual_q2_2026_release",
+     "entity": "atlantic",
+     "variable": "asm",
+     "value": 18579,
+     "units": "ASM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "atlantic: Q2 2026 passenger revenue 3424; ASMs 18579; RPMs 15246. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "atlantic.rpm.2026-04-01.ual_q2_2026_release",
+     "entity": "atlantic",
+     "variable": "rpm",
+     "value": 15246,
+     "units": "RPM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "atlantic: Q2 2026 passenger revenue 3424; ASMs 18579; RPMs 15246. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "pacific.passenger_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "pacific",
+     "variable": "passenger_revenue",
+     "value": 1788,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "pacific: Q2 2026 passenger revenue 1788; ASMs 11487; RPMs 9692. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "pacific.asm.2026-04-01.ual_q2_2026_release",
+     "entity": "pacific",
+     "variable": "asm",
+     "value": 11487,
+     "units": "ASM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "pacific: Q2 2026 passenger revenue 1788; ASMs 11487; RPMs 9692. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "pacific.rpm.2026-04-01.ual_q2_2026_release",
+     "entity": "pacific",
+     "variable": "rpm",
+     "value": 9692,
+     "units": "RPM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "pacific: Q2 2026 passenger revenue 1788; ASMs 11487; RPMs 9692. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "latin_america.passenger_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "latin_america",
+     "variable": "passenger_revenue",
+     "value": 1382,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "latin_america: Q2 2026 passenger revenue 1382; ASMs 8883; RPMs 7452. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "latin_america.asm.2026-04-01.ual_q2_2026_release",
+     "entity": "latin_america",
+     "variable": "asm",
+     "value": 8883,
+     "units": "ASM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "latin_america: Q2 2026 passenger revenue 1382; ASMs 8883; RPMs 7452. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "latin_america.rpm.2026-04-01.ual_q2_2026_release",
+     "entity": "latin_america",
+     "variable": "rpm",
+     "value": 7452,
+     "units": "RPM_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "latin_america: Q2 2026 passenger revenue 1382; ASMs 8883; RPMs 7452. All values in millions.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.operating_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "operating_revenue",
+     "value": 17672,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 operating revenue: 17672 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.operating_expense.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "operating_expense",
+     "value": 16576,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 operating expense: 16576 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.operating_income.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "operating_income",
+     "value": 1096,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 operating income: 1096 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.fuel_expense.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "fuel_expense",
+     "value": 5110,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 fuel expense: 5110 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.fuel_gallons.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "fuel_gallons",
+     "value": 1219,
+     "units": "gallons_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 fuel gallons: 1219 (gallons_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cargo_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "cargo_revenue",
+     "value": 527,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 cargo revenue: 527 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.other_revenue.2026-04-01.ual_q2_2026_release",
+     "entity": "UAL",
+     "variable": "other_revenue",
+     "value": 1045,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_q2_2026_release",
+     "source_passage": "Q2 2026 other revenue: 1045 (USD_million).",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cash.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "cash",
+     "value": 10166,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: cash 10166 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.short_term_investments.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "short_term_investments",
+     "value": 6471,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: short term investments 6471 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.advance_ticket_sales.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "advance_ticket_sales",
+     "value": 10752,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: advance ticket sales 10752 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.loyalty_deferred_current.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "loyalty_deferred_current",
+     "value": 3939,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: loyalty deferred current 3939 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.loyalty_deferred_noncurrent.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "loyalty_deferred_noncurrent",
+     "value": 4032,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: loyalty deferred noncurrent 4032 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.ppe.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "ppe",
+     "value": 47958,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: ppe 47958 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.debt_current.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "debt_current",
+     "value": 2170,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: debt current 2170 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.debt_noncurrent.2026-06-30.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "debt_noncurrent",
+     "value": 24294,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "June 30, 2026 consolidated balance sheet: debt noncurrent 24294 million dollars.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.operating_cash_flow.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "operating_cash_flow",
+     "value": 6409,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: operating cash flow 6409 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cash_capex.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "cash_capex",
+     "value": 3015,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: cash capex 3015 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.financing_cash_flow.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "financing_cash_flow",
+     "value": 1172,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: financing cash flow 1172 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.investing_cash_flow.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "investing_cash_flow",
+     "value": -3354,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: investing cash flow -3354 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cash_including_restricted_begin.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "cash_including_restricted_begin",
+     "value": 6081,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: cash including restricted begin 6081 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cash_including_restricted_end.2026-01-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "cash_including_restricted_end",
+     "value": 10308,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Six months ended June 30, 2026 cash flow: cash including restricted end 10308 million dollars. Capex is a positive cash-use magnitude, net of flight equipment purchase deposit returns.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "787.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "787",
+     "variable": "expected_deliveries",
+     "value": 12,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: 787 12. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "737_max_9.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "737_max_9",
+     "variable": "expected_deliveries",
+     "value": 40,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: 737_max_9 40. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "737_max_10.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "737_max_10",
+     "variable": "expected_deliveries",
+     "value": 0,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: 737_max_10 0. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "a321neo.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "a321neo",
+     "variable": "expected_deliveries",
+     "value": 6,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: a321neo 6. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "a321xlr.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "a321xlr",
+     "variable": "expected_deliveries",
+     "value": 5,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: a321xlr 5. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "a350.expected_deliveries.2026-07-01.ual_q2_2026_10q",
+     "entity": "a350",
+     "variable": "expected_deliveries",
+     "value": 0,
+     "units": "aircraft",
+     "effective_start": "2026-07-01",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Expected aircraft deliveries, last six months of 2026: a350 0. Expected delivery schedules are subject to manufacturer adjustments and uncertainty.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B777.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B777",
+     "variable": "inventory",
+     "value": 96,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B777 quarter-end counts Q2 2026 96, Q3 2026E 96, YE 2026E 96. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B777.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B777",
+     "variable": "inventory",
+     "value": 96,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B777 quarter-end counts Q2 2026 96, Q3 2026E 96, YE 2026E 96. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B777.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B777",
+     "variable": "inventory",
+     "value": 96,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B777 quarter-end counts Q2 2026 96, Q3 2026E 96, YE 2026E 96. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B787.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B787",
+     "variable": "inventory",
+     "value": 88,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B787 quarter-end counts Q2 2026 88, Q3 2026E 94, YE 2026E 100. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B787.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B787",
+     "variable": "inventory",
+     "value": 94,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B787 quarter-end counts Q2 2026 88, Q3 2026E 94, YE 2026E 100. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B787.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B787",
+     "variable": "inventory",
+     "value": 100,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B787 quarter-end counts Q2 2026 88, Q3 2026E 94, YE 2026E 100. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B767.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B767",
+     "variable": "inventory",
+     "value": 53,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B767 quarter-end counts Q2 2026 53, Q3 2026E 53, YE 2026E 53. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B767.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B767",
+     "variable": "inventory",
+     "value": 53,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B767 quarter-end counts Q2 2026 53, Q3 2026E 53, YE 2026E 53. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B767.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B767",
+     "variable": "inventory",
+     "value": 53,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B767 quarter-end counts Q2 2026 53, Q3 2026E 53, YE 2026E 53. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B757.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B757",
+     "variable": "inventory",
+     "value": 61,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B757 quarter-end counts Q2 2026 61, Q3 2026E 61, YE 2026E 61. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B757.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B757",
+     "variable": "inventory",
+     "value": 61,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B757 quarter-end counts Q2 2026 61, Q3 2026E 61, YE 2026E 61. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B757.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B757",
+     "variable": "inventory",
+     "value": 61,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B757 quarter-end counts Q2 2026 61, Q3 2026E 61, YE 2026E 61. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_MAX.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_MAX",
+     "variable": "inventory",
+     "value": 283,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_MAX quarter-end counts Q2 2026 283, Q3 2026E 303, YE 2026E 323. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_MAX.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_MAX",
+     "variable": "inventory",
+     "value": 303,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_MAX quarter-end counts Q2 2026 283, Q3 2026E 303, YE 2026E 323. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_MAX.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_MAX",
+     "variable": "inventory",
+     "value": 323,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_MAX quarter-end counts Q2 2026 283, Q3 2026E 303, YE 2026E 323. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_NG.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_NG",
+     "variable": "inventory",
+     "value": 329,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_NG quarter-end counts Q2 2026 329, Q3 2026E 329, YE 2026E 329. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_NG.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_NG",
+     "variable": "inventory",
+     "value": 329,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_NG quarter-end counts Q2 2026 329, Q3 2026E 329, YE 2026E 329. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.B737_NG.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.B737_NG",
+     "variable": "inventory",
+     "value": 329,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: B737_NG quarter-end counts Q2 2026 329, Q3 2026E 329, YE 2026E 329. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A319_A320.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.A319_A320",
+     "variable": "inventory",
+     "value": 141,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A319_A320 quarter-end counts Q2 2026 141, Q3 2026E 131, YE 2026E 123. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A319_A320.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.A319_A320",
+     "variable": "inventory",
+     "value": 131,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A319_A320 quarter-end counts Q2 2026 141, Q3 2026E 131, YE 2026E 123. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A319_A320.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.A319_A320",
+     "variable": "inventory",
+     "value": 123,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A319_A320 quarter-end counts Q2 2026 141, Q3 2026E 131, YE 2026E 123. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A321.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.A321",
+     "variable": "inventory",
+     "value": 71,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A321 quarter-end counts Q2 2026 71, Q3 2026E 78, YE 2026E 88. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A321.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.A321",
+     "variable": "inventory",
+     "value": 78,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A321 quarter-end counts Q2 2026 71, Q3 2026E 78, YE 2026E 88. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.A321.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.A321",
+     "variable": "inventory",
+     "value": 88,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: A321 quarter-end counts Q2 2026 71, Q3 2026E 78, YE 2026E 88. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_50.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_50",
+     "variable": "inventory",
+     "value": 175,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_50 quarter-end counts Q2 2026 175, Q3 2026E 179, YE 2026E 187. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_50.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_50",
+     "variable": "inventory",
+     "value": 179,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_50 quarter-end counts Q2 2026 175, Q3 2026E 179, YE 2026E 187. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_50.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_50",
+     "variable": "inventory",
+     "value": 187,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_50 quarter-end counts Q2 2026 175, Q3 2026E 179, YE 2026E 187. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_70_76.inventory.2026-06-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_70_76",
+     "variable": "inventory",
+     "value": 255,
+     "units": "aircraft",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_70_76 quarter-end counts Q2 2026 255, Q3 2026E 255, YE 2026E 255. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_70_76.inventory.2026-09-30.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_70_76",
+     "variable": "inventory",
+     "value": 255,
+     "units": "aircraft",
+     "effective_start": "2026-09-30",
+     "effective_end": "2026-09-30",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_70_76 quarter-end counts Q2 2026 255, Q3 2026E 255, YE 2026E 255. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "fleet.regional_70_76.inventory.2026-12-31.ual_july_2026_fleet_plan",
+     "entity": "fleet.regional_70_76",
+     "variable": "inventory",
+     "value": 255,
+     "units": "aircraft",
+     "effective_start": "2026-12-31",
+     "effective_end": "2026-12-31",
+     "published_on": "2026-07-15",
+     "source_id": "ual_july_2026_fleet_plan",
+     "source_passage": "July 15 fleet plan: regional_70_76 quarter-end counts Q2 2026 255, Q3 2026E 255, YE 2026E 255. Future counts are expectations, not purchase deliveries. Normalized table transcription.",
+     "evidence_type": "guidance",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.regional_capacity_purchase.2026-04-01.ual_q2_2026_10q",
+     "entity": "UAL",
+     "variable": "regional_capacity_purchase",
+     "value": 743,
+     "units": "USD_million",
+     "effective_start": "2026-04-01",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_10q",
+     "source_passage": "Q2 2026 consolidated operating expense: regional capacity purchase 743 million dollars. Normalized table transcription; this is a component of the 16576 total expense.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.regional_asm_share.2025-01-01.ual_2025_10k",
+     "entity": "UAL",
+     "variable": "regional_asm_share",
+     "value": 0.061,
+     "units": "fraction",
+     "effective_start": "2025-01-01",
+     "effective_end": "2025-12-31",
+     "published_on": "2026-02-12",
+     "source_id": "ual_2025_10k",
+     "source_passage": "2025 regional capacity approximately 6.1% of total company capacity. Carrying this annual share into Q2 2026 is a model assumption; the CPA disclosure says United pays all regional fuel costs in addition to carrier fees.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.operating_cash_flow_q1.2026-01-01.ual_q1_2026_10q",
+     "entity": "UAL",
+     "variable": "operating_cash_flow_q1",
+     "value": 4799.0,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-03-31",
+     "published_on": "2026-04-22",
+     "source_id": "ual_q1_2026_10q",
+     "source_passage": "SEC Company Facts /facts/us-gaap/NetCashProvidedByUsedInOperatingActivities/units/USD/110: {\"accn\": \"0000100517-26-000091\", \"end\": \"2026-03-31\", \"filed\": \"2026-04-22\", \"form\": \"10-Q\", \"fp\": \"Q1\", \"frame\": \"CY2026Q1\", \"fy\": 2026, \"start\": \"2026-01-01\", \"val\": 4799000000}. USD value divided by 1000000 for storage in USD_million.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.cash_capex_q1.2026-01-01.ual_q1_2026_10q",
+     "entity": "UAL",
+     "variable": "cash_capex_q1",
+     "value": 1672.0,
+     "units": "USD_million",
+     "effective_start": "2026-01-01",
+     "effective_end": "2026-03-31",
+     "published_on": "2026-04-22",
+     "source_id": "ual_q1_2026_10q",
+     "source_passage": "SEC Company Facts /facts/us-gaap/PaymentsToAcquireProductiveAssets/units/USD/147: {\"accn\": \"0000100517-26-000091\", \"end\": \"2026-03-31\", \"filed\": \"2026-04-22\", \"form\": \"10-Q\", \"fp\": \"Q1\", \"frame\": \"CY2026Q1\", \"fy\": 2026, \"start\": \"2026-01-01\", \"val\": 1672000000}. USD value divided by 1000000 for storage in USD_million.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.restricted_cash.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "restricted_cash",
+     "value": 142,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "Cash reconciliation: total cash including restricted 10308 less unrestricted cash 10166 = restricted cash 142. Preserved Company Facts 6621f43f61efe96e02f2aada43fbed7ea989332e4fad2c6c453f9abe139e6d32, /facts/us-gaap/CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents/units/USD/131: {\"accn\": \"0000100517-26-000139\", \"end\": \"2026-06-30\", \"filed\": \"2026-07-16\", \"form\": \"10-Q\", \"fp\": \"Q2\", \"frame\": \"CY2026Q2I\", \"fy\": 2026, \"val\": 10308000000}. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.debt_principal.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "debt_principal",
+     "value": 23081,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "Note 8: contractual principal under outstanding long-term debt agreements 23081; excludes unamortized discounts/premiums/issuance costs 157. Principal is distinct from the 26464 balance-sheet sum of debt, finance leases and other financial liabilities. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.undrawn_revolver.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "undrawn_revolver",
+     "value": 3000,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "Note 8: 3000 undrawn and available under the revolving facility at June 30. Future availability/covenant compliance is not guaranteed. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.advance_ticket_sales.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "advance_ticket_sales",
+     "value": 10752,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL consolidated balance sheet: advance ticket sales 10752. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.loyalty_deferred_total.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "loyalty_deferred_total",
+     "value": 7971,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL balance sheet frequent flyer deferred revenue: current 3939 plus noncurrent 4032 = 7971; Note 2 roll-forward ending balance 7971. Miles earned is not substituted for cash collections. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.receivables_net.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "receivables_net",
+     "value": 2473,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL consolidated balance sheet: receivables, net 2473. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.fuel_parts_supplies_net.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "fuel_parts_supplies_net",
+     "value": 1795,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL consolidated balance sheet: aircraft fuel, spare parts and supplies, net 1795. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.prepaid_expenses_other.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "prepaid_expenses_other",
+     "value": 759,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL consolidated balance sheet: prepaid expenses and other 759. Preserved Company Facts 6621f43f61efe96e02f2aada43fbed7ea989332e4fad2c6c453f9abe139e6d32, /facts/us-gaap/PrepaidExpenseAndOtherAssetsCurrent/units/USD/123: {\"accn\": \"0000100517-26-000139\", \"end\": \"2026-06-30\", \"filed\": \"2026-07-16\", \"form\": \"10-Q\", \"fp\": \"Q2\", \"frame\": \"CY2026Q2I\", \"fy\": 2026, \"val\": 759000000}. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    },
+    {
+     "record_id": "UAL.accounts_payable.2026-06-30.ual_q2_2026_cash_ledger",
+     "entity": "UAL",
+     "variable": "accounts_payable",
+     "value": 5772,
+     "units": "USD_million",
+     "effective_start": "2026-06-30",
+     "effective_end": "2026-06-30",
+     "published_on": "2026-07-16",
+     "source_id": "ual_q2_2026_cash_ledger",
+     "source_passage": "UAL consolidated balance sheet: accounts payable 5772. Preserved Company Facts 6621f43f61efe96e02f2aada43fbed7ea989332e4fad2c6c453f9abe139e6d32, /facts/us-gaap/AccountsPayableCurrent/units/USD/131: {\"accn\": \"0000100517-26-000139\", \"end\": \"2026-06-30\", \"filed\": \"2026-07-16\", \"form\": \"10-Q\", \"fp\": \"Q2\", \"frame\": \"CY2026Q2I\", \"fy\": 2026, \"val\": 5772000000}. Normalized numeric transcription, not a verbatim quotation.",
+     "evidence_type": "reported",
+     "review_status": "verified"
+    }
+   ]
+  },
+  "fuel": [
+   {
+    "date": "2026-01-05",
+    "usd_per_gallon": 1.88
+   },
+   {
+    "date": "2026-01-06",
+    "usd_per_gallon": 1.835
+   },
+   {
+    "date": "2026-01-07",
+    "usd_per_gallon": 1.821
+   },
+   {
+    "date": "2026-01-08",
+    "usd_per_gallon": 1.922
+   },
+   {
+    "date": "2026-01-09",
+    "usd_per_gallon": 1.909
+   },
+   {
+    "date": "2026-01-12",
+    "usd_per_gallon": 1.953
+   },
+   {
+    "date": "2026-01-13",
+    "usd_per_gallon": 2.021
+   },
+   {
+    "date": "2026-01-14",
+    "usd_per_gallon": 2.037
+   },
+   {
+    "date": "2026-01-15",
+    "usd_per_gallon": 2.017
+   },
+   {
+    "date": "2026-01-16",
+    "usd_per_gallon": 2.047
+   },
+   {
+    "date": "2026-01-20",
+    "usd_per_gallon": 2.071
+   },
+   {
+    "date": "2026-01-21",
+    "usd_per_gallon": 2.124
+   },
+   {
+    "date": "2026-01-22",
+    "usd_per_gallon": 2.081
+   },
+   {
+    "date": "2026-01-23",
+    "usd_per_gallon": 2.105
+   },
+   {
+    "date": "2026-01-26",
+    "usd_per_gallon": 2.064
+   },
+   {
+    "date": "2026-01-27",
+    "usd_per_gallon": 2.143
+   },
+   {
+    "date": "2026-01-28",
+    "usd_per_gallon": 2.189
+   },
+   {
+    "date": "2026-01-29",
+    "usd_per_gallon": 2.248
+   },
+   {
+    "date": "2026-01-30",
+    "usd_per_gallon": 2.277
+   },
+   {
+    "date": "2026-02-02",
+    "usd_per_gallon": 2.082
+   },
+   {
+    "date": "2026-02-03",
+    "usd_per_gallon": 2.15
+   },
+   {
+    "date": "2026-02-04",
+    "usd_per_gallon": 2.167
+   },
+   {
+    "date": "2026-02-05",
+    "usd_per_gallon": 2.095
+   },
+   {
+    "date": "2026-02-06",
+    "usd_per_gallon": 2.106
+   },
+   {
+    "date": "2026-02-09",
+    "usd_per_gallon": 2.165
+   },
+   {
+    "date": "2026-02-10",
+    "usd_per_gallon": 2.143
+   },
+   {
+    "date": "2026-02-11",
+    "usd_per_gallon": 2.176
+   },
+   {
+    "date": "2026-02-12",
+    "usd_per_gallon": 2.11
+   },
+   {
+    "date": "2026-02-13",
+    "usd_per_gallon": 2.177
+   },
+   {
+    "date": "2026-02-17",
+    "usd_per_gallon": 2.183
+   },
+   {
+    "date": "2026-02-18",
+    "usd_per_gallon": 2.311
+   },
+   {
+    "date": "2026-02-19",
+    "usd_per_gallon": 2.399
+   },
+   {
+    "date": "2026-02-20",
+    "usd_per_gallon": 2.376
+   },
+   {
+    "date": "2026-02-23",
+    "usd_per_gallon": 2.485
+   },
+   {
+    "date": "2026-02-24",
+    "usd_per_gallon": 2.52
+   },
+   {
+    "date": "2026-02-25",
+    "usd_per_gallon": 2.47
+   },
+   {
+    "date": "2026-02-26",
+    "usd_per_gallon": 2.444
+   },
+   {
+    "date": "2026-02-27",
+    "usd_per_gallon": 2.428
+   },
+   {
+    "date": "2026-03-02",
+    "usd_per_gallon": 2.738
+   },
+   {
+    "date": "2026-03-03",
+    "usd_per_gallon": 2.966
+   },
+   {
+    "date": "2026-03-04",
+    "usd_per_gallon": 3.126
+   },
+   {
+    "date": "2026-03-05",
+    "usd_per_gallon": 3.263
+   },
+   {
+    "date": "2026-03-06",
+    "usd_per_gallon": 3.424
+   },
+   {
+    "date": "2026-03-09",
+    "usd_per_gallon": 3.1
+   },
+   {
+    "date": "2026-03-10",
+    "usd_per_gallon": 3.199
+   },
+   {
+    "date": "2026-03-11",
+    "usd_per_gallon": 3.544
+   },
+   {
+    "date": "2026-03-12",
+    "usd_per_gallon": 3.753
+   },
+   {
+    "date": "2026-03-13",
+    "usd_per_gallon": 3.792
+   },
+   {
+    "date": "2026-03-16",
+    "usd_per_gallon": 3.639
+   },
+   {
+    "date": "2026-03-17",
+    "usd_per_gallon": 3.806
+   },
+   {
+    "date": "2026-03-18",
+    "usd_per_gallon": 4.171
+   },
+   {
+    "date": "2026-03-19",
+    "usd_per_gallon": 4.12
+   },
+   {
+    "date": "2026-03-20",
+    "usd_per_gallon": 4.454
+   },
+   {
+    "date": "2026-03-23",
+    "usd_per_gallon": 3.929
+   },
+   {
+    "date": "2026-03-24",
+    "usd_per_gallon": 3.917
+   },
+   {
+    "date": "2026-03-25",
+    "usd_per_gallon": 3.819
+   },
+   {
+    "date": "2026-03-26",
+    "usd_per_gallon": 4.032
+   },
+   {
+    "date": "2026-03-27",
+    "usd_per_gallon": 4.348
+   },
+   {
+    "date": "2026-03-30",
+    "usd_per_gallon": 4.237
+   },
+   {
+    "date": "2026-03-31",
+    "usd_per_gallon": 3.965
+   },
+   {
+    "date": "2026-04-01",
+    "usd_per_gallon": 3.839
+   },
+   {
+    "date": "2026-04-02",
+    "usd_per_gallon": 4.252
+   },
+   {
+    "date": "2026-04-06",
+    "usd_per_gallon": 4.136
+   },
+   {
+    "date": "2026-04-07",
+    "usd_per_gallon": 4.1
+   },
+   {
+    "date": "2026-04-08",
+    "usd_per_gallon": 3.825
+   },
+   {
+    "date": "2026-04-09",
+    "usd_per_gallon": 3.878
+   },
+   {
+    "date": "2026-04-10",
+    "usd_per_gallon": 3.685
+   },
+   {
+    "date": "2026-04-13",
+    "usd_per_gallon": 3.748
+   },
+   {
+    "date": "2026-04-14",
+    "usd_per_gallon": 3.659
+   },
+   {
+    "date": "2026-04-15",
+    "usd_per_gallon": 3.78
+   },
+   {
+    "date": "2026-04-16",
+    "usd_per_gallon": 3.864
+   },
+   {
+    "date": "2026-04-17",
+    "usd_per_gallon": 3.493
+   },
+   {
+    "date": "2026-04-20",
+    "usd_per_gallon": 3.608
+   },
+   {
+    "date": "2026-04-21",
+    "usd_per_gallon": 3.862
+   },
+   {
+    "date": "2026-04-22",
+    "usd_per_gallon": 3.96
+   },
+   {
+    "date": "2026-04-23",
+    "usd_per_gallon": 4.075
+   },
+   {
+    "date": "2026-04-24",
+    "usd_per_gallon": 4.024
+   },
+   {
+    "date": "2026-04-27",
+    "usd_per_gallon": 4.027
+   },
+   {
+    "date": "2026-04-28",
+    "usd_per_gallon": 4.047
+   },
+   {
+    "date": "2026-04-29",
+    "usd_per_gallon": 4.344
+   },
+   {
+    "date": "2026-04-30",
+    "usd_per_gallon": 4.287
+   },
+   {
+    "date": "2026-05-01",
+    "usd_per_gallon": 4.094
+   },
+   {
+    "date": "2026-05-04",
+    "usd_per_gallon": 4.163
+   },
+   {
+    "date": "2026-05-05",
+    "usd_per_gallon": 4.182
+   },
+   {
+    "date": "2026-05-06",
+    "usd_per_gallon": 3.913
+   },
+   {
+    "date": "2026-05-07",
+    "usd_per_gallon": 3.996
+   },
+   {
+    "date": "2026-05-08",
+    "usd_per_gallon": 3.992
+   },
+   {
+    "date": "2026-05-11",
+    "usd_per_gallon": 4.111
+   },
+   {
+    "date": "2026-05-12",
+    "usd_per_gallon": 4.265
+   },
+   {
+    "date": "2026-05-13",
+    "usd_per_gallon": 4.117
+   },
+   {
+    "date": "2026-05-14",
+    "usd_per_gallon": 4.075
+   },
+   {
+    "date": "2026-05-15",
+    "usd_per_gallon": 4.193
+   },
+   {
+    "date": "2026-05-18",
+    "usd_per_gallon": 4.191
+   },
+   {
+    "date": "2026-05-19",
+    "usd_per_gallon": 4.328
+   },
+   {
+    "date": "2026-05-20",
+    "usd_per_gallon": 4.059
+   },
+   {
+    "date": "2026-05-21",
+    "usd_per_gallon": 3.999
+   },
+   {
+    "date": "2026-05-22",
+    "usd_per_gallon": 3.987
+   },
+   {
+    "date": "2026-05-26",
+    "usd_per_gallon": 3.392
+   },
+   {
+    "date": "2026-05-27",
+    "usd_per_gallon": 3.253
+   },
+   {
+    "date": "2026-05-28",
+    "usd_per_gallon": 3.304
+   },
+   {
+    "date": "2026-05-29",
+    "usd_per_gallon": 3.237
+   },
+   {
+    "date": "2026-06-01",
+    "usd_per_gallon": 3.359
+   },
+   {
+    "date": "2026-06-02",
+    "usd_per_gallon": 3.369
+   },
+   {
+    "date": "2026-06-03",
+    "usd_per_gallon": 3.538
+   },
+   {
+    "date": "2026-06-04",
+    "usd_per_gallon": 3.341
+   },
+   {
+    "date": "2026-06-05",
+    "usd_per_gallon": 3.25
+   },
+   {
+    "date": "2026-06-08",
+    "usd_per_gallon": 3.29
+   },
+   {
+    "date": "2026-06-09",
+    "usd_per_gallon": 3.212
+   },
+   {
+    "date": "2026-06-10",
+    "usd_per_gallon": 3.28
+   },
+   {
+    "date": "2026-06-11",
+    "usd_per_gallon": 3.171
+   },
+   {
+    "date": "2026-06-12",
+    "usd_per_gallon": 2.974
+   },
+   {
+    "date": "2026-06-15",
+    "usd_per_gallon": 2.847
+   },
+   {
+    "date": "2026-06-16",
+    "usd_per_gallon": 2.74
+   },
+   {
+    "date": "2026-06-17",
+    "usd_per_gallon": 2.815
+   },
+   {
+    "date": "2026-06-18",
+    "usd_per_gallon": 2.952
+   },
+   {
+    "date": "2026-06-22",
+    "usd_per_gallon": 2.698
+   },
+   {
+    "date": "2026-06-23",
+    "usd_per_gallon": 2.765
+   },
+   {
+    "date": "2026-06-24",
+    "usd_per_gallon": 2.794
+   },
+   {
+    "date": "2026-06-25",
+    "usd_per_gallon": 2.898
+   },
+   {
+    "date": "2026-06-26",
+    "usd_per_gallon": 2.786
+   },
+   {
+    "date": "2026-06-29",
+    "usd_per_gallon": 2.928
+   },
+   {
+    "date": "2026-06-30",
+    "usd_per_gallon": 2.867
+   },
+   {
+    "date": "2026-07-01",
+    "usd_per_gallon": 2.755
+   },
+   {
+    "date": "2026-07-02",
+    "usd_per_gallon": 2.713
+   },
+   {
+    "date": "2026-07-06",
+    "usd_per_gallon": 2.828
+   },
+   {
+    "date": "2026-07-07",
+    "usd_per_gallon": 2.885
+   },
+   {
+    "date": "2026-07-08",
+    "usd_per_gallon": 3.187
+   },
+   {
+    "date": "2026-07-09",
+    "usd_per_gallon": 2.986
+   },
+   {
+    "date": "2026-07-10",
+    "usd_per_gallon": 2.969
+   },
+   {
+    "date": "2026-07-13",
+    "usd_per_gallon": 3.351
+   },
+   {
+    "date": "2026-07-14",
+    "usd_per_gallon": 3.552
+   },
+   {
+    "date": "2026-07-15",
+    "usd_per_gallon": 3.516
+   },
+   {
+    "date": "2026-07-16",
+    "usd_per_gallon": 3.563
+   }
+  ]
+ },
+ "cases": {
+  "default": {},
+  "non_default": {
+   "paths": 400,
+   "seed": 11,
+   "horizon_months": 18,
+   "fuel_shock_pct": 40,
+   "demand_shock_pct": -6,
+   "capacity_shock_pct": -4,
+   "delivery_delay_months": 3,
+   "delivery_group": "narrowbody",
+   "aircraft_unavailable_pct": 5,
+   "geography": "atlantic",
+   "onset_month": 2,
+   "duration_months": 5,
+   "response_mode": "frozen",
+   "response_lag_months": 2,
+   "pass_through_fraction": 0.8,
+   "demand_elasticity": 0.9,
+   "regional_contract_shock_pct": 10
+  },
+  "plans": {
+   "paths": 200,
+   "seed": 5,
+   "fuel_shock_pct": 30,
+   "delivery_delay_months": 9,
+   "delivery_aircraft_count": 30,
+   "delivery_group": "narrowbody",
+   "purchase_plan": {
+    "basis": "Illustrative allocation of the 40 inferred 737 MAX entries to cash purchases: 20 in September and 20 in December. Assume $40M each, $4M per aircraft already deposited, $2M more in August, 75% borrowing against delivery settlement, 6% annual interest, 1% financing fee and $100M monthly residual capex. Counts align with H2 MAX guidance; months, prices and financing are assumptions. Other purchases and capex are unallocated and must be covered by residual capex; this is not a United forecast.",
+    "residual_monthly_capex_musd": 100,
+    "purchases": [
+     {
+      "purchase_id": "max-september",
+      "fleet_record_id": "fleet.B737_MAX.inventory.2026-09-30.ual_july_2026_fleet_plan",
+      "aircraft": 20,
+      "unit_price_musd": 40,
+      "opening_deposits_musd": 80,
+      "deposits": [
+       {
+        "month": "2026-08",
+        "amount_musd": 40
+       }
+      ],
+      "debt_fraction": 0.75,
+      "annual_interest_rate": 0.06,
+      "financing_fee_fraction": 0.01
+     },
+     {
+      "purchase_id": "max-december",
+      "fleet_record_id": "fleet.B737_MAX.inventory.2026-12-31.ual_july_2026_fleet_plan",
+      "aircraft": 20,
+      "unit_price_musd": 40,
+      "opening_deposits_musd": 80,
+      "deposits": [
+       {
+        "month": "2026-08",
+        "amount_musd": 40
+       }
+      ],
+      "debt_fraction": 0.75,
+      "annual_interest_rate": 0.06,
+      "financing_fee_fraction": 0.01
+     }
+    ]
+   },
+   "retention_plan": {
+    "basis": "Illustrative replacement links: retain up to ten September and eight December A319/A320 exits when their mapped MAX replacement batch is delayed. Assume maintenance and crew support, one month notice, at most nine months extension and eighteen simultaneous retained aircraft. Additional maintenance $0.02M and rent/other carrying $0.01M per aircraft-month; 90% productivity and 15% extra fuel burn. These are analyst assumptions, not United clearance, costs or a fitted policy.",
+    "max_retained_aircraft": 18,
+    "links": [
+     {
+      "retention_id": "a320-september",
+      "exit_record_id": "fleet.A319_A320.inventory.2026-09-30.ual_july_2026_fleet_plan",
+      "purchase_id": "max-september",
+      "aircraft": 10,
+      "max_extension_months": 9,
+      "minimum_notice_months": 1,
+      "maintenance_supported": true,
+      "crew_supported": true,
+      "additional_maintenance_musd_per_aircraft_month": 0.02,
+      "additional_carrying_musd_per_aircraft_month": 0.01,
+      "extra_fuel_burn_fraction": 0.15,
+      "productivity_fraction": 0.9
+     },
+     {
+      "retention_id": "a320-december",
+      "exit_record_id": "fleet.A319_A320.inventory.2026-12-31.ual_july_2026_fleet_plan",
+      "purchase_id": "max-december",
+      "aircraft": 8,
+      "max_extension_months": 9,
+      "minimum_notice_months": 1,
+      "maintenance_supported": true,
+      "crew_supported": true,
+      "additional_maintenance_musd_per_aircraft_month": 0.02,
+      "additional_carrying_musd_per_aircraft_month": 0.01,
+      "extra_fuel_burn_fraction": 0.15,
+      "productivity_fraction": 0.9
+     }
+    ]
+   }
+  },
+  "cash": {
+   "paths": 200,
+   "seed": 3,
+   "cash_plan": {
+    "basis": "Illustrative liquidity test: $800M revolver draw, $5M fee and a $100M advance-sales balance decrease in August. These are assumed cash events, not a forecast.",
+    "events": [
+     {
+      "month": "2026-08",
+      "kind": "revolver_draw",
+      "amount_musd": 800,
+      "scope": "intervention"
+     },
+     {
+      "month": "2026-08",
+      "kind": "financing_fee",
+      "amount_musd": 5,
+      "scope": "intervention"
+     },
+     {
+      "month": "2026-08",
+      "kind": "advance_sales_change",
+      "amount_musd": -100,
+      "scope": "intervention"
+     }
+    ]
+   }
+  }
+ },
+ "rollout_case": {
+  "paths": 64,
+  "seed": 9,
+  "fuel_shock_pct": 35,
+  "demand_shock_pct": -5,
+  "capacity_shock_pct": -5
+ },
+ "rollout_world": {
+  "spot": 4,
+  "sigma": 0.2
+ },
+ "expected": {
+  "simulate_monthly": {
+   "default": {
+    "digest": "51a1a428cb0bc6900234aa264f6ee0d402c6331dce5a33fe977364782d4cde05",
+    "summary": {
+     "cumulative_fcf_impact_musd": {
+      "p10": -2611.3725,
+      "p50": -1961.4456,
+      "p90": -1516.7654
+     },
+     "cumulative_fcf_musd": {
+      "p10": -4369.1568,
+      "p50": -396.7411,
+      "p90": 2787.9449
+     },
+     "cumulative_operating_income_impact_musd": {
+      "p10": -3305.5349,
+      "p50": -2482.8425,
+      "p90": -1919.9562
+     },
+     "response_contribution_to_fcf_musd": {
+      "p10": 353.4294,
+      "p50": 455.2831,
+      "p90": 558.4787
+     },
+     "ending_cash_musd": {
+      "p10": 5796.8432,
+      "p50": 9769.2589,
+      "p90": 12953.9449
+     },
+     "cash_floor_breach_path_fraction": 0.0806,
+     "breach_fraction_status": "Conditional simulation fraction, not a calibrated event probability"
+    },
+    "first_quarter_operating_income_musd": {
+     "p10": -1094.7556,
+     "p50": 13.0122,
+     "p90": 871.1081
+    },
+    "frozen_cumulative_fcf_impact_last_musd": {
+     "p10": -3150.7858,
+     "p50": -2425.5657,
+     "p90": -1875.8178
+    }
+   },
+   "non_default": {
+    "digest": "5f077fe7d883dd5e6280337d8a54eb5967671675f4b70a860d534dde1b167b93",
+    "summary": {
+     "cumulative_fcf_impact_musd": {
+      "p10": -659.5496,
+      "p50": -553.8412,
+      "p90": -483.0468
+     },
+     "cumulative_fcf_musd": {
+      "p10": -4025.6651,
+      "p50": 1693.466,
+      "p90": 5993.9449
+     },
+     "cumulative_operating_income_impact_musd": {
+      "p10": -834.8729,
+      "p50": -701.0649,
+      "p90": -611.4516
+     },
+     "response_contribution_to_fcf_musd": {
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+     },
+     "ending_cash_musd": {
+      "p10": 6140.3349,
+      "p50": 11859.466,
+      "p90": 16159.9449
+     },
+     "cash_floor_breach_path_fraction": 0.0725,
+     "breach_fraction_status": "Conditional simulation fraction, not a calibrated event probability"
+    },
+    "first_quarter_operating_income_musd": {
+     "p10": -343.5781,
+     "p50": 551.7253,
+     "p90": 1309.4957
+    },
+    "frozen_cumulative_fcf_impact_last_musd": {
+     "p10": -659.5496,
+     "p50": -553.8412,
+     "p90": -483.0468
+    }
+   },
+   "plans": {
+    "digest": "771d1590ce6d308587d437c8ae75a98976d07962ab6dcb0b0424a535a5ef489c",
+    "summary": {
+     "cumulative_fcf_impact_musd": {
+      "p10": -2977.878,
+      "p50": -2072.3721,
+      "p90": -1532.8469
+     },
+     "cumulative_fcf_musd": {
+      "p10": -1684.9036,
+      "p50": 2047.9656,
+      "p90": 5245.3725
+     },
+     "cumulative_operating_income_impact_musd": {
+      "p10": -4240.1937,
+      "p50": -3093.9837,
+      "p90": -2411.0403
+     },
+     "response_contribution_to_fcf_musd": {
+      "p10": 426.529,
+      "p50": 558.7223,
+      "p90": 671.2368
+     },
+     "ending_cash_musd": {
+      "p10": 9238.4464,
+      "p50": 12971.3156,
+      "p90": 16168.7225
+     },
+     "cash_floor_breach_path_fraction": 0.035,
+     "breach_fraction_status": "Conditional simulation fraction, not a calibrated event probability"
+    },
+    "first_quarter_operating_income_musd": {
+     "p10": -1365.9528,
+     "p50": -159.2201,
+     "p90": 724.434
+    },
+    "frozen_cumulative_fcf_impact_last_musd": {
+     "p10": -3654.5433,
+     "p50": -2680.3236,
+     "p90": -1962.4721
+    }
+   },
+   "cash": {
+    "digest": "8637db09e5833411d3731e182224438f80bf573e298eda0a7a83d4efa0af47b8",
+    "summary": {
+     "cumulative_fcf_impact_musd": {
+      "p10": -2757.1828,
+      "p50": -2101.1161,
+      "p90": -1640.5175
+     },
+     "cumulative_fcf_musd": {
+      "p10": -4745.1615,
+      "p50": -786.7425,
+      "p90": 2384.789
+     },
+     "cumulative_operating_income_impact_musd": {
+      "p10": -3363.5226,
+      "p50": -2533.0584,
+      "p90": -1950.0222
+     },
+     "response_contribution_to_fcf_musd": {
+      "p10": 359.8393,
+      "p50": 455.5101,
+      "p90": 573.1774
+     },
+     "ending_cash_musd": {
+      "p10": 6215.8385,
+      "p50": 10174.2575,
+      "p90": 13345.789
+     },
+     "cash_floor_breach_path_fraction": 0.06,
+     "breach_fraction_status": "Conditional simulation fraction, not a calibrated event probability"
+    },
+    "first_quarter_operating_income_musd": {
+     "p10": -1261.5884,
+     "p50": 59.3592,
+     "p90": 828.3898
+    },
+    "frozen_cumulative_fcf_impact_last_musd": {
+     "p10": -3295.5741,
+     "p50": -2567.7278,
+     "p90": -1997.677
+    }
+   }
+  },
+  "rollout_sha256": {
+   "world": "6cd85f0922af926f234fa8ecfb895041e76bedea7e1e4422f0cc0837785adc8c",
+   "frozen:control": "27f864edf355089f6e1c6066cbaef2c2fc40f5440dd4a2cb0ac8c0cae0c12518",
+   "frozen:intervention": "3871edf6bd2d4e44e9dd17c672cfda1394c33ea17c99043c73b0faaf21d2833a",
+   "assumed_constrained:control": "924ca47194fb60ae65f320179e710f1051b19cb88fa8c16d79b342a6fbe9e0eb",
+   "assumed_constrained:intervention": "039e84d5b7f374e0e51cbd6db5c2f617317be98cf1c9c2a25ab4becbb0d90690"
+  }
+ }
+}

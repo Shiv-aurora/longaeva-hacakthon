@@ -1,0 +1,1199 @@
+{
+ "status": "ok",
+ "run_id": "ecf12af52958c534d06e11805997a4cc143d0347b21e4a61d0f579c635e201b3",
+ "elapsed_ms": 473,
+ "cached": false,
+ "request": {
+  "fuel_shock_pct": 25.0,
+  "fuel_usd_gal": null,
+  "fuel_shock_months": 6,
+  "capacity_change_pct": 0.0,
+  "demand_shock_pct": 0.0,
+  "horizon_months": 12,
+  "seed": 1,
+  "paths": 10000,
+  "delivery_delay": {
+   "aircraft": 0,
+   "months": 0
+  }
+ },
+ "paths": 10000,
+ "as_of": {
+  "information_cutoff": "2026-07-16",
+  "fuel_last_observation": "2026-07-16",
+  "shock_starts": "2026-10",
+  "months": [
+   "2026-10",
+   "2026-11",
+   "2026-12",
+   "2027-01",
+   "2027-02",
+   "2027-03",
+   "2027-04",
+   "2027-05",
+   "2027-06",
+   "2027-07",
+   "2027-08",
+   "2027-09"
+  ],
+  "unreported_lead_months": [
+   "2026-08",
+   "2026-09"
+  ]
+ },
+ "fuel": {
+  "reference_usd_gal": 4.192,
+  "level_usd_gal": 5.24,
+  "shock_pct": 25.0,
+  "shock_usd_gal": 1.048,
+  "held_months": 6,
+  "after_hold": "fades by half every 2 months",
+  "given_as": "fuel_shock_pct"
+ },
+ "modes": {
+  "costs_only": {
+   "status": "ok",
+   "quarters": [
+    {
+     "period": "2026Q4",
+     "months": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -2470.6,
+      "p50": -137.3,
+      "p90": 1565.8
+     },
+     "operating_margin": {
+      "p10": -0.1382,
+      "p50": -0.0077,
+      "p90": 0.0862
+     },
+     "fcf_musd": {
+      "p10": -2550.6,
+      "p50": -707.3,
+      "p90": 638.1
+     },
+     "operating_income_change_musd": {
+      "p10": -1872.6,
+      "p50": -1325.3,
+      "p90": -943.0
+     },
+     "eps_change": {
+      "p10": -4.499,
+      "p50": -3.184,
+      "p90": -2.265
+     },
+     "fare_change_pct": {
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -638.3,
+       "p50": 1169.0,
+       "p90": 2554.6
+      },
+      "operating_margin": {
+       "p10": -0.0352,
+       "p50": 0.0649,
+       "p90": 0.1402
+      },
+      "fcf_musd": {
+       "p10": -1103.1,
+       "p50": 324.7,
+       "p90": 1419.3
+      }
+     }
+    },
+    {
+     "period": "2027Q1",
+     "months": [
+      "2027-01",
+      "2027-02",
+      "2027-03"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -2475.6,
+      "p50": 32.1,
+      "p90": 1896.9
+     },
+     "operating_margin": {
+      "p10": -0.1357,
+      "p50": 0.0017,
+      "p90": 0.1023
+     },
+     "fcf_musd": {
+      "p10": -2554.6,
+      "p50": -573.5,
+      "p90": 899.7
+     },
+     "operating_income_change_musd": {
+      "p10": -1946.0,
+      "p50": -1355.0,
+      "p90": -935.5
+     },
+     "eps_change": {
+      "p10": -4.675,
+      "p50": -3.255,
+      "p90": -2.247
+     },
+     "fare_change_pct": {
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -578.9,
+       "p50": 1360.8,
+       "p90": 2879.0
+      },
+      "operating_margin": {
+       "p10": -0.0313,
+       "p50": 0.0744,
+       "p90": 0.1547
+      },
+      "fcf_musd": {
+       "p10": -1056.2,
+       "p50": 476.2,
+       "p90": 1675.6
+      }
+     }
+    },
+    {
+     "period": "2027Q2",
+     "months": [
+      "2027-04",
+      "2027-05",
+      "2027-06"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -1599.3,
+      "p50": 650.7,
+      "p90": 2364.1
+     },
+     "operating_margin": {
+      "p10": -0.0872,
+      "p50": 0.0354,
+      "p90": 0.1271
+     },
+     "fcf_musd": {
+      "p10": -1862.3,
+      "p50": -84.8,
+      "p90": 1268.8
+     },
+     "operating_income_change_musd": {
+      "p10": -1022.0,
+      "p50": -705.7,
+      "p90": -480.3
+     },
+     "eps_change": {
+      "p10": -2.455,
+      "p50": -1.695,
+      "p90": -1.154
+     },
+     "fare_change_pct": {
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -594.4,
+       "p50": 1343.3,
+       "p90": 2885.0
+      },
+      "operating_margin": {
+       "p10": -0.0326,
+       "p50": 0.0734,
+       "p90": 0.1542
+      },
+      "fcf_musd": {
+       "p10": -1068.5,
+       "p50": 462.3,
+       "p90": 1680.3
+      }
+     }
+    },
+    {
+     "period": "2027Q3",
+     "months": [
+      "2027-07",
+      "2027-08",
+      "2027-09"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -927.4,
+      "p50": 1146.2,
+      "p90": 2714.6
+     },
+     "operating_margin": {
+      "p10": -0.0506,
+      "p50": 0.062,
+      "p90": 0.1455
+     },
+     "fcf_musd": {
+      "p10": -1331.5,
+      "p50": 306.7,
+      "p90": 1545.7
+     },
+     "operating_income_change_musd": {
+      "p10": -358.5,
+      "p50": -246.8,
+      "p90": -170.1
+     },
+     "eps_change": {
+      "p10": -0.861,
+      "p50": -0.593,
+      "p90": -0.409
+     },
+     "fare_change_pct": {
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -578.4,
+       "p50": 1390.4,
+       "p90": 2898.4
+      },
+      "operating_margin": {
+       "p10": -0.0315,
+       "p50": 0.0757,
+       "p90": 0.1552
+      },
+      "fcf_musd": {
+       "p10": -1055.8,
+       "p50": 499.6,
+       "p90": 1690.9
+      }
+     }
+    }
+   ],
+   "prob": {
+    "fcf_negative_12m": 0.6509,
+    "fcf_negative_12m_no_shock": 0.3118
+   },
+   "next_12m": {
+    "months": [
+     "2026-10",
+     "2026-11",
+     "2026-12",
+     "2027-01",
+     "2027-02",
+     "2027-03",
+     "2027-04",
+     "2027-05",
+     "2027-06",
+     "2027-07",
+     "2027-08",
+     "2027-09"
+    ],
+    "operating_income_musd": {
+     "p10": -5080.4,
+     "p50": 1286.4,
+     "p90": 6678.8
+    },
+    "operating_income_change_musd": {
+     "p10": -4881.5,
+     "p50": -3686.3,
+     "p90": -2760.7
+    },
+    "eps_change": {
+     "p10": -11.727,
+     "p50": -8.856,
+     "p90": -6.632
+    },
+    "fcf_musd": {
+     "p10": -6408.9,
+     "p50": -1379.1,
+     "p90": 2880.9
+    }
+   },
+   "bridge": [
+    {
+     "step": "fuel cost",
+     "value": -9.059,
+     "operating_income_musd": -3770.8
+    },
+    {
+     "step": "fare recovery",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "capacity",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "demand",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "profit sharing",
+     "value": null,
+     "operating_income_musd": null
+    },
+    {
+     "step": "net",
+     "value": -9.059,
+     "operating_income_musd": -3770.8
+    }
+   ]
+  },
+  "management": {
+   "status": "ok",
+   "quarters": [
+    {
+     "period": "2026Q4",
+     "months": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": 289.0,
+      "p50": 1034.2,
+      "p90": 1844.5
+     },
+     "operating_margin": {
+      "p10": 0.0154,
+      "p50": 0.0533,
+      "p90": 0.0927
+     },
+     "fcf_musd": {
+      "p10": -370.6,
+      "p50": 218.1,
+      "p90": 858.3
+     },
+     "operating_income_change_musd": {
+      "p10": -297.4,
+      "p50": -195.7,
+      "p90": -126.2
+     },
+     "eps_change": {
+      "p10": -0.714,
+      "p50": -0.47,
+      "p90": -0.303
+     },
+     "fare_change_pct": {
+      "p10": 4.89,
+      "p50": 6.83,
+      "p90": 9.62
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": 506.8,
+       "p50": 1239.5,
+       "p90": 2047.6
+      },
+      "operating_margin": {
+       "p10": 0.0287,
+       "p50": 0.0678,
+       "p90": 0.1081
+      },
+      "fcf_musd": {
+       "p10": -198.4,
+       "p50": 380.4,
+       "p90": 1018.8
+      }
+     }
+    },
+    {
+     "period": "2027Q1",
+     "months": [
+      "2027-01",
+      "2027-02",
+      "2027-03"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": 598.6,
+      "p50": 1464.7,
+      "p90": 2356.7
+     },
+     "operating_margin": {
+      "p10": 0.0313,
+      "p50": 0.0729,
+      "p90": 0.1137
+     },
+     "fcf_musd": {
+      "p10": -126.0,
+      "p50": 558.3,
+      "p90": 1263.0
+     },
+     "operating_income_change_musd": {
+      "p10": -73.2,
+      "p50": 1.5,
+      "p90": 69.2
+     },
+     "eps_change": {
+      "p10": -0.176,
+      "p50": 0.004,
+      "p90": 0.166
+     },
+     "fare_change_pct": {
+      "p10": 5.75,
+      "p50": 8.08,
+      "p90": 11.29
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": 611.4,
+       "p50": 1459.2,
+       "p90": 2339.2
+      },
+      "operating_margin": {
+       "p10": 0.0344,
+       "p50": 0.0785,
+       "p90": 0.1202
+      },
+      "fcf_musd": {
+       "p10": -115.8,
+       "p50": 553.9,
+       "p90": 1249.1
+      }
+     }
+    },
+    {
+     "period": "2027Q2",
+     "months": [
+      "2027-04",
+      "2027-05",
+      "2027-06"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": 690.6,
+      "p50": 1548.7,
+      "p90": 2471.9
+     },
+     "operating_margin": {
+      "p10": 0.0368,
+      "p50": 0.0799,
+      "p90": 0.1216
+     },
+     "fcf_musd": {
+      "p10": -53.2,
+      "p50": 624.6,
+      "p90": 1354.0
+     },
+     "operating_income_change_musd": {
+      "p10": 41.0,
+      "p50": 92.8,
+      "p90": 173.0
+     },
+     "eps_change": {
+      "p10": 0.098,
+      "p50": 0.223,
+      "p90": 0.416
+     },
+     "fare_change_pct": {
+      "p10": 3.41,
+      "p50": 4.81,
+      "p90": 6.68
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": 604.4,
+       "p50": 1452.5,
+       "p90": 2351.3
+      },
+      "operating_margin": {
+       "p10": 0.0339,
+       "p50": 0.078,
+       "p90": 0.1208
+      },
+      "fcf_musd": {
+       "p10": -121.4,
+       "p50": 548.6,
+       "p90": 1258.7
+      }
+     }
+    },
+    {
+     "period": "2027Q3",
+     "months": [
+      "2027-07",
+      "2027-08",
+      "2027-09"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": 688.7,
+      "p50": 1522.0,
+      "p90": 2443.0
+     },
+     "operating_margin": {
+      "p10": 0.038,
+      "p50": 0.0805,
+      "p90": 0.1231
+     },
+     "fcf_musd": {
+      "p10": -54.8,
+      "p50": 603.6,
+      "p90": 1331.1
+     },
+     "operating_income_change_musd": {
+      "p10": 36.7,
+      "p50": 66.2,
+      "p90": 113.7
+     },
+     "eps_change": {
+      "p10": 0.088,
+      "p50": 0.159,
+      "p90": 0.273
+     },
+     "fare_change_pct": {
+      "p10": 1.36,
+      "p50": 1.89,
+      "p90": 2.63
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": 623.9,
+       "p50": 1450.7,
+       "p90": 2366.2
+      },
+      "operating_margin": {
+       "p10": 0.0354,
+       "p50": 0.0781,
+       "p90": 0.1213
+      },
+      "fcf_musd": {
+       "p10": -106.0,
+       "p50": 547.2,
+       "p90": 1270.5
+      }
+     }
+    }
+   ],
+   "prob": {
+    "fcf_negative_12m": 0.0828,
+    "fcf_negative_12m_no_shock": 0.0805
+   },
+   "next_12m": {
+    "months": [
+     "2026-10",
+     "2026-11",
+     "2026-12",
+     "2027-01",
+     "2027-02",
+     "2027-03",
+     "2027-04",
+     "2027-05",
+     "2027-06",
+     "2027-07",
+     "2027-08",
+     "2027-09"
+    ],
+    "operating_income_musd": {
+     "p10": 3211.0,
+     "p50": 5615.1,
+     "p90": 8092.5
+    },
+    "operating_income_change_musd": {
+     "p10": -51.2,
+     "p50": -31.6,
+     "p90": -18.8
+    },
+    "eps_change": {
+     "p10": -0.123,
+     "p50": -0.076,
+     "p90": -0.045
+    },
+    "fcf_musd": {
+     "p10": 141.3,
+     "p50": 2040.6,
+     "p90": 3997.7
+    }
+   },
+   "bridge": [
+    {
+     "step": "fuel cost",
+     "value": -9.059,
+     "operating_income_musd": -3770.8
+    },
+    {
+     "step": "fare recovery",
+     "value": 8.978,
+     "operating_income_musd": 3737.1
+    },
+    {
+     "step": "capacity",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "demand",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "profit sharing",
+     "value": null,
+     "operating_income_musd": null
+    },
+    {
+     "step": "net",
+     "value": -0.081,
+     "operating_income_musd": -33.7
+    }
+   ]
+  },
+  "measured": {
+   "status": "ok",
+   "quarters": [
+    {
+     "period": "2026Q4",
+     "months": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -1635.2,
+      "p50": 176.3,
+      "p90": 1500.6
+     },
+     "operating_margin": {
+      "p10": -0.0879,
+      "p50": 0.0097,
+      "p90": 0.0823
+     },
+     "fcf_musd": {
+      "p10": -1890.7,
+      "p50": -459.6,
+      "p90": 586.6
+     },
+     "operating_income_change_musd": {
+      "p10": -1540.0,
+      "p50": -1030.4,
+      "p90": -691.9
+     },
+     "eps_change": {
+      "p10": -3.7,
+      "p50": -2.475,
+      "p90": -1.662
+     },
+     "fare_change_pct": {
+      "p10": 0.35,
+      "p50": 1.7,
+      "p90": 3.21
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -190.1,
+       "p50": 1200.8,
+       "p90": 2306.1
+      },
+      "operating_margin": {
+       "p10": -0.0106,
+       "p50": 0.0666,
+       "p90": 0.1272
+      },
+      "fcf_musd": {
+       "p10": -749.1,
+       "p50": 349.8,
+       "p90": 1223.0
+      }
+     }
+    },
+    {
+     "period": "2027Q1",
+     "months": [
+      "2027-01",
+      "2027-02",
+      "2027-03"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -1176.2,
+      "p50": 655.5,
+      "p90": 2070.8
+     },
+     "operating_margin": {
+      "p10": -0.0608,
+      "p50": 0.0345,
+      "p90": 0.1093
+     },
+     "fcf_musd": {
+      "p10": -1528.1,
+      "p50": -81.0,
+      "p90": 1037.1
+     },
+     "operating_income_change_musd": {
+      "p10": -1279.1,
+      "p50": -777.7,
+      "p90": -447.9
+     },
+     "eps_change": {
+      "p10": -3.073,
+      "p50": -1.868,
+      "p90": -1.076
+     },
+     "fare_change_pct": {
+      "p10": 1.88,
+      "p50": 3.3,
+      "p90": 5.16
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -8.0,
+       "p50": 1417.3,
+       "p90": 2634.6
+      },
+      "operating_margin": {
+       "p10": -0.0004,
+       "p50": 0.0768,
+       "p90": 0.1412
+      },
+      "fcf_musd": {
+       "p10": -605.2,
+       "p50": 520.8,
+       "p90": 1482.5
+      }
+     }
+    },
+    {
+     "period": "2027Q2",
+     "months": [
+      "2027-04",
+      "2027-05",
+      "2027-06"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": -218.4,
+      "p50": 1437.3,
+      "p90": 2873.4
+     },
+     "operating_margin": {
+      "p10": -0.0114,
+      "p50": 0.0757,
+      "p90": 0.1464
+     },
+     "fcf_musd": {
+      "p10": -771.4,
+      "p50": 536.6,
+      "p90": 1671.2
+     },
+     "operating_income_change_musd": {
+      "p10": -250.7,
+      "p50": -4.5,
+      "p90": 201.6
+     },
+     "eps_change": {
+      "p10": -0.602,
+      "p50": -0.011,
+      "p90": 0.484
+     },
+     "fare_change_pct": {
+      "p10": 2.94,
+      "p50": 4.16,
+      "p90": 5.72
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -31.7,
+       "p50": 1442.3,
+       "p90": 2734.7
+      },
+      "operating_margin": {
+       "p10": -0.0017,
+       "p50": 0.078,
+       "p90": 0.1441
+      },
+      "fcf_musd": {
+       "p10": -623.9,
+       "p50": 540.6,
+       "p90": 1561.5
+      }
+     }
+    },
+    {
+     "period": "2027Q3",
+     "months": [
+      "2027-07",
+      "2027-08",
+      "2027-09"
+     ],
+     "complete": true,
+     "operating_income_musd": {
+      "p10": 371.0,
+      "p50": 1983.3,
+      "p90": 3523.7
+     },
+     "operating_margin": {
+      "p10": 0.0195,
+      "p50": 0.1036,
+      "p90": 0.1763
+     },
+     "fcf_musd": {
+      "p10": -305.7,
+      "p50": 968.0,
+      "p90": 2184.9
+     },
+     "operating_income_change_musd": {
+      "p10": 317.7,
+      "p50": 491.4,
+      "p90": 715.7
+     },
+     "eps_change": {
+      "p10": 0.763,
+      "p50": 1.18,
+      "p90": 1.719
+     },
+     "fare_change_pct": {
+      "p10": 3.31,
+      "p50": 4.43,
+      "p90": 5.9
+     },
+     "no_shock": {
+      "operating_income_musd": {
+       "p10": -15.0,
+       "p50": 1480.6,
+       "p90": 2900.8
+      },
+      "operating_margin": {
+       "p10": -0.0008,
+       "p50": 0.0805,
+       "p90": 0.1515
+      },
+      "fcf_musd": {
+       "p10": -610.7,
+       "p50": 570.8,
+       "p90": 1692.8
+      }
+     }
+    }
+   ],
+   "prob": {
+    "fcf_negative_12m": 0.3553,
+    "fcf_negative_12m_no_shock": 0.174
+   },
+   "next_12m": {
+    "months": [
+     "2026-10",
+     "2026-11",
+     "2026-12",
+     "2027-01",
+     "2027-02",
+     "2027-03",
+     "2027-04",
+     "2027-05",
+     "2027-06",
+     "2027-07",
+     "2027-08",
+     "2027-09"
+    ],
+    "operating_income_musd": {
+     "p10": 308.4,
+     "p50": 4049.7,
+     "p90": 7265.9
+    },
+    "operating_income_change_musd": {
+     "p10": -2164.3,
+     "p50": -1343.8,
+     "p90": -761.4
+    },
+    "eps_change": {
+     "p10": -5.199,
+     "p50": -3.228,
+     "p90": -1.829
+    },
+    "fcf_musd": {
+     "p10": -2151.7,
+     "p50": 803.9,
+     "p90": 3344.7
+    }
+   },
+   "bridge": [
+    {
+     "step": "fuel cost",
+     "value": -9.059,
+     "operating_income_musd": -3770.8
+    },
+    {
+     "step": "fare recovery",
+     "value": 5.649,
+     "operating_income_musd": 2351.5
+    },
+    {
+     "step": "capacity",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "demand",
+     "value": 0.0,
+     "operating_income_musd": 0.0
+    },
+    {
+     "step": "profit sharing",
+     "value": null,
+     "operating_income_musd": null
+    },
+    {
+     "step": "net",
+     "value": -3.41,
+     "operating_income_musd": -1419.3
+    }
+   ]
+  }
+ },
+ "bridge_per_share": [
+  {
+   "step": "fuel cost",
+   "value": -9.059,
+   "operating_income_musd": -3770.8
+  },
+  {
+   "step": "fare recovery",
+   "value": 5.649,
+   "operating_income_musd": 2351.5
+  },
+  {
+   "step": "capacity",
+   "value": 0.0,
+   "operating_income_musd": 0.0
+  },
+  {
+   "step": "demand",
+   "value": 0.0,
+   "operating_income_musd": 0.0
+  },
+  {
+   "step": "profit sharing",
+   "value": null,
+   "operating_income_musd": null
+  },
+  {
+   "step": "net",
+   "value": -3.41,
+   "operating_income_musd": -1419.3
+  }
+ ],
+ "response_used": {
+  "costs_only": {
+   "name": "costs_only",
+   "curve_p10": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "curve_p50": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "curve_p90": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "draws": 1,
+   "source": {
+    "kind": "definition"
+   },
+   "note": "No revenue response: the fuel cost falls through to profit."
+  },
+  "management": {
+   "name": "management",
+   "curve_p10": [
+    0.810476,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "curve_p50": [
+    0.850286,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "curve_p90": [
+    0.889613,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "draws": 2000,
+   "source": {
+    "kind": "stated ranges",
+    "ranges": [
+     {
+      "quarters_after": 0,
+      "low": 0.8,
+      "high": 0.9
+     },
+     {
+      "quarters_after": 1,
+      "low": 1.0,
+      "high": 1.0
+     },
+     {
+      "quarters_after": 2,
+      "low": 1.0,
+      "high": 1.0
+     },
+     {
+      "quarters_after": 3,
+      "low": 1.0,
+      "high": 1.0
+     },
+     {
+      "quarters_after": 4,
+      "low": 1.0,
+      "high": 1.0
+     }
+    ],
+    "accession": "0000100517-26-000135",
+    "exhibit": "EX-99.2",
+    "filed_on": "2026-07-15",
+    "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex992.htm",
+    "path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex992.htm",
+    "sha256": "c4cc6beb1994c66370a93b8cf63191f0a18113125c0d9b7053bcfaa7dc570f9a",
+    "quote": "The Company expects to recover 80% to 90% of the fuel price increase in the third quarter and 100% of the fuel price increase by the fourth quarter of 2026."
+   },
+   "note": "Uniform within each stated range; one position per draw shared by all quarters; later quarters hold the last stated range."
+  },
+  "measured": {
+   "name": "measured",
+   "curve_p10": [
+    0.044934,
+    0.244934,
+    0.444934,
+    0.644934,
+    0.844934
+   ],
+   "curve_p50": [
+    0.223205,
+    0.423205,
+    0.623205,
+    0.823205,
+    1.023205
+   ],
+   "curve_p90": [
+    0.365595,
+    0.565595,
+    0.765595,
+    0.965595,
+    1.165595
+   ],
+   "draws": 500,
+   "source": {
+    "kind": "synthetic",
+    "detail": "evenly spaced placeholder curve, common shift uniform in +/-0.2"
+   },
+   "note": "Synthetic placeholder for tests and front-end work."
+  }
+ },
+ "per_share": {
+  "available": true,
+  "tax_rate": 0.2154,
+  "diluted_shares_m": 326.6,
+  "method": "tax rate = 1 - net income / pretax income of the same quarter; diluted weighted-average shares as reported",
+  "source": {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0",
+   "period_end": "2026-06-30",
+   "filed_on": "2026-07-15",
+   "accession": "0000100517-26-000135",
+   "pretax_income_musd": 1026.0,
+   "net_income_musd": 805.0
+  }
+ },
+ "monte_carlo": {
+  "paths": 10000,
+  "seed": 1,
+  "method": "standard error by batch means: the statistic on 20 disjoint groups of paths, spread / sqrt(20)",
+  "standard_error": {
+   "costs_only": {
+    "operating_income_change_12m_musd_p50": 6.73,
+    "fcf_12m_musd_p50": 46.1,
+    "fcf_negative_12m": 0.0038,
+    "eps_change_12m_p50": 0.0162
+   },
+   "management": {
+    "operating_income_change_12m_musd_p50": 0.11,
+    "fcf_12m_musd_p50": 19.71,
+    "fcf_negative_12m": 0.0027,
+    "eps_change_12m_p50": 0.0003
+   },
+   "measured": {
+    "operating_income_change_12m_musd_p50": 5.95,
+    "fcf_12m_musd_p50": 28.32,
+    "fcf_negative_12m": 0.0052,
+    "eps_change_12m_p50": 0.0143
+   }
+  }
+ },
+ "inputs": [
+  {
+   "path": "data/monthly_anchors.json",
+   "sha256": "6f9f7c1e8e5ecc620c65131afbaa02058e2b20a246aee502a98043d0a2ce0640"
+  },
+  {
+   "path": "data/eia_gulf_coast_2026.csv",
+   "sha256": "2c9f374f817be328195ab55504666bb498bf473fedfe3a648bba7ae3f024981a"
+  },
+  {
+   "path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex992.htm",
+   "sha256": "c4cc6beb1994c66370a93b8cf63191f0a18113125c0d9b7053bcfaa7dc570f9a"
+  },
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  }
+ ],
+ "model": {
+  "engine_version": "monthly-fleet-0.7.0",
+  "code_sha256": "6caada28ed7dcbce314a2ee6f845c795127878e93523cba0f0728064aea10251",
+  "code_files": [
+   "app/monthly.py",
+   "app/fleet.py",
+   "app/evidence.py",
+   "app/data.py",
+   "app/cash_bridge.py",
+   "app/lab/response.py",
+   "app/lab/scenario.py"
+  ]
+ },
+ "assumptions": [
+  "Starting point: United's Q2 2026 business as reported by 2026-07-16 (four markets, fleet plan, costs, cash). Quarterly totals are spread evenly over months; no seasonality is modelled. Fuel moves after that date are not in the no-shock reference.",
+  "Fuel: the reference is the 4.19 US dollars a gallon United paid in Q2 2026. The shock moves that price to 5.24 on the central path for 6 months from 2026-10, then fades by half every 2 months. Simulated paths still vary around it: monthly fuel and demand noise use pre-cutoff fuel volatility and assumed persistence and correlation.",
+  "Response: every monthly change in the fuel price starts its own clock, and the recovery curve gives the share of that change, times gallons burned, that comes back as revenue by quarter after the change. Fuel price falls are passed back with the same curve, so a temporary shock is under-recovered while it builds and over-recovered while it fades.",
+  "The recovery share is defined on revenue net of volume effects: no fare-demand elasticity, pass-through cap or fare-step limit is applied on top of it. `fare_change_pct` shows the average fare change that the recovery implies.",
+  "One recovery curve is drawn per simulated path from the response's joint draws; management's ranges are sampled uniformly. The first quarter management stated is treated as the quarter the shock starts.",
+  "Every mode, the no-shock reference and every bridge step use the same simulated fuel and demand paths, so differences are caused by the shock and the response alone.",
+  "Capacity and demand changes and the delivery-delay window use the same months as the fuel shock. Capacity can only be cut. 70% of non-fuel cost is assumed fixed when capacity changes; that share is an assumption, not a fit, and a cut can raise simulated profit when empty seats absorb it.",
+  "Free cash flow moves with after-tax operating income (21% assumed cash tax) around the Q2 2026 cash run rate; capital spending stays at that run rate. No financing, hedging, working-capital timing or profit sharing is modelled.",
+  "Bridge steps are means across paths over the first 12 reported months, applied in the order fuel cost, fare recovery, capacity (with delivery delays), demand; they add up to net.",
+  "Per share: change in operating income x (1 - tax rate) / diluted shares, with the tax rate and share count of the quarter ended 2026-06-30. Interest, profit sharing and share-count changes are held fixed.",
+  "Probabilities are shares of simulated paths under these assumptions, not calibrated event probabilities. Ranges exclude parameter and model uncertainty other than the recovery curve's. Months more than 12 after the cutoff are exploratory in the engine's model card."
+ ],
+ "synthetic_response": true
+}
