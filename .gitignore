@@ -23,5 +23,8 @@
 !/data/*_fields.txt
 !/data/eia_2026_weekly_source.txt
 /data/user_quotes.csv
+# Small tidy lab inputs and source manifests are tracked; raw lab downloads are not.
+!/data/lab/
+!/data/lab/**
 .vercel
 .env*
