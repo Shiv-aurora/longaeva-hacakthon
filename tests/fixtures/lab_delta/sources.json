@@ -1,0 +1,102 @@
+[
+  {
+    "file": "july_guidance.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000029",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000029/deltaairlinesannouncesjune.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000029/deltaairlinesannouncesjune.htm",
+    "source_sha256": "0210e7bb4917f099d8caef627f126fbfe3ceeac832576bff678c5cca094e2fe6",
+    "byte_start": 11110,
+    "byte_end": 17615,
+    "sha256": "04a2f203d843cad103df22360caf23063a48d650228b50b03af296ddf9f1724a",
+    "bytes": 6505
+  },
+  {
+    "file": "july_cfo.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000029",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000029/deltaairlinesannouncesjune.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000029/deltaairlinesannouncesjune.htm",
+    "source_sha256": "0210e7bb4917f099d8caef627f126fbfe3ceeac832576bff678c5cca094e2fe6",
+    "byte_start": 26207,
+    "byte_end": 26963,
+    "sha256": "b11cf14fa2a3ccb0caf9e730f41cefbac3c37d86b6680b770a126d7ee6e5c523",
+    "bytes": 756
+  },
+  {
+    "file": "october_guidance.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/deltaairlinesannouncessept.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/deltaairlinesannouncessept.htm",
+    "source_sha256": "a9b5f563d4aef8f7738826c9a19b3e8159fa98d3bebe8084b14443590bab0097",
+    "byte_start": 11974,
+    "byte_end": 18261,
+    "sha256": "6cb1706a2d906710813139f639a5fbb51d3c7cefb367cd5b2ee481e66d82f88a",
+    "bytes": 6287
+  },
+  {
+    "file": "october_cfo.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/deltaairlinesannouncessept.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/deltaairlinesannouncessept.htm",
+    "source_sha256": "a9b5f563d4aef8f7738826c9a19b3e8159fa98d3bebe8084b14443590bab0097",
+    "byte_start": 27864,
+    "byte_end": 28462,
+    "sha256": "707f792ce11785b9ef65beeeb41b7eb10158ee20d27c1bd5e4d56f5d87a8a6f1",
+    "bytes": 598
+  },
+  {
+    "file": "october_stats_fuel_rows.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/deltaairlinesannouncessept.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/deltaairlinesannouncessept.htm",
+    "source_sha256": "a9b5f563d4aef8f7738826c9a19b3e8159fa98d3bebe8084b14443590bab0097",
+    "byte_start": 366716,
+    "byte_end": 377573,
+    "sha256": "65aef955f8c20b259d8e58382f479cfb0629d8f82b7af21942fbd4dd7e943bc4",
+    "bytes": 10857
+  },
+  {
+    "file": "october_fuel_reconciliation.html",
+    "kind": "contiguous bytes of the exhibit",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/deltaairlinesannouncessept.htm",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/deltaairlinesannouncessept.htm",
+    "source_sha256": "a9b5f563d4aef8f7738826c9a19b3e8159fa98d3bebe8084b14443590bab0097",
+    "byte_start": 643241,
+    "byte_end": 658657,
+    "sha256": "447566fdacc890e4912869e10e67f6d00069cd524f11051ad140136a12de0e14",
+    "bytes": 15416
+  },
+  {
+    "file": "october_index.json",
+    "kind": "whole file",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/index.json",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/index.json",
+    "source_sha256": "6f09f19598ef28b0231eaca380b075cb446bc910a4669dc3847764fdfb0064d2",
+    "sha256": "6f09f19598ef28b0231eaca380b075cb446bc910a4669dc3847764fdfb0064d2",
+    "bytes": 1770
+  },
+  {
+    "file": "october_index_headers.html",
+    "kind": "whole file",
+    "accession": "0000027904-26-000035",
+    "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000035/0000027904-26-000035-index-headers.html",
+    "source_path": "data/lab_raw/sec/0000027904-26-000035/0000027904-26-000035-index-headers.html",
+    "source_sha256": "5e991a0136e0091eb076b2ada33b8604b17b8a0b383dee9ef046975e8927be73",
+    "sha256": "5e991a0136e0091eb076b2ada33b8604b17b8a0b383dee9ef046975e8927be73",
+    "bytes": 5964
+  },
+  {
+    "file": "submissions_rows.json",
+    "kind": "rows [0, 1, 21, 35, 161, 820, 821, 1002] of filings.recent, all columns; other top-level keys dropped except cik and name",
+    "url": "https://data.sec.gov/submissions/CIK0000027904.json",
+    "source_path": "data/lab_raw/sec/submissions/CIK0000027904.json",
+    "source_sha256": "3f17c777e4d7b6ccbdb6327c74c349b960695b335e5a3b1dae835b837a70b8d7",
+    "retrieved_at": "2026-10-10T05:17:20+00:00"
+  }
+]
