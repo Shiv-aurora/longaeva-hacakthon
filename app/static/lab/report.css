@@ -1,0 +1,758 @@
+/*
+ * The technical report (/report): a section sidebar beside one reading column,
+ * figures allowed wider, and a print layout that saves to PDF. Colors, type and
+ * spacing come from tokens.css; shared pieces (tables, legends, the plot style)
+ * from base.css; the sidebar's own shape from hook-sidebar.css.
+ */
+
+.report-page {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+/* Top bar ------------------------------------------------------------------ */
+
+.report-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: var(--text-14);
+  line-height: 1.3;
+}
+
+.report-bar-name {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.report-bar-here {
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+
+.report-bar-here::before {
+  content: "/";
+  margin-right: var(--space-3);
+  color: var(--ink-muted);
+}
+
+.report-bar-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-left: auto;
+}
+
+.report-bar-links a,
+.report-bar-links button.linklike {
+  color: var(--ink-secondary);
+  font-size: var(--text-14);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.report-bar-links a:hover,
+.report-bar-links button.linklike:hover {
+  color: var(--ink);
+}
+
+/* The sidebar ---------------------------------------------------------------- */
+
+/* The rail takes the site's accent; resting items keep the site's secondary ink. */
+.report-side .hook-sidebar {
+  --hook-color: var(--accent);
+  --hook-ink: var(--ink);
+  --hook-ink-rest: var(--ink-secondary);
+  --hook-ink-hover: color-mix(in srgb, var(--ink) 80%, var(--ink-secondary));
+  --hook-rail-hover: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+.report-side .hook-label {
+  font-size: var(--text-12);
+  color: var(--ink-secondary);
+}
+
+/* Narrow screens: a bar under the top bar that names the section being read and
+   opens the list. Without the script the list simply sits above the report. */
+.report-side {
+  padding: var(--space-4) var(--gutter) 0;
+}
+
+.report-side.is-ready {
+  position: sticky;
+  top: 48px;
+  z-index: 9;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.side-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--gutter);
+  border: 0;
+  background: none;
+  font-size: var(--text-14);
+  line-height: 1.3;
+  text-align: left;
+}
+
+.side-toggle-label {
+  color: var(--ink-secondary);
+}
+
+.side-toggle-here {
+  min-width: 0;
+  font-weight: 500;
+}
+
+.side-toggle::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin: 0 3px 3px auto;
+  border-right: 1.5px solid var(--ink-secondary);
+  border-bottom: 1.5px solid var(--ink-secondary);
+  transform: rotate(45deg);
+  transition: transform var(--fast) var(--ease);
+}
+
+.side-toggle[aria-expanded="true"]::after {
+  margin-bottom: -3px;
+  transform: rotate(-135deg);
+}
+
+.report-side.is-ready .hook-sidebar {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: calc(100vh - 48px - 44px);
+  padding: var(--space-3) var(--gutter) var(--space-4);
+  overflow-y: auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.report-side.is-ready.is-open .hook-sidebar {
+  display: flex;
+}
+
+.report-side.is-ready .hook-label {
+  display: none;
+}
+
+/* The compact bar covers a little more of the page, so a link lands lower. */
+.report section[id],
+.report h3[id] {
+  scroll-margin-top: 44px;
+}
+
+/* Desktop: the list stays in view on the left and the report reads beside it. */
+@media (min-width: 960px) {
+  .report-layout {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    column-gap: var(--space-7);
+    align-items: start;
+    max-width: 1216px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .report-side,
+  .report-side.is-ready {
+    position: sticky;
+    top: calc(48px + var(--space-6));
+    z-index: auto;
+    margin-top: var(--space-8);
+    padding: 0;
+    border: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .side-toggle {
+    display: none;
+  }
+
+  .report-side.is-ready .hook-sidebar {
+    display: flex;
+    position: static;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: none;
+  }
+
+  .report-side.is-ready .hook-label {
+    display: block;
+  }
+
+  .report section[id],
+  .report h3[id] {
+    scroll-margin-top: 0;
+  }
+}
+
+/* A wide but very short window: the list scrolls with the page instead of sticking. */
+@media (min-width: 960px) and (max-height: 460px) {
+  .report-side,
+  .report-side.is-ready {
+    position: static;
+  }
+}
+
+/* The column ---------------------------------------------------------------- */
+
+.report {
+  --wide: 880px;
+  padding: var(--space-8) 0 var(--space-8);
+  counter-reset: section figure table;
+}
+
+.report > *,
+.report section > *,
+.report .block > * {
+  width: min(100% - 2 * var(--gutter), 42rem);
+  margin-inline: auto;
+}
+
+.report > section,
+.report section > .block {
+  width: auto;
+}
+
+.report section > .wide,
+.report .block > .wide {
+  width: min(100% - 2 * var(--gutter), var(--wide));
+}
+
+/* Beside the sidebar the layout supplies the gutters, and text and figures share a left edge. */
+@media (min-width: 960px) {
+  .report > *,
+  .report section > *,
+  .report .block > * {
+    width: min(100%, 42rem);
+    margin-inline: 0;
+  }
+
+  .report > section,
+  .report section > .block {
+    width: auto;
+  }
+
+  .report section > .wide,
+  .report .block > .wide {
+    width: min(100%, var(--wide));
+  }
+}
+
+/* Masthead ------------------------------------------------------------------ */
+
+.masthead h1 {
+  margin-top: var(--space-3);
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.standfirst {
+  margin-top: var(--space-4);
+  font-size: var(--text-20);
+  line-height: 1.45;
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+.dateline {
+  margin-top: var(--space-4);
+  font-size: var(--text-13);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+
+/* Sections ------------------------------------------------------------------ */
+
+.report section.numbered {
+  margin-top: var(--space-8);
+  counter-increment: section;
+}
+
+.report section.numbered > h2 {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-24);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.report section.numbered > h2::before {
+  content: counter(section);
+  margin-right: 0.65em;
+  color: var(--ink-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.report h3 {
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-2);
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.report h2 + h3 {
+  margin-top: var(--space-5);
+}
+
+.report p + p,
+.report .block + p,
+.report p + .block,
+.report details + p {
+  margin-top: var(--space-4);
+}
+
+.report section p {
+  color: var(--ink);
+}
+
+/* A number read from the data files. */
+[data-bind],
+[data-static] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A number whose file or field is not there yet. */
+.nc {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* The one line that stands in for a part that has not been computed. */
+.report p.pending {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--line-strong);
+  font-size: var(--text-14);
+  color: var(--ink-secondary);
+}
+
+.report .hash {
+  font-size: 0.8em;
+}
+
+/* Detail a judge may want and most readers will skip. Closed until asked for. */
+.report details.more {
+  font-size: var(--text-14);
+  line-height: 1.55;
+}
+
+.report details.more > summary {
+  color: var(--ink-secondary);
+}
+
+.report details.more > summary:hover,
+.report details.more[open] > summary {
+  color: var(--ink);
+}
+
+.report section details.more > p {
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line-strong);
+  color: var(--ink-secondary);
+}
+
+/* Lists --------------------------------------------------------------------- */
+
+.limits,
+.credits {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.limits li,
+.credits li {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line-strong);
+}
+
+.limits b,
+.credits b {
+  font-weight: 500;
+}
+
+/* Figures and tables -------------------------------------------------------- */
+
+.report figure {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.report figcaption {
+  margin-top: var(--space-3);
+  max-width: 46rem;
+  font-size: var(--text-13);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+.report figure.fig > figcaption::before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ". ";
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.report figure.tab > figcaption::before {
+  counter-increment: table;
+  content: "Table " counter(table) ". ";
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.report figure.tab > figcaption {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+}
+
+.fig-name {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.fig-source {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--ink-muted);
+}
+
+.report .fig-legend {
+  margin-top: 0;
+}
+
+.report .fig-plot {
+  min-height: 0;
+}
+
+.fig-missing {
+  padding: var(--space-4) 0;
+  font-size: var(--text-14);
+  color: var(--ink-muted);
+}
+
+/* Titles of the strips inside a two-part chart. */
+.report .mini-title {
+  margin: var(--space-2) 0 2px;
+  font-size: var(--text-12);
+  line-height: 1.3;
+  color: var(--ink-secondary);
+}
+
+.report .group-head {
+  margin-top: var(--space-2);
+}
+
+.report figure .table-wrap {
+  margin-top: var(--space-4);
+}
+
+.report figure.tab .table-wrap {
+  margin-top: 0;
+}
+
+.report table.data {
+  font-size: var(--text-13);
+  line-height: 1.45;
+}
+
+.report table.data caption {
+  caption-side: top;
+}
+
+.report table.scores {
+  max-width: 38rem;
+}
+
+.report table.sources {
+  min-width: 760px;
+}
+
+.report table.sources th,
+.report table.sources td {
+  vertical-align: top;
+}
+
+.report table.sources tbody th {
+  width: 21%;
+}
+
+.report table.sources td:nth-child(2) {
+  width: 23%;
+  color: var(--ink-secondary);
+}
+
+.report table.sources td:nth-child(3) {
+  width: 24%;
+}
+
+/* The diagram --------------------------------------------------------------- */
+
+.diagram-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+  font-family: var(--font-sans);
+}
+
+.dg-box {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.dg-text {
+  fill: var(--ink);
+  font-size: 13px;
+}
+
+.dg-sub {
+  fill: var(--ink-secondary);
+  font-size: 11.5px;
+}
+
+.dg-label {
+  fill: var(--ink-secondary);
+  font-size: 12px;
+}
+
+.dg-note {
+  fill: var(--ink);
+  font-size: 13px;
+}
+
+.dg-arrow {
+  fill: none;
+  stroke: var(--ink-muted);
+  stroke-width: 1.25;
+}
+
+.dg-head {
+  fill: var(--ink-muted);
+}
+
+.dg-paths path {
+  fill: none;
+  stroke: var(--chart-context);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+}
+
+.dg-costs {
+  fill: var(--chart-costs);
+}
+
+.dg-management {
+  fill: var(--chart-management);
+}
+
+.dg-ours {
+  fill: var(--chart-ours);
+}
+
+.dg-brace {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+/* References and credits ---------------------------------------------------- */
+
+.backmatter {
+  font-size: var(--text-14);
+  line-height: 1.5;
+}
+
+.backmatter-note {
+  color: var(--ink-secondary);
+}
+
+.report .backmatter h3 {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-13);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-secondary);
+}
+
+.refs {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.refs li {
+  padding-left: 1.5em;
+  text-indent: -1.5em;
+  overflow-wrap: anywhere;
+  color: var(--ink-secondary);
+}
+
+.refs cite {
+  font-style: normal;
+  color: var(--ink);
+}
+
+.backmatter .credits {
+  gap: var(--space-2);
+}
+
+/* Foot ---------------------------------------------------------------------- */
+
+.report-foot {
+  display: flex;
+  gap: var(--space-5);
+  width: min(100% - 2 * var(--gutter), 42rem);
+  margin: 0 auto var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+  font-size: var(--text-14);
+}
+
+@media (min-width: 960px) {
+  .report-foot {
+    grid-column: 2;
+    width: min(100%, 42rem);
+    margin-inline: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  /* The name on the left already leads back to the simulator. */
+  .report-bar-here,
+  .report-bar-links a {
+    display: none;
+  }
+
+  .report {
+    padding-top: var(--space-6);
+  }
+}
+
+/* Print: the script switches the page to the light theme and redraws the
+   charts at paper width before the print dialog opens. */
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  .report-bar,
+  .report-foot,
+  .report-side,
+  .skip {
+    display: none !important;
+  }
+
+  .report-layout {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  /* The script opens every detail before printing; on paper the heading is plain text. */
+  .report details.more > summary::before {
+    display: none;
+  }
+
+  .report-page {
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  .report {
+    padding: 0;
+  }
+
+  .report > *,
+  .report section > *,
+  .report .block > *,
+  .report section > .wide,
+  .report .block > .wide {
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .report section.numbered {
+    margin-top: 22pt;
+  }
+
+  .report h2,
+  .report h3 {
+    break-after: avoid;
+  }
+
+  .report figure,
+  .report table,
+  .limits li,
+  .refs li,
+  .credits li {
+    break-inside: avoid;
+  }
+
+  .report p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .diagram svg,
+  .report table.sources {
+    min-width: 0;
+  }
+
+  .diagram-scroll,
+  .report .table-wrap {
+    overflow: visible;
+  }
+
+  /* Hover read-outs have no place on paper. */
+  svg.lab-plot [aria-label="tip"] {
+    display: none;
+  }
+
+  /* A printed link needs its address. */
+  .backmatter a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    color: var(--ink-secondary);
+    overflow-wrap: anywhere;
+  }
+}

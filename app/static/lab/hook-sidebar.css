@@ -1,0 +1,112 @@
+/*
+ * Styles for hook-sidebar.js, the vanilla port of Rare UI's "Hook Sidebar"
+ * (https://rareui.com, Copyright (c) 2026 Swami Malode; license in
+ * LICENSE-hook-sidebar.txt). Sizes are the original's; colors are set by the
+ * host page through the variables below.
+ *
+ *   --hook-color        the active rail (the original's default is #FC4C01)
+ *   --hook-ink          the active item's text
+ *   --hook-ink-rest     the other items (the original uses the text color at 50%)
+ *   --hook-ink-hover    an item under the pointer (the original: 80%)
+ *   --hook-rail-hover   the fainter rail that follows the pointer or the focus (30%)
+ */
+
+.hook-sidebar {
+  --hook-color: #fc4c01;
+  --hook-ink: currentColor;
+  --hook-ink-rest: color-mix(in srgb, currentColor 50%, transparent);
+  --hook-ink-hover: color-mix(in srgb, currentColor 80%, transparent);
+  --hook-rail-hover: color-mix(in srgb, currentColor 30%, transparent);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The optional heading above the list. */
+.hook-label {
+  padding: 0 8px 12px 2px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: var(--hook-ink);
+}
+
+.hook-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hook-item {
+  display: block;
+  padding: 6px 8px 6px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: left;
+  text-decoration: none;
+  color: var(--hook-ink-rest);
+  cursor: pointer;
+  transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hook-item:hover {
+  color: var(--hook-ink-hover);
+}
+
+.hook-item[data-active="true"],
+.hook-item[aria-current] {
+  color: var(--hook-ink);
+}
+
+/* A rail covers the list and lets every click through. The script places the line and the corner. */
+.hook-rail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  color: var(--hook-rail-hover);
+  transition: opacity 0.2s ease-out;
+}
+
+.hook-rail.is-visible {
+  opacity: 1;
+}
+
+.hook-rail-active {
+  color: var(--hook-color);
+}
+
+.hook-rail-line,
+.hook-rail-corner {
+  position: absolute;
+  left: 2px;
+  display: block;
+}
+
+.hook-rail-line {
+  top: 0;
+  width: 1px;
+  height: 0;
+  shape-rendering: crispEdges;
+}
+
+.hook-rail-corner {
+  top: -6px;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hook-item,
+  .hook-rail {
+    transition: none;
+  }
+}

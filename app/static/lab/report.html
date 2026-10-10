@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Technical report | UAL Counterfactual Lab</title>
+  <meta name="description" content="How the United Airlines simulator works, what was measured from history to build it, how it is checked against reality, and where it fails.">
+  <link rel="icon" href="data:,">
+  <script>
+    /* Apply a saved theme before first paint so the page never flashes. */
+    (function () {
+      try {
+        var saved = localStorage.getItem("lab-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+      } catch (error) { /* storage can be unavailable; the system setting still applies */ }
+    })();
+  </script>
+  <link rel="preload" href="/static/lab/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/lab/tokens.css">
+  <link rel="stylesheet" href="/static/lab/base.css">
+  <link rel="stylesheet" href="/static/lab/hook-sidebar.css">
+  <link rel="stylesheet" href="/static/lab/report.css">
+  <script defer src="/static/lab/vendor/d3.min.js"></script>
+  <script defer src="/static/lab/vendor/plot.umd.min.js"></script>
+  <script defer src="/static/lab/charts.js"></script>
+  <script defer src="/static/lab/hook-sidebar.js"></script>
+  <script defer src="/static/lab/report.js"></script>
+</head>
+<body class="report-page">
+  <a class="skip" href="#main">Skip to the report</a>
+
+  <header class="report-bar">
+    <a class="report-bar-name" href="/">UAL Counterfactual Lab</a>
+    <span class="report-bar-here">Technical report</span>
+    <span class="pill" id="fixture-pill" role="status" title="Every number is a made-up stand-in used to build the layout. Nothing here is a finding." hidden>Placeholder data</span>
+    <nav class="report-bar-links" aria-label="Site">
+      <a href="/">Simulator</a>
+      <button class="linklike" id="print" type="button">Save as PDF</button>
+    </nav>
+  </header>
+
+  <div class="report-layout">
+
+    <div class="report-side">
+      <button class="side-toggle" id="sections-toggle" type="button" aria-expanded="false" aria-controls="sections" hidden>
+        <span class="side-toggle-label">Sections</span>
+        <span class="side-toggle-here" id="sections-here"></span>
+      </button>
+      <nav class="hook-sidebar" id="sections" aria-label="Sections">
+        <span class="hook-label" aria-hidden="true">Sections</span>
+        <div class="hook-list">
+          <a class="hook-item" href="#summary">Summary</a>
+          <a class="hook-item" href="#simulator">The simulator</a>
+          <a class="hook-item" href="#data">Data</a>
+          <a class="hook-item" href="#measured">Measurements</a>
+          <a class="hook-item" href="#reality">Reality check</a>
+          <a class="hook-item" href="#agent">The agent</a>
+          <a class="hook-item" href="#limits">Limits</a>
+          <a class="hook-item" href="#scaling">Scaling</a>
+          <a class="hook-item" href="#references">References</a>
+        </div>
+      </nav>
+    </div>
+
+    <main id="main" class="report">
+
+      <header class="masthead">
+        <p class="eyebrow">Technical report</p>
+        <h1>A simulation of United Airlines, with its behavior measured from history</h1>
+        <p class="standfirst">What the simulator does, what was measured to build it, how it is checked against reality, and where it fails.</p>
+        <p class="dateline">UAL Counterfactual Lab. Data through <span data-bind="market_clock:as_of" data-format="date"></span>. Every figure on this page is read from the published data files when the page loads.</p>
+      </header>
+
+      <noscript>
+        <p class="pending">The figures in this report are filled in by a script from the published data files. With scripts off they are blank.</p>
+      </noscript>
+
+      <!-- 1 -->
+      <section id="summary" class="numbered" data-prose>
+        <h2>Summary</h2>
+        <p>This is a simulation of United Airlines under changes in fuel, demand and aircraft deliveries, with the airline's response measured from history instead of assumed. Two measurements held up: the price United pays follows spot fuel about <span data-bind="cost_clock:fit.lag_days" data-format="int"></span> days behind, and a year after a fuel cost change unit revenue has made up <span data-bind="fare_clock:smooth.through_latest.one_year_share.p50" data-format="words"></span> of it (<span data-bind="fare_clock:interval_level" data-format="pct0"></span> range <span data-bind="fare_clock:smooth.through_latest.one_year_share.p05,fare_clock:smooth.through_latest.one_year_share.p95" data-format="range:pct0"></span>). Four did not: the recovery curve specified in advance lost its held-back test to simple rules, no capacity response could be told from zero, airport traveler counts barely track United's traffic, and the best trading rule lost money on later years. All are co-movements, not causal estimates. The simulator is checked by replaying past quarters<span data-needs="track_record">, where it only ties United's own guidance midpoint,</span> and by an estimate for United's next quarter, fixed before the result is known.</p>
+      </section>
+
+      <!-- 2 -->
+      <section id="simulator" class="numbered" data-prose>
+        <h2>The simulator</h2>
+        <p>The simulator steps United's business forward month by month. The figure below shows what goes in and what comes out. Each output is a range: the middle of many random runs, with a tenth of them beyond each bound.</p>
+        <p>Each scenario runs three times on the same random paths, changing only the behavior: no fare response, management's stated path, and the response measured from history. The application keeps the three questions of the Stage 1 proposal: what if, what breaks, and what must be true.</p>
+
+        <figure class="fig wide diagram">
+          <div class="diagram-scroll">
+            <svg viewBox="0 0 920 244" role="img" aria-labelledby="diagram-title diagram-desc" preserveAspectRatio="xMidYMid meet">
+              <title id="diagram-title">How a scenario runs</title>
+              <desc id="diagram-desc">Fuel price, travel demand, capacity and aircraft deliveries define a set of random worlds, drawn once. The same worlds are run through the business under three behaviors: no response, management's stated path, and the response measured from history. Each gives ranges for revenue, costs, operating margin, free cash flow and earnings per share.</desc>
+              <defs>
+                <marker id="dg-head" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0.5 0.5 L7 4 L0.5 7.5 Z" class="dg-head"/>
+                </marker>
+              </defs>
+
+              <text class="dg-label" x="0" y="13">What goes in</text>
+              <g class="dg-box">
+                <rect x="0.5" y="28.5" width="170" height="32" rx="6"/>
+                <rect x="0.5" y="68.5" width="170" height="32" rx="6"/>
+                <rect x="0.5" y="108.5" width="170" height="32" rx="6"/>
+                <rect x="0.5" y="148.5" width="170" height="32" rx="6"/>
+              </g>
+              <text class="dg-text" x="14" y="49">Fuel price</text>
+              <text class="dg-text" x="14" y="89">Travel demand</text>
+              <text class="dg-text" x="14" y="129">Capacity flown</text>
+              <text class="dg-text" x="14" y="169">Aircraft deliveries</text>
+
+              <path class="dg-arrow" d="M177 104 H223" marker-end="url(#dg-head)"/>
+
+              <text class="dg-label" x="230" y="13">Random worlds, drawn once</text>
+              <rect class="dg-box" x="230.5" y="28.5" width="170" height="152" rx="6"/>
+              <g class="dg-paths">
+                <path d="M244 104 C270 96 292 84 316 70 S362 52 386 44"/>
+                <path d="M244 104 C272 102 296 92 320 88 S364 74 386 68"/>
+                <path d="M244 104 C270 108 294 100 318 104 S362 98 386 94"/>
+                <path d="M244 104 C272 106 296 116 320 114 S364 122 386 118"/>
+                <path d="M244 104 C270 112 294 124 318 130 S362 136 386 142"/>
+                <path d="M244 104 C272 116 296 134 320 144 S364 158 386 164"/>
+              </g>
+
+              <path class="dg-arrow" d="M407 104 C431 104 431 50 453 50" marker-end="url(#dg-head)"/>
+              <path class="dg-arrow" d="M407 104 H453" marker-end="url(#dg-head)"/>
+              <path class="dg-arrow" d="M407 104 C431 104 431 158 453 158" marker-end="url(#dg-head)"/>
+
+              <text class="dg-label" x="460" y="13">The business, run under three behaviors</text>
+              <g class="dg-box">
+                <rect x="460.5" y="28.5" width="230" height="44" rx="6"/>
+                <rect x="460.5" y="82.5" width="230" height="44" rx="6"/>
+                <rect x="460.5" y="136.5" width="230" height="44" rx="6"/>
+              </g>
+              <rect class="dg-mark dg-costs" x="460.5" y="34" width="3" height="33" rx="1.5"/>
+              <rect class="dg-mark dg-management" x="460.5" y="88" width="3" height="33" rx="1.5"/>
+              <rect class="dg-mark dg-ours" x="460.5" y="142" width="3" height="33" rx="1.5"/>
+              <text class="dg-text" x="476" y="47">No response</text>
+              <text class="dg-sub" x="476" y="63">fares do not move</text>
+              <text class="dg-text" x="476" y="101">Management's stated path</text>
+              <text class="dg-sub" x="476" y="117">the share it says it will recover</text>
+              <text class="dg-text" x="476" y="155">Measured from history</text>
+              <text class="dg-sub" x="476" y="171">the recovery curve, with its uncertainty</text>
+
+              <path class="dg-arrow" d="M697 50 C721 50 721 76 743 76" marker-end="url(#dg-head)"/>
+              <path class="dg-arrow" d="M697 104 H743" marker-end="url(#dg-head)"/>
+              <path class="dg-arrow" d="M697 158 C721 158 721 132 743 132" marker-end="url(#dg-head)"/>
+
+              <text class="dg-label" x="750" y="13">What comes out, as ranges</text>
+              <rect class="dg-box" x="750.5" y="28.5" width="169" height="152" rx="6"/>
+              <text class="dg-text" x="764" y="56">Revenue</text>
+              <text class="dg-text" x="764" y="81">Costs</text>
+              <text class="dg-text" x="764" y="106">Operating margin</text>
+              <text class="dg-text" x="764" y="131">Free cash flow</text>
+              <text class="dg-text" x="764" y="156">Earnings per share</text>
+
+              <path class="dg-brace" d="M230.5 196 V203 H690.5 V196"/>
+              <text class="dg-note" x="460" y="228" text-anchor="middle">The same worlds go through all three, so a difference in the results is caused by behavior alone.</text>
+            </svg>
+          </div>
+          <figcaption><b class="fig-name">How a scenario runs.</b></figcaption>
+        </figure>
+      </section>
+
+      <!-- 3 -->
+      <section id="data" class="numbered" data-prose>
+        <h2>Data</h2>
+        <p>Everything is public. Each raw download is stored with its hash, and every output lists its inputs. The years from 2024 were set aside as the test; the text says where a choice or a fit later used them.</p>
+
+        <figure class="tab wide">
+          <figcaption><b class="fig-name">Sources, coverage and checks.</b></figcaption>
+          <div class="table-wrap">
+            <table class="data sources">
+              <thead>
+                <tr><th scope="col">Source</th><th scope="col">What it gives</th><th scope="col">Coverage</th><th scope="col">How it was checked</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">United Airlines filings, SEC EDGAR</th>
+                  <td>Quarterly operating and financial figures from earnings releases; guidance from investor updates</td>
+                  <td><span data-bind="fare_clock:united.data_checks.quarters" data-format="int"></span> quarters, <span data-bind="fare_clock:united.data_checks.first_quarter" data-format="period"></span> to <span data-bind="fare_clock:united.data_checks.last_quarter" data-format="period"></span>; <span data-static="lab/ual_filings_index.csv:@rows[kind=investor_update|earnings_release]" data-format="int">159</span> documents read for guidance</td>
+                  <td>Printed unit revenue equals revenue over seat miles to within a hundredth of a cent. Price times gallons equals fuel expense to within <span data-bind="fare_clock:united.data_checks.max_rel_gap_price_x_gallons_vs_fuel_expense" data-format="pct1"></span>. Every guidance figure is stored with its exact quote.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Delta Air Lines filings, SEC EDGAR</th>
+                  <td>The same figures on Delta's adjusted basis; its July guidance and September results</td>
+                  <td><span data-bind="peer_recovery:definition.carriers.DAL.first_quarter" data-format="period"></span> to <span data-bind="peer_recovery:definition.carriers.DAL.last_quarter" data-format="period"></span></td>
+                  <td><span data-static="lab/dal_check:evidence.@count" data-format="int">182</span> figures from the two latest releases, each tied to its quote in the document.</td>
+                </tr>
+                <tr>
+                  <th scope="row">American Airlines: SEC financial data and Transportation Department traffic statistics</th>
+                  <td>Revenue, fuel expense and capacity for the pooled estimate</td>
+                  <td><span data-bind="peer_recovery:definition.carriers.AAL.first_quarter" data-format="period"></span> to <span data-bind="peer_recovery:definition.carriers.AAL.last_quarter" data-format="period"></span></td>
+                  <td>Not reconciled to releases. Capacity is mainline only, and fuel before 2020 is rescaled to the later definition.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Energy Information Administration</th>
+                  <td>Gulf Coast jet fuel, daily spot price</td>
+                  <td><span data-static="lab/manifests/market:outputs.0.rows" data-format="int">4,190</span> trading days, <span data-static="lab/manifests/market:outputs.0.first" data-format="date">January 4, 2010</span> to <span data-static="lab/manifests/market:outputs.0.last" data-format="date">October 6, 2026</span></td>
+                  <td>Compared day by day with the copy published by the Federal Reserve Bank of St. Louis: no difference on <span data-static="lab/manifests/market:cross_checks.eia_vs_fred_fuel.overlap" data-format="int">4,190</span> days.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Transportation Security Administration</th>
+                  <td>Travelers screened at US airports, daily</td>
+                  <td><span data-bind="demand_signal:coverage.days" data-format="int"></span> days, <span data-bind="demand_signal:coverage.first" data-format="date"></span> to <span data-bind="demand_signal:coverage.last" data-format="date"></span></td>
+                  <td>No day is missing.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Bureau of Labor Statistics, via the St. Louis Fed</th>
+                  <td>Consumer price index for airline fares, monthly</td>
+                  <td>Through <span data-bind="fare_clock:as_of_detail.cpi_last_month" data-format="monthyear"></span>; <span data-bind="fare_clock:n_industry_months" data-format="int"></span> months used to fit</td>
+                  <td><span data-static="lab/manifests/market:cross_checks.bls_vs_fred_cpi.CUSR0000SETG01.overlap" data-format="int">31</span> recent months compared with the Bureau's own service: no difference. <span data-bind="fare_clock:industry.missing_cpi_months.0" data-format="monthyear"></span> was never published and is left out, not filled.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Daily share prices, Yahoo Finance</th>
+                  <td>United, Delta, American and Southwest; an airline fund; an S&amp;P 500 fund; heating-oil futures</td>
+                  <td><span data-static="lab/manifests/market:outputs.1.by_ticker.UAL.rows" data-format="int">3,714</span> sessions, <span data-static="lab/manifests/market:outputs.1.by_ticker.UAL.first" data-format="date">January 3, 2012</span> to <span data-static="lab/manifests/market:outputs.1.by_ticker.UAL.last" data-format="date">October 9, 2026</span></td>
+                  <td>Not cross-checked. The feed is unofficial and is listed under Limits.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Expedia fare quotes, 2022, collected by Dillon Wong</th>
+                  <td>Quoted one-way fares by search date and flight date</td>
+                  <td><span data-bind="daily_fares_2022:dataset.rows" data-format="int"></span> quotes on <span data-bind="daily_fares_2022:dataset.search_dates.days_with_quotes" data-format="int"></span> search days, <span data-bind="daily_fares_2022:dataset.search_dates.first" data-format="date"></span> to <span data-bind="daily_fares_2022:dataset.search_dates.last" data-format="date"></span></td>
+                  <td><span data-bind="daily_fares_2022:dataset.search_dates.missing_days.@count" data-format="int"></span> search days are absent and <span data-bind="daily_fares_2022:dataset.search_dates.thin_days.@count" data-format="int"></span> thin ones are flagged; nothing is filled in. <span data-bind="daily_fares_2022:n_quotes" data-format="int"></span> quotes enter the index.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+      </section>
+
+      <!-- 4 -->
+      <section id="measured" class="numbered" data-prose>
+        <h2>What we measured</h2>
+
+        <h3 id="measured-cost">Fuel price to fuel bill</h3>
+        <div class="block" data-needs="cost_clock">
+          <p>United does not hedge fuel, so its bill follows the market: the price it reports each quarter tracks Gulf Coast spot about <span data-bind="cost_clock:fit.lag_days" data-format="int"></span> days behind. Its range is too narrow: on <span data-bind="cost_clock:by_split.test.n" data-format="int"></span> held-back quarters the typical miss was <span data-bind="cost_clock:by_split.test.mae" data-format="cents0"></span>, the reported price was above the prediction every time, and only <span data-bind="cost_clock:by_split.test.inside_p10_p90" data-format="pct0"></span> of results fell inside.</p>
+          <details class="more">
+            <summary>The fit, and two checks on the latest quarter</summary>
+            <p data-bind="cost_clock:headline"></p>
+            <p>Fitted on quarters through 2023, the relationship puts United's price for the quarter that ended in September at <span data-bind="cost_clock:predicted_2026q3.p50" data-format="usd2"></span> a gallon (<span data-bind="cost_clock:predicted_2026q3.p10,cost_clock:predicted_2026q3.p90" data-format="range:usd2"></span>); management planned on <span data-bind="cost_clock:predicted_2026q3.management.value" data-format="usd2"></span>. The estimate fixed for that quarter, below, refits it on every quarter reported since, so its figure differs. Refitted on Delta, it landed <span data-bind="cost_clock:delta_check.method_error" data-format="cents0"></span> from the price Delta paid in the same quarter, where Delta's own planning figure was <span data-bind="cost_clock:delta_check.assumption_error" data-format="cents0"></span> away.</p>
+          </details>
+          <figure class="fig wide" data-chart="cost">
+            <div class="fig-plot" data-plot role="img" aria-label="Line chart of the daily spot price of jet fuel, with a bar for the average price United reported paying in each quarter."></div>
+            <figcaption><b class="fig-name">Spot jet fuel each day, and the price United reported paying each quarter.</b> <span class="fig-source">Sources: Energy Information Administration; United's earnings releases.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="cost_clock" hidden>The link from fuel price to fuel bill has not been computed yet.</p>
+
+        <h3 id="measured-fare">Fuel cost to revenue</h3>
+        <div class="block" data-needs="fare_clock">
+          <p>A recovery curve is the share of a fuel cost change that unit revenue has made up, quarter by quarter.</p>
+          <p>The curve specified in advance lost its test: on <span data-bind="fare_clock:oos_test.scores.h4.test.n" data-format="int"></span> held-back quarters it missed by more than management's stated share used as a fixed rule, and more than full recovery at once, though the gaps are too small to tell from chance.</p>
+          <p>The curve now used has two parameters, the long-run share and the speed of reaching it. It was chosen after the test years were seen, so it has no clean test. Its share after one year, <span data-bind="fare_clock:smooth.through_latest.one_year_share.p50" data-format="pct0"></span> (<span data-bind="fare_clock:interval_level" data-format="pct0"></span> range <span data-bind="fare_clock:smooth.through_latest.one_year_share.p05,fare_clock:smooth.through_latest.one_year_share.p95" data-format="range:pct0"></span>), is the best-determined number here; the speed is not determined.</p>
+          <details class="more">
+            <summary>Method, the speed, and industry fares</summary>
+            <p>We regressed the yearly change in TRASM, total revenue per available seat mile, on the yearly change in fuel cost per seat mile in the same quarter and the four before, holding capacity growth fixed. The curve is the running sum of the coefficients. The two-parameter curve is fitted on all <span data-bind="fare_clock:smooth.through_latest.n" data-format="int"></span> quarters. Its share after one year is <span data-bind="fare_clock:smooth.through_latest.one_year_share.p50" data-format="pct0"></span> in the middle of the resampled draws and <span data-bind="fare_clock:smooth.through_latest.one_year_share.estimate" data-format="pct0"></span> on the single best fit. Fitted without the latest quarter, half the recovery takes <span data-bind="fare_clock:smooth.through_latest.rests_on_latest_quarter.fitted_before_it.half_life_quarters" data-format="num1"></span> quarters; with it, <span data-bind="fare_clock:smooth.through_latest.rests_on_latest_quarter.fitted_with_it.half_life_quarters" data-format="num1"></span>.</p>
+            <p data-bind="fare_clock:industry_headline"></p>
+          </details>
+          <figure class="fig wide" data-chart="recovery">
+            <div class="fig-plot" data-plot role="img" aria-label="Line chart of the share of a fuel cost change made up through revenue in the quarter of the change and the four quarters after, with its range, against no response and management's stated share."></div>
+            <div class="table-wrap">
+              <table class="data scores">
+                <caption>Average miss on the held-back quarters, in cents per available seat mile. Lower is better.</caption>
+                <thead>
+                  <tr><th scope="col">Rule</th><th scope="col" class="num">Four quarters ahead</th><th scope="col" class="num">One quarter ahead</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">No response</th><td class="num" data-bind="fare_clock:oos_test.scores.h4.test.mae_cents_per_asm.costs_only" data-format="num2"></td><td class="num" data-bind="fare_clock:oos_test.scores.h1.test.mae_cents_per_asm.costs_only" data-format="num2"></td></tr>
+                  <tr><th scope="row">Full recovery in the same quarter</th><td class="num" data-bind="fare_clock:oos_test.scores.h4.test.mae_cents_per_asm.full_immediate" data-format="num2"></td><td class="num" data-bind="fare_clock:oos_test.scores.h1.test.mae_cents_per_asm.full_immediate" data-format="num2"></td></tr>
+                  <tr><th scope="row">Management's statement, as a fixed rule</th><td class="num" data-bind="fare_clock:oos_test.scores.h4.test.mae_cents_per_asm.management" data-format="num2"></td><td class="num" data-bind="fare_clock:oos_test.scores.h1.test.mae_cents_per_asm.management" data-format="num2"></td></tr>
+                  <tr><th scope="row">Curve specified in advance</th><td class="num" data-bind="fare_clock:oos_test.scores.h4.test.mae_cents_per_asm.fitted" data-format="num2"></td><td class="num" data-bind="fare_clock:oos_test.scores.h1.test.mae_cents_per_asm.fitted" data-format="num2"></td></tr>
+                  <tr><th scope="row">Two-parameter curve, chosen after the test</th><td class="num" data-bind="fare_clock:oos_test.scores.h4.test.mae_cents_per_asm.smooth_fit_only" data-format="num2"></td><td class="num" data-bind="fare_clock:oos_test.scores.h1.test.mae_cents_per_asm.smooth_fit_only" data-format="num2"></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <figcaption><b class="fig-name">Share of a fuel cost change made up through revenue, by quarter after the change.</b> The line is the middle of the resampled draws and the band holds the middle four-fifths of them. <span class="fig-source">Sources: United's earnings releases; Energy Information Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="fare_clock" hidden>The recovery of fuel cost through revenue has not been computed yet.</p>
+
+        <h3 id="measured-capacity">Capacity</h3>
+        <div class="block" data-needs="capacity_response">
+          <p>No capacity response to fuel could be established. A year after a ten percent rise in fuel, United's capacity growth differs by <span data-bind="capacity_response:curve.-1.estimate" data-format="signed2"></span> points, with a range (<span data-bind="capacity_response:curve.-1.lo,capacity_response:curve.-1.hi" data-format="range:signed2"></span>) that includes zero; a second specification disagrees, and the fitted response made held-back errors larger, so the simulator leaves capacity where the user sets it.</p>
+          <details class="more">
+            <summary>The two specifications</summary>
+            <p data-bind="capacity_response:headline"></p>
+          </details>
+          <figure class="fig" data-chart="capacity">
+            <div class="fig-plot" data-plot role="img" aria-label="Line chart of the change in United's capacity growth in the quarter of a rise in jet fuel and the four quarters after, with its range, which includes zero throughout."></div>
+            <figcaption><b class="fig-name">Change in United's capacity growth after a rise in jet fuel.</b> <span class="fig-source">Sources: United's earnings releases; Energy Information Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="capacity_response" hidden>The response of capacity to fuel has not been computed yet.</p>
+
+        <h3 id="measured-demand">Travel demand</h3>
+        <div class="block" data-needs="demand_signal">
+          <p>Travelers screened at US airports ran <span data-bind="demand_signal:current_quarter_note.2026Q3.yoy" data-format="pctabs1"></span> below a year earlier in the third quarter of 2026. The count is a weak guide to United: over <span data-bind="demand_signal:versus_united.correlation.n" data-format="int"></span> clean quarters its growth has a correlation of <span data-bind="demand_signal:versus_united.correlation.tsa_vs_ual_rpm.r" data-format="num2"></span> with growth in United's traffic, so the simulator shows it as context only.</p>
+          <figure class="fig" data-chart="demand">
+            <div class="fig-plot" data-plot role="img" aria-label="Two line charts on one time axis: travelers screened each day at US airports, as a seven-day average, and the same count against a year earlier."></div>
+            <figcaption><b class="fig-name">Travelers screened at US airports: the daily count and its change on a year earlier.</b> <span class="fig-source">Source: Transportation Security Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="demand_signal" hidden>The travel demand signal has not been computed yet.</p>
+
+        <h3 id="measured-market">The stock's reaction</h3>
+        <div class="block" data-needs="market_clock">
+          <p>In <span data-bind="market_clock:splits.test.start" data-format="year"></span> to <span data-bind="market_clock:splits.test.end" data-format="year"></span> a ten percent one-day rise in heating-oil futures, the traded stand-in for jet fuel, went with a fall of <span data-bind="market_clock:by_split.test.same_day_ual.beta" data-scale="0.1" data-format="pctabs1"></span> in United's shares against the market the same day. No further move over the next <span data-bind="market_clock:primary_spec.lagged.headline_horizons.0" data-format="int"></span> or <span data-bind="market_clock:primary_spec.lagged.headline_horizons.1" data-format="int"></span> trading days can be told from zero, and the trading rule that did best on earlier years lost money afterward.</p>
+          <details class="more">
+            <summary>The trading test</summary>
+            <p><span data-bind="market_clock:trading_rule.n_variants" data-format="int"></span> variants of the rule were tried on <span data-bind="market_clock:splits.select.start" data-format="year"></span> to <span data-bind="market_clock:splits.select.end" data-format="year"></span>. The best made <span data-bind="market_clock:trading_rule.by_split.select.mean_trade_net" data-format="pctabs1"></span> a trade after costs there and lost <span data-bind="market_clock:trading_rule.by_split.test.mean_trade_net" data-format="pctabs1"></span> a trade in the years that followed.</p>
+            <p data-bind="market_clock:headline"></p>
+          </details>
+          <figure class="fig" data-chart="market">
+            <div class="fig-plot" data-plot role="img" aria-label="Line chart of the average move in United's shares against the market on the days around a large move in fuel, with its range, which includes zero after the move."></div>
+            <figcaption><b class="fig-name">United's shares against the market around large moves in fuel.</b> <span class="fig-source">Sources: Yahoo Finance daily prices; Energy Information Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="market_clock" hidden>The stock's reaction to fuel has not been computed yet.</p>
+
+        <h3 id="measured-fares">Daily fares in the 2022 fuel spike</h3>
+        <div class="block" data-needs="daily_fares_2022">
+          <p>Timing inside a quarter can be seen in one episode, a daily index of fares quoted on Expedia in 2022: United's index peaked on <span data-bind="daily_fares_2022:fare_path.ua.peak.date" data-format="date"></span>, after jet fuel did on <span data-bind="daily_fares_2022:fuel_path.peak.date" data-format="date"></span>, and ended within <span data-bind="daily_fares_2022:fare_path.ua.start_to_end_pct" data-format="pctrawabs1"></span> of its start. The evidence is weak: the window spans the summer travel peak, and in <span data-bind="daily_fares_2022:robustness.united_intervals_including_zero" data-format="int"></span> of <span data-bind="daily_fares_2022:robustness.united_specifications" data-format="int"></span> specifications the response cannot be told from zero.</p>
+          <details class="more">
+            <summary>The estimate behind this</summary>
+            <p data-bind="daily_fares_2022:headline"></p>
+          </details>
+          <figure class="fig wide" data-chart="fares">
+            <div class="fig-plot" data-plot role="img" aria-label="Two line charts on one time axis: daily fare indexes for United, Delta, American and all airlines from April to October 2022, and the price of jet fuel on the same dates."></div>
+            <figcaption><b class="fig-name">Daily fare indexes and jet fuel through the 2022 spike.</b> <span class="fig-source">Sources: Expedia quotes collected by Dillon Wong; Energy Information Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="daily_fares_2022" hidden>The daily fare index for 2022 has not been computed yet.</p>
+
+        <h3 id="measured-peers">Three airlines pooled</h3>
+        <div class="block" data-needs="peer_recovery">
+          <p>Pooling United, Delta and American confirms that revenue responds but not by how much: the pooled share after a year is <span data-bind="peer_recovery:pooled.one_year_share.estimate" data-format="pct0"></span> (<span data-bind="peer_recovery:interval_level" data-format="pct0"></span> range <span data-bind="peer_recovery:pooled.one_year_share.p05,peer_recovery:pooled.one_year_share.p95" data-format="range:pct0"></span>), no narrower than United's own. It is a cross-check, not an input.</p>
+          <figure class="fig" data-chart="carriers">
+            <div class="fig-plot" data-plot role="img" aria-label="Range chart of the share of a fuel cost change made up after one year for United, Delta, American and the three pooled. Delta's range runs off both ends of the scale."></div>
+            <figcaption><b class="fig-name">Share of a fuel cost change made up after one year, by airline and pooled.</b> The <span data-bind="peer_recovery:pooled.n_rows" data-format="int"></span> airline-quarters share one fuel price and are worth about <span data-bind="peer_recovery:pooled.n_quarters_effective" data-format="int"></span> independent ones. <span class="fig-source">Sources: airline filings with the SEC; Transportation Department traffic statistics; Energy Information Administration.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="peer_recovery" hidden>The pooled measurement across three airlines has not been computed yet.</p>
+      </section>
+
+      <!-- 5 -->
+      <section id="reality" class="numbered" data-prose>
+        <h2>Does it match reality</h2>
+
+        <h3 id="reality-replay">Replay of past quarters</h3>
+        <div class="block" data-needs="track_record">
+          <p>The full simulator cannot be rerun in past years, so the replay uses its chain: United's guidance midpoint, less the fuel cost that arrived after guidance and that the recovery curve says does not come back within the quarter. On the <span data-bind="track_record:scores[model=fitted][split=test].n" data-format="int"></span> guided quarters from <span data-bind="track_record:splits.test.0" data-format="year"></span> it missed reported earnings by <span data-bind="track_record:scores[model=fitted][split=test].mae" data-format="usd2"></span> a share on average, the same as the midpoint itself and as a rule with no recovery: a three-way tie. The method did not beat United's own number. Its range held <span data-bind="track_record:scores[model=fitted][split=test].inside_p10_p90" data-format="pct0"></span> of results, but a midpoint given the same range scores no worse, and its gap to the midpoint did not predict the share move on results day.</p>
+          <p>The fuel step is the one clear positive result: at quarter end the chain's fuel price was on average <span data-bind="track_record:fuel_price_test.mae_marked" data-format="cents0"></span> a gallon from the price United later reported; United's own stated price was <span data-bind="track_record:fuel_price_test.mae_guided" data-format="cents0"></span> away.</p>
+          <details class="more">
+            <summary>How the chain was chosen, and the results-day test</summary>
+            <p>Of <span data-bind="track_record:method.variants.@count" data-format="int"></span> variants of the chain, the one used treats fuel that moved after the middle of the quarter as not recovered in that quarter. It was chosen on the <span data-bind="track_record:selection.n" data-format="int"></span> guided quarters before 2024, too few to tell close variants apart. The fuel comparison covers the <span data-bind="track_record:fuel_price_test.n" data-format="int"></span> quarters for which United stated a price, <span data-bind="track_record:fuel_price_test.by_split.select.n" data-format="int"></span> of them before 2024.</p>
+            <p>On the held-back quarters, each dollar of gap between the chain's estimate and the midpoint went with a move of <span data-bind="track_record:results_day_test.by_split.test.slope" data-format="pct0"></span> in United's shares against the market over the results day and the next. The range (<span data-bind="track_record:results_day_test.by_split.test.lo,track_record:results_day_test.by_split.test.hi" data-format="range:pct0"></span>) includes zero, and gap and move had the same sign in <span data-bind="track_record:results_day_test.by_split.test.hit_rate" data-format="pct0"></span> of the quarters.</p>
+          </details>
+          <figure class="fig wide" data-chart="track">
+            <div class="fig-plot" data-plot role="img" aria-label="Range chart with one row per held-back quarter: United's guidance range, each rival's estimate of earnings per share, the chain's range, and the reported result."></div>
+            <div class="table-wrap">
+              <table class="data scores">
+                <caption>Scores on the held-back quarters. Lower is better in both columns. The range score is the continuous ranked probability score, fixed in advance: it rewards a range for being narrow and right.</caption>
+                <thead>
+                  <tr><th scope="col">Estimate</th><th scope="col" class="num">Average miss, dollars a share</th><th scope="col" class="num">Range score</th><th scope="col" class="num">Quarters</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="is-ours"><th scope="row">Measured response</th><td class="num" data-bind="track_record:scores[model=fitted][split=test].mae" data-format="usd2"></td><td class="num" data-bind="track_record:scores[model=fitted][split=test].crps" data-format="num2"></td><td class="num" data-bind="track_record:scores[model=fitted][split=test].n" data-format="int"></td></tr>
+                  <tr><th scope="row">Midpoint of United's guidance</th><td class="num" data-bind="track_record:scores[model=guidance_mid][split=test].mae" data-format="usd2"></td><td class="num" data-bind="track_record:scores[model=guidance_mid][split=test].crps" data-format="num2"></td><td class="num" data-bind="track_record:scores[model=guidance_mid][split=test].n" data-format="int"></td></tr>
+                  <tr><th scope="row">The midpoint, given the same range</th><td class="num" data-bind="track_record:scores[model=guidance_mid][split=test].mae" data-format="usd2"></td><td class="num" data-bind="track_record:fitted_against_midpoint.test.like_for_like.midpoint_with_the_same_range_crps" data-format="num2"></td><td class="num" data-bind="track_record:fitted_against_midpoint.test.n" data-format="int"></td></tr>
+                  <tr><th scope="row">No response</th><td class="num" data-bind="track_record:scores[model=costs_only][split=test].mae" data-format="usd2"></td><td class="num" data-bind="track_record:scores[model=costs_only][split=test].crps" data-format="num2"></td><td class="num" data-bind="track_record:scores[model=costs_only][split=test].n" data-format="int"></td></tr>
+                  <tr><th scope="row">Management's stated path</th><td class="num" data-bind="track_record:scores[model=management][split=test].mae" data-format="usd2"></td><td class="num" data-bind="track_record:scores[model=management][split=test].crps" data-format="num2"></td><td class="num" data-bind="track_record:scores[model=management][split=test].n" data-format="int"></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <figcaption><b class="fig-name">Held-back quarters replayed: guidance, each rival's estimate, and what was reported.</b> <span data-bind="track_record:method.forecast_date"></span> <span class="fig-source">Sources: United's guidance and earnings releases.</span></figcaption>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="track_record" hidden>The replay of past quarters has not been computed yet.</p>
+
+        <h3 id="reality-delta">Delta's September quarter</h3>
+        <div class="block" data-needs="fare_clock cost_clock">
+          <p>Delta reported its September quarter on <span data-bind="cost_clock:delta_check.actual.reported_on" data-format="date"></span>, ahead of United. Fuel cost it <span data-bind="fare_clock:delta_september_quarter.fuel_actual_adj_usd_gal" data-format="usd2"></span> a gallon against a planned <span data-bind="fare_clock:delta_september_quarter.fuel_assumed_usd_gal" data-format="usd2"></span>; unit revenue rose <span data-bind="fare_clock:delta_september_quarter.adj_trasm_yoy_pct" data-format="pctraw0"></span>, and adjusted earnings per share still came in at <span data-bind="fare_clock:delta_september_quarter.eps_actual_adj" data-format="usd2"></span>, below the guided <span data-bind="fare_clock:delta_september_quarter.eps_guided_low,fare_clock:delta_september_quarter.eps_guided_high" data-format="range:usd2"></span>.</p>
+        </div>
+        <p class="pending" data-pending-for="fare_clock cost_clock" hidden>The check against Delta's September quarter has not been computed yet.</p>
+        <p data-needs="track_record">The replay chain put Delta's quarter at <span data-bind="track_record:delta_check.calls.fitted.p50" data-format="usd2"></span> with United's measured share and <span data-bind="track_record:delta_check.calls.costs_only" data-format="usd2"></span> with none, so the no-recovery rule was closer.</p>
+
+        <h3 id="reality-forward">An estimate fixed before United reports</h3>
+        <div class="block" data-needs="q3_call">
+          <p>On <span data-bind="q3_call:forecast.guidance.made_on" data-format="date"></span> United guided the third quarter of 2026 to adjusted earnings of <span data-bind="q3_call:forecast.guidance.eps_low,q3_call:forecast.guidance.eps_high" data-format="range:usd2"></span> a share, planning on fuel at <span data-bind="q3_call:forecast.guidance.fuel_assumed_usd_gal" data-format="usd2"></span> a gallon. Our estimate, and its fingerprint, were fixed before United reports on <span data-bind="q3_call:forecast.target.report_expected_on" data-format="date"></span>; it is a test of the method, not a claim that it beats United's own number. With fuel at <span data-bind="q3_call:chain[link=fuel_price_paid_usd_gal].p50" data-format="usd2"></span>, it takes the <span data-bind="q3_call:chain[link=adj_eps_diluted].guidance_mid" data-format="usd2"></span> midpoint, subtracts <span data-bind="q3_call:chain[link=adj_eps_diluted].unrecovered_per_share" data-format="usd2"></span> of fuel cost it expects not to be recovered, and gives <span data-bind="q3_call:chain[link=adj_eps_diluted].p50" data-format="usd2"></span> a share (range <span data-bind="q3_call:chain[link=adj_eps_diluted].p10,q3_call:chain[link=adj_eps_diluted].p90" data-format="range:usd2"></span>). Applying each of United's <span data-bind="q3_call:odds.n_samples" data-format="int"></span> earlier misses against its midpoint, <span data-bind="q3_call:odds.below_range" data-format="pct0"></span> of outcomes fall below the guided range, <span data-bind="q3_call:odds.inside_range" data-format="pct0"></span> inside and <span data-bind="q3_call:odds.above_range" data-format="pct0"></span> above.</p>
+          <details class="more">
+            <summary>The estimate's record, and the analyst consensus</summary>
+            <p>Fingerprint (SHA-256) of the fixed estimate: <span class="hash" data-bind="q3_call:sha256" data-format="hash"></span>. The same bytes are in <span class="hash" data-bind="q3_call:frozen_file"></span>, whose own record gives the time as <span class="hash" data-bind="q3_call:frozen_at"></span>.</p>
+            <p>An analyst consensus of <span data-bind="q3_call:comparators.consensus_eps.value" data-format="usd2"></span>, read from the web before the forecast was fixed and not machine-checked, sits above the estimate: <span data-bind="q3_call:odds.above_consensus" data-format="pct0"></span> of the outcomes exceed it. A thinly traded prediction market, also read before the forecast was fixed, put the chance of a result above it at <span data-bind="q3_call:comparators.market_odds_beat.value" data-format="pct0"></span>.</p>
+          </details>
+          <figure class="tab">
+            <figcaption><b class="fig-name">The fixed estimate, link by link.</b> Lower and upper leave a tenth of the values on each side. The unit revenue link is a side estimate and does not feed the earnings figure. United never defined its recovery figure, so it is not the same measure as the share beside it.</figcaption>
+            <div class="table-wrap">
+              <table class="data scores">
+                <thead>
+                  <tr><th scope="col">Link</th><th scope="col" class="num">Lower</th><th scope="col" class="num">Middle</th><th scope="col" class="num">Upper</th><th scope="col" class="num">Management</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Fuel price paid, a gallon</th><td class="num" data-bind="q3_call:chain[link=fuel_price_paid_usd_gal].p10" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=fuel_price_paid_usd_gal].p50" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=fuel_price_paid_usd_gal].p90" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=fuel_price_paid_usd_gal].management" data-format="flex:usd2"></td></tr>
+                  <tr><th scope="row">Share of the fuel surprise recovered within the quarter</th><td class="num" data-bind="q3_call:chain[link=recovery_share].p10" data-format="pct0"></td><td class="num" data-bind="q3_call:chain[link=recovery_share].p50" data-format="pct0"></td><td class="num" data-bind="q3_call:chain[link=recovery_share].p90" data-format="pct0"></td><td class="num" data-bind="q3_call:chain[link=recovery_share].management" data-format="flex:pct0"></td></tr>
+                  <tr><th scope="row">Unit revenue, change on a year earlier</th><td class="num" data-bind="q3_call:chain[link=trasm_yoy].p10" data-format="pct1"></td><td class="num" data-bind="q3_call:chain[link=trasm_yoy].p50" data-format="pct1"></td><td class="num" data-bind="q3_call:chain[link=trasm_yoy].p90" data-format="pct1"></td><td class="num">more than <span data-bind="q3_call:chain[link=trasm_yoy].management_detail.value" data-format="pct1"></span></td></tr>
+                  <tr class="is-ours"><th scope="row">Adjusted earnings per share</th><td class="num" data-bind="q3_call:chain[link=adj_eps_diluted].p10" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=adj_eps_diluted].p50" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=adj_eps_diluted].p90" data-format="usd2"></td><td class="num" data-bind="q3_call:chain[link=adj_eps_diluted].management" data-format="flex:usd2"></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
+        </div>
+        <p class="pending" data-pending-for="q3_call" hidden>The estimate for United's next quarter has not been computed yet.</p>
+        <details class="more" data-needs="signal">
+          <summary>The estimate day by day</summary>
+          <p data-bind="signal:headline"></p>
+          <p>This is the same method applied on earlier dates, not a second forecast, and no trading rule was tested on it.</p>
+        </details>
+        <p class="pending" data-pending-for="signal" hidden>The daily path of the estimate has not been computed yet.</p>
+
+        <h3 id="reality-wrong">What would count as being wrong</h3>
+        <p>One result outside the range settles nothing: that should happen about one time in five. The measured response is wrong if over several quarters it scores worse than the guidance midpoint or results keep landing outside its range. So far it only ties the midpoint, and the fuel-bill range already fails the second test.</p>
+      </section>
+
+      <!-- 6 -->
+      <section id="agent" class="numbered" data-prose>
+        <h2>The agent</h2>
+        <p>An analyst in the application plans, runs tools and writes. The language model never types a number: tool results reach it as labeled facts, it writes placeholders, and code puts the values in. The check cannot catch a figure placed beside the wrong words, so each figure carries its label.</p>
+        <p>A second component reads guidance from United's filings and verifies each quoted value against the document: <span data-static="lab/ual_filings_index.csv:@rows[kind=investor_update|earnings_release]" data-format="int">159</span> documents gave <span data-static="lab/ual_guidance:@count" data-format="int">509</span> verified facts.</p>
+        <details class="more">
+          <summary>What happens when a check fails</summary>
+          <p>The tools look up results, run the simulator and do arithmetic. A report with a typed digit is rejected. After one rewrite it is assembled from the tool results without the model. When no model can be reached, a rules planner handles the common kinds of question.</p>
+          <p>For guidance, code finds candidate passages, a picker (fixed rules or the model) chooses one or abstains, code parses the value, and the verifier compares the quote with the document. Every fact in the file was picked by the rules.</p>
+        </details>
+      </section>
+
+      <!-- 7 -->
+      <section id="limits" class="numbered" data-prose>
+        <h2>Limits</h2>
+        <ul class="limits">
+          <li><b>Small samples.</b> The recovery curve rests on <span data-bind="fare_clock:smooth.through_latest.n" data-format="int"></span> quarters, and its ranges assume the model is right.</li>
+          <li><b>Co-movement, not cause.</b> Fuel and travel demand move with the economy, so part of every measured response is demand.</li>
+          <li><b>Few shocks.</b> The fuel move of 2026 is larger than any the curve was first fitted on.</li>
+          <li><b>Symmetry is assumed.</b> A fall in fuel is treated as the mirror of a rise, and the one test had little power.</li>
+          <li><b>Share prices</b> come from an unofficial feed with no second source.</li>
+          <li><b>The cash model is simplified.</b> Advance ticket sales, debt service and profit sharing are not modeled.</li>
+          <li><b>Shares of runs are not probabilities.</b> They describe the model, not the chance of an event.</li>
+        </ul>
+      </section>
+
+      <!-- 8 -->
+      <section id="scaling" class="numbered" data-prose>
+        <h2>Scaling</h2>
+        <p>Adding an airline takes its quarterly figures, its guidance, and a note of where its accounts differ. Delta was the trial: the same code fetched and indexed its filings, but its results needed their own reader, and only its adjusted figures compare with United's. Daily fares beyond 2022 and bookings, neither public, would improve the simulator most.</p>
+      </section>
+
+      <!-- 9 -->
+      <section id="references" class="numbered backmatter">
+        <h2>References and credits</h2>
+        <p class="backmatter-note">Sources read for this project, each checked against its text. The list is generated from the project's literature file.</p>
+        <!-- references:start -->
+      <h3>Published research</h3>
+      <ol class="refs">
+        <li data-ref="bailey-lopez-de-prado-2014-jpm">Bailey, D. H.; Lopez de Prado, M. (2014). <a href="https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf" rel="noopener noreferrer"><cite>The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality.</cite></a> Journal of Portfolio Management 40(5), 94-107 (read as the July 31, 2014 author version).</li>
+        <li data-ref="carter-rogers-simkins-2006-fm">Carter, D. A.; Rogers, D. A.; Simkins, B. J. (2006). <a href="https://ideas.repec.org/a/bla/finmgt/v35y2006i1p53-86.html" rel="noopener noreferrer"><cite>Does Hedging Affect Firm Value? Evidence from the US Airline Industry.</cite></a> Financial Management 35(1), 53-86.</li>
+        <li data-ref="chuang-2020-eb">Chuang, S.-H. (2020). <a href="http://www.accessecon.com/Pubs/EB/2020/Volume40/EB-20-V40-I1-P55.pdf" rel="noopener noreferrer"><cite>Cost pass-through in the airline industry: price responses and asymmetries.</cite></a> Economics Bulletin 40(1), 639-652.</li>
+        <li data-ref="dichev-huang-lee-zhao-2023-draft">Dichev, I. D.; Huang, X.; Lee, D. K. K.; Zhao, J. (2023). <a href="https://business.columbia.edu/sites/default/files-efs/imce-uploads/ADP/Spring%202024/Dichev%20Huang%20Lee%20Zhao%202023.pdf" rel="noopener noreferrer"><cite>You have a point - but a point is not enough: The case for distributional forecasts of earnings.</cite></a> Working paper draft dated November 15, 2023 (earlier version of SSRN 4547337).</li>
+        <li data-ref="dichev-huang-lee-zhao-ssrn-4547337">Dichev, I. D.; Huang, X.; Lee, D. K. K.; Zhao, J. (2023). <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4547337" rel="noopener noreferrer"><cite>Estimating and Using Distributional Forecasts of Earnings.</cite></a> SSRN working paper 4547337 (posted 27 August 2023, last revised 6 May 2025).</li>
+        <li data-ref="dong-2024-thesis-ch1">Dong, C. (2024). <a href="https://ruor.uottawa.ca/bitstreams/71a0c993-c632-4bbd-9446-3bffa8dbaf3d/download" rel="noopener noreferrer"><cite>Studies on the Aviation Industry Based on Industrial Organization, Part I: Cost Pass-through in the U.S. Aviation Industry.</cite></a> Ph.D. thesis, University of Ottawa (the chapter the 2025 JATM article is based on).</li>
+        <li data-ref="dong-atallah-galdo-2025-jatm">Dong, C.; Atallah, G.; Galdo, J. (2025). <a href="https://www.sciencedirect.com/science/article/pii/S0969699725000869" rel="noopener noreferrer"><cite>Cost pass-through in the U.S. aviation industry.</cite></a> Journal of Air Transport Management 127, 102823.</li>
+        <li data-ref="driesprong-jacobsen-maat-2008-jfe">Driesprong, G.; Jacobsen, B.; Maat, B. (2008). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0304405X08000901" rel="noopener noreferrer"><cite>Striking oil: Another puzzle?</cite></a> Journal of Financial Economics 89(2), 307-327.</li>
+        <li data-ref="gayle-lin-2021-ei">Gayle, P. G.; Lin, Y. (2021). <a href="https://mpra.ub.uni-muenchen.de/102018/1/MPRA_paper_102018.pdf" rel="noopener noreferrer"><cite>Cost Pass-through in Commercial Aviation: Theory and Evidence.</cite></a> Economic Inquiry 59(2), 803-828 (read as MPRA Paper 102018, deposited 2020).</li>
+        <li data-ref="gneiting-raftery-2007-jasa">Gneiting, T.; Raftery, A. E. (2007). <a href="https://sites.stat.washington.edu/people/raftery/Research/PDF/Gneiting2007jasa.pdf" rel="noopener noreferrer"><cite>Strictly Proper Scoring Rules, Prediction, and Estimation.</cite></a> Journal of the American Statistical Association 102(477).</li>
+        <li data-ref="harvey-liu-zhu-2016-rfs">Harvey, C. R.; Liu, Y.; Zhu, H. (2016). <a href="https://academic.oup.com/rfs/article/29/1/5/1843824" rel="noopener noreferrer"><cite>... and the Cross-Section of Expected Returns.</cite></a> The Review of Financial Studies 29(1), 5-68.</li>
+        <li data-ref="hong-torous-valkanov-2007-jfe">Hong, H.; Torous, W.; Valkanov, R. (2007). <a href="https://www.columbia.edu/~hh2679/industry-12-05-05.pdf" rel="noopener noreferrer"><cite>Do industries lead stock markets?</cite></a> Journal of Financial Economics 83(2), 367-396 (read as the December 2005 draft).</li>
+        <li data-ref="jiang-que-2022-afl">Jiang, Y.; Que, T. (2022). <a href="https://ojs.aut.ac.nz/applied-finance-letters/1/article/download/522/152" rel="noopener noreferrer"><cite>Asymmetric Pricing and Airline Performance.</cite></a> Applied Finance Letters 11.</li>
+        <li data-ref="jiang-que-yu-2022-finrev">Jiang, Y.; Que, T.; Yu, M. (2022). <a href="https://ideas.repec.org/a/bla/finrev/v57y2022i4p793-814.html" rel="noopener noreferrer"><cite>Price asymmetries in the US airline industry.</cite></a> The Financial Review 57(4), 793-814.</li>
+        <li data-ref="koopmans-lieshout-2016-jatm">Koopmans, C.; Lieshout, R. (2016). <a href="https://ideas.repec.org/a/eee/jaitra/v53y2016icp1-11.html" rel="noopener noreferrer"><cite>Airline cost changes: To what extent are they passed through to the passenger?</cite></a> Journal of Air Transport Management 53, 1-11.</li>
+        <li data-ref="kristjanpoller-concha-2016-apen">Kristjanpoller, W. D.; Concha, D. (2016). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0306261916308649" rel="noopener noreferrer"><cite>Impact of fuel price fluctuations on airline stock returns.</cite></a> Applied Energy 178, 496-504.</li>
+        <li data-ref="pal-mitra-2022-eneeco">Pal, D.; Mitra, S. K. (2022). <a href="https://ideas.repec.org/a/eee/eneeco/v111y2022ics0140988322002729.html" rel="noopener noreferrer"><cite>Do airfares respond asymmetrically to fuel price changes? A multiple threshold nonlinear ARDL model.</cite></a> Energy Economics 111.</li>
+        <li data-ref="wadud-2015-tra">Wadud, Z. (2015). <a href="https://eprints.whiterose.ac.uk/id/eprint/83855/1/manuscript%20accepted%20TRA%20-%20repository.pdf" rel="noopener noreferrer"><cite>Imperfect reversibility of air transport demand: Effects of air fare, fuel prices and price transmission.</cite></a> Transportation Research Part A: Policy and Practice 72, 16-26 (read as the accepted manuscript).</li>
+        <li data-ref="wang-gao-2020-jatm">Wang, H.; Gao, X. (2020). <a href="https://ideas.repec.org/a/eee/jaitra/v87y2020ics0969699720300302.html" rel="noopener noreferrer"><cite>Oil price dynamics and airline earnings predictability.</cite></a> Journal of Air Transport Management 87, 101854.</li>
+        <li data-ref="wolter-ehlers-luetjens-gollnick-2021-jatm">Wolter, A. H.; Ehlers, T.; Luetjens, K.; Gollnick, V. (2021). <a href="https://ideas.repec.org/a/eee/jaitra/v95y2021ics0969699721000831.html" rel="noopener noreferrer"><cite>Commodity price pass-through in the US airline industry and the hidden perks of consolidation.</cite></a> Journal of Air Transport Management 95, 102100.</li>
+      </ol>
+      <h3>Filings, transcripts and analyst notes</h3>
+      <ol class="refs">
+        <li data-ref="ubs-2026-03-investing-com-range">Investing.com (Sam Boughedda), reporting a UBS note by Atul Maheswari (2026). <a href="https://ca.finance.yahoo.com/news/ubs-cuts-price-targets-airline-144817964.html" rel="noopener noreferrer"><cite>UBS cuts price targets on airline stocks amid 'significant uncertainty'.</cite></a> Investing.com article republished on Yahoo Finance Canada, March 16, 2026.</li>
+        <li data-ref="ubs-2026-03-ual-pass-through-45">UBS (analyst Atul Maheswari), as quoted in a news article (2026). <a href="https://longbridge.com/en/news/279467992.md" rel="noopener noreferrer"><cite>UBS Eyes Possible Bottom In Airline Stocks After Bear Market.</cite></a> Longbridge news page dated 2026-03-17 (the same text appears on freedombunker.com with that date).</li>
+        <li data-ref="ual-2026q1-earnings-release">United Airlines Holdings, Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/100517/000010051726000089/ual_erx03312026xex991.htm" rel="noopener noreferrer"><cite>First-quarter 2026 earnings news release, April 21, 2026 (Exhibit 99.1 to Form 8-K).</cite></a> SEC EDGAR, accession 0000100517-26-000089.</li>
+        <li data-ref="ual-2026q1-investor-update">United Airlines Holdings, Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/100517/000010051726000089/ual_erx03312026xex992.htm" rel="noopener noreferrer"><cite>Investor Update, issue date April 21, 2026 (Exhibit 99.2 to Form 8-K).</cite></a> SEC EDGAR, accession 0000100517-26-000089.</li>
+        <li data-ref="ual-2026q2-10q">United Airlines Holdings, Inc. (2026). <a href="https://ebs.publicnow.com/view/3C0110D0DFA3EF64FBC6A69D93FDCD2A5DFE3B32" rel="noopener noreferrer"><cite>Quarterly Report on Form 10-Q for the quarter ended June 30, 2026 (filed 2026-07-16), Item 2 passages.</cite></a> SEC EDGAR, accession 0000100517-26-000139 (Item 2 read on a mirror).</li>
+        <li data-ref="ual-2026q2-earnings-release">United Airlines Holdings, Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex991.htm" rel="noopener noreferrer"><cite>Second-quarter 2026 earnings news release, July 15, 2026 (Exhibit 99.1 to Form 8-K).</cite></a> SEC EDGAR, accession 0000100517-26-000135.</li>
+        <li data-ref="ual-2026q2-investor-update">United Airlines Holdings, Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex992.htm" rel="noopener noreferrer"><cite>Investor Update, issue date July 15, 2026 (Exhibit 99.2 to Form 8-K).</cite></a> SEC EDGAR, accession 0000100517-26-000135.</li>
+        <li data-ref="ual-fy2025-10k">United Airlines Holdings, Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/100517/000010051726000023/ual-20251231.htm" rel="noopener noreferrer"><cite>Annual Report on Form 10-K for the fiscal year ended December 31, 2025 (filed 2026-02-12).</cite></a> SEC EDGAR, accession 0000100517-26-000023.</li>
+        <li data-ref="ual-2026q1-earnings-call">United Airlines Holdings, Inc. (S. Kirby, A. Nocella, M. Leskinen) (2026). <a href="https://www.fool.com/earnings/call-transcripts/2026/06/02/united-airlines-ual-q1-2026-earnings-transcript/" rel="noopener noreferrer"><cite>First-quarter 2026 earnings conference call, April 22, 2026 (transcript).</cite></a> The Motley Fool transcript.</li>
+        <li data-ref="ual-2026q2-earnings-call">United Airlines Holdings, Inc. (S. Kirby, A. Nocella, M. Leskinen) (2026). <a href="https://news.alphastreet.com/united-airlines-holdings-inc-ual-q2-2026-earnings-call-transcript/" rel="noopener noreferrer"><cite>Second-quarter 2026 earnings conference call, July 16, 2026 (transcript).</cite></a> AlphaStreet transcript.</li>
+      </ol>
+      <!-- references:end -->
+
+        <h3 id="credits">Credits</h3>
+        <ul class="credits">
+          <li><b>Filings.</b> United, Delta and American documents are public filings on <a href="https://www.sec.gov/edgar" rel="noopener noreferrer">SEC EDGAR</a>.</li>
+          <li><b>Government statistics.</b> Jet fuel prices are from the Energy Information Administration, traveler counts from the Transportation Security Administration, the airline fare index from the Bureau of Labor Statistics, and airline traffic from the Bureau of Transportation Statistics. These are works of the US government in the public domain. Two series were retrieved through FRED, the data service of the Federal Reserve Bank of St. Louis.</li>
+          <li><b>Share prices.</b> Daily prices are from Yahoo Finance's chart service, an unofficial feed, used here for research only.</li>
+          <li><b>Fare quotes.</b> The 2022 quotes are from <a href="https://www.kaggle.com/datasets/dilwong/flightprices" rel="noopener noreferrer">Flight Prices</a> by Dillon Wong, licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer">CC BY 4.0</a>. The uploader states the source as Expedia. Only index values built from the quotes are published here, never the quotes.</li>
+          <li><b>Interface.</b> Navigation adapted from <a href="https://rareui.com" rel="noopener noreferrer">Rare UI</a> by Swami Malode: the section sidebar on this page from its Hook Sidebar (<a href="/static/lab/LICENSE-hook-sidebar.txt">license</a>), and the view switcher in the application from its Gooey Nav (<a href="/static/lab/LICENSE-gooey-nav.txt">license</a>).</li>
+          <li><b>Charts and type.</b> Charts are drawn with Observable Plot and D3 (<a href="/static/lab/vendor/LICENSE-plot.txt">license</a>, <a href="/static/lab/vendor/LICENSE-d3.txt">license</a>). The typefaces are Geist and Geist Mono by Vercel (<a href="/static/lab/fonts/LICENSE.txt">license</a>). All are served from this site; nothing is loaded from elsewhere. Versions are listed in <a href="/static/lab/vendor/VERSIONS">the vendor file</a>.</li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="report-foot">
+      <a href="/">Back to the simulator</a>
+    </footer>
+
+  </div>
+</body>
+</html>
