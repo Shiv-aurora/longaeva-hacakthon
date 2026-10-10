@@ -1,0 +1,28 @@
+{
+  "basis": "Illustrative allocation of the 40 inferred 737 MAX entries to cash purchases: 20 in September and 20 in December. Assume $40M each, $4M per aircraft already deposited, $2M more in August, 75% borrowing against delivery settlement, 6% annual interest, 1% financing fee and $100M monthly residual capex. Counts align with H2 MAX guidance; months, prices and financing are assumptions. Other purchases and capex are unallocated and must be covered by residual capex; this is not a United forecast.",
+  "residual_monthly_capex_musd": 100,
+  "purchases": [
+    {
+      "purchase_id": "max-september",
+      "fleet_record_id": "fleet.B737_MAX.inventory.2026-09-30.ual_july_2026_fleet_plan",
+      "aircraft": 20,
+      "unit_price_musd": 40,
+      "opening_deposits_musd": 80,
+      "deposits": [{"month": "2026-08", "amount_musd": 40}],
+      "debt_fraction": 0.75,
+      "annual_interest_rate": 0.06,
+      "financing_fee_fraction": 0.01
+    },
+    {
+      "purchase_id": "max-december",
+      "fleet_record_id": "fleet.B737_MAX.inventory.2026-12-31.ual_july_2026_fleet_plan",
+      "aircraft": 20,
+      "unit_price_musd": 40,
+      "opening_deposits_musd": 80,
+      "deposits": [{"month": "2026-08", "amount_musd": 40}],
+      "debt_fraction": 0.75,
+      "annual_interest_rate": 0.06,
+      "financing_fee_fraction": 0.01
+    }
+  ]
+}
