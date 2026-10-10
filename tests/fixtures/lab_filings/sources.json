@@ -1,0 +1,156 @@
+[
+ {
+  "file": "verbatim_2013q1_statistics.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0001193125-13-172096",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312513172096/d526478dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-13-172096/d526478dex991.htm",
+  "source_sha256": "ee65135041d4754ef2bd9040d1169876ca4b9bdb18f9a677def2371c682ef919",
+  "byte_start": 191072,
+  "byte_end": 197442,
+  "sha256": "6711853753b05095bf4e39ec9f49bf8aeda55461fb6291cf70d3473ae3ac72a0",
+  "bytes": 6370
+ },
+ {
+  "file": "verbatim_2026q2_statistics.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0000100517-26-000135",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex991.htm",
+  "source_path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex991.htm",
+  "source_sha256": "0d64287bc34fd7664bd0fbd8fd749760d0412d73f15c554ea637388d671fb4ef",
+  "byte_start": 194173,
+  "byte_end": 207589,
+  "sha256": "009c01322bbfa21609fc55058509d159d0e3ae926226adf3590ec1b86bf771c2",
+  "bytes": 13416
+ },
+ {
+  "file": "verbatim_investor_update_2014.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0001193125-14-005563",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312514005563/d656926dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-14-005563/d656926dex991.htm",
+  "source_sha256": "fea9c24fbbf51dcf3b9203c38c81f1fa989803d57ab50aef288d2c20bb14cb73",
+  "byte_start": 0,
+  "byte_end": 1799,
+  "sha256": "6410ce0fad60215b30262a335718439b976de7819b36bf6d7d49b52ea4bd4cbc",
+  "bytes": 1799
+ },
+ {
+  "file": "verbatim_webcast_2013.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0001193125-13-402459",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312513402459/d613370dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-13-402459/d613370dex991.htm",
+  "source_sha256": "d6e87bd492a6192bc4f7fae2646bed0b21a1146268f3ebb293d7e1939b68105a",
+  "byte_start": 0,
+  "byte_end": 1767,
+  "sha256": "20769738595bbe2116dd56705f9dfd510aebcf31d608833b0e44d7b5830ebd96",
+  "bytes": 1767
+ },
+ {
+  "file": "verbatim_8k_2019_guidance.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0001104659-19-030655",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000110465919030655/a19-10313_18k.htm",
+  "source_path": "data/lab_raw/sec/0001104659-19-030655/a19-10313_18k.htm",
+  "source_sha256": "213b3fd78f4805980d2e6bc2bf091b89eba95d1b4c6ef1ee3526d3115da451cb",
+  "byte_start": 22093,
+  "byte_end": 23064,
+  "sha256": "337107467938ca408094a2c811d559a787e29379f20683c2275b971fbbe3dafe",
+  "bytes": 971
+ },
+ {
+  "file": "verbatim_8k_2013_cover.htm",
+  "kind": "contiguous bytes of the document",
+  "accession": "0001193125-13-132548",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312513132548/d511804d8k.htm",
+  "source_path": "data/lab_raw/sec/0001193125-13-132548/d511804d8k.htm",
+  "source_sha256": "2c69cae2e9073ef4af6bd86a1d3dbbb50d35f356cd3c8ef28ed75a1aa40ec22d",
+  "byte_start": 11283,
+  "byte_end": 11940,
+  "sha256": "5cdb7522e3391ff2a7874d6e355d658a3b7329eee2c4ccf5ad1299695eeeacdd",
+  "bytes": 657
+ },
+ {
+  "file": "verbatim_filing_index_2026.html",
+  "kind": "contiguous bytes of the document",
+  "accession": "0000100517-26-000135",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/0000100517-26-000135-index.html",
+  "source_path": "data/lab_raw/sec/0000100517-26-000135/0000100517-26-000135-index.html",
+  "source_sha256": "c0dfbe05b47b13bcd05ffcde781d648addbdaeb6cd5be5b012d275e5faf263bc",
+  "byte_start": 4881,
+  "byte_end": 7395,
+  "sha256": "d7a4406c82ddb6cb959320aaa9df031f13db015e62737fd355689c1fcb6dcdae",
+  "bytes": 2514
+ },
+ {
+  "file": "index_2026.json",
+  "kind": "whole file",
+  "accession": "0000100517-26-000135",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/index.json",
+  "source_path": "data/lab_raw/sec/0000100517-26-000135/index.json",
+  "source_sha256": "6a0c88da32996e91b35daf9cfb6ff33b189febe670d8f5c5377c40cdaa7b7c96",
+  "sha256": "6a0c88da32996e91b35daf9cfb6ff33b189febe670d8f5c5377c40cdaa7b7c96",
+  "bytes": 2113
+ },
+ {
+  "file": "release_2013q1.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0001193125-13-172096",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312513172096/d526478dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-13-172096/d526478dex991.htm",
+  "source_sha256": "ee65135041d4754ef2bd9040d1169876ca4b9bdb18f9a677def2371c682ef919",
+  "sha256": "91ef0373451c7ac03d1f358078bac79cc18bdcfe8559f8add5f851cf97f9a414",
+  "bytes": 8743
+ },
+ {
+  "file": "release_2015q2.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0001193125-15-260541",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312515260541/d34201dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-15-260541/d34201dex991.htm",
+  "source_sha256": "fe729788b645dafdf4cdec519183a6f6f4d0b55fad15d1bc8fa7c9fba92673d4",
+  "sha256": "05c5a7b1e9e8ecc51b9c4e3f86cfbdd610d94b60e77a65fbdcd4ff986ea7b9b1",
+  "bytes": 13887
+ },
+ {
+  "file": "release_2017q4.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0001193125-18-017361",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000119312518017361/d494056dex991.htm",
+  "source_path": "data/lab_raw/sec/0001193125-18-017361/d494056dex991.htm",
+  "source_sha256": "850b0974108157793ff03355e654b85ed94417449d081390686a7757ace711f8",
+  "sha256": "ad7b2bdea6e6fb314292b59c98893e3352726a2315d131195107387732a17f45",
+  "bytes": 14557
+ },
+ {
+  "file": "release_2020q2.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0000100517-20-000043",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051720000043/ual06302020erex991.htm",
+  "source_path": "data/lab_raw/sec/0000100517-20-000043/ual06302020erex991.htm",
+  "source_sha256": "ec16d42bb6608185b114b3c85fb66edd299a2c856a437e936f9d0a6ba466316c",
+  "sha256": "bb3cf1b43c384ee96b54f20838a378972d2e49251672169f231200505443e9a1",
+  "bytes": 11838
+ },
+ {
+  "file": "release_2022q3.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0000100517-22-000075",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051722000075/ual_09302022erex991.htm",
+  "source_path": "data/lab_raw/sec/0000100517-22-000075/ual_09302022erex991.htm",
+  "source_sha256": "f627fd847b32fe5ebc6723b6be54915cc44af7ac4fb73781a5c9feeb2c7bfa54",
+  "sha256": "8aad508f7e44c2a280e55a1f5b0f90cdb1c0e5c3c8922a4130ece6247c77c203",
+  "bytes": 13261
+ },
+ {
+  "file": "release_2026q2.htm",
+  "kind": "selected table rows of the exhibit: attributes other than colspan and inline formatting tags removed, runs of empty cells merged; parses to the same cells as the whole exhibit",
+  "accession": "0000100517-26-000135",
+  "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex991.htm",
+  "source_path": "data/lab_raw/sec/0000100517-26-000135/ual_erx06302026xex991.htm",
+  "source_sha256": "0d64287bc34fd7664bd0fbd8fd749760d0412d73f15c554ea637388d671fb4ef",
+  "sha256": "23f074927203ade167c8959fd776bd3a7a7f6f23443921d3d37733a8c5a25c4a",
+  "bytes": 10544
+ }
+]

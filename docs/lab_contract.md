@@ -138,7 +138,7 @@ Tidy inputs (wave 1):
 - `data/lab/fuel_daily.csv`: `date,usd_per_gallon` (EIA Gulf Coast kerosene-type jet, daily, missing days absent).
 - `data/lab/prices_daily.csv`: `date,ticker,close,adj_close` for UAL, DAL, AAL, LUV, SPY, JETS, HO=F.
 - `data/lab/cpi_monthly.csv`: `date,series_id,value` for CUSR0000SETG01, CUUR0000SETG01, CUSR0000SA0.
-- `data/lab/ual_filings_index.csv`: one row per downloaded exhibit: `accession,filed_on,period_end,form,items,exhibit,filename,url,sha256,path`.
+- `data/lab/ual_filings_index.csv`: one row per selected document (not every download): `accession,filed_on,period_end,form,items,exhibit,filename,url,sha256,path,kind`. `kind` is `earnings_release`, `investor_update` or `other`. `exhibit` is `8-K` when the guidance sits in the filing's own text (common from 2019).
 - `data/lab/ual_quarterly.csv`: one row per quarter from the earnings-release statistics tables: `period_end,filed_on,accession,asm_m,rpm_m,total_revenue_musd,passenger_revenue_musd,trasm_cents,prasm_cents,casm_cents,casm_ex_cents,fuel_gallons_m,fuel_price_usd_gal,fuel_expense_musd,pretax_income_musd,adj_pretax_income_musd,net_income_musd,gaap_eps_diluted,adj_eps_diluted,diluted_shares_m,profit_sharing_musd,source_note`. Blank where the release does not report the item.
 - `data/lab/ual_guidance.json`: list of verified guidance facts (see `evidence` shape below).
 - `data/lab/dal_check.json`: Delta's July 2026 guidance, Q2 and Q3 2026 actuals, with quotes.
