@@ -43,7 +43,7 @@ behavior measured from history and the method checked against what happened.
   delayed move. A trading rule built on a delay lost money out of sample.
 - For Q3 2026 the method puts fuel at $3.93 a gallon against the $3.69 United
   assumed and adjusted EPS at $2.54 (P10 $2.18, P90 $2.82) against a guided
-  $2.50 to $3.50. Frozen 10 October 2026.
+  $2.50 to $3.50. Frozen before the report.
 
 ## What it did not show
 

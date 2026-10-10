@@ -32,7 +32,7 @@ let a language model plan the work and word the answer, copy `.env.example` to
 |---|---|
 | Simulator | Move the drivers and read the outcomes. Three tabs: **What if** (one scenario), **What breaks** (where free cash flow turns negative across two drivers), **What must be true** (what has to hold for a target to be met). Ask the agent in plain words and it plans, runs the simulator and writes a short checked report. |
 | Behavior | The relationships measured from history that drive the simulator. |
-| Reality check | The method replayed on past quarters against simple rivals, Delta's latest quarter as a worked example, and one dated forecast for United's Q3 2026. |
+| Reality check | The method replayed on past quarters against simple rivals, Delta's latest quarter as a worked example, and one forecast for United's Q3 2026 fixed before the report. |
 
 Every scenario runs three ways on the same 10,000 simulated worlds, so the
 difference between them is the airline's response and nothing else:
@@ -66,11 +66,12 @@ difference between them is the airline's response and nothing else:
 - **Delta, Q3 2026.** Guided $2.00 to $2.50 at about $3.15 a gallon, paid $3.61,
   reported $1.72 on 9 October. No recovery gives $1.65; the measured share gives
   $1.88.
-- **One dated forecast.** Frozen on 10 October 2026, before United reports on
-  20 October: adjusted EPS of $2.54 (P10 $2.18, P90 $2.82) against United's range
-  of $2.50 to $3.50, because fuel is put at $3.93 a gallon against the $3.69
-  United assumed. The forecast block is fixed in `data/lab/q3_call_frozen.json`;
-  its SHA-256 is `c5e7de714f5d89a13e3a45d1dcc95ad077bc918381c16ceec0e37e4dff3a5630`.
+- **One forecast fixed in advance.** Frozen before United reports on 20 October
+  2026: adjusted EPS of $2.54 (P10 $2.18, P90 $2.82) against United's range of
+  $2.50 to $3.50, because fuel is put at $3.93 a gallon against the $3.69 United
+  assumed. The forecast block, with its freeze time, is fixed in
+  `data/lab/q3_call_frozen.json`; its SHA-256 is
+  `c5e7de714f5d89a13e3a45d1dcc95ad077bc918381c16ceec0e37e4dff3a5630`.
   `scripts/lab/score_q3_call.py` adds the outcome and scores beside it afterwards.
   Because the replay did not beat the midpoint, this is a test of the method, not
   a claim that it is better than United's number.

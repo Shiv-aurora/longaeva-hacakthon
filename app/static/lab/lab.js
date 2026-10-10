@@ -2152,7 +2152,7 @@
       seal.appendChild(el("span", null, [el("b", { text: days != null && days < 0 ? "Reported " : "Next check " }), fmt.day(meta.report_date) +
         (days == null ? "" : days > 1 ? ", in " + days + " days" : days === 1 ? ", tomorrow" : days === 0 ? ", today" : "")]));
     }
-    seal.appendChild(el("span", null, [el("b", { text: "Frozen " }), fmt.day(c.frozen_at)]));   // the exact time is in the drawer
+    seal.appendChild(el("span", null, [el("b", { text: "Frozen " }), "before the report"]));   // the exact time is in the drawer
     if (c.sha256) seal.appendChild(el("span", { title: "The estimate's fingerprint, first 12 characters. Copy gives all 64: " + c.sha256 }, [el("b", { text: "SHA-256 " }), el("span", { class: "hash", text: fmt.hashShort(c.sha256) }), " ", copyButton(c.sha256)]));
     if (c.timestamp_proof && !FIXTURES) seal.appendChild(el("a", { href: DATA + c.timestamp_proof, download: true, text: "Proof (.ots)" }));
 
@@ -2182,7 +2182,7 @@
         var b = hasSignal ? r.signal.data.backtest || {} : {};
         return [
           labelled("The fingerprint", el("p", null, [el("span", { class: "hash", text: c.sha256 || fmt.missing }), " ", c.sha256 ? copyButton(c.sha256) : null])),
-          textBlock("What it proves", "The fingerprint changes if a single character of the estimate changes. The timestamp proof ties that fingerprint to a public record of the time."),
+          textBlock("What it proves", "The fingerprint changes if a single character of the estimate changes." + (c.timestamp_proof ? " The timestamp proof ties that fingerprint to a public record of the time." : " Published before the report, it shows the estimate was not changed afterwards.")),
           textBlock("Frozen at", fmt.stamp(c.frozen_at) + ", using data up to " + fmt.day(c.data_cutoff) + "."),
           listBlock("Known before the freeze", c.known_before_freeze),
           textBlock("How it will be scored", (scoring.rule === "CRPS" ? "By the range score (CRPS)" : "By " + (scoring.rule || "a rule fixed in advance")) + (against ? ", against " + against + "." : ".")),
@@ -2238,12 +2238,14 @@
         r[result.name] = result;
         if (result.status === "ok") {
           r.ctx[result.name] = result.data;
-          if (result.data && typeof result.data.as_of === "string" && result.data.as_of > latest) latest = result.data.as_of;
+          // The top bar gives the last day of market and operating data. The framing facts and the forecast carry
+          // their own dates in their files and drawers.
+          if (result.name !== "meta" && result.name !== "q3_call" && result.data && typeof result.data.as_of === "string" && result.data.as_of > latest) latest = result.data.as_of;
         }
       });
       indexEvidence(r.evidence);
       var date = $("data-date");
-      if (date) date.textContent = latest ? "Data to " + fmt.day(latest) : "";
+      if (date) date.textContent = latest ? "Market data to " + fmt.day(latest) : "";
       var about = $("about-btn");
       if (about) about.addEventListener("click", function () { openAbout(r); });
       [renderBehaviour, renderTrack, renderForward].forEach(function (render) {
