@@ -1,0 +1,136 @@
+[
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/domestic-segments/DD.DB28DS.WAC.201301.201312.REL02.21MAR2014.zip",
+    "original_source_sha256": "f7f85ccb8424f4713a85001a9cc53a94df97dc022dc05f5b688653427e7ca459",
+    "member": "dd.db28ds.wac.201301.201312.asc",
+    "rows": [
+      {
+        "original_line": 464,
+        "text": "2013|10|ABE|30135|23|ALLENTOWN/BETHLEHEM/EASTON,PENNSYLVANIA,USA|EWR|31703|21|NEWARK,NEW JERSEY,USA|UA|0A875|3|67|F|6|98|1|1|0|29550|120|86|327|0|52|38|10"
+      },
+      {
+        "original_line": 523,
+        "text": "2013|09|ABE|30135|23|ALLENTOWN/BETHLEHEM/EASTON,PENNSYLVANIA,USA|LGA|31703|22|NEW YORK,NEW YORK,USA|DL|01260|3|83|F|6|22|1|1|0|52460|184|181|0|0|47|25|10"
+      },
+      {
+        "original_line": 540,
+        "text": "2013|07|ABE|30135|23|ALLENTOWN/BETHLEHEM/EASTON,PENNSYLVANIA,USA|LGA|31703|22|NEW YORK,NEW YORK,USA|US|02040|3|83|F|6|99|1|1|1|51700|187|187|0|0|52|26|10"
+      },
+      {
+        "original_line": 710,
+        "text": "2013|08|ABI|30136|74|ABILENE,TEXAS,USA|DFW|30194|74|DALLAS/FORT WORTH,TEXAS,USA|AA|0A050|3|158|F|6|55|1|3|3|107800|405|361|0|0|226|106|10"
+      },
+      {
+        "original_line": 1305,
+        "text": "2013|10|ABQ|30140|86|ALBUQUERQUE,NEW MEXICO,USA|DEN|30325|82|DENVER,COLORADO,USA|OO|06700|3|349|F|6|29|1|22|22|297000|1100|958|0|0|1749|1262|10"
+      },
+      {
+        "original_line": 13432,
+        "text": "2013|08|ARC|30349|1|ARCTIC VILLAGE,ALASKA,USA|FAI|31517|1|FAIRBANKS,ALASKA,USA|5V|06860|1|237|F|0|79|3|1|0|853|3|0|0|0|94|90|1"
+      },
+      {
+        "original_line": 13433,
+        "text": "2013|08|ARC|30349|1|ARCTIC VILLAGE,ALASKA,USA|FAI|31517|1|FAIRBANKS,ALASKA,USA|5V|06860|1|237|F|4|79|3|1|0|2370|9|5|155|0|58|54|1"
+      },
+      {
+        "original_line": 106002,
+        "text": "2013|06|ELI|31535|1|ELIM,ALASKA,USA|KKA|32704|1|KOYUK,ALASKA,USA|H6|06984|1|40|F|1|94|1|7|0|15400|56|17|184.5|5|154|133|1"
+      }
+    ]
+  },
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/international-segments/FD.DB28IS.WAC.201301.201312.REL01.04JUN2014.zip",
+    "original_source_sha256": "c6bdf257e448f4af8301b4e8df0de13aff69201d6c5737a448e96f93e4fd1267",
+    "member": "fd.db28is.wac.201301.201312.asc",
+    "rows": [
+      {
+        "original_line": 11,
+        "text": "2013|07|ACA|30148|148|ACAPULCO,MEXICO|IAH|31453|74|HOUSTON,TEXAS,USA|UA|10876|3|952|F|6|94|1|1|0|35470|138|0|0|18|0|0|0|345|230|123|10"
+      },
+      {
+        "original_line": 22,
+        "text": "2013|01|ACC|30150|529|ACCRA,GHANA|BOS|30721|13|BOSTON,MASSACHUSETTS,USA|DL|10261|3|4984|F|6|26|1|1|0|78030|209|0|0|196|0|0|6391|0|729|704|10"
+      },
+      {
+        "original_line": 91,
+        "text": "2013|09|ADZ|30174|327|SAN ANDRES ISLAND,COLOMBIA|MIA|32467|33|MIAMI,FLORIDA,USA|AA|10050|3|913|F|6|22|1|1|1|50100|184|0|0|169|0|0|1726|354|138|114|10"
+      },
+      {
+        "original_line": 476,
+        "text": "2013|01|AMS|30292|461|AMSTERDAM,NETHERLANDS|ABE|30135|23|ALLENTOWN/BETHLEHEM/EASTON,PENNSYLVANIA,USA|US|12040|3|3709|F|6|22|1|1|1|52300|176|0|0|158|0|0|0|0|531|502|10"
+      },
+      {
+        "original_line": 5591,
+        "text": "2013|12|BJX|30638|148|LEON/GUANAJUATO,MEXICO|LAX|32575|91|LOS ANGELES,CALIFORNIA,USA|OO|11025|3|1366|F|6|38|1|27|28|481120|2052|0|0|1256|0|0|0|0|5779|5052|10"
+      }
+    ]
+  },
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/domestic-segments/DB28SEG.DD.WAC.202508.202607.REL01.02OCT2026.zip",
+    "original_source_sha256": "8bb6f12deea9904e6a385fc79e2de470ca4932b775472dc2fcd27c474d228aa8",
+    "member": "db28seg.dd.wac.202508.202607.asc",
+    "rows": [
+      {
+        "original_line": 734,
+        "text": "2026|06|ABE|30135|23|Allentown/Bethlehem/Easton, PA|ABE|30135|23|Allentown/Bethlehem/Easton, PA|OO|06700|3|0|F|6|530|1|1|1|3710|50|0|0|0|7|0|10|"
+      },
+      {
+        "original_line": 766,
+        "text": "2026|06|ABE|30135|23|Allentown/Bethlehem/Easton, PA|ATL|30397|34|Atlanta, GA|DL|01260|3|692|F|6|608|1|24|24|717600|2640|2349|4|0|2840|2335|10|"
+      },
+      {
+        "original_line": 782,
+        "text": "2025|11|ABE|30135|23|Allentown/Bethlehem/Easton, PA|AVP|30434|23|Scranton/Wilkes-Barre, PA|AA|0A050|3|50|F|6|694|1|1|1|37200|150|119|0|0|39|17|10|"
+      },
+      {
+        "original_line": 874,
+        "text": "2025|09|ABE|30135|23|Allentown/Bethlehem/Easton, PA|EWR|31703|21|Newark, NJ|UA|0A875|3|67|F|6|622|1|1|0|40013|176|159|0|0|173|23|10|"
+      }
+    ]
+  },
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/international-segments/DB28SEG.FD.WAC.202508.202607.REL01.02OCT2026.zip",
+    "original_source_sha256": "bcda44a0cafe0bdf54e43090486256fa1654194a2b5077a193fc15e9d05afbbe",
+    "member": "db28seg.fd.wac.202508.202607.asc",
+    "rows": [
+      {
+        "original_line": 37,
+        "text": "2025|10|ACA|30148|148|Acapulco, Mexico|IAH|31453|74|Houston, TX|OO|11025|3|952|F|6|673|1|1|1|9641|76|19|0|0|169|138|10|"
+      },
+      {
+        "original_line": 51,
+        "text": "2026|01|ACC|30150|529|Accra, Ghana|ATL|30397|34|Atlanta, GA|DL|10261|3|5679|F|6|339|1|16|16|1540160|4496|3839|12062|0|11742|11315|10|"
+      },
+      {
+        "original_line": 57,
+        "text": "2025|12|ACC|30150|529|Accra, Ghana|IAD|30852|38|Washington, DC|UA|10874|3|5296|F|6|889|1|1|1|109105|257|195|0|1713|691|670|10|"
+      },
+      {
+        "original_line": 581,
+        "text": "2025|11|AKL|30244|851|Auckland, New Zealand|DFW|30194|74|Dallas/Fort Worth, TX|AA|10052|3|7440|F|6|889|1|18|18|1963800|5112|3646|535155|0|14533|13962|10|"
+      }
+    ]
+  },
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/international-segments/DB28SEG.FD.WAC.202301.202312.REL01.04MAR2024.zip",
+    "original_source_sha256": "335e6e0fc11ae9df1e47b23755d0868d6e2299e49869ec82b59621ee1a5171d0",
+    "member": "db28seg.fd.wac.202301.202312.asc",
+    "rows": [
+      {
+        "original_line": 3962,
+        "text": "2023|11|ATL|30397|34|Atlanta, GA|DOH|NULL|664|NULL|QR|71049|0|7458|F|6|637|1|30|0|3755842|10974|10514|401194|0|0|0|664|"
+      }
+    ]
+  },
+  {
+    "source_url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/airline-data/international-segments/FD.DB28IS.WAC.201801.201812.REL01.08JUN2019.zip",
+    "member": "fd.db28is.wac.201801.201812.asc",
+    "rows": [
+      {
+        "text": "2018|11|GUA|32010|127|GUATEMALA CITY,GUATEMALA|LAX|32575|91|LOS ANGELES,CALIFORNIA,USA|3GQ|71190|0|2194|F|6|94|1|30|0|1171896|4563|0|0|3732|0|0|30182|0|0|0|",
+        "original_line": 28223
+      }
+    ],
+    "original_source_sha256": "18132e2bede90c922f263e94c9f00048695aded3049d6824da44eb795fd2cbf4"
+  }
+]
