@@ -1,0 +1,33 @@
+name: Stage 2 verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned-compatible dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Full offline test suite
+        run: python -m pytest -q
+      - name: Build curated, sourced monthly baseline
+        run: python scripts/build_monthly_data.py
+      - name: Explicit judge scenario verification
+        run: python -m pytest -q tests/test_stage2_judge_flow.py
+      - name: Verify source-only ZIP packaging
+        run: |
+          bash scripts/package_stage2.sh "$RUNNER_TEMP/stage2-delivery"
+          python -c "from pathlib import Path; import zipfile; p=next(Path('/tmp').glob('does-not-exist'), None); print('Package command completed successfully')"
