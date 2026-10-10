@@ -393,7 +393,7 @@ def test_console_motion_holds_still_when_reduced_motion_is_asked_for():
 
 def test_versions_file_covers_every_vendored_and_font_file():
     listed = {row["file"] for row in versions()}
-    shipped = {f"vendor/{path.name}" for path in (LAB / "vendor").iterdir() if path.suffix == ".js"}
+    shipped = {f"vendor/{path.name}" for path in (LAB / "vendor").iterdir() if path.suffix in (".js", ".css")}
     shipped |= {f"fonts/{path.name}" for path in (LAB / "fonts").iterdir() if path.suffix in (".woff2", ".woff", ".ttf", ".otf")}
     assert shipped, "no third-party files found"
     assert shipped == listed, f"VERSIONS and the folders disagree: {sorted(shipped ^ listed)}"
@@ -412,7 +412,7 @@ def test_each_third_party_file_has_a_version_a_hash_and_a_licence(row):
 
 def test_pinned_versions_are_the_ones_agreed():
     pinned = {row["package"]: row["version"] for row in versions()}
-    assert pinned == {"d3": "7.9.0", "@observablehq/plot": "0.6.17", "geist": "1.7.2"}
+    assert pinned == {"d3": "7.9.0", "@observablehq/plot": "0.6.17", "geist": "1.7.2", "driver.js": "1.9.0"}
 
 
 def test_gooey_nav_port_keeps_its_credit_and_its_geometry():

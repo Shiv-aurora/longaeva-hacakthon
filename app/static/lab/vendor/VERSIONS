@@ -4,3 +4,5 @@ vendor/d3.min.js | d3 | 7.9.0 | ISC | vendor/LICENSE-d3.txt | f2094bbf6141b35972
 vendor/plot.umd.min.js | @observablehq/plot | 0.6.17 | ISC | vendor/LICENSE-plot.txt | 4358086467740777dd788d6b27a95cebdbaefdd50c730a3060117073bd7134cb
 fonts/Geist-Variable.woff2 | geist | 1.7.2 | OFL-1.1 | fonts/LICENSE.txt | a369fcf5628ea2aa4e1b9e2ec6a5b3624e365bda588e1f0f2f12b564f728fbb8
 fonts/GeistMono-Variable.woff2 | geist | 1.7.2 | OFL-1.1 | fonts/LICENSE.txt | fba8f577f38a2bbcbe818efa6348dd58f36303a10b8737c42fefad275be563ab
+vendor/driver.iife.js | driver.js | 1.9.0 | MIT | vendor/LICENSE-driver.txt | e52b65c66f23cbcdae8a0b68e378bfd7f6e29a664445fe4240067335e11f6843
+vendor/driver.css | driver.js | 1.9.0 | MIT | vendor/LICENSE-driver.txt | d095d440021fcf133ad46d37f18a2745fb76440f14f5208d17e203c039f765c9

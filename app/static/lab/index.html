@@ -20,12 +20,15 @@
   <link rel="stylesheet" href="/static/lab/tokens.css">
   <link rel="stylesheet" href="/static/lab/base.css">
   <link rel="stylesheet" href="/static/lab/gooey-nav.css">
+  <link rel="stylesheet" href="/static/lab/vendor/driver.css">
   <link rel="stylesheet" href="/static/lab/lab.css">
   <script defer src="/static/lab/vendor/d3.min.js"></script>
   <script defer src="/static/lab/vendor/plot.umd.min.js"></script>
   <script defer src="/static/lab/gooey-nav.js"></script>
   <script defer src="/static/lab/charts.js"></script>
   <script defer src="/static/lab/lab.js"></script>
+  <script defer src="/static/lab/vendor/driver.iife.js"></script>
+  <script defer src="/static/lab/tour.js"></script>
 </head>
 <body class="app" data-page="index">
   <a class="skip" href="#main">Skip to the content</a>
@@ -42,6 +45,7 @@
     </nav>
     <div class="topbar-right">
       <span class="pill" id="fixture-pill" role="status" title="Every number is a made-up stand-in used to build the layout. Nothing here is a finding." hidden>Placeholder data</span>
+      <button class="toplink tour-btn" type="button" id="tour-btn" hidden>Tour</button>
       <a class="toplink toplink-box" href="/report">Technical Report</a>
       <button class="icon-btn" id="about-btn" type="button" aria-label="About this site: data, sources and credits" aria-haspopup="dialog">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.75"/><path d="M8 7.25v3.5" stroke-linecap="round"/><circle cx="8" cy="5.1" r="0.6" fill="currentColor" stroke="none"/></svg>

@@ -242,6 +242,7 @@
       labelled("Credits", el("ul", { class: "credits" }, [
         el("li", null, ["Navigation adapted from ", link("Rare UI", "https://rareui.com", true), " (Gooey Nav, \u00a9 2026 Swami Malode). ", link("License", "/static/lab/LICENSE-gooey-nav.txt")]),
         el("li", null, ["Charts drawn with Observable Plot and D3. ", link("Licenses", "/static/lab/vendor/VERSIONS")]),
+        el("li", null, ["Tour built with driver.js. ", link("License", "/static/lab/vendor/LICENSE-driver.txt")]),
         el("li", null, ["Set in Geist and Geist Mono. ", link("License", "/static/lab/fonts/LICENSE.txt")])
       ])),
       files.firstChild ? labelled("Data in this session", files) : null,
