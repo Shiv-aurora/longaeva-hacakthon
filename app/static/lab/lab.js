@@ -1517,7 +1517,9 @@
       return {
         date: fuel.date, spot: fuel.spot_usd_gal, reference: fuel.reference_usd_gal,
         level: isNum(fuel.level_usd_gal) ? fuel.level_usd_gal : fuel.reference_usd_gal * (1 + fuel.shock_pct / 100),
-        pct: Math.round(fuel.shock_pct), months: (data.request || {}).fuel_shock_months, basis: data.basis, assumptions: data.assumptions
+        pct: Math.round(fuel.shock_pct), months: (data.request || {}).fuel_shock_months, basis: data.basis, assumptions: data.assumptions,
+        // How many aircraft the fleet plan delivers in each hold length, so the slider is capped before a request is sent.
+        aircraftLimit: (data.limits || {}).delivery_delay_max_aircraft
       };
     }, function () { return null; });
   }
@@ -1577,6 +1579,9 @@
     var landOnToday = function (today) {
       sim.today = today;
       if (isNum(today.reference)) sim.reference = today.reference;
+      Object.keys(today.aircraftLimit || {}).forEach(function (months) {
+        if (isNum(today.aircraftLimit[months])) sim.aircraftLimit[Number(months)] = today.aircraftLimit[months];
+      });
       return applyPreset(PRESETS[0]);
     };
     loadToday().then(function (today) {
