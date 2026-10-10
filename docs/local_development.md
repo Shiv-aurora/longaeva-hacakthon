@@ -1,6 +1,8 @@
 # Local development and history
 
-The Git root is the parent `longeva-hackathon` directory, on branch `main`.
+The Git root is this `UAL_Counterfactual_Engine_v1` application directory, on
+branch `main`. GitHub exposes `app/`, `scripts/`, `tests/`, `docs/` and the
+application README directly at the repository root.
 Initial commits record the existing implementation in separate component groups:
 data acquisition, operating mechanics, investor workflows, reproducibility,
 research models, independent audits and UI/API delivery. They use current commit
@@ -43,9 +45,11 @@ investment value or completion of the proposal.
 Run checks from the application directory:
 
 ```bash
-cd UAL_Counterfactual_Engine_v1
 .venv/bin/python -m pytest -q
 ```
 
-This history is local. No remote was configured or push performed during its
-creation. A later remote publication is a separate action.
+The initial history was created locally, then published to
+`https://github.com/Shiv-aurora/longaeva-hacakthon.git`. A subsequent layout commit
+promotes the application directory to the repository root while preserving those
+existing commits. The original proposal PDFs and distribution ZIP remain in the
+parent workspace; they are not part of the current application-root snapshot.

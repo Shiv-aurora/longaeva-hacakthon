@@ -2,5 +2,5 @@
 *.pdf binary
 *.csv -text whitespace=-blank-at-eol
 # Empty source cells and CRLF are meaningful acquisition bytes, not code style.
-UAL_Counterfactual_Engine_v1/data/eia_2026_weekly_source.txt -text whitespace=-blank-at-eol
-UAL_Counterfactual_Engine_v1/data/*_fields.txt -text whitespace=-blank-at-eol
+data/eia_2026_weekly_source.txt -text whitespace=-blank-at-eol
+data/*_fields.txt -text whitespace=-blank-at-eol

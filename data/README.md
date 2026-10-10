@@ -3,7 +3,7 @@
 Git records the small public baseline inputs, reviewed anchor declarations,
 model specifications, examples and acquisition manifests in this directory.
 Raw downloads, generated Parquet/history stores, model-code archives, numerical
-audits and scenario exports remain local and are excluded by the root `.gitignore`.
+audits and scenario exports remain local and are excluded by the project `.gitignore`.
 Ignoring them does not delete or alter any data. Local computations continue to
 use their preserved bytes and existing source hashes.
 
