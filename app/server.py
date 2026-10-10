@@ -225,20 +225,23 @@ class TargetInversionPayload(BaseModel):
     valuation: ValuationPayload | None = None
 
 
+# Pages are revalidated on each visit so a browser never shows an older build of the application.
+FRESH = {"Cache-Control": "no-cache"}
+
 @app.get("/")
 def index():
-    return FileResponse(STATIC / "lab" / "index.html")
+    return FileResponse(STATIC / "lab" / "index.html", headers=FRESH)
 
 @app.get("/lab")
 def lab_index():
-    return FileResponse(STATIC / "lab" / "index.html")
+    return FileResponse(STATIC / "lab" / "index.html", headers=FRESH)
 
 @app.get("/report")
 def report_index():
     page = STATIC / "lab" / "report.html"
     if not page.is_file():
         raise HTTPException(status_code=404, detail="The report has not been built yet")
-    return FileResponse(page)
+    return FileResponse(page, headers=FRESH)
 
 @app.get("/research")
 def research_index():
