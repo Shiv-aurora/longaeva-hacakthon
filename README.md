@@ -1,4 +1,6 @@
-# UAL Counterfactual Engine · V1
+# UAL Counterfactual Engine | Stage 2 research prototype
+
+**Judges: start with [STAGE2_SUBMISSION.md](STAGE2_SUBMISSION.md).** It summarizes what is implemented, what the observed public evidence supports, how to run the monthly simulator, and the limits of the fitted research. The private repository intentionally excludes original multi-GB archives and generated local study artifacts. Its 385 locally passing tests, recorded in `docs/local_development.md`, are software and source-verification results, not validated investment alpha.
 
 The current fare-source follow-up adds a separate original airport/city/WAC
 scanner. Its first real quarter passes an independent audit over 3,046,411 tickets
