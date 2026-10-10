@@ -126,6 +126,18 @@ yield toward an assumed fraction of incremental fuel pressure, subject to lag,
 half-life and a maximum monthly step. Demand uses an assumed elasticity. Fitted
 and feasible-policy modes are rejected.
 
+A third policy, the recovery curve, is used by the lab (`app/lab/scenario.py`,
+`simulate_recovery`). Every monthly change in the fuel price starts its own clock,
+and a curve gives the share of that change, times gallons burned, that returns as
+revenue by quarter after the change. One curve is drawn per path. The lab plugs in
+three curves on the same simulated worlds: no response, United's own stated path,
+and the curve measured from United's reported quarters (`app/lab/fare_clock.py`).
+The response is symmetric and is defined on revenue net of volume effects, so no
+elasticity, pass-through cap or step limit is applied on top of it. The measured
+curve's one-year share is the stable number (about 75%, 49% to 91%); its speed is
+not pinned down, and the pre-specified five-lag version lost its locked test. The
+two earlier policies are unchanged byte for byte.
+
 Pre-cutoff EIA return volatility is scaled by sqrt(21). Mean reversion, demand
 noise and correlation are assumptions. Spot changes transmit dollar-for-dollar
 to Q2 average paid fuel. Quantiles are calculated after each path is accumulated;
