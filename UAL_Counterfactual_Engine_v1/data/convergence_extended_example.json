@@ -1,0 +1,10 @@
+{
+  "path_counts": [1000, 5000, 10000, 50000, 100000, 200000, 500000, 750000, 1000000],
+  "replicates": 12,
+  "absolute_tolerance_musd": 25,
+  "relative_tolerance": 0.01,
+  "margin_tolerance_pp": 0.05,
+  "breach_tolerance_fraction": 0.005,
+  "consecutive_levels": 2,
+  "batch_paths": 10000
+}
