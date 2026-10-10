@@ -1,0 +1,23 @@
+{
+  "basis": "Illustrative liquidity test: $800M revolver draw, $5M fee and a $100M advance-sales balance decrease in August. These are assumed cash events, not a forecast.",
+  "events": [
+    {
+      "month": "2026-08",
+      "kind": "revolver_draw",
+      "amount_musd": 800,
+      "scope": "intervention"
+    },
+    {
+      "month": "2026-08",
+      "kind": "financing_fee",
+      "amount_musd": 5,
+      "scope": "intervention"
+    },
+    {
+      "month": "2026-08",
+      "kind": "advance_sales_change",
+      "amount_musd": -100,
+      "scope": "intervention"
+    }
+  ]
+}
