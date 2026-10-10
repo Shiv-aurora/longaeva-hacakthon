@@ -8,7 +8,8 @@ from its own history, and the method is checked against quarters it never saw.
 
 Stage 2 entry for the Longaeva AI Hackathon. Judges: the one-page brief is
 [STAGE2_SUBMISSION.md](STAGE2_SUBMISSION.md); the technical report is at `/report`
-in the running app.
+in the running app, live at [https://ual-twin.vercel.app/report](https://ual-twin.vercel.app/report).
+The legacy live demo is at [https://ual-twin.vercel.app](https://ual-twin.vercel.app).
 
 ## Run it
 
