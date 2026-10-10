@@ -740,6 +740,108 @@ def bootstrap_curve(fit: LagFit, seed: int, block_len: int = 4, n_boot: int = N_
     return out
 
 
+RHO_GRID = np.round(np.arange(0.0, 0.951, 0.01), 2)
+SMOOTH_METHOD = (
+    "Partial adjustment: recovery(k) = L x (1 - rho^(k+1)) for k = 0..4 quarters after the shock. L is the share "
+    "recovered in the long run and rho the part of the remaining gap left open each quarter; the half-life, "
+    "ln(0.5)/ln(rho), counts quarters from the start of the shock quarter until half of L is in. Same data and "
+    "definition as the five-lag regression: year-over-year change in TRASM on a constant, year-over-year capacity "
+    "growth and L times the weighted sum of the year-over-year fuel cost changes at lags 0 to 4 with weights "
+    "(1 - rho) rho^j. Least squares: rho on a grid from 0 to 0.95 in steps of 0.01, L in closed form given rho. "
+    "Uncertainty: a moving-block bootstrap over quarters (blocks of four consecutive estimation rows, each row "
+    "carrying its own lags), L and rho re-estimated on every resample; ranges are percentiles of the resamples and "
+    "the draws are the resampled curves. Where the estimation rows are not contiguous (2019Q4 is followed by "
+    "2024Q1) a block can straddle the gap. The curve stops at quarter 4, where the share is L x (1 - rho^5).")
+SMOOTH_POST_HOC = (
+    "This two-parameter form was chosen AFTER the locked test years had been seen, because the pre-specified "
+    "five-lag curve was not monotone and lost the test. Its test-split score is therefore descriptive, not a clean "
+    "test. The clean test of it is the dated forward forecast for the next quarter.")
+
+
+def smooth_curve(long_run: float, rho: float) -> np.ndarray:
+    """Share recovered 0..4 quarters after the shock under partial adjustment."""
+    return long_run * (1.0 - rho ** np.arange(1, HORIZON + 1))
+
+
+def half_life(rho: float) -> float:
+    """Quarters from the start of the shock quarter until half the long-run share is in; 0 when rho is 0."""
+    return 0.0 if rho <= 0.0 else math.log(0.5) / math.log(rho)
+
+
+def smooth_profile(y: np.ndarray, lags: np.ndarray, cap: np.ndarray) -> tuple[float, float]:
+    """Least-squares (L, rho): for each rho on the grid, y on a constant, capacity growth and the weighted lag sum.
+
+    The constant and capacity are partialled out once; L given rho is then a ratio
+    of two inner products, so the whole grid is one matrix product. Returns NaNs
+    when the resample cannot identify the fit.
+    """
+    base = np.column_stack([np.ones(len(y)), cap])
+    residual = lambda v: v - base @ np.linalg.lstsq(base, v, rcond=None)[0]
+    weights = (1.0 - RHO_GRID)[:, None] * RHO_GRID[:, None] ** np.arange(lags.shape[1])
+    z, r = residual(lags @ weights.T), residual(y)
+    zz, zy = np.einsum("ij,ij->j", z, z), z.T @ r
+    if not np.all(zz > 1e-12):
+        return math.nan, math.nan
+    best = int(np.argmin(r @ r - zy ** 2 / zz))
+    return float(zy[best] / zz[best]), float(RHO_GRID[best])
+
+
+def smooth_fit(panel: dict, lags: np.ndarray, rows: np.ndarray, seed: int, n_draws: int) -> dict:
+    """The partial-adjustment curve on the given rows, with block-bootstrap ranges and joint draws of the curve."""
+    y, x, cap, quarters = panel["d_rev"][rows], lags[rows], panel["cap"][rows], panel["q"][rows]
+    long_run, rho = smooth_profile(y, x, cap)
+    weights = (1.0 - rho) * rho ** np.arange(x.shape[1])
+    final = stats.ols(np.column_stack([x @ weights, cap]), y)
+    resampled = []
+    for index in stats.block_indices(len(y), min(4, len(y)), int(1.5 * n_draws) + 100, seed):
+        pair = smooth_profile(y[index], x[index], cap[index])
+        if math.isfinite(pair[0]):
+            resampled.append(pair)
+        if len(resampled) == n_draws:
+            break
+    if len(resampled) < n_draws:
+        raise ValueError("Too few usable bootstrap resamples for the smooth curve")
+    pairs = np.array(resampled)
+    draws = np.array([smooth_curve(a, b) for a, b in pairs])
+    levels, names = (0.05, 0.1, 0.5, 0.9, 0.95), ("p05", "p10", "p50", "p90", "p95")
+    spread = lambda values: dict(zip(names, stats.quantiles(values, levels)))
+    curve_q, estimate = stats.quantiles(draws, levels), smooth_curve(long_run, rho)
+    long_q, year_q = spread(pairs[:, 0]), spread(draws[:, -1])
+    correlation = float(np.corrcoef(pairs.T)[0, 1]) if pairs[:, 1].std() > 0 and pairs[:, 0].std() > 0 else 0.0
+    at_bound = float(np.mean(pairs[:, 1] >= RHO_GRID[-1]))
+    width_ratio = (long_q["p95"] - long_q["p05"]) / max(year_q["p95"] - year_q["p05"], 1e-9)
+    return {"L": long_run, "rho": rho, "half_life_quarters": half_life(rho), "n": len(y),
+            "first_quarter": quarter_label(int(quarters[0])), "last_quarter": quarter_label(int(quarters[-1])),
+            "curve_estimate": estimate, "intercept_cents": final.beta[0],
+            "capacity_coef_cents_per_point": final.beta[2], "r2": final.r2,
+            "L_range": long_q, "rho_range": spread(pairs[:, 1]),
+            "half_life_range": spread(np.array([half_life(b) for b in pairs[:, 1]])),
+            "one_year_share": {"estimate": estimate[-1], **year_q},
+            "curve": [{"quarters_after": k, "p10": curve_q[1][k], "p50": curve_q[2][k], "p90": curve_q[3][k],
+                       "estimate": estimate[k], "p05": curve_q[0][k], "p95": curve_q[4][k]} for k in range(HORIZON)],
+            "ridge": {"correlation_L_rho": correlation, "share_of_resamples_at_rho_upper_bound": at_bound,
+                      "L_range_width_over_one_year_share_width": width_ratio,
+                      "poorly_separated": bool(at_bound >= 0.05 or width_ratio >= 1.5),
+                      "rule": "poorly separated when 5% or more of resamples sit at the upper bound of rho, or the "
+                              "range of L is at least 1.5 times as wide as the range of the one-year share"},
+            "n_resamples": n_draws, "draws": draws}
+
+
+def expanding_fits(panel: dict, lags: np.ndarray, rows: np.ndarray, last_as_of: int, first_as_of: int = 2019 * 4,
+                   min_rows: int = 8) -> list[dict]:
+    """For each quarter, the smooth curve fitted on the rows dated before it, so a replay never sees its own future."""
+    out = []
+    for q in range(first_as_of, last_as_of + 1):
+        known = rows[panel["q"][rows] < q]
+        if len(known) < min_rows:
+            continue
+        long_run, rho = smooth_profile(panel["d_rev"][known], lags[known], panel["cap"][known])
+        out.append({"as_of_period": quarter_label(q), "L": long_run, "rho": rho,
+                    "half_life_quarters": half_life(rho), "curve_p50": smooth_curve(long_run, rho), "n": len(known),
+                    "fitted_through": quarter_label(int(panel["q"][known[-1]]))})
+    return out
+
+
 UNITED_SPECS = (
     {"id": "united_yoy_trasm_lags0_4_capacity_fit", "kw": {},
      "text": "Year-over-year change in TRASM (cents) on year-over-year change in fuel cost per ASM (cents, price per "
@@ -1059,6 +1161,20 @@ def _united_block(table: dict, statements: list[dict], paths: dict, seed: int, n
         if entry["mapped_midpoints"] is not None:
             rules[f"management_{name}_mapped"] = entry["mapped_midpoints"]
 
+    # The smooth two-parameter curve. Its rule is added last, so every earlier score keeps its bootstrap seed.
+    lag_columns = primary.design[:, :n_lags]
+    clean_rows = (recovery_fit(panel, years=(SPLITS["fit"][0], SPLITS["test"][1]), pandemic="exclude").rows
+                  if evaluate_test else primary.rows)
+    smooth = {"fit_only": smooth_fit(panel, lag_columns, primary.rows, seed + 6, n_draws),
+              "through_latest": smooth_fit(panel, lag_columns, clean_rows, seed + 7, n_draws) if evaluate_test else None,
+              "expanding": expanding_fits(panel, lag_columns, clean_rows,
+                                          int(quarters[-1]) + 1 if evaluate_test else SPLITS["select"][1] * 4 + 3)}
+    rules["smooth_fit_only"] = list(smooth["fit_only"]["curve_estimate"])
+    # The same table with the smooth curve in the fitted seat, for its own ranking and paired differences.
+    seated = {**{r: rules[r] for r in CORE_RULES if r != "fitted"}, "fitted": rules["smooth_fit_only"],
+              "prespecified_five_lag": rules["fitted"]}
+    smooth_scores = score_rules(panel, seated, primary.rows, seed + 8, evaluate_test)
+
     scores = score_rules(panel, rules, primary.rows, seed + 1, evaluate_test)
     fuel_only = score_rules(panel, rules, primary.rows, seed + 2, evaluate_test, baseline="none")
 
@@ -1135,7 +1251,8 @@ def _united_block(table: dict, statements: list[dict], paths: dict, seed: int, n
     return {"panel": panel, "fit": primary, "curve_rows": curve_rows, "draws": draws,
             "coefficient_draws": coefficient_draws, "rules": rules, "scores": scores, "fuel_only": fuel_only,
             "variants": variants, "accounts": accounts, "points": points, "checks": checks, "stated_q2": stated_q2,
-            "n_lags": n_lags, "refit": refit, "bootstrap": bootstrap_curve(primary, seed + 4)}
+            "n_lags": n_lags, "refit": refit, "bootstrap": bootstrap_curve(primary, seed + 4),
+            "smooth": smooth, "smooth_scores": smooth_scores, "lag_columns": lag_columns}
 
 
 def _oos_summary(scores: dict, evaluate_test: bool) -> dict:
@@ -1334,7 +1451,7 @@ def build(seed: int = SEED, n_draws: int = N_DRAWS, cpi_path: Path = market_data
             "Not yet measured for United: the quarterly file is absent. The industry figures are elasticities of "
             "real consumer airfares to the jet fuel price, not recovery shares.")
         payload["primary_spec"] = {"united": None, "industry": INDUSTRY_SPECS[0]["text"]}
-        payload["plain_summary"] = " ".join(summary + ["United's recovery curve has not been computed."])
+        payload["plain_summary"] = _sentences(summary + ["United's recovery curve has not been computed."])
         return _clean(payload)
 
     fit, rows, quarters = united["fit"], united["curve_rows"], united["panel"]["q"]
@@ -1559,7 +1676,7 @@ def build(seed: int = SEED, n_draws: int = N_DRAWS, cpi_path: Path = market_data
                f"{_pct(rows[1]['p50'])} one quarter later (P10 {_pct(rows[1]['p10'])}, P90 {_pct(rows[1]['p90'])}) "
                f"and {_pct(rows[4]['p50'])} after a year (P10 {_pct(rows[4]['p10'])}, P90 {_pct(rows[4]['p90'])})."]
     names = {"costs_only": "no response", "full_immediate": "full immediate recovery",
-             "management": "management's path", "fitted": "the fitted curve"}
+             "management": "management's path", "fitted": "the pre-specified five-lag curve"}
     for horizon, words in (("h4", "four quarters ahead"), ("h1", "one quarter ahead")):
         result = oos[f"test_{horizon}"]
         if result["winner"] is None:
@@ -1570,7 +1687,7 @@ def build(seed: int = SEED, n_draws: int = N_DRAWS, cpi_path: Path = market_data
         summary.append(
             f"Locked test, {words} (n = {result['n']} quarters): mean absolute error in cents per ASM is "
             + ", ".join(f"{errors[r]:.2f} for {names[r]}" for r in CORE_RULES)
-            + f"; lowest is {names[result['winner']]}. Fitted minus {names[result['best_rival']]}: "
+            + f"; lowest is {names[result['winner']]}. The pre-specified curve minus {names[result['best_rival']]}: "
               f"{diff['mean_diff']:+.2f}{spread}.")
     summary.append(f"The select split (2020-2023) has {oos['select_excluding_pandemic_h4']['n']} quarters free of "
                    "pandemic-period levels, so its scores are reported but decide nothing.")
@@ -1616,8 +1733,193 @@ def build(seed: int = SEED, n_draws: int = N_DRAWS, cpi_path: Path = market_data
             f"Delta's quarters, four quarters ahead, fuel term only (n = {on_delta['n']}): "
             + ", ".join(f"{on_delta['mae_cents_per_asm'][r]:.2f} for {names[r]}" for r in CORE_RULES)
             + f"; lowest is {names[on_delta['lowest_mae_core_rule']]}.")
-    payload["plain_summary"] = " ".join(summary + [industry_headline(row12, ind_fit.fit.n), summary_asym(asym)])
+    summary += [industry_headline(row12, ind_fit.fit.n), summary_asym(asym)]
+    _publish_smooth(payload, united, summary, evaluate_test, seed, first_promise, k_promise)
     return _clean(payload)
+
+
+def _sentences(parts: list[str]) -> list[str]:
+    """One sentence per item: the parts are split where a full stop is followed by a capital letter."""
+    return [piece.strip() for part in parts for piece in re.split(r"(?<=[.])\s+(?=[A-Z])", part) if piece.strip()]
+
+
+def smooth_headline(fit: dict) -> str:
+    """The two numbers a reader can hold, each with its range; neutral when the long-run range reaches zero."""
+    long_run, half = fit["L_range"], fit["half_life_range"]
+    spread = f"{int(100 * LEVEL)}% range {_pct(long_run['p05'])} to {_pct(long_run['p95'])}"
+    if long_run["p05"] <= 0.0:
+        return (f"United's history cannot tell a revenue response to fuel cost from none: the long-run share made up "
+                f"is {_pct(fit['L'])} ({spread}).")
+    return (f"United has made up {_pct(fit['L'])} of a fuel cost shock in the long run ({spread}), half of it within "
+            f"{fit['half_life_quarters']:.1f} quarters ({half['p05']:.1f} to {half['p95']:.1f}).")
+
+
+def _smooth_public(fit: dict | None) -> dict | None:
+    return None if fit is None else {k: v for k, v in fit.items() if k != "draws"}
+
+
+def _publish_smooth(payload: dict, united: dict, summary: list[str], evaluate_test: bool, seed: int,
+                    first_promise: dict, k_promise: int) -> None:
+    """Make the smooth curve the simulator-facing one and keep the pre-specified curve, untouched, beside it."""
+    smooth = united["smooth"]
+    lead_name = "through_latest" if smooth["through_latest"] is not None else "fit_only"
+    lead, alone = smooth[lead_name], smooth["fit_only"]
+    rows = lead["curve"]
+    payload["curve_unrestricted"] = payload["curve"]
+    payload["curve_unrestricted_draws"] = payload["curve_draws"]
+    payload["curve_unrestricted_draws_method"] = payload["curve_draws_method"]
+    payload["curve_unrestricted_note"] = (
+        "The pre-specified curve: five free lag coefficients on the fit split. It was fixed before the test years "
+        "were scored and it lost that test; its scores in oos_test are unchanged. It is kept for the record and is "
+        "no longer what the simulator reads.")
+    payload["curve"], payload["curve_draws"] = rows, np.round(lead["draws"], 4)
+    payload["curve_definition"] = (
+        f"The smooth partial-adjustment curve, {lead_name.replace('_', ' ')}: p10/p50/p90 (and p05/p95) are "
+        "percentiles of curve_draws, estimate is the least-squares curve L x (1 - rho^(k+1)).")
+    payload["curve_draws_method"] = {
+        "n_draws": int(len(lead["draws"])), "seed": seed, "method": SMOOTH_METHOD,
+        "why": "A bootstrap rather than a covariance: the curve is non-linear in rho, and resampling quarters "
+               "carries the trade-off between L and rho into the draws. Every draw is monotone by construction.",
+        "which": lead_name}
+    payload["n_unrestricted"], payload["n"] = payload["n"], lead["n"]
+    payload["headline_prespecified"] = payload["headline"]
+    payload["headline"] = smooth_headline(lead)
+    payload["promise_comparison_prespecified"] = payload["promise_comparison"]
+    at = rows[k_promise]
+    payload["promise_comparison"] = {
+        "line": promise_line(at["estimate"], at["p05"], at["p95"], first_promise["low"], first_promise["high"],
+                             lead["n"], k_promise, first_promise["period"]),
+        "quarters_after": k_promise, "period": first_promise["period"], "promise_low": first_promise["low"],
+        "promise_high": first_promise["high"],
+        "verdict": verdict(at["p05"], at["p95"], first_promise["low"], first_promise["high"]),
+        "note": "One comparison line, not the headline, from the smooth curve the simulator reads. The promise is "
+                "for a named calendar quarter of one shock; quarters_after comes from rivals.management_paths."}
+    payload["primary_spec"] = {
+        "id": f"united_smooth_partial_adjustment_{lead_name}",
+        "description": "Two-parameter partial-adjustment recovery curve on the same data and definition as the "
+                       "five-lag regression, with the capacity control; the curve the simulator and the forward "
+                       "test read.",
+        "equation": "d4(TRASM)[t] = a + L * sum_{j=0..4} (1 - rho) rho^j * d4(fuel cost per ASM)[t-j] + c * capacity "
+                    "growth[t] + e[t]; recovery share at k = L * (1 - rho^(k+1))",
+        "sample": f"{lead['first_quarter']} to {lead['last_quarter']}, no quarter with a 2020Q1-2021Q4 level behind it",
+        "n": lead["n"], "L": lead["L"], "rho": lead["rho"], "half_life_quarters": lead["half_life_quarters"],
+        "chosen_after_test_split_seen": True, "post_hoc_note": SMOOTH_POST_HOC,
+        "why_through_latest": "A forward-looking simulation may use everything known today. Replays of past "
+                              "quarters must use smooth.expanding, which never sees its own future.",
+        "prespecified": payload["primary_spec"]}
+    payload["recovery_definition"] = (
+        "The published curve is recovery(k) = L x (1 - rho^(k+1)): L is the share of a lasting fuel cost change that "
+        "unit revenue makes up in the long run, rho how much of the remaining gap stays open each quarter. It is "
+        "fitted to the same quantities as before. " + payload["recovery_definition"].replace(
+            "It is the running sum through lag k of the coefficients from regressing",
+            "In the pre-specified version (curve_unrestricted) it is the running sum through lag k of the "
+            "coefficients from regressing"))
+
+    def relabel(entry: dict) -> dict:
+        if "status" in entry:
+            return entry
+        swap = lambda d: {("smooth_fit_only" if k == "fitted" else k): v for k, v in d.items()}
+        out = {k: v for k, v in entry.items() if k not in ("fitted_minus_rival_abs_error", "lowest_mae_core_rule",
+                                                           "margin_to_next_core_rule", "mae_cents_per_asm")}
+        out["mae_cents_per_asm"] = swap(entry["mae_cents_per_asm"])
+        if entry["n"]:
+            best = entry["lowest_mae_core_rule"]
+            out["lowest_mae_among_smooth_and_the_three_rules"] = "smooth_fit_only" if best == "fitted" else best
+            out["smooth_minus_rival_abs_error"] = entry["fitted_minus_rival_abs_error"]
+        return out
+
+    scored = united["smooth_scores"]
+    payload["oos_test"]["smooth_fit_only"] = {
+        "note": SMOOTH_POST_HOC + " Scored exactly as the other rules: fitted on the fit split only, its own "
+                "constant and capacity coefficient from the fit split.",
+        "curve": alone["curve_estimate"], "descriptive_not_a_clean_test": True,
+        "scores": {h: {split: relabel(scored[h][split]) for split in ("fit", "select", "test")} for h in ("h1", "h4")}}
+    payload["oos_test"]["rule_notes"]["smooth_fit_only"] = (
+        "the two-parameter partial-adjustment curve fitted on the fit split; chosen after the test split had been "
+        "seen, so descriptive only")
+    payload["smooth"] = {
+        "fit_only": {**_smooth_public(alone), "label": "Fit split alone; comparable with the pre-specified curve."},
+        "through_latest": smooth["through_latest"] and {
+            **_smooth_public(smooth["through_latest"]),
+            "label": "Every quarter through the latest with no pandemic level behind it; what a forward-looking "
+                     "simulation should use. It includes the test years."},
+        "through_latest_status": None if smooth["through_latest"] is not None else "withheld: it uses the test years",
+        "expanding": smooth["expanding"],
+        "expanding_note": "One entry per quarter: the curve fitted on quarters dated before as_of_period with no "
+                          "pandemic level behind them (all published by the time guidance for as_of_period is "
+                          "given). curve_p50 is the least-squares curve; no draws are stored per entry. Use these "
+                          "for any replay of a past quarter.",
+        "half_life_quarters": {name: smooth[name] and {"estimate": smooth[name]["half_life_quarters"],
+                                                       **smooth[name]["half_life_range"]}
+                               for name in ("fit_only", "through_latest")},
+        "method": SMOOTH_METHOD, "post_hoc_note": SMOOTH_POST_HOC, "published_as_curve": lead_name}
+    for split in SPLITS:
+        entry = scored["h4"][split]
+        if "status" not in entry and entry["n"]:
+            payload["by_split"][split]["average_miss_smooth_curve_chosen_after_test"] = entry["mae_cents_per_asm"]["fitted"]
+    payload["variants_tried"] += [
+        "united_smooth_partial_adjustment_fit_only: recovery(k) = L(1 - rho^(k+1)) on the fit split. Chosen after the "
+        "test split had been seen.",
+        "united_smooth_partial_adjustment_through_latest: the same on every non-pandemic quarter to the latest; the "
+        "published curve. Chosen after the test split had been seen.",
+        "united_smooth_partial_adjustment_expanding: the same re-fitted before each quarter from 2019Q1, for replays."]
+
+    year, ridge = lead["one_year_share"], lead["ridge"]
+    payload["limits"] += [
+        SMOOTH_POST_HOC,
+        "The smooth curve rises steadily by construction. It cannot show an overshoot or a give-back, and it is "
+        "cut at quarter 4, where the share is L x (1 - rho^5), below L when adjustment is slow."]
+    if ridge["poorly_separated"] or alone["ridge"]["poorly_separated"]:
+        payload["limits"].append(
+            "L and rho are poorly separated: a high long-run share reached slowly fits about as well as a lower one "
+            f"reached fast. In the bootstrap for the published curve their correlation is "
+            f"{ridge['correlation_L_rho']:.2f}, {_pct(ridge['share_of_resamples_at_rho_upper_bound'])} of resamples "
+            f"sit at the upper bound of rho, and the range of L is "
+            f"{ridge['L_range_width_over_one_year_share_width']:.1f} times as wide as the range of the one-year "
+            f"share. The well-determined number is the share after a year: {_pct(year['estimate'])} "
+            f"({int(100 * LEVEL)}% range {_pct(year['p05'])} to {_pct(year['p95'])}). Read L and the half-life "
+            "together, not one at a time.")
+
+    fragile = None
+    if lead_name == "through_latest" and len(smooth["expanding"]) >= 2:
+        before, after = smooth["expanding"][-2], smooth["expanding"][-1]
+        fragile = (
+            f"The speed of the published curve rests on one quarter. Fitted through {before['fitted_through']} the "
+            f"half-life is {before['half_life_quarters']:.1f} quarters (rho {before['rho']:.2f}, L "
+            f"{_pct(before['L'])}); adding {after['fitted_through']} alone makes it "
+            f"{after['half_life_quarters']:.1f} (rho {after['rho']:.2f}, L {_pct(after['L'])}). Bootstrap resamples "
+            f"that leave that quarter out give slow curves, so the middle of the draws ({_pct(rows[0]['p50'])} in "
+            f"the shock quarter, {_pct(rows[-1]['p50'])} after a year) is slower than the least-squares curve "
+            f"({_pct(rows[0]['estimate'])} and {_pct(rows[-1]['estimate'])}). The simulator samples the draws.")
+        payload["limits"].append(fragile)
+        payload["smooth"]["through_latest"]["rests_on_latest_quarter"] = {
+            "fitted_before_it": before, "fitted_with_it": after, "note": fragile}
+
+    describe = lambda f: (f"L = {_pct(f['L'])} ({_pct(f['L_range']['p05'])} to {_pct(f['L_range']['p95'])}), rho = "
+                          f"{f['rho']:.2f} ({f['rho_range']['p05']:.2f} to {f['rho_range']['p95']:.2f}), half-life "
+                          f"{f['half_life_quarters']:.1f} quarters ({f['half_life_range']['p05']:.1f} to "
+                          f"{f['half_life_range']['p95']:.1f}), one-year share {_pct(f['one_year_share']['estimate'])} "
+                          f"({_pct(f['one_year_share']['p05'])} to {_pct(f['one_year_share']['p95'])})")
+    lead_text = [payload["headline"],
+                 f"The curve the simulator reads ({lead_name.replace('_', ' ')}, {lead['n']} quarters to "
+                 f"{lead['last_quarter']}, {int(100 * LEVEL)}% ranges): {describe(lead)}.",
+                 "By quarter after the shock its middle estimate is "
+                 + ", ".join(f"{_pct(r['p50'])} ({_pct(r['p10'])} to {_pct(r['p90'])})" for r in rows)
+                 + ", with P10 to P90 in brackets."]
+    if lead_name != "fit_only":
+        lead_text.append(f"On the fit split alone ({alone['n']} quarters): {describe(alone)}.")
+    test = scored["h4"]["test"]
+    if "status" not in test and test["n"]:
+        errors = test["mae_cents_per_asm"]
+        lead_text.append(
+            f"Rival comparison on the {test['n']} locked test quarters, four quarters ahead, average miss in cents "
+            f"per ASM: {errors['fitted']:.2f} for the smooth curve fitted on the fit split, "
+            f"{errors['costs_only']:.2f} for no response, {errors['full_immediate']:.2f} for full immediate recovery, "
+            f"{errors['management']:.2f} for management's path and {errors['prespecified_five_lag']:.2f} for the "
+            "pre-specified five-lag curve.")
+    lead_text += ([fragile] if fragile else []) + [SMOOTH_POST_HOC, payload["promise_comparison"]["line"],
+                                                    "The pre-specified result stands and follows."]
+    payload["plain_summary"] = _sentences(lead_text + summary)
 
 
 def industry_flat(scores: dict) -> dict:
@@ -1652,8 +1954,11 @@ def validate(payload: dict) -> None:
     need(isinstance(payload, dict) and not payload.get("fixture"), "must be an object and never a fixture")
     need(not [k for k in REQUIRED if k not in payload], f"missing keys {[k for k in REQUIRED if k not in payload]}")
     json.dumps(payload, allow_nan=False)
-    for key in ("generated_at", "as_of", "headline", "plain_summary", "recovery_definition"):
+    for key in ("generated_at", "as_of", "headline", "recovery_definition"):
         need(isinstance(payload[key], str) and payload[key], f"{key} must be a non-empty string")
+    need(isinstance(payload["plain_summary"], list) and payload["plain_summary"]
+         and all(isinstance(v, str) and v for v in payload["plain_summary"]),
+         "plain_summary must be a non-empty list of sentences")
     need(payload["inputs"] and all(re.fullmatch(r"[0-9a-f]{64}", i.get("sha256", "")) and i.get("path")
                                    for i in payload["inputs"]), "inputs need a path and a SHA-256 each")
     rows = payload["industry_monthly"]
@@ -1695,3 +2000,13 @@ def validate(payload: dict) -> None:
         p.get("split") in SPLITS and number(p["fuel_shock"]) and number(p["revenue_response"]) and p.get("period_end")
         for p in payload["united_points"]), "united_points need period_end, fuel_shock, revenue_response and split")
     need(isinstance(payload["oos_test"], dict) and isinstance(payload["primary_spec"], dict), "oos_test and primary_spec")
+    steps = [[b - a for a, b in zip(d, d[1:])] for d in draws]
+    need(all(min(step) >= -1e-9 or max(step) <= 1e-9 for step in steps),
+         "every published draw must be monotone across quarters")
+    smooth = payload.get("smooth")
+    need(isinstance(smooth, dict) and isinstance(smooth.get("fit_only"), dict) and isinstance(smooth.get("expanding"), list)
+         and "method" in smooth and "half_life_quarters" in smooth, "smooth needs fit_only, expanding, method, half-life")
+    need(all({"as_of_period", "L", "rho", "curve_p50", "n"} <= set(e) and len(e["curve_p50"]) == HORIZON
+             for e in smooth["expanding"]), "each expanding entry needs as_of_period, L, rho, curve_p50 and n")
+    need(isinstance(payload.get("curve_unrestricted"), list) and isinstance(payload.get("curve_unrestricted_draws"), list),
+         "the pre-specified curve and its draws must stay in the file")

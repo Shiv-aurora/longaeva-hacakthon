@@ -237,6 +237,101 @@ def test_pandemic_variants_differ_as_described():
     assert fc.pandemic_touched(panel["q"], 8).sum() == 16
 
 
+# ------------------------------------------------------------------ the smooth two-parameter curve
+
+def test_smooth_curve_recovers_a_known_long_run_share_and_speed():
+    truth = fc.smooth_curve(0.8, 0.5)
+    assert np.allclose(truth, [0.4, 0.6, 0.7, 0.75, 0.775])
+    assert fc.half_life(0.5) == pytest.approx(1.0) and fc.half_life(0.0) == 0.0
+    assert fc.half_life(0.25) == pytest.approx(0.5) and fc.half_life(0.5 ** 0.25) == pytest.approx(4.0)
+    table = simulate_table(31, 600, first_year=1800, curve=truth)
+    panel = fc.united_panel(table)
+    reference = fc.recovery_fit(panel, years=(1800, 1950))
+    lags = reference.design[:, :5]
+    fit = fc.smooth_fit(panel, lags, reference.rows, 3, 500)
+    assert fit["L"] == pytest.approx(0.8, abs=0.04) and fit["rho"] == pytest.approx(0.5, abs=0.05)
+    assert np.allclose(fit["curve_estimate"], fc.smooth_curve(fit["L"], fit["rho"])) and fit["n"] == reference.fit.n
+    assert fit["half_life_quarters"] == pytest.approx(1.0, abs=0.15)
+    assert fit["L_range"]["p05"] <= 0.8 <= fit["L_range"]["p95"] and fit["rho_range"]["p05"] <= 0.5 <= fit["rho_range"]["p95"]
+    assert fit["capacity_coef_cents_per_point"] == pytest.approx(-0.03, abs=0.01)
+    draws = fit["draws"]
+    assert draws.shape == (500, 5) and np.all(np.diff(draws, axis=1) >= 0)          # every draw rises steadily
+    assert [row["p50"] for row in fit["curve"]] == pytest.approx(np.median(draws, axis=0))
+    assert np.array_equal(fc.smooth_fit(panel, lags, reference.rows, 3, 500)["draws"], draws)
+    assert not np.array_equal(fc.smooth_fit(panel, lags, reference.rows, 4, 500)["draws"], draws)
+    assert not fit["ridge"]["poorly_separated"]
+    # An immediate response is rho = 0, and the profile agrees with ordinary least squares at that rho.
+    flat = fc.united_panel(simulate_table(32, 600, first_year=1800, curve=np.full(5, 0.6)))
+    now = fc.smooth_profile(flat["d_rev"][reference.rows], fc.recovery_fit(flat, years=(1800, 1950)).design[reference.rows, :5],
+                            flat["cap"][reference.rows])
+    assert now[0] == pytest.approx(0.6, abs=0.03) and now[1] <= 0.05
+
+
+def test_expanding_fits_never_see_their_own_future():
+    table = simulate_table(33, 54, curve=fc.smooth_curve(0.8, 0.5))
+    panel = fc.united_panel(table)
+    clean = fc.recovery_fit(panel, years=(2013, 2026), pandemic="exclude")
+    lags = clean.design[:, :5]
+    entries = fc.expanding_fits(panel, lags, clean.rows, int(panel["q"][-1]) + 1)
+    assert [e["as_of_period"] for e in entries][:2] == ["2019Q1", "2019Q2"] and entries[-1]["as_of_period"] == "2026Q3"
+    assert entries[0]["n"] == 16 and entries[0]["fitted_through"] == "2018Q4" and entries[-1]["n"] == 30
+    assert all(a["n"] <= b["n"] for a, b in zip(entries, entries[1:]))
+    by_period = {e["as_of_period"]: e for e in entries}
+    assert by_period["2023Q4"]["n"] == 20 and by_period["2024Q1"]["n"] == 20 and by_period["2024Q2"]["n"] == 21
+    assert all(np.allclose(e["curve_p50"], fc.smooth_curve(e["L"], e["rho"])) for e in entries)
+    # Changing everything from 2025Q1 on leaves every entry dated up to 2025Q1 exactly as it was.
+    changed = copy.deepcopy(table)
+    late = changed["q"] >= 2025 * 4
+    for column in ("fuel_price_usd_gal", "trasm_cents", "total_revenue_musd"):
+        changed[column][late] *= 2.0
+    panel2 = fc.united_panel(changed)
+    clean2 = fc.recovery_fit(panel2, years=(2013, 2026), pandemic="exclude")
+    again = {e["as_of_period"]: e for e in fc.expanding_fits(panel2, clean2.design[:, :5], clean2.rows, int(panel2["q"][-1]) + 1)}
+    for period, entry in by_period.items():
+        same = entry["L"] == again[period]["L"] and entry["rho"] == again[period]["rho"]
+        assert same if period <= "2025Q1" else True
+    assert by_period["2026Q3"]["L"] != again["2026Q3"]["L"]
+
+
+def test_smooth_curve_is_published_for_the_simulator_and_scored_as_post_hoc(payload):
+    smooth = payload["smooth"]
+    assert smooth["published_as_curve"] == "through_latest" and payload["curve"] == smooth["through_latest"]["curve"]
+    assert [set(row) >= {"quarters_after", "p10", "p50", "p90"} for row in payload["curve"]] == [True] * 5
+    draws = np.array(payload["curve_draws"])
+    assert draws.shape == (500, 5) and np.all((np.diff(draws, axis=1) >= 0).all(axis=1) | (np.diff(draws, axis=1) <= 0).all(axis=1))
+    assert smooth["fit_only"]["n"] == 20 and smooth["through_latest"]["n"] == 30 and "draws" not in smooth["fit_only"]
+    assert set(smooth["half_life_quarters"]) == {"fit_only", "through_latest"} and "grid" in smooth["method"]
+    assert [e["as_of_period"] for e in smooth["expanding"]][0] == "2019Q1" and len(smooth["expanding"]) == 31
+    assert {"as_of_period", "L", "rho", "curve_p50", "n"} <= set(smooth["expanding"][0])
+    assert payload["primary_spec"]["chosen_after_test_split_seen"] is True
+    assert payload["primary_spec"]["prespecified"]["id"] == fc.UNITED_SPECS[0]["id"]
+    scored = payload["oos_test"]["smooth_fit_only"]
+    assert scored["descriptive_not_a_clean_test"] is True and "AFTER" in scored["note"]
+    test = scored["scores"]["h4"]["test"]
+    main = payload["oos_test"]["scores"]["h4"]["test"]
+    assert test["mae_cents_per_asm"]["smooth_fit_only"] == main["mae_cents_per_asm"]["smooth_fit_only"]
+    assert test["mae_cents_per_asm"]["prespecified_five_lag"] == main["mae_cents_per_asm"]["fitted"]
+    assert set(test["smooth_minus_rival_abs_error"]) == {"costs_only", "full_immediate", "management", "prespecified_five_lag"}
+    assert "smooth_fit_only" not in fc.CORE_RULES and main["lowest_mae_core_rule"] in fc.CORE_RULES
+    assert payload["by_split"]["test"]["average_miss_smooth_curve_chosen_after_test"] == test["mae_cents_per_asm"]["smooth_fit_only"]
+    assert any("chosen AFTER" in limit for limit in payload["limits"])
+    assert any("chosen AFTER" in sentence for sentence in payload["plain_summary"])
+    assert any("pre-specified" in sentence and "Locked test" in sentence for sentence in payload["plain_summary"])
+
+
+def test_smooth_headline_is_short_and_goes_neutral_when_the_range_reaches_zero(payload):
+    base = {"L": 0.8, "half_life_quarters": 1.2, "L_range": {"p05": 0.5, "p95": 1.1}, "half_life_range": {"p05": 0.3, "p95": 2.5}}
+    clear = fc.smooth_headline(base)
+    assert "80%" in clear and "50% to 110%" in clear and "1.2 quarters (0.3 to 2.5)" in clear and "cannot" not in clear
+    wide = fc.smooth_headline({**base, "L_range": {"p05": -0.2, "p95": 1.9}})
+    assert "cannot tell a revenue response to fuel cost from none" in wide and "-20% to 190%" in wide
+    for text in (clear, wide, payload["headline"]):
+        assert text.count(".") - text.count("0.") - text.count("1.") - text.count("2.") <= 1 or text.endswith(".")
+        assert len(text.split()) <= 32
+    assert "management" not in payload["headline"].lower()
+    assert fc._sentences(["One thing. Another thing: 0.5 of it. Third."]) == ["One thing.", "Another thing: 0.5 of it.", "Third."]
+
+
 # ------------------------------------------------------------------ uncertainty
 
 def test_curve_draws_are_cumulative_sums_of_the_coefficient_draws():
@@ -391,19 +486,24 @@ def test_builder_is_deterministic_for_a_fixed_seed(inputs, payload):
 
 def test_output_validates_and_keeps_the_contract_shape(inputs, payload):
     fc.validate(payload)
-    assert "fixture" not in payload and payload["generated_at"] == STAMP and payload["n"] == 20
-    assert payload["headline"].startswith(payload["headline_history_only"])
-    assert "locked test quarters" in payload["headline"] and "locked test" not in payload["headline_history_only"]
+    assert "fixture" not in payload and payload["generated_at"] == STAMP
+    assert payload["n"] == 30 and payload["n_unrestricted"] == 20          # smooth through latest; pre-specified fit split
+    assert payload["headline_prespecified"].startswith(payload["headline_history_only"])
+    assert "locked test quarters" in payload["headline_prespecified"]
+    assert "locked test" not in payload["headline_history_only"]
     assert {i["path"] for i in payload["inputs"]} == {str(p.resolve()) for p in inputs.values()}
-    draws = np.array(payload["curve_draws"])
-    assert draws.shape == (500, 5)
-    for k, row in enumerate(payload["curve"]):
-        assert row["quarters_after"] == k and row["lo"] <= row["estimate"] <= row["hi"]
-        assert [row["p10"], row["p50"], row["p90"]] == pytest.approx(np.quantile(draws[:, k], [0.1, 0.5, 0.9]), abs=1e-3)
-    # The draws published are running sums whose first differences centre on the fitted lag coefficients.
-    assert np.allclose(np.median(np.diff(draws, axis=1, prepend=0.0), axis=0),
-                       [r["lag_coef"] for r in payload["curve"]], atol=0.05)
-    assert [r["estimate"] for r in payload["curve"]] == pytest.approx(TRUE_CURVE, abs=0.35)
+    for curve_key, draws_key in (("curve", "curve_draws"), ("curve_unrestricted", "curve_unrestricted_draws")):
+        draws = np.array(payload[draws_key])
+        assert draws.shape == (500, 5)
+        for k, row in enumerate(payload[curve_key]):
+            assert row["quarters_after"] == k and {"p10", "p50", "p90"} <= set(row)
+            assert [row["p10"], row["p50"], row["p90"]] == pytest.approx(np.quantile(draws[:, k], [0.1, 0.5, 0.9]), abs=1e-3)
+    old = payload["curve_unrestricted"]
+    assert all(row["lo"] <= row["estimate"] <= row["hi"] for row in old)
+    # The pre-specified draws are running sums whose first differences centre on the fitted lag coefficients.
+    assert np.allclose(np.median(np.diff(np.array(payload["curve_unrestricted_draws"]), axis=1, prepend=0.0), axis=0),
+                       [r["lag_coef"] for r in old], atol=0.05)
+    assert [r["estimate"] for r in old] == pytest.approx(TRUE_CURVE, abs=0.35)
     rivals = payload["rivals"]
     assert rivals["costs_only"] == [0] * 5 and rivals["management_rule_for_scoring"]["curve"] == [0.85, 1, 1, 1, 1]
     assert [(m["period"], m["low"], m["high"], m["source_id"]) for m in rivals["management"]] == [
@@ -416,7 +516,7 @@ def test_output_validates_and_keeps_the_contract_shape(inputs, payload):
     assert payload["oos_test"]["scores"]["h4"]["test"]["left_out_pandemic_touched"] == []
     assert {p["split"] for p in payload["united_points"]} == {"fit", "select", "test"}
     assert len(payload["industry_monthly"]) == 13 and set(payload["by_split"]) == {"fit", "select", "test"}
-    assert len(payload["variants_tried"]) == len(fc.INDUSTRY_SPECS) + 1 + len(fc.UNITED_SPECS) + 2 + 1
+    assert len(payload["variants_tried"]) == len(fc.INDUSTRY_SPECS) + 1 + len(fc.UNITED_SPECS) + 2 + 1 + 3
     flat = payload["by_split"]["test"]
     assert flat["n_quarters"] == 10 and flat["n_quarters_one_quarter_ahead"] == 9
     assert flat["average_miss_fitted_curve"] == payload["oos_test"]["scores"]["h4"]["test"]["mae_cents_per_asm"]["fitted"]
@@ -428,8 +528,10 @@ def test_output_validates_and_keeps_the_contract_shape(inputs, payload):
     assert payload["industry"]["recovery_share_conversion"]["recovery_share"][12]["share"] == pytest.approx(
         payload["industry_monthly"][12]["coef"]
         / payload["industry"]["recovery_share_conversion"]["fuel_share"]["mean_of_quarterly_ratios"], abs=1e-4)
-    for text in (payload["headline"], payload["plain_summary"], payload["recovery_definition"]):
-        assert isinstance(text, str) and len(text) > 40
+    for text in [payload["headline"], payload["recovery_definition"]] + payload["plain_summary"]:
+        assert isinstance(text, str) and len(text) > 20
+    assert payload["plain_summary"][0] == payload["headline"] and len(payload["plain_summary"]) > 10
+    assert all(not sentence.endswith(" ") and sentence[-1] in ".:" for sentence in payload["plain_summary"])
     assert any("co-movement" in limit.lower() for limit in payload["limits"])
     assert any("hedg" in limit.lower() for limit in payload["limits"])
 
@@ -450,7 +552,12 @@ def test_validate_rejects_broken_payloads(payload):
 def test_no_test_build_withholds_the_locked_years(inputs, payload):
     held = fc.build(seed=7, n_draws=500, generated_at=STAMP, evaluate_test=False, **inputs)
     fc.validate(held)
-    assert held["curve"] == payload["curve"] and held["curve_draws"] == payload["curve_draws"]
+    assert held["curve_unrestricted"] == payload["curve_unrestricted"]
+    assert held["curve_unrestricted_draws"] == payload["curve_unrestricted_draws"]
+    assert held["smooth"]["published_as_curve"] == "fit_only" and held["smooth"]["through_latest"] is None
+    assert held["curve"] == held["smooth"]["fit_only"]["curve"] == payload["smooth"]["fit_only"]["curve"]
+    assert held["smooth"]["expanding"][-1]["as_of_period"] == "2023Q4" and held["n"] == 20
+    assert "status" in held["oos_test"]["smooth_fit_only"]["scores"]["h4"]["test"]
     assert {p["split"] for p in held["united_points"]} == {"fit", "select"}
     assert held["management_comparison"] is None and held["united"]["refit_all_clean_quarters_through_latest"] is None
     assert held["delta_look"] is None and "withheld" in held["industry"]["variants"][-1]["reason"]
@@ -459,7 +566,7 @@ def test_no_test_build_withholds_the_locked_years(inputs, payload):
         assert "status" in held["oos_test"]["scores"][horizon]["test"]
         assert "status" in held["by_split"]["test"]["united"][horizon]
     assert "status" in held["by_split"]["test"]["industry"] and held["oos_test"]["summary"]["test_h4"]["winner"] is None
-    assert "withheld" in held["test_split"] and "Locked test" not in held["plain_summary"]
+    assert "withheld" in held["test_split"] and "Locked test" not in " ".join(held["plain_summary"])
 
 
 def test_builder_runs_the_industry_part_alone_without_the_united_file(inputs, tmp_path):
@@ -472,7 +579,8 @@ def test_builder_runs_the_industry_part_alone_without_the_united_file(inputs, tm
     assert "absent" in alone["industry"]["recovery_share_conversion"]["reason_null"]
     assert len(alone["industry_monthly"]) == 13 and alone["headline"].startswith("Industry fares")
     assert alone["rivals"]["management"] and alone["primary_spec"]["united"] is None
-    assert "not been computed" in alone["plain_summary"] and len(alone["inputs"]) == 5 and alone["delta_look"] is None
+    assert "not been computed" in " ".join(alone["plain_summary"]) and isinstance(alone["plain_summary"], list)
+    assert len(alone["inputs"]) == 5 and alone["delta_look"] is None and "smooth" not in alone
     assert alone["asymmetry"]["unit"].startswith("12-month elasticity")
     assert alone["asymmetry"]["up"] == alone["asymmetry"]["up_elasticity"]
     assert alone["by_split"]["fit"]["n_months"] == 84 and "average_miss_fitted_pct" in alone["by_split"]["test"]
@@ -494,7 +602,7 @@ def test_script_writes_a_valid_file(inputs, tmp_path, monkeypatch, capsys):
     build_fare_clock.main()
     written = json.loads(out.read_text())
     fc.validate(written)
-    assert written["seed"] == 7 and json.loads(capsys.readouterr().out)["n"] == 20
+    assert written["seed"] == 7 and json.loads(capsys.readouterr().out)["n"] == 30
 
 
 def test_loader_rejects_a_table_that_is_not_one_row_per_quarter(tmp_path):
@@ -521,9 +629,9 @@ def test_delta_look_and_demand_variant(inputs, payload):
     assert delta["n"] == 12 and delta["k"] == 7 and delta["quarters_in_fit_split"] == ["2019Q4"]
     assert len(delta["quarters_in_test_split"]) == 11
     assert "1 of its quarters fall in the fit split (2019Q4)" in delta["split_note"] and "in-sample" in delta["split_note"]
-    assert "Second look, Delta (in sample on 12 quarters, 11 of them in the test years" in payload["plain_summary"]
+    assert "Second look, Delta (in sample on 12 quarters, 11 of them in the test years" in " ".join(payload["plain_summary"])
     assert [r["quarters_after"] for r in delta["curve"]] == list(range(5))
-    assert [r["estimate"] for r in delta["united_curve"]] == [r["estimate"] for r in payload["curve"]]
+    assert [r["estimate"] for r in delta["united_curve"]] == [r["estimate"] for r in payload["curve_unrestricted"]]
     scored = delta["united_rules_on_delta"]
     assert scored["h4"]["n"] == 11 and scored["h1"]["n"] == 10 and set(fc.CORE_RULES) <= set(scored["h4"]["mae_cents_per_asm"])
     # The adjusted columns are used, not the GAAP ones (which the fixture inflates by 30%).
