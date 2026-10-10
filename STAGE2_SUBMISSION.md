@@ -1,69 +1,77 @@
-# Stage 2 submission | UAL Counterfactual Engine
+# Stage 2 submission: UAL Counterfactual Lab
 
-**Entry point:** run the application and open `http://127.0.0.1:8000/monthly`.
+A forward simulation of United Airlines as a business, with the airline's
+behavior measured from history and the method checked against what happened.
 
-## Research question
+**Open:** run the app (commands in [README.md](README.md)) and go to
+`http://127.0.0.1:8000`. The technical report is at `/report`.
 
-How do fuel, travel-demand, and fleet shocks propagate through United Airlines when capacity is constrained and management's pricing response is delayed? How do those shocks change operating income, free-cash-flow sensitivity, and the operating conditions under which an investor's thesis fails?
+## The idea in three lines
 
-This is an evidence-anchored **operating sensitivity prototype**, not a validated stock-return model or a replica of United's proprietary revenue management system.
+1. A monthly simulator of United (four markets, fleet, fuel, demand, capacity,
+   cash) runs any scenario 10,000 times and returns ranges, not single numbers.
+2. How United responds to a shock is not typed in. It is measured from 54 reported
+   quarters, daily fuel prices and daily share prices, then plugged into the
+   simulator beside two rivals: no response, and what management says.
+3. The same method is replayed on past quarters against simple rivals, and one
+   forecast for the quarter United reports on 20 October 2026 was frozen in
+   advance with a hash.
 
-## Working application
+## A three-minute tour
 
-The Python/FastAPI application implements monthly transitions for **domestic, Atlantic, Pacific, and Latin America** markets, with mainline narrowbody and widebody groups and a regional contract block. It supports fuel and demand shocks, capacity cuts, fleet-entry delays, temporary outages, regional contract-rate changes, explicit analyst purchase/cash events, and limited retirement-extension assumptions. The default engine uses 10,000 paired stochastic paths and displays assumptions alongside results. The monthly model card is `docs/monthly_model_card.md`.
+1. **Simulator.** The page opens on today's fuel price. Read the four tiles, then
+   drag *Fuel price*. The three lines are the same simulated worlds under three
+   behaviors.
+2. **What breaks.** The grid shows the share of runs with negative free cash flow
+   across fuel and demand; the line is where it crosses the threshold.
+3. **Ask.** Type "What happens if jet fuel stays 25% higher for 6 months and
+   United cuts capacity by 3%?" The agent shows its plan, runs the simulator,
+   checks every figure and writes a short report.
+4. **Behavior.** Six measured relationships. The large one, fuel cost to revenue,
+   is the curve the simulator uses.
+5. **Reality check.** Past quarters, the Delta check, and the frozen forecast with
+   its daily path since United's guidance.
 
-Three investor workflows are implemented:
+## What it found
 
-1. **What if?** Apply a shock and inspect paired operating and financial trajectories under frozen versus assumed constrained pricing.
-2. **What breaks?** Search a bounded two-driver grid for cases below analyst-specified absolute FCF or minimum-cash thresholds. Tested-grid frequency is **not** event probability.
-3. **What must be true?** Invert explicit operating targets over tested driver ranges. Optional operating-asset valuation uses user-supplied assumptions and is **not** a uniquely implied equity price.
+- United pays about $0.14 plus 1.05 times the spot price of jet fuel, 18 days
+  behind. By the end of a quarter this is 6 cents a gallon from the reported
+  price; United's own stated assumption is 25 cents away.
+- A year after a fuel cost change United has made up about 62% of it through
+  revenue (90% range 49% to 91%). How fast is not pinned down.
+- The stock reacts the same day (2.0% down for a 10% rise in fuel) and shows no
+  delayed move. A trading rule built on a delay lost money out of sample.
+- For Q3 2026 the method puts fuel at $3.93 a gallon against the $3.69 United
+  assumed and adjusted EPS at $2.54 (P10 $2.18, P90 $2.82) against a guided
+  $2.50 to $3.50. Frozen 10 October 2026.
 
-The monthly interface also exports a one-page analyst thesis PDF and a JSON record tied to a verified simulated run. This is a reproducible scenario handoff, not a verified trading signal.
+## What it did not show
 
-## Public evidence and research
+- Replayed on the 10 guided quarters from 2024, marking United's midpoint to fuel
+  missed by $0.26 a share on average, the same as the midpoint itself. The method
+  did not beat United's own number, so the Q3 forecast is a test, not a claim.
+- The recovery curve that was fixed before the test years lost to simple rules.
+  The smoother curve now in the simulator was chosen afterwards and is flagged.
+- No capacity response to fuel and no tradable signal were found.
+- Not built from the Stage 1 proposal: per-market fitted demand and pricing,
+  competitor responses inside the simulator, crew and weather constraints, and
+  testing with analysts.
 
-- Daily EIA Gulf Coast jet-fuel pilot: 190 prints (January 5 through October 6, 2026), with weekend gaps preserved.
-- UAL Q2 2026 source-backed operating baseline and 82 reviewed, dated source/assumption anchors.
-- SEC quarterly imports: 54 quarter rows each for UAL, DAL and AAL, covering 2013 Q1 through 2026 Q2, with explicit missing-value and publication-date limitations.
-- BTS scheduled-traffic imports: 163 monthly rows each for UA, DL and AA, January 2013 through July 2026. Coverage is **not** equivalent to consolidated marketed service or complete international activity.
-- Form 41 P12/P52 cost and operations snapshots and P12A monthly fuel history, preserving source grains and mismatched reporting boundaries.
-- Separate, audited utilization, aircraft-capacity, monthly-traffic and fare-source research pipelines.
+## Rules the build kept
 
-The preserved research comparisons are deliberately mixed. A quarterly T2 aircraft-capacity model performs better than a direct alternative on an eligible 2020-2023 selection set, but United's narrowbody 12-month comparison has only one usable observation. A reviewed monthly traffic state model **loses** to regularized autoregression (MASE 6.833 versus 6.069); its nominal 80% conditional intervals cover 77.47% in the audited selection study. These research components are **not** presented as validated behavior inside the financial simulator.
-
-See `docs/proposal_status.md`, `docs/reporting_panel.md`, `docs/quarterly_capacity.md`, `docs/reviewed_traffic.md` and `docs/fare_geography.md` for exact denominators, source audits and held-back boundaries.
-
-## Verification and limits
-
-The integrated repository passed **387 tests in 113.81 seconds**, recorded in `docs/local_development.md`. That is a software/source-accounting verification record, not demonstrated historical forecast performance. The observed simulation distributions are conditional on the selected model and analyst assumptions. Convergence tests measure Monte Carlo numerical stability, not probabilistic calibration.
-
-**Open:** historical daily comparable UAL ticket quotes; fitted management/competition policies; full fleet/service-scope reconciliation; full-company cash accounting; parameter/model-form uncertainty; complete 2024+ held-out full-engine scorecard; evidence of investable alpha.
-
-Original public archives and generated Parquet/model-run/code-bundle stores are **not tracked** in Git. A clean source checkout cannot regenerate every displayed research artifact without reacquiring original public files or transferring those reviewed caches. See `data/README.md` and individual research-method documents. Missing inputs must be reported, never silently synthesized.
-
-## Run and inspect
-
-The focused workstation and preserved judge flow passed the full 387-test local suite after integration. If you change the submission code, rerun `python -m pytest -q` before packaging.
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python scripts/build_monthly_data.py
-python -m pytest -q
-python -m uvicorn app.server:app --host 127.0.0.1 --port 8000
-```
-
-Open `http://127.0.0.1:8000/monthly`. If a data-dependent research scorecard is unavailable in a clean checkout, consult its `docs/` rebuild and verification instructions. The primary simulator relies on committed curated inputs and does not claim access to unavailable private research archives.
-
-**Fast demo path:** open `/` or `/monthly`. The **Combined** case runs automatically: a 25% fuel shock, nine-month delay to 30 narrowbody entries, and explicit illustrative purchase/retention schedules. Use **Combined · no retention** to compare the capacity/cash tradeoff. See `docs/demo_walkthrough.md` and `docs/demo_case_verification.md`.
-
-**Earlier stress case:** under **Evidence**, expand **Earlier judge stress case** and select **RUN JUDGE SCENARIO**. The preset runs the actual monthly engine with an illustrative 20% fuel shock, a nine-month delay to 30 eligible fleet entries, and a two-month assumed pricing lag. Review the resulting operating-income/FCF summary, paired policies, fleet feasibility and uncertainty. Then explore **What breaks?**, **What must be true?**, and the one-page thesis export. For a timed walkthrough see `docs/stage2_judge_demo.md`.
-
-**Deployment:** Run locally by default. The current FastAPI server and file-upload paths are not authenticated; do not expose it publicly without access controls and input review.
+- No number is invented. Every figure traces to a file with a SHA-256 or to a
+  computation on such files; anything that could not be computed is shown as not
+  computed.
+- No look-ahead in anything called a forecast or a replay; tests enforce it.
+- The language model never authors a number. In the agent it writes placeholders
+  that code fills from labeled facts; in the guidance reader it can only choose
+  among sentences that code found, and a verifier checks the quote.
+- Results that failed are published beside the ones that held.
 
 ## Compliance
 
-Only public, sourced, properly licensed evidence may enter the competition submission. Do not bundle employer-proprietary data, private investor materials, raw confidential sources or fabricated test results. See Longaeva's participant certification for binding restrictions.
-
-For release review, see `docs/proposal_delivery.md` and the original research specifications.
+Only public, sourced and properly licensed data is used: U.S. EIA fuel prices,
+SEC filings, TSA checkpoint counts, FRED consumer prices, Yahoo Finance daily
+prices (an unofficial feed) and a CC BY 4.0 Kaggle dataset of 2022 Expedia quotes
+by Dillon Wong. No employer-proprietary data, private investor material or
+fabricated results are included. This is research software, not investment advice.
