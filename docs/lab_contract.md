@@ -21,6 +21,55 @@ Three "clocks", each at the fastest frequency public data allows:
 | Fare | What share of a fuel shock comes back through revenue, by quarter? | quarterly United, monthly industry CPI, daily 2022 case study if data allows |
 | Market | How fast does the stock react, and does it over- or under-shoot? | daily |
 
+## The simulation is the product
+
+The hackathon asks for a forward simulation of a business, not an earnings
+predictor. So the pieces fit together like this:
+
+1. One measured response module (`app/lab/response.py`): how much of a fuel-cost
+   shock United wins back through unit revenue, by quarter after the shock, with
+   its uncertainty as joint draws. It is estimated by the fare clock and nothing
+   else defines the response.
+2. The business simulator (`app/monthly.py`: four markets, fleet groups, regional
+   block, fuel, demand, capacity, cash) gains a "measured" pricing mode that draws
+   that response per path. "Costs only" (no response) and "management's promise"
+   are the same simulator with a different response plugged in.
+3. The track record and the Q3 2026 call are that same response applied to past
+   and current guidance. They are how the simulation is validated; EPS is the
+   scoreboard, not the product.
+
+Page order follows from this: the promise, then the simulation (run a shock, see
+cost hit, response and the resulting ranges under each response mode), then why to
+believe it (clocks and track record), then the live test (the frozen call), then
+ask it.
+
+`POST /api/lab/scenario` (draft; `app/lab/scenario.py` owns the final shape):
+```json
+{"fuel_shock_pct": 25, "fuel_shock_months": 6, "capacity_change_pct": 0, "demand_shock_pct": 0,
+ "delivery_delay": {"aircraft": 0, "months": 0}, "horizon_months": 12, "seed": 1}
+```
+returns
+```json
+{"status": "ok", "run_id": "...", "elapsed_ms": 0,
+ "modes": {"costs_only": {"quarters": [{"period": "2026Q4",
+              "operating_income_musd": {"p10": 0.0, "p50": 0.0, "p90": 0.0},
+              "operating_margin": {"p10": 0.0, "p50": 0.0, "p90": 0.0},
+              "fcf_musd": {"p10": 0.0, "p50": 0.0, "p90": 0.0},
+              "eps_change": {"p10": 0.0, "p50": 0.0, "p90": 0.0}}],
+            "prob": {"fcf_negative_12m": 0.0}},
+           "management": {}, "measured": {}},
+ "bridge_per_share": [{"step": "fuel cost", "value": 0.0}, {"step": "fare recovery", "value": 0.0},
+                      {"step": "capacity", "value": 0.0}, {"step": "profit sharing", "value": 0.0},
+                      {"step": "net", "value": 0.0}],
+ "response_used": {"curve_p50": [0.0], "source": {"path": "app/static/data/fare_clock.json", "sha256": "..."}},
+ "assumptions": ["..."]}
+```
+`{"status": "not_computed"}` when the measured response has not been built yet.
+
+`fare_clock.json` therefore also carries `"curve_draws": [[r0, r1, r2, r3, r4], ...]`
+(joint samples of the recovery share by quarter after the shock) so the simulator
+and the call use the same uncertainty.
+
 ## Rules that apply to every part
 
 - No fabricated numbers. Every number in an output traces to a raw file with a
