@@ -10,7 +10,9 @@ The main monthly scenario, bounded failure/target grids and replay-verified thes
 export run on the server. This is the same numerical engine as the local app.
 Hosted model-code receipts and exports use writable temporary storage. Thesis
 PDF/JSON bytes return with the export response, so a download does not depend on
-a later request reaching the same instance. Current source is registered before
+a later request reaching the same instance. Native browser downloads submit the
+saved request again to an HTTP attachment endpoint, which independently replays
+it on the receiving instance. Current source is registered before
 replaying an export from another instance; incompatible code/environment receipts
 still fail verification.
 

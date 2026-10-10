@@ -33,6 +33,11 @@ pdf = base64.b64decode(export['pdf_url'].split(',',1)[1], validate=True)
 record = json.loads(base64.b64decode(export['json_url'].split(',',1)[1], validate=True))
 assert len(PdfReader(io.BytesIO(pdf)).pages) == 1
 assert record['source_run']['manifest']['run_id'] == run['manifest']['run_id']
+shutil.rmtree(ARCHIVE_ROOT)
+response = client.post('/api/monthly/thesis-download/pdf', data={'payload':json.dumps({'run_record':run,'notes':notes})})
+assert response.status_code == 200, response.text
+assert 'attachment;' in response.headers['content-disposition']
+assert response.content == pdf
 assert ARCHIVE_ROOT.is_relative_to(__import__('pathlib').Path(__import__('os').environ['UAL_RUNTIME_DIR']))
 '''
     env = {**os.environ, "VERCEL": "1", "UAL_RUNTIME_DIR": str(tmp_path)}

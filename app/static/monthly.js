@@ -28,6 +28,7 @@
   let current = null;
   let presetBusy=false, hostedDemo=false;
   let thesisBusy=false, thesisNotesVersion=0;
+  let thesisDownloadRequest=null;
   let convergenceBusy=false,currentConvergence=null,convergenceControlsVersion=0;
   const cashKinds={borrow:'Debt borrowing',repay:'Debt principal repayment',revolver_draw:'Revolver draw',revolver_repay:'Revolver repayment',advance_sales_change:'Advance sales balance change',loyalty_balance_change:'Loyalty deferred balance change',receivables_change:'Receivables balance change',inventory_change:'Inventory balance change',prepaids_change:'Prepaids balance change',payables_change:'Payables balance change',additional_capex:'Additional cash capex',capex_refund:'Cash capex refund',cash_interest:'Additional cash interest',financing_fee:'Financing cash fee',asset_sale:'Asset sale cash proceeds',investment_trade:'Investment purchase (+) / sale (−)',restricted_transfer:'To (+) / from (−) restricted cash'};
   function cashPlanSettings(){
@@ -306,8 +307,16 @@
     thesisBusy=true;updateThesisState();el('thesisDownloads').hidden=true;el('thesisStatus').textContent='Replaying the saved run and preparing the one-page record…';
     try{const response=await fetch('/api/monthly/thesis',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({run_record:saved,notes})});const result=await response.json();if(!response.ok)throw Error(typeof result.detail==='string'?result.detail:'Check the thesis notes');
       if(current!==saved||!thesisIsCurrent()||notesVersion!==thesisNotesVersion){el('thesisStatus').textContent='Inputs changed during export · export again to use the current scenario and notes.';return}
+      thesisDownloadRequest={run_record:saved,notes};
       el('thesisPdf').href=result.pdf_url;el('thesisJson').href=result.json_url;el('thesisPdf').download='ual-thesis-'+result.artifact_id.slice(0,12)+'.pdf';el('thesisJson').download='ual-thesis-'+result.artifact_id.slice(0,12)+'.json';el('thesisDownloads').hidden=false;el('thesisStatus').textContent=`One page saved · run ${result.run_id.slice(0,12)} · ${saved.scenario.paths.toLocaleString('en-US')} paths independently replayed · PDF and companion JSON ready.`;
     }catch(error){el('thesisStatus').textContent='Thesis export failed: '+error.message}finally{thesisBusy=false;updateThesisState()}
+  });
+  // Native HTTP attachments also work in browsers that reject data-URL downloads.
+  for(const [id,format] of [['thesisPdf','pdf'],['thesisJson','json']])el(id).addEventListener('click',event=>{
+    if(!el(id).getAttribute('href')?.startsWith('data:'))return;
+    event.preventDefault();if(!thesisDownloadRequest||!thesisIsCurrent()||thesisBusy)return;
+    const form=document.createElement('form');form.method='POST';form.action='/api/monthly/thesis-download/'+format;form.hidden=true;
+    const payload=document.createElement('input');payload.type='hidden';payload.name='payload';payload.value=JSON.stringify(thesisDownloadRequest);form.append(payload);document.body.append(form);form.submit();form.remove();
   });
   el('downloadRun').addEventListener('click',()=>{
     if(!current)return;

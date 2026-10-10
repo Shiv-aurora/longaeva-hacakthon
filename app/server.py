@@ -7,7 +7,9 @@ import base64
 import os
 import tempfile
 from typing import Annotated
-from fastapi import FastAPI, HTTPException
+from urllib.parse import parse_qs
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -319,6 +321,34 @@ def thesis_download(identity: str, format: str):
         raise HTTPException(status_code=503, detail="Thesis export failed verification") from e
     return FileResponse(folder / f"thesis.{format}", media_type="application/pdf" if format == "pdf" else "application/json",
                         filename=f"ual-thesis-{identity[:12]}.{format}")
+
+
+@app.post("/api/monthly/thesis-download/{format}")
+async def stateless_thesis_download(format: str, request: Request):
+    """Native browser attachment, without relying on a previous instance's files."""
+    if format not in {"pdf", "json"}:
+        raise HTTPException(status_code=404, detail="Unsupported thesis format")
+    body = await request.body()
+    if len(body) > 4_000_000:
+        raise HTTPException(status_code=413, detail="Thesis download request is too large")
+    try:
+        fields = parse_qs(body.decode("utf-8"), strict_parsing=True, max_num_fields=1)
+        settings = ThesisPayload.model_validate(json.loads(fields["payload"][0]))
+    except (ValueError, KeyError, TypeError) as error:
+        raise HTTPException(status_code=422, detail="Invalid thesis download request") from error
+
+    def build_attachment():
+        try:
+            if HOSTED_DEMO:
+                archive_source(MODEL_SOURCE["monthly"])
+            result = export_thesis(settings.run_record, ThesisNotes(**settings.notes.model_dump()))
+            folder, _, _ = verified_export(result["artifact_id"])
+            return FileResponse(folder / f"thesis.{format}",
+                media_type="application/pdf" if format == "pdf" else "application/json",
+                filename=f"ual-thesis-{result['artifact_id'][:12]}.{format}")
+        except (ValueError, KeyError, TypeError) as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+    return await run_in_threadpool(build_attachment)
 
 
 @app.post("/api/monthly/simulate")
