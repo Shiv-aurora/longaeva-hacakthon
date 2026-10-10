@@ -6,12 +6,18 @@ in the same change.
 
 ## What we are building
 
-United told investors (8-K, 15 July 2026, accession 0000100517-26-000135) that it
-will recover 80–90% of the 2026 fuel-price increase through revenue in Q3 and 100%
-by Q4. We measure how much of a fuel shock airlines have recovered historically and
-how fast, replay the resulting earnings call on every past guided quarter against
-simple rivals, and freeze a dated Q3 2026 call on the whole chain (fuel price paid,
-recovery, unit revenue, EPS) before United reports on 20 October 2026.
+A forward simulation of United Airlines as a business: how capacity, traffic,
+revenue, costs, margin and cash move when fuel, demand, aircraft deliveries or
+management's own choices change, shown as ranges from random runs. The simulator
+already exists in this repository (`app/monthly.py`). What it lacked is evidence
+for how the airline behaves: its pricing response was a user-set assumption.
+
+This build measures that behaviour from history and puts it inside the simulator,
+then checks the simulator against what actually happened. Management statements
+(for example United's July 2026 guidance that it will recover 80-90% of the fuel
+increase in the third quarter) are inputs and comparison points, not the subject:
+they appear as one preset scenario and one line in the validation, never as the
+headline.
 
 Three "clocks", each at the fastest frequency public data allows:
 
@@ -34,14 +40,23 @@ predictor. So the pieces fit together like this:
    block, fuel, demand, capacity, cash) gains a "measured" pricing mode that draws
    that response per path. "Costs only" (no response) and "management's promise"
    are the same simulator with a different response plugged in.
-3. The track record and the Q3 2026 call are that same response applied to past
-   and current guidance. They are how the simulation is validated; EPS is the
-   scoreboard, not the product.
+3. The track record and the dated forward test are that same response applied to
+   past and current quarters. They are how the simulation is validated; EPS is
+   one scoreboard among several (fuel price paid, unit revenue, margin), not the
+   product.
 
-Page order follows from this: the promise, then the simulation (run a shock, see
-cost hit, response and the resulting ranges under each response mode), then why to
-believe it (clocks and track record), then the live test (the frozen call), then
-ask it.
+Page order follows from this:
+
+1. The simulator. What United's business looks like as a system (drivers in,
+   outcomes out), the scenario controls, and the resulting ranges under each
+   behaviour mode. This is the first thing a visitor sees and uses.
+2. How United behaves. The measured relationships that drive the simulator: fuel
+   price to fuel bill, fuel cost to revenue, capacity, demand, and how the stock
+   reacts. Each with its uncertainty and its source.
+3. Does it match reality. The simulator's behaviour replayed on past quarters
+   against simple rivals, the Delta check, and a dated forward test on the next
+   quarter. Management's own statements appear here as one comparison line.
+4. Ask it. The agent console.
 
 `POST /api/lab/scenario` (draft; `app/lab/scenario.py` owns the final shape):
 ```json
