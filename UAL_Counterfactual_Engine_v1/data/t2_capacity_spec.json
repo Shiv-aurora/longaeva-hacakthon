@@ -1,0 +1,33 @@
+{
+  "version": "t2-capacity-selection-spec-0.1.0",
+  "status": "Declared before capacity model implementation and selection scoring; not external preregistration",
+  "source_snapshot_id": "7f6abe2ff74d7aecea05156039ef79adac3603b89209d648c14323bb65e5b5aa",
+  "primary_target": "Quarterly all-service T2 Z ASM per aircraft-day assigned for represented passenger/combined NB/WB aircraft rows, summed over detailed financial regions within an exact certificate carrier",
+  "scope": "T2-covered aircraft exposure, not total owned inventory, consolidated marketed capacity, monthly seasonality or an identified spare/crew/hub ceiling. Preserve reverse P52 omissions and discrepancies. No transfer of existing P52 coefficients.",
+  "carriers": ["UA", "DL", "AA"],
+  "groups": ["narrowbody", "widebody"],
+  "fit_first": "2013-Q1",
+  "fit_last": "2019-Q4",
+  "selection_first": "2020-Q1",
+  "selection_last": "2023-Q4",
+  "locked_first": "2024-Q1",
+  "horizons_quarters": [1, 2, 4],
+  "architectures": ["direct_capacity", "utilization_times_productivity"],
+  "ridge_penalties": [0.1, 1.0, 10.0, 100.0],
+  "component_targets": {
+    "capacity": "capacity_asm_per_assigned_day",
+    "utilization": "reported_hours_per_assigned_day",
+    "productivity": "asm_per_reported_hour"
+  },
+  "features": "Intercept; target-specific lag 1 and lag 4; five carrier/group offsets; group-specific Q2/Q3/Q4 seasonality. Standardize features on fitting rows only, with an unpenalized intercept.",
+  "training_sample": "Require source-eligible capacity, utilization and productivity, with their eligible lag-1/lag-4 state, on common training targets for both architectures. At least eight training targets per carrier/group. No imputation or fallback.",
+  "forecast_rule": "Frozen 2013-19 coefficients; recursive intermediate predictions without post-origin observations. Direct capacity and productivity predictions bounded below at zero; utilization bounded [0,24]. Decomposed capacity equals the product of predicted utilization and predicted productivity.",
+  "baselines": ["seasonal_capacity_persistence", "fixed_training_seasonal_capacity_mean"],
+  "common_selection_sample": "Same actual targets and baseline inputs for every declared candidate. Withhold a comparison if source eligibility, recursive lag or baseline state is missing; preserve all exclusions and sample counts.",
+  "selection_metric": "Lowest equal-weight mean of 18 carrier/group/horizon MAEs in ASM per assigned aircraft-day. Ties use architecture order then declared penalty order. Do not use 2024+ target values for fitting, selection or design changes.",
+  "point_scores": ["MAE", "RMSE", "mean_error"],
+  "regimes": {"2020": "disruption", "2021": "disruption", "2022": "recovery", "2023": "recovery"},
+  "interpretation": "A statistical quarterly capacity component. Selection comparison does not establish whole-engine, causal policy, monthly, locked-test or investment validation. Overlapping horizons are not independent observations.",
+  "uncertainty": "Point comparison first; parameter/structural uncertainty, calibrated intervals and convergence remain proposal requirements.",
+  "vintage": "Current-download reconstruction acquired October 9, 2026; no historical point-in-time forecast claim"
+}
