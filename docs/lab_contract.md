@@ -259,6 +259,7 @@ never a silent blank and never fixture values.
 | `POST /grid` | The simulator over two drivers against a threshold ("What breaks", "What must be true") |
 | `POST /chat` | One agent turn as a single JSON object: plan, tool calls, checked report |
 | `POST /chat/stream` | The same turn as Server-Sent Events |
+| `GET /insights` | Three or four ready findings for the console's empty state, built by code from the data files |
 
 Pages: `/lab` is the application, `/report` the technical report, `/research`
 and `/monthly` the earlier workstation.
@@ -268,6 +269,42 @@ A scenario response carries `status`, `run_id`, `cached`, `elapsed_ms`, `request
 `quarters`, `next_12m`, `prob`, `bridge`), `bridge_per_share`, `response_used`,
 `capacity_response`, `per_share`, `monte_carlo`, `inputs`, `model` and
 `assumptions`. An invalid request returns `{"status": "invalid", "errors": [...]}`.
+
+## Agent shapes
+
+Request to `/chat` and `/chat/stream`: `{message, history, model?}`. `model` is an id
+from `/status` `models`, or `"rules"` to force the rules planner; anything else is a 422.
+
+Response: `{status: ok|fallback|not_supported, answer, note, planned_by, written_by, model,
+report, sources, follow_ups, facts, charts, evidence_ids, tool_calls, steps, scenarios,
+grids, usage}`.
+
+- `report`: `{title, summary, table, sections, template, facts, charts, assumptions,
+  evidence_ids, verified, unsupported, planned_by, written_by}`. The title is written by
+  code. The summary is one or two sentences. `sections` holds at most one paragraph.
+- `report.table` is `null` for a lookup, otherwise `{columns, rows: [{label, cells:
+  [{fact, text, range, label}]}], note}`. One run gives a row per behavior ("No response",
+  "As management says", "As history shows"); two runs give a row per case and a
+  "Difference" row.
+- `report.facts`: `[{id, label, text, value, unit, source}]`. The model writes
+  placeholders such as `{f7}`; code fills them. A typed figure fails the check.
+- `sources`: `[{id, name, kind, detail, href}]`, `kind` one of `simulator | data | filing |
+  web`. Every fact's `source` is one of these ids.
+- `follow_ups`: up to three questions chosen by code.
+
+Stream `step` event: `{id, kind: plan|tool|write|check, status: running|done|failed|retried,
+label, meta, details: [{label, meta}], name, args, summary, elapsed_ms}`. A step that takes
+time is sent as `running` and again under the same id when it resolves. `final` carries the
+response above.
+
+`GET /status` adds `agent: "model"|"rules"`, `models: [{id, label, note, available}]`
+(always ending with the rules option) and `commands: [{name, description, template}]`.
+
+`GET /insights`: `{status, items: [{id, text, chart: {file, kind} | null, question, source}]}`
+with `chart.kind` one of `daily_estimate | recovery_curve | scores | scenario_fan`.
+
+The agent never states the forecast's freeze time or a build time; it says "before United
+reports on 20 October 2026".
 
 ## Notes on shapes as built
 
