@@ -3,13 +3,16 @@
 Nothing here starts a server or a browser. The checks are the ones a reviewer would
 otherwise do by eye: every local file a page asks for exists, nothing is fetched from
 another host at run time, placeholder data is flagged and stays out of the real data
-folder, and third-party code carries its version, hash and licence.
+folder, and third-party code carries its version, hash and licence. One check runs a
+function of the page's own in Node, where Node is installed, and is skipped where it is not.
 """
 from __future__ import annotations
 
 import hashlib
 import json
 import re
+import shutil
+import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -25,7 +28,7 @@ FIXTURES = DATA / "fixtures"
 ROUTES = {"/", "/lab", "/report"}
 # One fixture per output file in docs/lab_contract.md, plus the API responses the page draws.
 CONTRACT_FILES = ("meta", "cost_clock", "fare_clock", "market_clock", "track_record", "q3_call", "signal", "evidence")
-API_FIXTURES = ("scenario", "grid", "grid_target", "today", "chat_stream", "chat_report")
+API_FIXTURES = ("scenario", "grid", "grid_target", "today", "status", "chat_stream", "chat_report")
 # The only addresses our own scripts may mention: an XML namespace and the credit link.
 ALLOWED_IN_OWN_SCRIPTS = {"http://www.w3.org/2000/svg", "https://rareui.com"}
 # Vendored libraries may name XML namespaces and their own home page in a banner.
@@ -170,8 +173,15 @@ def test_stylesheets_load_only_local_files(sheet):
 
 @pytest.mark.parametrize("sheet", stylesheets(), ids=lambda p: p.name)
 def test_stylesheets_have_no_gradients(sheet):
+    """Surfaces are flat. The one gradient is not a fill: a band of ink that slides across the running step's label."""
     text = re.sub(r"/\*.*?\*/", "", sheet.read_text(encoding="utf-8"), flags=re.S)
-    assert not re.search(r"\b(linear|radial|conic)-gradient\(", text), f"{sheet.name} uses a gradient"
+    found = [match.start() for match in re.finditer(r"\b(linear|radial|conic)-gradient\(", text)]
+    if sheet.name != "lab.css":
+        assert not found, f"{sheet.name} uses a gradient"
+        return
+    assert len(found) == 1, "lab.css may use one gradient, on the running step's label"
+    rule = text[text.rfind("}", 0, found[0]) + 1:text.find("}", found[0])]
+    assert ".thinking-label" in rule and "background-clip: text" in rule, "the gradient must be the label's shimmer, clipped to its text"
 
 
 @pytest.mark.parametrize("script", own_scripts(), ids=lambda p: p.name)
@@ -251,6 +261,132 @@ def test_the_three_views_and_their_switcher_are_in_the_page():
     assert 'id="view-nav"' in page and "gooey-nav.js" in page
     assert 'href="/report"' in page and 'href="/research"' not in page   # the earlier workstation is not linked
     assert 'id="fixture-pill"' in page and 'id="about-btn"' in page
+
+
+def test_the_top_bar_has_no_data_date_and_the_rail_no_status_line():
+    page = (LAB / "index.html").read_text(encoding="utf-8")
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    sheet = (LAB / "lab.css").read_text(encoding="utf-8")
+    for text in (page, script, sheet):
+        assert "data-date" not in text and "sim-status" not in text
+    assert "Market data to" not in script and '"placeholder run"' not in script
+    # The view switcher sits between two equal columns, so it is at the center of the window.
+    bar = re.search(r"\.topbar \{(.*?)\}", sheet, re.S).group(1)
+    assert "grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr)" in bar
+
+
+def test_the_presets_are_one_scenario_selector():
+    page = (LAB / "index.html").read_text(encoding="utf-8")
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    for name in ("scenario-btn", "scenario-name", "scenario-menu"):
+        assert f'id="{name}"' in page
+    assert 'id="preset-row"' not in page and "preset-row" not in script
+    assert 'aria-haspopup="listbox"' in page
+    presets = re.findall(r'\{ id: "(\w+)", label: "([^"]+)", (?:needsToday: true, )?what: "([^"]+)"', script)
+    assert [name for name, _, _ in presets] == ["today", "fuel_back", "demand", "deliveries", "capacity"]
+    assert all(len(what) <= 34 for _, _, what in presets), "each scenario's description is one short line"
+    # Away from a preset the trigger reads "Custom"; the list filters as it is typed in and closes on Esc.
+    assert 'preset ? preset.label : "Custom"' in script
+    assert 'placeholder: "Find..."' in script and 'event.key === "Escape"' in script
+
+
+# The delivery delay: two sliders the simulator takes only as a whole pair.
+
+def paired_delay_source() -> str:
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    match = re.search(r"  function pairedDelay\(aircraft, months, moved, firstStep\) \{\n.*?\n  \}\n", script, re.S)
+    assert match, "lab.js has no pairedDelay(aircraft, months, moved, firstStep)"
+    return match.group(0)
+
+
+def test_every_way_of_setting_the_delay_goes_through_the_pairing():
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    paired_delay_source()
+    # The request is built through it, so no request can carry half a pair.
+    assert "delivery_delay: pairedDelay(" in script
+    # A slider moved by hand, a preset or a request from the agent (both through setSimForm), and Reset.
+    assert 'settleDelay(name === "delay_aircraft" ? "aircraft" : name === "delay_months" ? "months" : null)' in script
+    set_form = script[script.index("  function setSimForm(q) {"):script.index("  // The simulator names its inputs")]
+    assert "settleDelay(null)" in set_form
+    reset = script[script.index('form.addEventListener("reset"'):script.index("initTabs();")]
+    assert "settleDelay(null)" in reset
+    # The grids take the scenario last sent, which was built the same way.
+    grid = script[script.index("  function gridRequest(kind) {"):script.index("  // Where the boundary crosses")]
+    assert "sim.request || readSimForm()" in grid and "delivery_delay: q.delivery_delay" in grid
+    # A refusal is worded with the labels on the controls, and the route is not printed.
+    assert '"POST " + API' not in script and "function plainSimError" in script
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="runs the page's own function, which needs Node")
+def test_the_delivery_delay_pair_is_both_zero_or_both_above_zero():
+    cases = [[aircraft, months, moved, 5] for aircraft in range(0, 40, 5) for months in range(0, 13) for moved in (None, "aircraft", "months")]
+    program = paired_delay_source() + f"\nconsole.log(JSON.stringify({json.dumps(cases)}.map(function (c) {{ return pairedDelay(c[0], c[1], c[2], c[3]); }})));"
+    run = subprocess.run([shutil.which("node"), "-e", program], capture_output=True, text=True, timeout=60, check=True)
+    results = {(aircraft, months, moved): (pair["aircraft"], pair["months"]) for (aircraft, months, moved, _), pair in zip(cases, json.loads(run.stdout))}
+    for (aircraft, months, moved), (a, m) in results.items():
+        assert (a > 0) == (m > 0), f"aircraft {aircraft}, months {months}, moved {moved} gives {a} and {m}"
+        if aircraft > 0 and months > 0:
+            assert (a, m) == (aircraft, months), "a whole pair is left as it is"
+    assert results[(10, 0, "aircraft")] == (10, 1)     # aircraft above zero brings the delay to one month
+    assert results[(0, 4, "months")] == (5, 4)         # a delay above zero brings the aircraft to the first step
+    assert results[(0, 6, "aircraft")] == (0, 0)       # either one back to zero clears the other
+    assert results[(20, 0, "months")] == (0, 0)
+    assert results[(10, 0, None)] == (10, 1)           # half a pair from a preset or the agent is completed
+    assert results[(0, 7, None)] == (5, 7)
+
+
+# The agent console.
+
+def test_the_console_has_a_composer_a_command_menu_and_a_model_picker():
+    page = (LAB / "index.html").read_text(encoding="utf-8")
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    for name in ("console-toggle", "console-body", "ask-turns", "ask-suggest", "ask-form", "ask-input", "ask-run",
+                 "command-btn", "command-menu", "model-btn", "model-menu", "model-label", "ask-live"):
+        assert f'id="{name}"' in page, f"index.html has no #{name}"
+    assert 'class="composer"' in page
+    # Commands and models come from the server's status; the chosen model goes out with the question.
+    assert "status.commands" in script and "status.models" in script and "body.model = ask.model" in script
+    # Enter sends, Shift+Enter is a new line; with the menu open Enter or Tab picks and Esc closes.
+    assert 'event.key === "Enter" && !event.shiftKey' in script and 'event.key === "Enter" || event.key === "Tab"' in script
+    # The stream first, the one-piece answer if the stream fails.
+    assert 'post("/chat/stream", body, "text/event-stream")' in script and 'post("/chat", body)' in script
+
+
+def test_the_console_shows_steps_an_answer_and_what_to_ask_next():
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    # A status line with a live timer, hidden from a screen reader so it is not read out ten times a second.
+    assert 'class: "thinking", role: "status"' in script and "setInterval(tick, 100)" in script
+    assert 'class: "thinking-time", "aria-hidden": "true"' in script
+    # One row per step id, resolved in place; the list folds to a line when the answer is in.
+    for word in ("running", "done", "failed", "retried"):
+        assert f"{word}:" in script[script.index("var STATUS_WORDS"):script.index("var ask =")]
+    assert "function taskList()" in script and 'class: "tasks-summary"' in script
+    # The answer: words revealed within a cap, at most three source chips, the code-built table, sources, follow-ups.
+    assert "Math.min(32, 1500 / units.length)" in script and "marks.length >= 3" in script
+    assert "answerTable(report.table)" in script and "report.follow_ups" in script and "report.sources" in script
+    assert ".slice(0, 3)" in script
+    # No reveal under reduced motion.
+    assert "if (reducedMotion || !units.length)" in script
+
+
+def test_the_console_asks_for_nothing_it_does_not_show():
+    page = (LAB / "index.html").read_text(encoding="utf-8")
+    script = (LAB / "lab.js").read_text(encoding="utf-8")
+    sheet = (LAB / "lab.css").read_text(encoding="utf-8")
+    # The insight cards were built and taken out again: the page does not ask for them or style them.
+    for text in (page, script, sheet):
+        assert "insight" not in text.lower()
+    # Links a server names are followed only to this site or over http(s).
+    assert "function safeHref" in script and 'rel: "noopener noreferrer"' in script
+
+
+def test_console_motion_holds_still_when_reduced_motion_is_asked_for():
+    sheet = re.sub(r"/\*.*?\*/", "", (LAB / "lab.css").read_text(encoding="utf-8"), flags=re.S)
+    reduced = sheet[sheet.rindex("@media (prefers-reduced-motion: reduce)"):]
+    assert ".thinking-grid i" in reduced and ".thinking-label" in reduced and reduced.count("animation: none") >= 2
+    # Enters and expansions share one curve, and height opens by grid rows.
+    assert "--ease-out: cubic-bezier(0.23, 1, 0.32, 1)" in (LAB / "tokens.css").read_text(encoding="utf-8")
+    assert "grid-template-rows: 0fr" in sheet and "grid-template-rows: 1fr" in sheet
 
 
 # ------------------------------------------------------- third-party files
@@ -381,12 +517,25 @@ def test_grid_fixtures_have_the_shape_the_page_reads(name, direction):
     assert grid["boundary"] and all({"x", "y"} <= set(point) for point in grid["boundary"])
 
 
+def test_status_fixture_has_the_shape_the_composer_reads():
+    status = json.loads((FIXTURES / "status.json").read_text(encoding="utf-8"))
+    assert status["agent"] in ("model", "rules")
+    assert all({"id", "label", "available"} <= set(model) for model in status["models"])
+    assert status["models"][-1]["id"] == "rules"
+    assert status["commands"] and all({"name", "description", "template"} <= set(command) for command in status["commands"])
+    assert any("__" in command["template"] for command in status["commands"]), "a template marks its blanks with __"
+
+
 def test_chat_fixtures_have_the_shape_the_page_reads():
     stream = json.loads((FIXTURES / "chat_stream.json").read_text(encoding="utf-8"))
-    assert {event["kind"] for event in stream["events"]} <= {"plan", "tool_call", "tool_result", "check"}
+    assert {event["kind"] for event in stream["events"]} <= {"plan", "tool", "write", "check"}
+    assert {event["status"] for event in stream["events"]} <= {"running", "done", "failed", "retried"}
+    assert all({"id", "label", "meta", "details"} <= set(event) for event in stream["events"])
     answer = json.loads((FIXTURES / "chat_report.json").read_text(encoding="utf-8"))
     report = answer["report"]
-    assert {"title", "summary", "sections", "charts", "assumptions", "evidence_ids", "verified", "unsupported"} <= set(report)
+    assert {"title", "summary", "table", "sections", "facts", "charts", "assumptions", "evidence_ids", "verified", "unsupported"} <= set(report)
+    assert {"sources", "follow_ups", "steps"} <= set(answer)
+    assert {fact["source"] for fact in report["facts"]} <= {source["id"] for source in answer["sources"]}
     runs = {run["run_id"] for run in answer["scenarios"]}
     for chart in report["charts"]:
         if chart.get("kind") == "scenario":

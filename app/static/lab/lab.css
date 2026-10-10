@@ -3,9 +3,14 @@
  * On a desktop window the app fills the viewport and the page never scrolls;
  * below that size the panels stack and the page scrolls normally.
  *
- * Panels have no boxes. They sit on one ground and are separated by space or by
- * a single hairline: each view is a grid with a one-pixel gap over a line-coloured
- * ground, so the gaps are the hairlines.
+ * Panels have no boxes. There are two grounds: the work area of each view is on
+ * --surface, and the chrome around it (top bar, side rails, supporting panels) is
+ * on --surface-rail. Regions are told apart by that step and by a single hairline:
+ * each view is a grid with a one-pixel gap over a line-colored ground.
+ *
+ * One language for controls. A rounded shape with a visible boundary can be
+ * clicked, and the boundary darkens on hover. The chosen one has the work-area
+ * fill and an ink boundary.
  * Shared pieces (tiles, drawer, tables, controls) are in base.css.
  */
 
@@ -13,23 +18,34 @@ body.app {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: var(--surface);
+  background: var(--surface-rail);
 }
 
 /* Top bar ------------------------------------------------------------------ */
 
+/* Three columns with equal sides, so the view switcher sits at the center of the window
+   whatever the name on the left and the links on the right happen to measure. */
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
+  display: grid;
   flex: none;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-4);
   height: 48px;
-  padding: 0 var(--space-4) 0 20px;
+  padding: 0 20px;
   border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  background: var(--surface-rail);
+}
+
+.topbar .wordmark {
+  justify-self: start;
+}
+
+.topbar .gooey {
+  justify-self: center;
 }
 
 .wordmark {
@@ -44,20 +60,15 @@ body.app {
 .topbar-right {
   display: flex;
   align-items: center;
+  justify-self: end;
   gap: var(--space-4);
   min-width: 0;
-  margin-left: auto;
+  /* The bar's padding is the same on both sides (the center stays the center); the icons sit a little closer to the edge. */
+  margin-right: -4px;
 }
 
 .topbar-right .icon-btn + .icon-btn {
   margin-left: calc(var(--space-2) * -1);
-}
-
-.data-date {
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--ink-muted);
-  white-space: nowrap;
 }
 
 .toplink {
@@ -103,13 +114,26 @@ main {
   background: transparent;
 }
 
+/* The second ground: the chrome and the supporting panels. The work area of each
+   view (the center column, the large tile, the replay) stays on --surface. Charts
+   drawn here take this ground, and hover fills step down one level. */
+.topbar,
+.view > .rail,
+.view > .console,
+.view-behaviour > .tile:not(.is-large),
+.side > .tile {
+  --chart-surface: var(--surface-rail);
+  --surface-hover: var(--surface-control);
+  background: var(--surface-rail);
+}
+
 .centre {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
   min-width: 0;
   min-height: 0;
-  padding: 20px 28px var(--space-4);
+  padding: 20px var(--space-5) var(--space-4);
 }
 
 .centre > .tile {
@@ -133,46 +157,52 @@ main {
   color: var(--ink-muted);
 }
 
-/* Chips are plain words; the ground appears on hover and when chosen. */
-.chips {
+/* The scenario selector: a trigger that names the scenario in force, and the list it opens. */
+.scenario {
+  position: relative;
+}
+
+.scenario-trigger {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-}
-
-.rail .chips {
-  margin: 0 -8px;
-}
-
-.chip {
-  display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 8px;
-  border: 0;
-  border-radius: var(--radius-m);
-  background: none;
-  color: var(--ink-secondary);
-  font-size: var(--text-13);
-  line-height: 1.25;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--text-14);
+  font-weight: 500;
   text-align: left;
-  text-decoration: none;
+  transition: border-color var(--fast) var(--ease);
 }
 
-.chip:hover {
-  background: var(--surface-hover);
-  color: var(--ink);
+.scenario-trigger:hover {
+  border-color: var(--ink-muted);
 }
 
-.chip[aria-pressed="true"] {
-  background: var(--surface-control);
-  color: var(--ink);
+.scenario-trigger[aria-expanded="true"] {
+  border-color: var(--ink);
 }
 
-.chip[disabled] {
-  background: none;
+.scenario-trigger:focus-visible {
+  border-radius: 8px;
+}
+
+.scenario-trigger svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
   color: var(--ink-muted);
-  cursor: not-allowed;
+}
+
+.scenario-name {
+  min-width: 0;
+  min-height: 1.4em;
+  line-height: 1.4;
 }
 
 .controls {
@@ -262,7 +292,7 @@ input[type="range"]:focus-visible::-moz-range-thumb {
   outline-offset: 2px;
 }
 
-/* Behaviour key: the colour dot is also the show/hide switch. */
+/* Behavior key: each row is a checkbox in the color of its line. */
 .modes {
   display: grid;
   gap: 2px;
@@ -287,20 +317,47 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 }
 
 .mode-swatch {
+  position: relative;
   flex: none;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   border: 1.5px solid var(--c);
-  border-radius: 50%;
+  border-radius: 4px;
   background: var(--c);
+  transition: box-shadow var(--fast) var(--ease);
+}
+
+/* The tick, drawn from two borders. */
+.mode-swatch::after {
+  content: "";
+  position: absolute;
+  top: 0.5px;
+  left: 3.5px;
+  width: 4px;
+  height: 7px;
+  border: solid var(--chart-on-fill);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
 }
 
 .mode input:not(:checked) ~ .mode-swatch {
-  background: transparent;
+  background: var(--surface);
+}
+
+.mode input:not(:checked) ~ .mode-swatch::after {
+  content: none;
 }
 
 .mode input:not(:checked) ~ .mode-name {
   color: var(--ink-muted);
+}
+
+.mode:hover .mode-swatch {
+  box-shadow: 0 0 0 3px var(--surface-control);
+}
+
+.mode:hover .mode-name {
+  color: var(--ink);
 }
 
 .mode:has(input:focus-visible) {
@@ -318,30 +375,40 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 .rail-foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--space-2);
   min-height: 28px;
   margin-top: auto;
 }
 
 .rail-foot .btn-quiet {
-  margin-right: calc(var(--space-2) * -1);
+  border-color: var(--line-strong);
+  background: var(--surface);
 }
 
-.sim-status {
-  min-width: 0;
-  font-family: var(--font-mono);
+.rail-foot .btn-quiet:hover {
+  border-color: var(--ink-muted);
+  background: var(--surface);
+}
+
+/* What the controls changed by themselves, said once under the sliders it concerns. */
+.field-note {
   font-size: var(--text-12);
-  line-height: 1.35;
-  color: var(--ink-muted);
+  line-height: 1.4;
+  color: var(--ink-secondary);
 }
 
-/* Outcomes: the number leads. Each is also the switch for the chart's measure. */
+.field-note:empty {
+  display: none;
+}
+
+/* Outcomes: the number leads. The four are a radio group of cards, and the one
+   chosen is the measure the chart shows. */
 
 .outcomes {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-5);
+  gap: var(--space-2);
   container-type: inline-size;
 }
 
@@ -350,29 +417,41 @@ input[type="range"]:focus-visible::-moz-range-thumb {
   align-content: start;
   gap: 2px;
   min-width: 0;
-  padding: 10px 0 0;
-  border: 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
+  padding: 9px 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   background: none;
   color: var(--ink);
   text-align: left;
-  transition: opacity var(--fast) var(--ease);
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease), opacity var(--fast) var(--ease);
+}
+
+button.outcome {
+  border-color: var(--line-strong);
+  background: var(--surface);
 }
 
 button.outcome:hover {
-  border-top-color: var(--ink-muted);
+  border-color: var(--ink-muted);
 }
 
-.outcome[aria-pressed="true"] {
-  border-top-color: var(--ink);
-  box-shadow: inset 0 1px 0 var(--ink);
+button.outcome[aria-checked="true"] {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+button.outcome[aria-checked="true"] .outcome-label {
+  color: var(--ink);
+}
+
+button.outcome:focus-visible {
+  border-radius: 10px;
 }
 
 .outcome-label {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 5px;
   font-size: var(--text-13);
   line-height: 1.35;
   color: var(--ink-secondary);
@@ -394,7 +473,7 @@ button.outcome:hover {
 
 .outcome-value {
   margin: 2px 0 1px;
-  font-size: clamp(1.75rem, 5.4cqi, 2.75rem);
+  font-size: clamp(1.375rem, 5.4cqi, 2.75rem);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   line-height: 1.12;
@@ -404,9 +483,9 @@ button.outcome:hover {
 
 .outcome-range,
 .outcome-delta {
-  font-size: var(--text-13);
+  font-size: var(--text-12);
   font-variant-numeric: tabular-nums;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--ink-secondary);
 }
 
@@ -426,23 +505,29 @@ button.outcome:hover {
   opacity: 0.45;
 }
 
-/* Main chart: three questions as tabs --------------------------------------- */
+/* Main chart: three questions, as a segmented control in the family of the view
+   switcher in the top bar (a track, with the chosen segment raised out of it). */
 
 .tabs {
   display: inline-flex;
-  gap: 20px;
+  gap: 2px;
   min-width: 0;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--surface-control);
 }
 
 .tabs button {
-  min-height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
+  min-height: 26px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
   background: none;
   color: var(--ink-secondary);
-  font-size: var(--text-14);
+  font-size: var(--text-13);
+  font-weight: 500;
   white-space: nowrap;
+  transition: color var(--fast) var(--ease);
 }
 
 .tabs button:hover {
@@ -450,8 +535,13 @@ button.outcome:hover {
 }
 
 .tabs button[aria-selected="true"] {
+  border-color: var(--ink);
+  background: var(--surface);
   color: var(--ink);
-  box-shadow: inset 0 -1px 0 var(--ink);
+}
+
+.tabs button:focus-visible {
+  border-radius: 7px;
 }
 
 .tab-body {
@@ -519,7 +609,14 @@ button.outcome:hover {
 
 /* Right rail: the agent console --------------------------------------------- */
 
+/* One column on the rail ground: a thread, and the composer at the foot.
+   Cards (the step list, the composer, a menu) take the work-area fill.
+   Motion is one grammar: a single curve for enters and expansions (150 to 300 ms),
+   a pop for chips and badges, a fade-up for rows, and height by grid rows. With
+   reduced motion nothing moves (base.css) and the timer still counts. */
+
 .console {
+  position: relative;
   padding: var(--space-4) 0 0;
 }
 
@@ -534,62 +631,91 @@ button.outcome:hover {
   gap: var(--space-3);
   min-height: 0;
   padding: 0 20px var(--space-3);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
-.console-form {
-  display: grid;
+.icon {
+  display: inline-grid;
   flex: none;
-  grid-template-columns: 1fr auto;
-  gap: var(--space-2);
-  align-items: end;
-  padding: 10px 20px 14px;
-  border-top: 1px solid var(--line);
+  place-items: center;
 }
 
-.console-form textarea {
-  min-height: 40px;
-  max-height: 120px;
-  padding: 9px 0;
-  border: 0;
-  border-radius: var(--radius-s);
-  background: none;
-  font-size: var(--text-14);
-  line-height: 1.4;
-  resize: none;
+.icon svg {
+  display: block;
+  width: 14px;
+  height: 14px;
 }
 
-.console-form textarea::placeholder {
-  color: var(--ink-muted);
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
 }
 
-.console-form textarea:focus-visible {
-  outline-offset: 4px;
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
-.console-form .btn {
-  min-height: 32px;
-  margin-bottom: 4px;
-  font-size: var(--text-13);
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
-/* Suggested questions: a short list of plain lines. */
-.console-suggest {
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pop-in {
+  animation: pop-in 220ms var(--ease-out) both;
+}
+
+.fade-up {
+  animation: fade-up 280ms var(--ease-out) both;
+}
+
+/* A region that opens by growing its one grid row; closed, it is out of reach of the keyboard too. */
+.expand {
   display: grid;
-  gap: 0;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 260ms var(--ease-out), opacity 260ms var(--ease-out), visibility 0s linear 260ms;
+}
+
+.expand.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.expand-inner {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Before anything is asked: a short list of questions, at the foot above the composer. */
+.suggest {
+  display: grid;
   margin-top: auto;
 }
 
-.console-suggest .chip {
-  display: block;
-  width: 100%;
-  min-height: 0;
-  padding: 9px 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
-}
+/* The thread. */
 
-.console-suggest .chip:hover {
-  background: none;
+.turn {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
 }
 
 .turn + .turn {
@@ -599,221 +725,955 @@ button.outcome:hover {
 }
 
 .turn-question {
-  font-size: var(--text-14);
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-.steps {
-  margin-top: var(--space-2);
-}
-
-.step + .step {
-  border-top: 1px solid var(--line);
-}
-
-.step summary,
-.step .step-line {
-  display: grid;
-  grid-template-columns: 8px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: baseline;
-  padding: 7px 0;
+  justify-self: end;
+  max-width: 90%;
+  padding: 7px 12px;
+  border-radius: 14px 14px 4px 14px;
+  background: var(--surface-control);
   font-size: var(--text-13);
-  line-height: 1.4;
-  list-style: none;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
-.step summary {
-  cursor: pointer;
+/* The status line: nine cells driving right, the running step, the time so far. */
+
+.thinking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
 }
 
-.step summary::-webkit-details-marker {
-  display: none;
+.thinking-grid {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(3, 4px);
+  gap: 1.5px;
 }
 
-.step-state {
-  align-self: center;
-  width: 7px;
-  height: 7px;
-  border: 1.5px solid var(--ink-muted);
-  border-radius: 50%;
-  background: var(--ink-muted);
+.thinking-grid i {
+  width: 4px;
+  height: 4px;
+  background: var(--ink);
+  opacity: 0.15;
+  animation: cell-pulse 650ms ease-in-out infinite;
 }
 
-.step[data-state="running"] .step-state {
-  background: transparent;
-  border-color: var(--ink);
-  border-right-color: transparent;
-  animation: turn 0.9s linear infinite;
-}
-
-.step[data-state="stopped"] .step-state {
-  background: transparent;
-}
-
-@keyframes turn {
-  to {
-    transform: rotate(360deg);
+@keyframes cell-pulse {
+  50% {
+    opacity: 1;
   }
 }
 
-.step-kind {
-  margin-right: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--ink-muted);
-}
-
-.step-outcome {
-  display: block;
-  font-size: var(--text-12);
+.thinking-label {
+  font-size: var(--text-13);
+  font-weight: 500;
   color: var(--ink-secondary);
 }
 
-.step-outcome:empty {
-  display: none;
+/* The one gradient on the site: a band of full ink that slides across the label. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .thinking-label {
+    background: linear-gradient(90deg, var(--ink-secondary) 0%, var(--ink-secondary) 30%, var(--ink) 50%, var(--ink-secondary) 70%, var(--ink-secondary) 100%) 0 0 / 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 1.4s linear infinite;
+  }
 }
 
-.step-time {
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+.thinking-time {
+  margin-left: auto;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+}
+
+/* The steps: one list card under the status line, folded to one line when the answer is in. */
+
+.tasks {
+  display: grid;
+  min-width: 0;
+}
+
+.tasks-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-secondary);
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.tasks-summary:hover {
+  color: var(--ink);
+}
+
+.tasks-summary .icon svg,
+.task-chevron svg,
+.act-chevron svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 220ms var(--ease-out);
+}
+
+.tasks-summary[aria-expanded="true"] .icon svg,
+.task-row[aria-expanded="true"] .task-chevron svg,
+.act[aria-expanded="true"] .act-chevron svg {
+  transform: rotate(90deg);
+}
+
+.tasks-list {
+  margin-top: 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.task + .task {
+  border-top: 1px solid var(--line);
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto auto;
+  gap: var(--space-2);
+  align-items: center;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 10px 6px 8px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font-size: var(--text-13);
+  text-align: left;
+}
+
+button.task-row:hover {
+  background: var(--surface-rail);
+}
+
+button.task-row:focus-visible {
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.task-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.task-label {
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.task-sub {
+  font-size: var(--text-12);
+  line-height: 1.4;
+  color: var(--ink-secondary);
+}
+
+.task-tag {
+  margin-left: var(--space-2);
+  font-size: var(--text-12);
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.task-meta {
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   white-space: nowrap;
 }
 
-.step[data-state="running"] .step-time {
-  color: var(--ink);
+.task-chevron {
+  color: var(--ink-muted);
 }
 
-.step-body {
+.task-mark {
+  position: relative;
   display: grid;
-  gap: 6px;
-  justify-items: start;
-  margin: 0 0 var(--space-2) 18px;
-  font-size: var(--text-12);
+  place-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.task-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.task-ring svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.task-ring-track {
+  stroke: var(--line-strong);
+}
+
+/* A 28% arc of the ring, turning. */
+.task-ring-arc {
+  stroke: var(--ink);
+  stroke-dasharray: 28 72;
+  transform-origin: 50% 50%;
+  animation: turn 0.9s linear infinite;
+}
+
+.task-num {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-secondary);
 }
 
-.step-body .chip {
-  margin-left: -8px;
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 3px;
+.task-badge {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: var(--surface);
 }
 
-.step-name code,
-.step-args {
+.task-badge.is-done {
+  background: var(--ok);
+}
+
+.task-badge.is-failed {
+  background: var(--danger);
+}
+
+.task-badge.is-retried {
+  background: var(--notice-ink);
+}
+
+.task-badge .icon svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.25;
+}
+
+/* A step's details hang from a hairline rail under its mark. */
+.task-details {
+  display: grid;
+  gap: 5px;
+  margin: 0 10px 10px 19px;
+  padding: 2px 0 2px 17px;
+  border-left: 1px solid var(--line-strong);
+}
+
+.task-detail {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-12);
+  line-height: 1.45;
+}
+
+.expand.is-open > .expand-inner > .task-details > .task-detail {
+  animation: fade-up 260ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+.task-detail dt {
+  min-width: 0;
+  color: var(--ink-secondary);
+}
+
+.task-detail dd {
+  flex: none;
+  max-width: 55%;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  color: var(--ink-muted);
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.step-args {
-  width: 100%;
-  max-height: 180px;
-  margin: 0;
-  padding: var(--space-2) 10px;
-  overflow: auto;
-  border-radius: var(--radius-m);
-  background: var(--surface-sunken);
-  color: var(--ink);
-  line-height: 1.5;
-}
+/* The answer. */
 
-.report {
+.answer {
   display: grid;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
+  gap: var(--space-3);
+  min-width: 0;
 }
 
-.report:empty {
+.answer:empty {
   display: none;
 }
 
-.report h4 {
-  margin-top: var(--space-2);
-  font-size: var(--text-13);
-}
-
-.report-title {
+.answer-title {
   font-size: var(--text-16);
   line-height: 1.35;
 }
 
-.report-summary,
-.report-text {
+.answer-summary {
+  font-size: var(--text-14);
+  line-height: 1.55;
+}
+
+/* Words ease in from a slight blur; a thin caret runs ahead of them. */
+.answer-summary .w {
+  opacity: 0;
+  filter: blur(3px);
+  transition: opacity 260ms var(--ease-out), filter 260ms var(--ease-out);
+}
+
+.answer-summary .w.is-in {
+  opacity: 1;
+  filter: none;
+}
+
+.caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  margin-left: 2px;
+  background: var(--ink);
+  vertical-align: -0.15em;
+}
+
+.src-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  margin: 0 1px;
+  padding: 0 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.65625rem;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+
+.src-chip.is-in {
+  animation: pop-in 220ms var(--ease-out) both;
+}
+
+.src-chip:hover {
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
+.src-chip:focus-visible {
+  border-radius: 5px;
+}
+
+.answer-warning {
+  font-size: var(--text-12);
+  line-height: 1.45;
+  color: var(--notice-ink);
+}
+
+.answer-section {
+  display: grid;
+  gap: 4px;
+}
+
+.answer-section h4,
+.answer-chart .tile-title {
+  font-size: var(--text-13);
+}
+
+.answer-text,
+.answer-list {
   font-size: var(--text-13);
   line-height: 1.55;
   color: var(--ink-secondary);
 }
 
-.report-summary {
+.answer-list {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.answer-list b {
   color: var(--ink);
 }
 
-.verdict {
-  display: flex;
-  align-items: flex-start;
+.assumptions {
+  gap: var(--space-2);
+  padding: 6px 0 8px;
+  font-size: var(--text-12);
+}
+
+.answer-note {
+  font-size: var(--text-12);
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+/* The table code built, set for a narrow column: a group for each row, its figures on a two-column grid. */
+.answer-table {
+  display: grid;
+  gap: 10px;
+}
+
+.fact-group {
+  display: grid;
   gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.fact-group-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-13);
+  font-weight: 500;
+}
+
+.fact-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-4);
+}
+
+.fact-cell dt {
+  font-size: var(--text-12);
+  line-height: 1.35;
+  color: var(--ink-secondary);
+}
+
+.fact-cell dd b,
+.fact-table td b {
+  display: block;
+  font-size: var(--text-14);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.fact-cell dd small,
+.fact-table td small {
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: var(--ink-muted);
+}
+
+.fact-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-13);
+}
+
+.fact-table th,
+.fact-table td {
+  padding: 6px 0 6px var(--space-3);
+  border-top: 1px solid var(--line);
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+}
+
+.fact-table th:first-child {
+  padding-left: 0;
+}
+
+.fact-table thead th {
+  border-top: 0;
+  font-size: var(--text-12);
+  color: var(--ink-secondary);
+}
+
+.fact-table .num {
+  text-align: right;
+}
+
+.answer-chart {
+  min-width: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.answer-charts {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.answer-chart .tile-plot {
+  flex: none;
+}
+
+/* In this column a chart's title keeps its line and its tools drop below. */
+.answer-chart .tile-head {
+  flex-wrap: wrap;
+}
+
+.answer-chart .tile-title {
+  flex: 1 1 55%;
+}
+
+/* What can be done with an answer: quiet until wanted. Actions on one row, the lists that open on the next. */
+.answer-foot {
+  display: grid;
+  min-width: 0;
+}
+
+.answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  margin: -2px 0 0 -6px;
+}
+
+.answer-foot.is-in,
+.followups.is-in .followups-label {
+  animation: fade-in 260ms var(--ease-out) both;
+}
+
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--radius-m);
+  background: none;
+  color: var(--ink-secondary);
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.act:hover {
+  background: var(--surface-hover);
+  color: var(--ink);
+}
+
+.sources-list {
+  display: grid;
+  padding: 4px 0 6px;
+}
+
+.source {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
   font-size: var(--text-12);
   line-height: 1.4;
 }
 
-.verdict.is-ok {
-  color: var(--ok);
+.source.is-marked {
+  animation: source-mark 1.2s var(--ease-out);
 }
 
-.verdict.is-warn {
-  color: var(--notice-ink);
+@keyframes source-mark {
+  from {
+    background: var(--surface-control);
+  }
 }
 
-.verdict-icon {
-  display: inline-flex;
+.source-detail {
   flex: none;
-  margin-top: 1px;
+  max-width: 60%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.verdict-icon svg {
-  width: 14px;
-  height: 14px;
-}
-
-.report-chart {
-  padding: var(--space-3) 0 0;
-  border-top: 1px solid var(--line);
-}
-
-.report-chart .tile-plot {
-  flex: none;
-}
-
-.report-scenario .chip,
-.report-sources .chip,
-.unsupported-instead .chip {
-  margin-left: -8px;
+a.source-detail,
+button.source-detail {
+  color: var(--ink-secondary);
   text-decoration: underline;
   text-decoration-color: var(--line-strong);
   text-underline-offset: 3px;
 }
 
-.report-list,
-.unsupported {
-  display: grid;
-  gap: var(--space-1);
-  font-size: var(--text-13);
-  line-height: 1.5;
-  color: var(--ink-secondary);
-}
-
-.unsupported b {
+a.source-detail:hover,
+button.source-detail:hover {
   color: var(--ink);
 }
 
-.report-sources,
-.unsupported-instead {
+.followups-label {
+  font-size: var(--text-12);
+  color: var(--ink-muted);
+}
+
+.followups {
+  display: grid;
+}
+
+.followups-label {
+  margin-bottom: 4px;
+}
+
+.followup {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: start;
+  width: 100%;
+  padding: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  color: var(--ink-secondary);
+  font-size: var(--text-13);
+  line-height: 1.4;
+  text-align: left;
+}
+
+.followups.is-in .followup {
+  animation: fade-up 280ms var(--ease-out) both;
+}
+
+.followup:hover {
+  color: var(--ink);
+}
+
+.followup .icon {
+  margin-top: 2px;
+  color: var(--ink-muted);
+}
+
+/* The composer: a card at the foot. One line shares its row with the controls;
+   text that wraps takes the full width and the controls drop to their own row. */
+
+.composer {
+  position: relative;
+  display: grid;
+  flex: none;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-areas: "command input model send";
+  gap: 4px 6px;
+  align-items: end;
+  margin: 0 var(--space-3) var(--space-3);
+  padding: 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--surface);
+  transition: border-color 150ms var(--ease-out);
+}
+
+.composer:hover {
+  border-color: var(--ink-muted);
+}
+
+.composer:focus-within {
+  border-color: var(--ink);
+}
+
+.composer.is-stacked {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-areas: "input input input input" "command . model send";
+}
+
+.composer textarea {
+  grid-area: input;
+  width: 100%;
+  height: 28px;
+  min-height: 28px;
+  max-height: 100px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--radius-m);
+  background: none;
+  font-size: var(--text-14);
+  line-height: 20px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.composer textarea::placeholder {
+  color: var(--ink-muted);
+}
+
+/* The card's own border says where the keyboard is. */
+.composer textarea:focus-visible {
+  outline: none;
+}
+
+.composer-btn,
+.composer-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+}
+
+.composer-btn svg,
+.composer-send svg {
+  width: 16px;
+  height: 16px;
+}
+
+.composer-btn {
+  grid-area: command;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink-secondary);
+}
+
+.composer-btn:hover,
+.composer-model:hover,
+.composer-btn[aria-expanded="true"],
+.composer-model[aria-expanded="true"] {
+  background: var(--surface-control);
+  color: var(--ink);
+}
+
+.composer-model {
+  display: inline-flex;
+  grid-area: model;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  height: 28px;
+  padding: 0 6px 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink-secondary);
+  font-size: var(--text-12);
+  white-space: nowrap;
+}
+
+.composer-model svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Send turns full ink when there is something to send. */
+.composer-send {
+  grid-area: send;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+
+.composer-send:disabled {
+  background: var(--surface-control);
+  color: var(--ink-muted);
+  cursor: default;
+}
+
+.composer-send:focus-visible {
+  border-radius: 50%;
+}
+
+/* A list that opens from a control (commands and models above the composer, scenarios
+   under their trigger) with one highlight that glides between rows. This is the one
+   shadow on the site. */
+.menu {
+  position: absolute;
+  right: -1px;
+  bottom: calc(100% + 8px);
+  left: -1px;
+  z-index: 5;
+  padding: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  animation: fade-up 180ms var(--ease-out) both;
+}
+
+.scenario-menu {
+  top: calc(100% + 6px);
+  right: 0;
+  bottom: auto;
+  left: 0;
+  animation-name: fade-down;
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.menu-head {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px 6px;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 4px;
+  padding: 2px 6px 6px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.menu-find {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--text-13);
+}
+
+.menu-find::placeholder {
+  color: var(--ink-muted);
+}
+
+.menu-find:focus-visible {
+  outline: none;
+}
+
+.menu-key {
+  flex: none;
+  height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-size: 0.6875rem;
+  line-height: 1;
+}
+
+.menu-key:hover {
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
+.menu-empty {
+  padding: 8px 10px;
+  font-size: var(--text-12);
+  color: var(--ink-muted);
+}
+
+.menu-list {
+  position: relative;
+  display: grid;
+}
+
+.menu-highlight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 0;
+  border-radius: 8px;
+  background: var(--surface-control);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 220ms var(--ease-out), height 220ms var(--ease-out);
+}
+
+.menu-highlight.is-instant {
+  transition: none;
+}
+
+.menu-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1px var(--space-2);
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: var(--text-13);
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.menu-item[aria-disabled="true"] {
+  color: var(--ink-muted);
+  cursor: not-allowed;
+}
+
+.menu-name {
+  grid-column: 1;
+}
+
+.menu-item.is-command .menu-name {
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
+}
+
+.menu-note {
+  grid-column: 1;
+  font-size: var(--text-12);
+  color: var(--ink-secondary);
+}
+
+.menu-item[aria-disabled="true"] .menu-note {
+  color: var(--ink-muted);
+}
+
+.menu-check {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.menu-foot {
+  margin-top: 4px;
+  padding: 7px 10px 4px;
+  border-top: 1px solid var(--line);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+}
+
+/* With reduced motion the cells hold still as a chevron and the label is plain. */
+@media (prefers-reduced-motion: reduce) {
+  .thinking-grid i {
+    animation: none;
+  }
+
+  .thinking-grid i:nth-child(2),
+  .thinking-grid i:nth-child(6),
+  .thinking-grid i:nth-child(8) {
+    opacity: 1;
+  }
+
+  .thinking-label {
+    background: none;
+    color: var(--ink-secondary);
+    animation: none;
+  }
 }
 
 /* Behaviour tiles ----------------------------------------------------------- */
@@ -1006,7 +1866,7 @@ tr.is-ours .cellbar i {
 
 .chain-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.2fr) 64px 92px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) 64px 92px;
   gap: var(--space-3);
   align-items: center;
   min-height: 24px;
@@ -1284,7 +2144,7 @@ tr.is-ours .cellbar i {
   }
 
   .is-console-closed .console-body,
-  .is-console-closed .console-form {
+  .is-console-closed .composer {
     display: none;
   }
 
@@ -1344,15 +2204,16 @@ tr.is-ours .cellbar i {
 
 @media not ((min-width: 1100px) and (min-height: 700px)) {
   .topbar {
-    flex-wrap: wrap;
+    grid-template-columns: minmax(0, 1fr) auto;
     height: auto;
     gap: var(--space-2) var(--space-4);
-    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4);
+    padding: var(--space-2) var(--space-4);
   }
 
+  /* The switcher drops to its own row, still centered. */
   .topbar .gooey {
-    order: 3;
-    flex: 0 0 100%;
+    grid-row: 2;
+    grid-column: 1 / -1;
   }
 
   .topbar-right {
@@ -1380,26 +2241,24 @@ tr.is-ours .cellbar i {
 /* Wide but short windows keep the one-line bar. */
 @media (min-width: 900px) and (max-height: 699px) {
   .topbar {
-    flex-wrap: nowrap;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     height: 48px;
-    padding: 0 var(--space-4) 0 20px;
+    padding: 0 20px;
   }
 
   .topbar .gooey {
-    order: 0;
-    flex: none;
+    grid-row: auto;
+    grid-column: auto;
   }
 }
 
 @media (max-width: 760px) {
-  .data-date,
   .topbar .toplink {
     display: none;
   }
 
   .outcomes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
   }
 
   .outcome-value {
@@ -1435,8 +2294,8 @@ tr.is-ours .cellbar i {
     white-space: normal;
   }
 
-  .tabs {
-    gap: var(--space-4);
+  .tabs button {
+    padding: 0 9px;
   }
 
   .chain-row {

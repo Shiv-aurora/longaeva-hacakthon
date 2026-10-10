@@ -204,11 +204,11 @@
       while (walker.nextNode()) {
         var node = walker.currentNode;
         var parent = node.parentElement;
-        if (!parent || parent.closest("svg, [hidden], .sr-only, script, style, noscript")) continue;
+        if (!parent || parent.closest("svg, [hidden], .sr-only, .expand:not(.is-open), script, style, noscript")) continue;
         var box = parent.getBoundingClientRect();
         if (!box.width || !box.height) continue;
         var n = node.nodeValue.split(/\s+/).filter(isWord).length;
-        var clipped = parent.closest(".tile-title, .sim-status, .outcome-range, .outcome-delta, .chain-name");
+        var clipped = parent.closest(".tile-title, .outcome-range, .outcome-delta, .chain-name");
         if (clipped && clipped.scrollWidth > clipped.clientWidth + 1) n = Math.round(n * clipped.clientWidth / clipped.scrollWidth);
         total += n;
       }
@@ -777,20 +777,23 @@
   var sim = {
     request: null, response: null, sequence: 0, today: null, preset: null, reference: null, ctx: {},
     view: { metric: "operating_income_musd", visible: { costs_only: true, management: true, measured: true } },
-    tab: "whatif", threshold: { breaks: 0, target: 0 }, grid: {}, main: null, runs: {}, retry: 0, gridRetry: 0
+    tab: "whatif", threshold: { breaks: 0, target: 0 }, grid: {}, main: null, runs: {}, retry: 0, gridRetry: 0,
+    // What the controls changed by themselves on the last move, and the most aircraft a scenario
+    // may delay for each hold length (the server says so when it is exceeded).
+    note: "", aircraftLimit: {}
   };
 
   // Presets are starting points, not findings: each sets the controls and runs.
   var PRESETS = [
-    { id: "today", label: "Today", needsToday: true, what: "Fuel held at its latest level for a year.",
+    { id: "today", label: "Today", needsToday: true, what: "Latest fuel price for a year",
       build: function (t) { return { fuel_shock_pct: t.pct, fuel_shock_months: t.months || 12 }; } },
-    { id: "fuel_back", label: "Fuel falls back", what: "Fuel returns to the simulator's reference price.",
+    { id: "fuel_back", label: "Fuel falls back", what: "Fuel at the reference price",
       build: function () { return { fuel_shock_pct: 0 }; } },
-    { id: "demand", label: "Demand weakens", what: "Today's fuel, with travel demand 5% lower.",
+    { id: "demand", label: "Demand weakens", what: "Today's fuel, demand 5% lower",
       build: function (t) { return { fuel_shock_pct: t ? t.pct : 0, fuel_shock_months: 12, demand_shock_pct: -5 }; } },
-    { id: "deliveries", label: "Deliveries slip", what: "Today's fuel, with 20 aircraft arriving six months late.",
+    { id: "deliveries", label: "Deliveries slip", what: "20 aircraft arrive 6 months late",
       build: function (t) { return { fuel_shock_pct: t ? t.pct : 0, fuel_shock_months: 12, delivery_delay: { aircraft: 20, months: 6 } }; } },
-    { id: "capacity", label: "Capacity cut", what: "Today's fuel, with United flying 3% fewer seats.",
+    { id: "capacity", label: "Capacity cut", what: "Today's fuel, 3% fewer seats",
       build: function (t) { return { fuel_shock_pct: t ? t.pct : 0, fuel_shock_months: 12, capacity_change_pct: -3 }; } }
   ];
 
@@ -807,13 +810,59 @@
     return parts.join("; ") + ". Horizon " + (q.horizon_months || 12) + " months.";
   }
 
+  /**
+   * The delivery delay is a pair the simulator takes only whole: both zero, or both above
+   * zero. `moved` is the control just touched ("aircraft" or "months"), if any: moving one
+   * above zero brings the other to its first step, and moving one to zero clears the other.
+   * A pair that arrives half given (a preset, a request from the agent) is completed.
+   */
+  function pairedDelay(aircraft, months, moved, firstStep) {
+    aircraft = aircraft > 0 ? aircraft : 0;
+    months = months > 0 ? months : 0;
+    if (moved === "aircraft" && !aircraft) return { aircraft: 0, months: 0 };
+    if (moved === "months" && !months) return { aircraft: 0, months: 0 };
+    if (aircraft && !months) return { aircraft: aircraft, months: 1 };
+    if (months && !aircraft) return { aircraft: firstStep > 0 ? firstStep : 1, months: months };
+    return { aircraft: aircraft, months: months };
+  }
+
+  /**
+   * Put the two delay sliders in a state the simulator accepts and say what was changed.
+   * Besides the pairing, a scenario cannot delay more aircraft than the fleet plan has
+   * arriving while the fuel shock is held; that number is learned from the server.
+   */
+  function settleDelay(moved) {
+    var form = $("sim-form");
+    var aircraft = form.elements.delay_aircraft;
+    var months = form.elements.delay_months;
+    var step = Number(aircraft.step) || 1;
+    var held = Number(form.elements.fuel_shock_months.value);
+    var pair = pairedDelay(Number(aircraft.value), Number(months.value), moved, step);
+    // A longer hold takes in every delivery a shorter one does, so a limit learned for a
+    // longer hold is a ceiling for this one too.
+    var limit = null;
+    Object.keys(sim.aircraftLimit).forEach(function (known) {
+      if (Number(known) >= held && (limit == null || sim.aircraftLimit[known] < limit)) limit = sim.aircraftLimit[known];
+    });
+    var note = "";
+    if (isNum(limit) && pair.aircraft > limit) {
+      var most = Math.floor(limit / step) * step;
+      note = most > 0 ? "No more than " + limit + " aircraft are due in this window, so " + most + " are delayed."
+        : "No aircraft are due while fuel is held for " + held + (held === 1 ? " month" : " months") + ". Hold it longer to delay deliveries.";
+      pair = most > 0 ? { aircraft: most, months: pair.months } : { aircraft: 0, months: 0 };
+    }
+    aircraft.value = pair.aircraft;
+    months.value = pair.months;
+    return note;
+  }
+
   function readSimForm() {
     var form = $("sim-form");
     var n = function (name) { return Number(form.elements[name].value); };
     return {
       fuel_shock_pct: n("fuel_shock_pct"), fuel_shock_months: n("fuel_shock_months"),
       capacity_change_pct: n("capacity_change_pct"), demand_shock_pct: n("demand_shock_pct"),
-      delivery_delay: { aircraft: n("delay_aircraft"), months: n("delay_months") },
+      delivery_delay: pairedDelay(n("delay_aircraft"), n("delay_months"), null, Number(form.elements.delay_aircraft.step) || 1),
       horizon_months: n("horizon_months"), seed: SIM_DEFAULT.seed
     };
   }
@@ -847,7 +896,26 @@
     set("delay_aircraft", delay.aircraft);
     set("delay_months", delay.months);
     set("horizon_months", q.horizon_months);
+    sim.note = settleDelay(null);
     writeSimOutputs();
+  }
+
+  // The simulator names its inputs; a visitor knows them by the labels on the controls.
+  var CONTROL_NAMES = [["delivery_delay.aircraft", "Aircraft delayed"], ["delivery_delay.months", "Delay"], ["delivery_delay", "The delivery delay"],
+    ["fuel_shock_months", "Held for"], ["fuel_shock_pct", "Fuel price"], ["fuel_usd_gal", "Fuel price"], ["demand_shock_pct", "Travel demand"],
+    ["capacity_change_pct", "Capacity cut"], ["horizon_months", "Horizon"]];
+
+  /** Why a run was refused, in the words on the controls, and what to do about it. */
+  function plainSimError(text, what) {
+    var said = String(text || "").trim();
+    var named = false;
+    CONTROL_NAMES.forEach(function (pair) {
+      if (said.indexOf(pair[0]) < 0) return;
+      said = said.split(pair[0]).join(pair[1]);
+      named = true;
+    });
+    if (named) return said.replace(/\.$/, "") + ". Change that control and " + (what || "the simulator") + " runs again.";
+    return (what === "the grid" ? "The grid" : "The simulator") + " could not run this scenario. Change a control, or press Reset to start from the defaults.";
   }
 
   function looksLikeScenarioRequest(o) {
@@ -874,11 +942,10 @@
     return L.modes.filter(function (m) { return m.id === pick; })[0] || null;
   }
 
-  function simStatus(text, title) {
-    var status = $("sim-status");
-    if (!status) return;
-    status.textContent = text || "";
-    status.title = title || text || "";
+  /** The one line under the delay sliders: what the controls changed by themselves, or a short wait. Empty otherwise. */
+  function simNote(text) {
+    var note = $("sim-note");
+    if (note) note.textContent = text || "";
   }
 
   function setBusy(busy) {
@@ -917,7 +984,9 @@
     var host = $("outcomes");
     var response = sim.response;
     var mode = focusMode();
+    var hadFocus = host.contains(document.activeElement);
     host.replaceChildren();
+    host.removeAttribute("role");
     if (!response || !mode) {
       host.appendChild(el("div", { class: "outcome is-empty" }, [
         el("span", { class: "outcome-label", text: "Outcomes" }),
@@ -937,13 +1006,28 @@
     shown = shown.slice(0, 4);
     // The chart can only show a measure the tiles offer.
     if (!shown.some(function (o) { return o.metric === sim.view.metric; })) sim.view.metric = shown[0].metric;
-    shown.forEach(function (o) {
+    // The tiles are one radio group: Tab reaches the chosen one, arrow keys move the choice.
+    host.setAttribute("role", "radiogroup");
+    host.setAttribute("aria-label", "Outcome shown in the chart");
+    var cards = [];
+    var choose = function (card, metric, focus) {
+      sim.view.metric = metric;
+      cards.forEach(function (b) {
+        b.setAttribute("aria-checked", String(b === card));
+        b.tabIndex = b === card ? 0 : -1;
+      });
+      if (focus) card.focus();
+      if (sim.tab !== "whatif") selectTab("whatif");
+      else if (sim.main) sim.main.redraw();
+    };
+    shown.forEach(function (o, index) {
       var useQuarter = o.quarter || !year || !year[o.metric];
       var value = useQuarter ? fourth[o.metric] : year[o.metric];
       var period = useQuarter ? fmt.period(fourth.period) : "next 12 months";
       var swatch = el("i");
       swatch.style.background = mode.color;
-      var button = el("button", { type: "button", class: "outcome", "aria-pressed": String(sim.view.metric === o.metric),
+      var chosen = sim.view.metric === o.metric;
+      var button = el("button", { type: "button", class: "outcome", role: "radio", "aria-checked": String(chosen), tabindex: chosen ? "0" : "-1",
         title: o.label + ", " + period + ", with fares responding \u201c" + mode.name.toLowerCase() + "\u201d. Click to chart it." });
       button.appendChild(el("span", { class: "outcome-label" }, [swatch, o.label]));
       button.appendChild(el("span", { class: "outcome-period", text: period }));
@@ -957,14 +1041,21 @@
         var delta = o.delta ? o.delta(data, fourth) : null;
         if (delta) button.appendChild(el("span", { class: "outcome-delta", text: delta, title: delta }));
       }
-      button.addEventListener("click", function () {
-        sim.view.metric = o.metric;
-        Array.prototype.forEach.call(host.querySelectorAll(".outcome"), function (b) { b.setAttribute("aria-pressed", String(b === button)); });
-        if (sim.tab !== "whatif") selectTab("whatif");
-        else if (sim.main) sim.main.redraw();
+      button.addEventListener("click", function () { choose(button, o.metric, false); });
+      button.addEventListener("keydown", function (event) {
+        var last = shown.length - 1;
+        var to = event.key === "ArrowRight" || event.key === "ArrowDown" ? (index === last ? 0 : index + 1)
+          : event.key === "ArrowLeft" || event.key === "ArrowUp" ? (index === 0 ? last : index - 1)
+          : event.key === "Home" ? 0 : event.key === "End" ? last : -1;
+        if (to < 0 || to === index) return;
+        event.preventDefault();
+        choose(cards[to], shown[to].metric, true);
       });
+      cards.push(button);
       host.appendChild(button);
     });
+    // A redraw while a tile had the keyboard keeps the keyboard on the chosen tile.
+    if (hadFocus) cards.forEach(function (b) { if (b.tabIndex === 0) b.focus(); });
   }
 
   // The main chart: three questions ---------------------------------------------
@@ -1126,8 +1217,9 @@
       if (data.__state || !Array.isArray(data.cells)) {
         delete sim.grid[key];
         var notBuilt = data.status === "not_computed";
-        L.state(body, data.__state === "error" && !notBuilt ? "error" : "missing", { compact: true,
-          text: data.text || data.reason || (notBuilt ? "This grid has not been built on this server yet." : "The grid came back empty."), file: FIXTURES ? null : "POST " + API + "/grid" });
+        var refused = data.__state === "error" && !notBuilt;
+        L.state(body, refused ? "error" : "missing", { compact: true, title: refused ? "This grid cannot be run" : null,
+          text: refused ? plainSimError(data.text, "the grid") : data.text || data.reason || (notBuilt ? "This grid has not been built on this server yet." : "The grid came back empty.") });
         return;
       }
       if (!FIXTURES && hasFixtureFlag(data)) {
@@ -1261,13 +1353,13 @@
     renderBridge();
   }
 
-  function simUnavailable(kind, text, file) {
+  function simUnavailable(kind, text, file, title) {
     sim.response = null;
     sim.main = null;
     setBusy(false);
     renderOutcomes();
     $("main-tools").replaceChildren();
-    L.state($("main-body"), kind, { text: text, file: file });
+    L.state($("main-body"), kind, { text: text, file: file, title: title });
     var bridge = $("fig-bridge");
     bridge.replaceChildren(L.state(null, kind, { compact: true, text: "Waiting for a simulator run." }));
   }
@@ -1279,7 +1371,6 @@
     sim.request = request;
     clearTimeout(sim.retry);
     setBusy(true);
-    simStatus("Running");
 
     var source = FIXTURES ? load("scenario").then(function (r) {
       return r.status === "ok" ? r.data : { __state: r.status === "missing" ? "missing" : "error", text: r.status === "missing" ? "The placeholder scenario has not been written." : r.message, file: r.url };
@@ -1290,44 +1381,121 @@
       if (data.__state === "busy") {
         // Keep the last result on screen, dimmed, and run again when the server allows it.
         delete sim.runs[key];
-        simStatus("Waiting " + data.retryAfter + " s", data.text + " This run starts by itself in " + data.retryAfter + " seconds.");
+        simNote(data.text + " This run starts by itself in " + data.retryAfter + " seconds.");
         sim.retry = setTimeout(function () { if (ticket === sim.sequence) runSimulation(); }, data.retryAfter * 1000 + 200);
         return null;
       }
       if (data.__state) {
         delete sim.runs[key];
-        simUnavailable(data.__state, data.text, data.file || "POST " + API + "/scenario");
-        simStatus(data.__state === "missing" ? "Simulator not available" : "Run failed", data.text);
+        // More aircraft than the fleet plan has arriving in this window: remember the number,
+        // bring the control within it and run again, so the visitor never lands on a refusal.
+        var most = /delivery_delay\.aircraft must be at most (\d+)/.exec(String(data.text || ""));
+        if (most && sim.aircraftLimit[request.fuel_shock_months] !== Number(most[1])) {
+          sim.aircraftLimit[request.fuel_shock_months] = Number(most[1]);
+          sim.note = settleDelay(null);
+          writeSimOutputs();
+          return runSimulation();
+        }
+        var refused = data.__state === "error";
+        simUnavailable(data.__state, refused ? plainSimError(data.text) : data.text, refused ? null : data.file, refused ? "This scenario cannot be run" : null);
+        simNote(sim.note);
         return null;
       }
       if (!FIXTURES && hasFixtureFlag(data)) {
         simUnavailable("error", "The simulator returned placeholder data, so it is not shown as a result.");
-        simStatus("Run failed");
+        simNote(sim.note);
         return null;
       }
       if (!data.modes) {
         delete sim.runs[key];
         var notBuilt = data.status === "not_computed";
-        simUnavailable(notBuilt ? "missing" : "error", data.reason || (notBuilt ? "The simulator has not been built on this server yet." : "The simulator's answer had no results in it."), "POST " + API + "/scenario");
-        simStatus(notBuilt ? "Not computed yet" : "Run failed");
+        simUnavailable(notBuilt ? "missing" : "error", data.reason || (notBuilt ? "The simulator has not been built on this server yet." : "The simulator's answer had no results in it."));
+        simNote(sim.note);
         return null;
       }
       showScenario(data, request);
-      var parts = [];
-      if (FIXTURES) parts.push("placeholder run");
-      else if (isNum(data.paths)) parts.push(fmt.int(data.paths) + " paths");
-      if (data.synthetic_response) parts.push("synthetic curve");
-      simStatus(parts.join(" \u00b7 "), FIXTURES ? "Placeholder response: the controls do not change these numbers until the simulator is connected." :
-        (data.run_id ? "Run " + data.run_id + ". " : "") + (isNum(data.elapsed_ms) ? "Took " + duration(data.elapsed_ms) + ". " : "") +
-        (data.synthetic_response ? "A stand-in response curve is in use, not a measured one." : ""));
+      simNote(sim.note);
       return data;
     });
   }
 
+  /** Name the scenario on the selector: a preset, or "Custom" once the controls have moved away from one. */
   function markPreset(id) {
     sim.preset = id;
-    Array.prototype.forEach.call(document.querySelectorAll("#preset-row button"), function (b) {
-      b.setAttribute("aria-pressed", String(b.dataset.preset === id));
+    var preset = PRESETS.filter(function (p) { return p.id === id; })[0];
+    var name = $("scenario-name");
+    if (name) name.textContent = preset ? preset.label : "Custom";
+  }
+
+  /**
+   * The scenario selector: the presets as one list under a trigger that names the current
+   * one. The list has a field to find by, one highlight that glides between rows, and a
+   * check on the scenario in force. It is the same popup as the composer's command menu.
+   */
+  function initScenarioSelector() {
+    var host = $("scenario");
+    var trigger = $("scenario-btn");
+    if (!host || !trigger) return;
+    var find = el("input", { type: "text", class: "menu-find", placeholder: "Find...", "aria-label": "Find a scenario", autocomplete: "off", spellcheck: "false",
+      role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false", "aria-controls": "scenario-menu-list" });
+    var close = function (refocus) {
+      menu.close();
+      trigger.setAttribute("aria-expanded", "false");
+      if (refocus) trigger.focus();
+    };
+    var menu = popup($("scenario-menu"), find, {
+      label: "Scenarios", empty: "No scenario matches",
+      head: el("div", { class: "menu-head" }, [find, el("button", { type: "button", class: "menu-key", text: "Esc", "aria-label": "Close the list", tabindex: "-1", onclick: function () { close(true); } })]),
+      onPick: function (item) {
+        close(true);
+        applyPreset(item.preset);
+      }
+    });
+    var items = function () {
+      var typed = find.value.trim().toLowerCase();
+      return PRESETS.filter(function (p) { return !typed || (p.label + " " + p.what).toLowerCase().indexOf(typed) >= 0; }).map(function (p) {
+        var waiting = !!p.needsToday && !sim.today;
+        return { preset: p, name: p.label, checked: p.id === sim.preset, disabled: waiting,
+          note: waiting ? "Needs the latest fuel price" : p.needsToday ? fmt.usd(sim.today.level) + " a gallon, held for a year" : p.what };
+      });
+    };
+    var open = function () {
+      find.value = "";
+      var list = items();
+      menu.open(list, list.map(function (item) { return item.checked; }).indexOf(true));
+      trigger.setAttribute("aria-expanded", "true");
+      find.focus();
+    };
+    trigger.addEventListener("click", function () {
+      if (menu.isOpen()) close(false);
+      else open();
+    });
+    trigger.addEventListener("keydown", function (event) {
+      if ((event.key === "ArrowDown" || event.key === "ArrowUp") && !menu.isOpen()) {
+        event.preventDefault();
+        open();
+      }
+    });
+    find.addEventListener("input", function (event) {
+      event.stopPropagation();
+      menu.open(items());
+    });
+    find.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        menu.move(event.key === "ArrowDown" ? 1 : -1);
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        menu.pick();
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        close(true);
+      } else if (event.key === "Tab") {
+        close(false);
+      }
+    });
+    document.addEventListener("pointerdown", function (event) {
+      if (menu.isOpen() && !host.contains(event.target)) close(false);
     });
   }
 
@@ -1378,19 +1546,16 @@
     var timer = 0;
     sim.ctx = r.ctx;
 
-    var row = $("preset-row");
-    PRESETS.forEach(function (preset) {
-      row.appendChild(el("button", {
-        type: "button", class: "chip", text: preset.label, title: preset.what, "aria-pressed": "false",
-        disabled: !!preset.needsToday, dataset: { preset: preset.id }, onclick: function () { applyPreset(preset); }
-      }));
-    });
+    initScenarioSelector();
     renderModeKey();
     writeSimOutputs();
     renderOutcomes();
     L.state($("main-body"), "loading", { compact: true });
 
-    form.addEventListener("input", function () {
+    form.addEventListener("input", function (event) {
+      var name = event.target && event.target.name;
+      if (!name) return;
+      sim.note = settleDelay(name === "delay_aircraft" ? "aircraft" : name === "delay_months" ? "months" : null);
       writeSimOutputs();
       markPreset(null);
       clearTimeout(timer);
@@ -1399,6 +1564,7 @@
     form.addEventListener("submit", function (event) { event.preventDefault(); });
     form.addEventListener("reset", function () {
       setTimeout(function () {
+        sim.note = settleDelay(null);
         writeSimOutputs();
         markPreset(null);
         runSimulation();
@@ -1408,13 +1574,9 @@
 
     // Land on today's scenario. The server knows today's fuel level; if it cannot say,
     // run the no-shock baseline (which reports the reference price) and work it out here.
-    var todayChip = row.querySelector('[data-preset="today"]');
     var landOnToday = function (today) {
       sim.today = today;
       if (isNum(today.reference)) sim.reference = today.reference;
-      todayChip.disabled = false;
-      todayChip.title = "Fuel at " + fmt.usd(today.level) + " a gallon, " + signedPct(today.pct) + " against the " + fmt.usd(today.reference) +
-        " reference" + (today.date ? " (market price of " + fmt.day(today.date) + ")" : "") + ", held for a year.";
       return applyPreset(PRESETS[0]);
     };
     loadToday().then(function (today) {
@@ -1422,7 +1584,7 @@
       return runSimulation().then(function (baseline) {
         var worked = baseline ? todayContext(r.ctx, baseline) : null;
         if (worked) return landOnToday(worked);
-        todayChip.title = "Needs the latest fuel price and a simulator run.";
+        markPreset(null);
         return null;
       });
     });
@@ -1438,69 +1600,236 @@
   }
 
   // --------------------------------------------------------- the ask console
+  //
+  // One column. Before anything is asked it lists a few questions; after that, a thread. A turn is
+  // the question, the agent's steps (a status line over a list, folded to one line once the
+  // answer is in), the answer, and what to ask next. The composer stays at the foot.
+  // Everything shown comes from the server: a field that is missing leaves its part out.
 
   var SUGGESTIONS = [
     "Fuel stays at today's price",
-    "Fuel +30%, capacity \u22123%",
-    "Demand \u22125%, 20 aircraft late",
+    "Fuel +30%, capacity −3%",
+    "Demand −5%, 20 aircraft late",
     "Management against history"
   ];
-  var STEP_KINDS = { plan: "Plan", tool_call: "Run", tool_result: "Result", check: "Check" };
-  var ask = { history: [], busy: false };
+  // "retried" is a check that sent the draft back: the rewrite and its check follow as their own steps.
+  var STATUS_WORDS = { running: "running", done: "done", failed: "failed", retried: "sent back for a rewrite" };
+  var ask = { history: [], busy: false, model: null, turns: 0, composer: null };
 
-  function wait(ms) {
-    return new Promise(function (resolve) { setTimeout(resolve, reducedMotion ? 0 : ms); });
+  // Icons are drawn here, on a 16 by 16 grid, one stroke weight.
+  var ICONS = {
+    check: '<path d="M3.8 8.3l2.7 2.7 5.7-5.9"/>',
+    x: '<path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/>',
+    chevron: '<path d="M6 3.5 10.5 8 6 12.5"/>',
+    back: '<path d="M10 3.5 5.5 8 10 12.5"/>',
+    down: '<path d="M3.5 6 8 10.5 12.5 6"/>',
+    copy: '<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V4A1.5 1.5 0 0 0 9 2.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/>',
+    again: '<path d="M13 8a5 5 0 1 1-1.6-3.7"/><path d="M13 2.5v3h-3"/>',
+    open: '<path d="M6.5 3.5h-3v9h9v-3"/><path d="M9.5 3.5h3v3M12.5 3.5 7.5 8.5"/>',
+    sources: '<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M9.5 2.5V5H12M6 8.5h4M6 11h4"/>',
+    reply: '<path d="M3.5 3.5v3.5a2 2 0 0 0 2 2h7"/><path d="M10 6.5 12.5 9 10 11.5"/>',
+    send: '<path d="M8 12.5v-9M4.5 7 8 3.5 11.5 7"/>',
+    slash: '<path d="M10 3 6 13"/>'
+  };
+
+  function icon(name, className) {
+    var span = el("span", { class: "icon" + (className ? " " + className : ""), "aria-hidden": "true" });
+    span.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + "</svg>";
+    return span;
   }
 
-  function sendButton(request) {
-    return el("button", { type: "button", class: "chip", text: "Send to the simulator", title: "Set the controls to these inputs and run", onclick: function () { sendToSimulator(request); } });
+  /** A region whose height opens and closes by grid rows (.expand in lab.css). */
+  function expander(inner, open) {
+    return el("div", { class: "expand" + (open ? " is-open" : "") }, [el("div", { class: "expand-inner" }, [inner])]);
   }
 
-  function finishStep(row, ms, resultSummary) {
-    if (!row) return;
-    row.dataset.state = "done";
-    var time = row.querySelector(".step-time");
-    if (time) time.textContent = duration(ms) || "done";
-    if (resultSummary) {
-      var outcome = row.querySelector(".step-outcome");
-      if (outcome) outcome.textContent = resultSummary;
-    }
+  function setOpen(region, button, open) {
+    region.classList.toggle("is-open", !!open);
+    if (button) button.setAttribute("aria-expanded", String(!!open));
   }
 
-  function addStep(list, step, turn) {
-    if (!step || typeof step !== "object") return;
-    if (step.kind === "tool_result") {
-      var running = Array.prototype.slice.call(list.querySelectorAll('.step[data-state="running"]'));
-      var match = running.filter(function (row) { return row.dataset.name === String(step.name || ""); })[0] || running[0];
-      if (match) {
-        finishStep(match, step.elapsed_ms, step.summary);
-        return;
+  /** Elapsed time as the status line shows it: 3.4s, then 1m 2.3s. */
+  function clock(ms) {
+    var s = Math.max(0, ms) / 1000;
+    return s < 60 ? s.toFixed(1) + "s" : Math.floor(s / 60) + "m " + (s % 60).toFixed(1) + "s";
+  }
+
+  function announce(text) {
+    var live = $("ask-live");
+    if (live) live.textContent = text;
+  }
+
+  // 1. The status line ----------------------------------------------------------
+
+  /** Nine cells that pulse as a chevron driving right, the running step's label, a live timer. */
+  function thinking() {
+    var grid = el("span", { class: "thinking-grid", "aria-hidden": "true" });
+    for (var row = 0; row < 3; row++) {
+      for (var col = 0; col < 3; col++) {
+        var cell = el("i");
+        cell.style.animationDelay = (col + Math.abs(row - 1)) * 90 + "ms";
+        grid.appendChild(cell);
       }
     }
-    var isCall = step.kind === "tool_call";
-    var hasArgs = step.args && typeof step.args === "object" && Object.keys(step.args).length;
-    var head = [
-      el("span", { class: "step-state", "aria-hidden": "true" }),
-      el("span", { class: "step-text" }, [
-        el("span", { class: "step-kind", text: STEP_KINDS[step.kind] || humanize(step.kind) }),
-        el("span", { class: "step-summary", text: step.summary || step.name || "" }),
-        el("span", { class: "step-outcome" })
-      ]),
-      el("span", { class: "step-time", text: isCall ? "running" : duration(step.elapsed_ms) })
-    ];
-    var body = el("div", { class: "step-body" });
-    if (step.name) body.appendChild(el("p", { class: "step-name" }, [el("code", { text: step.name })]));
-    if (hasArgs) body.appendChild(el("pre", { class: "step-args", text: JSON.stringify(step.args, null, 2) }));
-    if (isCall && looksLikeScenarioRequest(step.args)) {
-      turn.scenarioRequests.push(step.args);
-      body.appendChild(sendButton(step.args));
-    }
-    list.appendChild(el("li", { class: "step is-" + step.kind, dataset: { state: isCall ? "running" : "done", name: String(step.name || "") } }, [
-      step.name || hasArgs ? el("details", null, [el("summary", null, head), body]) : el("div", { class: "step-line" }, head)
-    ]));
-    var scroller = $("console-body");
-    if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    var label = el("span", { class: "thinking-label", text: "Planning" });
+    // The timer is for the eye only: a status region that changed ten times a second would be read out each time.
+    var time = el("span", { class: "thinking-time", "aria-hidden": "true" });
+    var began = performance.now();
+    var tick = function () { time.textContent = clock(performance.now() - began); };
+    var timer = setInterval(tick, 100);
+    tick();
+    return {
+      node: el("div", { class: "thinking", role: "status" }, [grid, label, time]),
+      set: function (text) { if (text && label.textContent !== text) label.textContent = text; },
+      stop: function () { clearInterval(timer); return performance.now() - began; }
+    };
   }
+
+  // 2. The steps ----------------------------------------------------------------
+
+  /**
+   * A step as the list draws it. The stream sends {id, kind, status, label, meta, details}
+   * (docs/lab_contract.md, "Agent shapes"); a step that takes time comes as running and
+   * again under the same id when it resolves. A label such as "Ran the simulator: fuel at
+   * $5.24 a gallon" is set as a head and the line beneath it.
+   */
+  function normalizeStep(raw, turn) {
+    if (!raw || typeof raw !== "object" || raw.id == null || !STATUS_WORDS[raw.status]) return null;
+    var label = String(raw.label || raw.summary || humanize(raw.kind || "step")).trim().replace(/\.$/, "");
+    var cut = label.indexOf(": ");
+    var args = raw.args && typeof raw.args === "object" ? raw.args : null;
+    if (raw.kind === "tool" && looksLikeScenarioRequest(args) && turn.scenarioRequests.indexOf(args) < 0 && raw.status === "running") turn.scenarioRequests.push(args);
+    return {
+      id: String(raw.id), kind: String(raw.kind || "tool"), status: raw.status,
+      label: cut > 0 ? label.slice(0, cut) : label,
+      sub: cut > 0 ? label.charAt(cut + 2).toUpperCase() + label.slice(cut + 3) : "",
+      meta: raw.meta == null ? "" : String(raw.meta),
+      details: (Array.isArray(raw.details) ? raw.details : []).map(function (d) {
+        return d && typeof d === "object" && d.label != null ? { label: humanize(d.label), meta: d.meta == null ? "" : String(d.meta) } : null;
+      }).filter(Boolean)
+    };
+  }
+
+  /** The status line over one list card: a row per step, each opening onto its details. */
+  function taskList() {
+    var uid = "steps-" + (++ask.turns);
+    var list = el("ol", { class: "tasks-list", hidden: true });
+    var region = expander(list, true);
+    region.id = uid;
+    var status = thinking();
+    var head = el("div", { class: "tasks-head" }, [status.node]);
+    var node = el("section", { class: "tasks", "aria-label": "Steps" }, [head, region]);
+    var rows = {};
+    var order = [];
+    var lastEnter = 0;
+
+    function mark(row) {
+      var s = row.step;
+      if (s.status === "running") {
+        var ring = el("span", { class: "task-ring" });
+        ring.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle class="task-ring-track" cx="12" cy="12" r="10"/>' +
+          '<circle class="task-ring-arc" cx="12" cy="12" r="10" pathLength="100" stroke-linecap="round"/></svg>';
+        return el("span", { class: "task-mark", "aria-hidden": "true" }, [ring, el("span", { class: "task-num", text: String(row.number) })]);
+      }
+      var kind = s.status === "failed" ? "failed" : s.status === "retried" ? "retried" : "done";
+      // The badge pops in when the step resolves, not each time its details are redrawn.
+      var badge = el("span", { class: "task-badge is-" + kind + (row.drawn !== s.status ? " pop-in" : "") }, [icon(kind === "failed" ? "x" : kind === "retried" ? "again" : "check")]);
+      return el("span", { class: "task-mark", "aria-hidden": "true" }, [badge]);
+    }
+
+    function draw(row) {
+      var s = row.step;
+      var kids = [
+        mark(row),
+        el("span", { class: "task-text" }, [
+          el("span", { class: "task-label" }, [s.label, row.failed && s.status === "done" ? el("span", { class: "task-tag", text: "after a retry" }) : null, el("span", { class: "sr-only", text: ", " + STATUS_WORDS[s.status] })]),
+          s.sub ? el("span", { class: "task-sub", text: s.sub }) : null
+        ]),
+        el("span", { class: "task-meta", text: s.meta || "" })
+      ];
+      if (s.details.length) {
+        var detailsId = uid + "-" + row.number;
+        var button = el("button", { type: "button", class: "task-row", "aria-expanded": String(row.open), "aria-controls": detailsId }, kids.concat([icon("chevron", "task-chevron")]));
+        var details = expander(el("dl", { class: "task-details" }, s.details.map(function (d, i) {
+          var line = el("div", { class: "task-detail" }, [el("dt", { text: d.label }), d.meta ? el("dd", { text: d.meta }) : null]);
+          line.style.setProperty("--i", String(i));
+          return line;
+        })), row.open);
+        details.id = detailsId;
+        button.addEventListener("click", function () {
+          row.open = !row.open;
+          setOpen(details, button, row.open);
+        });
+        row.li.replaceChildren(button, details);
+      } else {
+        row.li.replaceChildren(el("div", { class: "task-row" }, kids));
+      }
+      row.li.dataset.status = s.status;
+      row.drawn = s.status;
+    }
+
+    function upsert(step) {
+      if (!step) return;
+      var row = rows[step.id];
+      if (!row) {
+        row = rows[step.id] = { li: el("li", { class: "task fade-up" }), number: order.length + 1, open: false, failed: false, drawn: null, step: step };
+        order.push(step.id);
+        // Rows that arrive together still enter one after another.
+        var now = performance.now();
+        var delay = Math.max(0, lastEnter + 80 - now);
+        lastEnter = now + delay;
+        row.li.style.animationDelay = Math.round(delay) + "ms";
+        list.hidden = false;
+        list.appendChild(row.li);
+      } else {
+        // The same step, resolved: a later event may carry fewer details than an earlier one did.
+        row.step = Object.assign({}, row.step, step, { details: step.details.length ? step.details : row.step.details });
+      }
+      if (step.status === "failed") row.failed = true;
+      draw(row);
+      var running = order.map(function (id) { return rows[id].step; }).filter(function (s) { return s.status === "running"; }).pop();
+      if (running) status.set(running.label);
+    }
+
+    /** Fold the list to one line that says how much was done and can be reopened. */
+    function close(word) {
+      var ms = status.stop();
+      var failed = 0;
+      order.forEach(function (id) {
+        var row = rows[id];
+        if (row.step.status === "running") {
+          row.step = Object.assign({}, row.step, word ? { status: "failed", meta: word } : { status: "done" });
+          draw(row);
+        }
+        if (row.step.status === "failed") failed += 1;
+      });
+      if (!order.length) {
+        node.hidden = true;
+        return ms;
+      }
+      var text = order.length + (order.length === 1 ? " step" : " steps") + ", " + (word || duration(ms)) + (failed && !word ? ", " + failed + " failed" : "");
+      var button = el("button", { type: "button", class: "tasks-summary", "aria-expanded": "true", "aria-controls": uid }, [el("span", { text: text }), icon("chevron")]);
+      button.addEventListener("click", function () { setOpen(region, button, !region.classList.contains("is-open")); });
+      head.replaceChildren(button);
+      setOpen(region, button, !!word);
+      return ms;
+    }
+
+    return {
+      node: node,
+      upsert: upsert,
+      close: close,
+      count: function () { return order.length; },
+      clear: function () {
+        rows = {};
+        order = [];
+        list.replaceChildren();
+        list.hidden = true;
+      }
+    };
+  }
+
+  // 3. The answer ---------------------------------------------------------------
 
   var REPORT_FIGURES = { cost_clock: "cost", fare_clock: "fare", market_clock: "market", track_record: "track", q3_call: "distribution",
     signal: "daily", demand_signal: "demand", daily_fares_2022: "fares", capacity_response: "capacity" };
@@ -1517,7 +1846,7 @@
    */
   function reportChart(chart, turn, index, report) {
     if (!chart || typeof chart !== "object") return null;
-    var host = el("section", { class: "report-chart" });
+    var host = el("section", { class: "answer-chart" });
     var runs = Array.isArray(report.scenarios) ? report.scenarios : [];
     var grids = Array.isArray(report.grids) ? report.grids : [];
     var runFor = function (id) {
@@ -1532,17 +1861,19 @@
     else if (chart.kind === "comparison") (Array.isArray(chart.run_ids) ? chart.run_ids : []).forEach(function (id) { scenarios.push(runFor(id)); });
     scenarios = scenarios.filter(Boolean);
     if (scenarios.length) {
-      var wrap = el("div", { class: "report-scenario" });
+      var wrap = el("div", { class: "answer-charts" });
       scenarios.forEach(function (scenario, i) {
-        var box = i === 0 ? host : el("section", { class: "report-chart" });
+        var box = i === 0 ? host : el("section", { class: "answer-chart" });
         var request = looksLikeScenarioRequest(scenario.request) ? scenario.request
           : turn.scenarioRequests[Math.min(index + i, turn.scenarioRequests.length - 1)] || null;
+        if (request && turn.requests.indexOf(request) < 0) turn.requests.push(request);
         wrap.appendChild(box);
-        if (request) wrap.appendChild(el("p", null, [sendButton(request)]));
         turn.afterAttach.push(function () {
+          var charted = OUTCOMES.filter(function (o) { return o.metric === sim.view.metric; })[0];
           L.panel(box, {
-            bare: true, legend: false, height: 210, headingLevel: "h4",
-            title: request ? describeRequest(request) : "Scenario the system ran", kicker: "Scenario the system ran",
+            bare: true, legend: false, height: 190, headingLevel: "h4",
+            // One run: the answer's own title says which. Two runs: each chart says which it is.
+            title: scenarios.length > 1 && request ? describeRequest(request) : (charted ? charted.label : "The run") + ", by quarter", kicker: "Scenario the system ran",
             read: "Each line is the middle of the simulated paths under one behavior; the band holds the middle 80%. Same colors as the simulator.",
             details: function () { return scenarioDetails(scenario.result, request); }
           }, L.scenarioFan({ modes: scenario.result.modes }, { metric: sim.view.metric, visible: { costs_only: true, management: true, measured: true } }));
@@ -1558,7 +1889,7 @@
       turn.afterAttach.push(function () {
         var metric = GRID_METRICS[data.metric] || GRID_METRICS.fcf_12m_musd;
         L.panel(host, {
-          bare: true, legend: false, height: 230, headingLevel: "h4", kicker: "Grid the system ran",
+          bare: true, legend: false, height: 220, headingLevel: "h4", kicker: "Grid the system ran",
           title: metric.label + (data.direction === "below" ? " below " : " at or above ") + metric.format(data.threshold),
           read: "Each cell is one tested combination. The number is the share of simulated runs on the stated side of the line; the dark line is where that share is one half.",
           details: function () { return [textBlock("What the share is not", data.prob_definition), listBlock("Notes on this grid", data.notes)]; }
@@ -1584,38 +1915,12 @@
           ctx.meta = results[1].status === "ok" ? results[1].data : {};
           var built = figures[figureName](ctx, { compact: true });
           var spec = figureName === "track" ? L.trackRecord(results[0].data, { only: "test" }) : built.spec;
-          L.panel(host, Object.assign({ dataHref: results[0].url }, built.frame, { bare: true, legend: false, height: figureName === "track" ? 260 : 220, headingLevel: "h4" }), spec);
+          L.panel(host, Object.assign({ dataHref: results[0].url }, built.frame, { bare: true, legend: false, key: null, height: figureName === "track" ? 250 : 200, headingLevel: "h4" }), spec);
         });
       });
       return host;
     }
     return null;
-  }
-
-  function unsupportedItem(item) {
-    if (typeof item === "string") return el("li", { text: item });
-    if (!item || typeof item !== "object") return null;
-    var asked = item.asked || item.request || item.what || item.question || item.name;
-    var why = item.reason || item.why;
-    var instead = item.instead || item.alternative || item.alternatives || item.can_run || item.suggestion;
-    var li = el("li");
-    if (asked) li.appendChild(el("b", { text: String(asked) }));
-    if (why) li.appendChild(el("span", { text: (asked ? ": " : "") + String(why) }));
-    if (instead) li.appendChild(alternatives(Array.isArray(instead) ? instead : [instead]));
-    return li.firstChild ? li : el("li", { text: JSON.stringify(item) });
-  }
-
-  function alternatives(options) {
-    return el("p", { class: "unsupported-instead" }, options.map(function (option) {
-      var text = typeof option === "string" ? option : option && (option.question || option.label || option.text);
-      return text ? el("button", { type: "button", class: "chip", text: String(text), onclick: function () { submitQuestion(String(text)); } }) : null;
-    }));
-  }
-
-  function icon(path) {
-    var span = el("span", { class: "verdict-icon", "aria-hidden": "true" });
-    span.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75">' + path + "</svg>";
-    return span;
   }
 
   /** Fold the server's result into the report it carries. */
@@ -1625,71 +1930,352 @@
     if (!report && (result.title || result.sections || result.unsupported)) report = Object.assign({}, result);
     if (!report && (result.answer || result.status === "not_supported")) report = {};
     if (!report) return null;
-    if (report.verified == null && result.verified != null) report.verified = result.verified;
+    ["verified", "charts", "evidence_ids", "note", "alternatives", "scenarios", "grids", "facts", "sources", "follow_ups"].forEach(function (key) {
+      if (report[key] == null && result[key] != null) report[key] = result[key];
+    });
     if (!report.summary && result.answer) report.summary = result.answer;
-    if (!report.charts && result.charts) report.charts = result.charts;
-    if (!report.evidence_ids && result.evidence_ids) report.evidence_ids = result.evidence_ids;
-    if (!report.note && result.note) report.note = result.note;
-    if (!report.alternatives && result.alternatives) report.alternatives = result.alternatives;
-    if (!report.scenarios && result.scenarios) report.scenarios = result.scenarios;
-    if (!report.grids && result.grids) report.grids = result.grids;
     report.status = result.status || report.status;
     return report;
   }
 
-  function renderReport(host, report, turn) {
-    host.replaceChildren();
-    if (!report || typeof report !== "object") {
-      L.state(host, "error", { compact: true, text: "The run finished without a report." });
-      return;
-    }
-    var unsupported = Array.isArray(report.unsupported) ? report.unsupported : [];
-    var options = Array.isArray(report.alternatives) ? report.alternatives : [];
-    var hasBody = report.summary || (Array.isArray(report.sections) && report.sections.length);
+  function sourceIndex(report) {
+    var index = {};
+    (Array.isArray(report.sources) ? report.sources : []).forEach(function (source) {
+      if (!source || typeof source !== "object" || !source.name) return;
+      if (source.id != null) index[String(source.id)] = source;
+      if (!index[String(source.name)]) index[String(source.name)] = source;
+    });
+    return index;
+  }
 
-    if (report.verified === true) {
-      host.appendChild(el("p", { class: "verdict is-ok" }, [icon('<circle cx="8" cy="8" r="6.25"/><path d="M5 8.2l2.1 2.1L11 6.2"/>'), el("span", { text: "Every number here came from a model run." })]));
-    } else if (hasBody && report.status !== "not_supported") {
-      host.appendChild(el("p", { class: "verdict is-warn", role: "alert" }, [icon('<path d="M8 2.2l6.2 11H1.8L8 2.2Z"/><path d="M8 6.5v3.2M8 11.6v.2"/>'),
-        el("span", { text: "Not verified. " + (report.note ? String(report.note) : "At least one number could not be matched to a model run, so treat this as unchecked.") })]));
-    }
-    if (report.title) host.appendChild(el("h3", { class: "report-title", text: report.title }));
-    if (report.summary) host.appendChild(el("p", { class: "report-summary", text: report.summary }));
+  /** A source's name as a chip can carry it: the name when short, else its file or site. Nothing is cut. */
+  function sourceShort(source) {
+    var name = String(source.name || "");
+    var detail = String(source.detail || "");
+    if (name && name.length <= 18) return name;
+    return detail && detail.length <= 24 && !/\s/.test(detail) ? detail : "";
+  }
 
-    (Array.isArray(report.sections) ? report.sections : []).forEach(function (section) {
-      if (!section) return;
-      if (section.heading) host.appendChild(el("h4", { text: section.heading }));
-      String(section.text || "").split(/\n{2,}/).forEach(function (paragraph) {
-        if (paragraph.trim()) host.appendChild(el("p", { class: "report-text", text: paragraph.trim() }));
+  /**
+   * The summary as text and source chips. A chip follows the first figure that came from
+   * each source, where the figure can be found in the sentence: three at most.
+   */
+  function summaryParts(report, onChip) {
+    var text = String(report.summary || "");
+    var sources = sourceIndex(report);
+    var facts = (Array.isArray(report.facts) ? report.facts : []).filter(function (fact) { return fact && fact.id != null && fact.source != null; });
+    // The summary's template names the facts it was filled from, in order ({f15}, {f17.p50}).
+    // Without one, only figures that read as figures are looked for.
+    var named = [];
+    String((report.template && report.template.summary) || "").replace(/\{(f\d+)(?:\.[a-z0-9]+)?\}/gi, function (all, id) { named.push(id); return all; });
+    var ordered = named.length
+      ? named.map(function (id) { return facts.filter(function (fact) { return String(fact.id) === id; })[0]; }).filter(Boolean)
+      : facts.filter(function (fact) { return /[$%]/.test(String(fact.text || "")); });
+    var marks = [];
+    var used = {};
+    var cursor = 0;
+    ordered.forEach(function (fact) {
+      var whole = String(fact.text || "");
+      var found = [whole, whole.replace(/\s*\(P10.*$/, "")].map(function (figure) {
+        var at = figure ? text.indexOf(figure, cursor) : -1;
+        return at < 0 ? null : { at: at, end: at + figure.length };
+      }).filter(Boolean)[0];
+      if (!found) return;
+      cursor = found.end;
+      var source = sources[String(fact.source)];
+      var short = source ? sourceShort(source) : "";
+      if (marks.length >= 3 || !short || used[source.name]) return;
+      var end = found.end;
+      while (/[.,;:)]/.test(text.charAt(end))) end += 1;
+      marks.push({ at: end, source: source, short: short });
+      used[source.name] = true;
+    });
+    var parts = [];
+    var from = 0;
+    marks.forEach(function (m) {
+      parts.push({ text: text.slice(from, m.at) });
+      parts.push({ node: el("button", { type: "button", class: "src-chip", text: m.short, title: "Source: " + m.source.name + (m.source.detail ? ", " + m.source.detail : ""),
+        onclick: function () { onChip(m.source); } }) });
+      from = m.at;
+    });
+    parts.push({ text: text.slice(from) });
+    return parts;
+  }
+
+  /**
+   * Show a paragraph word by word. The text is all there from the start (a screen reader has
+   * it at once); only the eye waits, about 30 ms a word and never more than 1.5 s in all.
+   */
+  function reveal(p, parts, done) {
+    var units = [];
+    parts.forEach(function (part) {
+      if (part.node) {
+        part.node.classList.add("w");
+        units.push(part.node);
+        p.appendChild(part.node);
+        return;
+      }
+      String(part.text || "").split(/(\s+)/).forEach(function (piece) {
+        if (!piece) return;
+        if (/^\s+$/.test(piece)) {
+          p.appendChild(document.createTextNode(" "));
+          return;
+        }
+        var word = el("span", { class: "w", text: piece });
+        units.push(word);
+        p.appendChild(word);
       });
     });
+    if (reducedMotion || !units.length) {
+      units.forEach(function (unit) { unit.classList.add("is-in"); });
+      done();
+      return;
+    }
+    var step = Math.min(32, 1500 / units.length);
+    var caret = el("span", { class: "caret", "aria-hidden": "true" });
+    var began = performance.now();
+    var shown = 0;
+    (function tick() {
+      var due = Math.min(units.length, Math.floor((performance.now() - began) / step) + 1);
+      while (shown < due) units[shown++].classList.add("is-in");
+      if (shown < units.length) {
+        units[shown - 1].after(caret);
+        setTimeout(tick, step);
+      } else {
+        caret.remove();
+        done();
+      }
+    })();
+  }
 
+  function figure(cell) {
+    if (cell == null) return [el("b", { class: "num", text: fmt.missing })];
+    if (typeof cell !== "object") return [el("b", { class: "num", text: String(cell) })];
+    return [el("b", { class: "num", text: String(cell.text == null ? fmt.missing : cell.text), title: cell.label || null }), cell.range ? el("small", { class: "num", text: String(cell.range) }) : null];
+  }
+
+  /**
+   * The table code built for the report: {columns, rows: [{label, cells: [{text, range}]}], note}.
+   * One or two figures a row stay a table. More than that will not sit side by side in this
+   * column with their ranges, so each row becomes a group with its figures on a two-column grid.
+   */
+  function answerTable(table) {
+    if (!table || typeof table !== "object" || !Array.isArray(table.rows) || !table.rows.length) return null;
+    var columns = (Array.isArray(table.columns) ? table.columns : []).map(String);
+    var rows = table.rows.filter(function (row) { return row && Array.isArray(row.cells); });
+    if (!rows.length) return null;
+    var widest = Math.max.apply(null, rows.map(function (row) { return row.cells.length; }));
+    var wrap = el("div", { class: "answer-table" });
+    if (widest <= 2) {
+      var head = el("tr", null, columns.slice(0, widest + 1).map(function (name, i) { return el("th", { scope: "col", class: i ? "num" : null, text: name }); }));
+      var body = rows.map(function (row) {
+        return el("tr", null, [el("th", { scope: "row", text: String(row.label == null ? "" : row.label) })].concat(row.cells.map(function (cell) { return el("td", { class: "num" }, figure(cell)); })));
+      });
+      wrap.appendChild(el("table", { class: "fact-table" }, [columns.length ? el("thead", null, [head]) : null, el("tbody", null, body)]));
+    } else {
+      rows.forEach(function (row) {
+        var name = String(row.label == null ? "" : row.label);
+        var mode = L.modes.filter(function (m) { return m.name === name; })[0];
+        var dot = mode ? el("i", { class: "fact-dot", "aria-hidden": "true" }) : null;
+        if (dot) dot.style.background = mode.color;
+        wrap.appendChild(el("section", { class: "fact-group" }, [
+          el("h4", { class: "fact-group-name" }, [dot, name]),
+          el("dl", { class: "fact-grid" }, row.cells.map(function (cell, i) {
+            return el("div", { class: "fact-cell" }, [el("dt", { text: columns[i + 1] || (cell && cell.label) || "" }), el("dd", null, figure(cell))]);
+          }))
+        ]));
+      });
+    }
+    if (table.note) wrap.appendChild(el("p", { class: "answer-note", text: String(table.note) }));
+    return wrap;
+  }
+
+  /** The answer as plain text, for the copy button. */
+  function answerText(report) {
+    var lines = [report.title, report.summary];
+    var table = report.table && Array.isArray(report.table.rows) ? report.table : null;
+    if (table) {
+      var columns = (Array.isArray(table.columns) ? table.columns : []).map(String);
+      table.rows.forEach(function (row) {
+        if (!row || !Array.isArray(row.cells)) return;
+        lines.push(String(row.label || "") + ": " + row.cells.map(function (cell, i) {
+          var value = cell && typeof cell === "object" ? String(cell.text == null ? "" : cell.text) + (cell.range ? " (" + cell.range + ")" : "") : String(cell == null ? "" : cell);
+          return (columns[i + 1] ? columns[i + 1] + " " : "") + value;
+        }).join("; "));
+      });
+    }
+    (Array.isArray(report.sections) ? report.sections : []).forEach(function (section) {
+      if (section) lines.push(section.heading, section.text);
+    });
+    return lines.filter(Boolean).map(String).join("\n\n");
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      var box = el("textarea", { class: "sr-only", "aria-hidden": "true", tabindex: "-1" });
+      box.value = text;
+      document.body.appendChild(box);
+      box.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (error) { ok = false; }
+      box.remove();
+      if (ok) resolve(); else reject(new Error("copy is not available"));
+    });
+  }
+
+  /** A link the server named is followed only to this site or over http(s). */
+  function safeHref(href) {
+    if (typeof href !== "string" || !href) return null;
+    if (href.charAt(0) === "/" && href.charAt(1) !== "/") return { href: href, external: false };
+    return /^https?:\/\//i.test(href) ? { href: href, external: true } : null;
+  }
+
+  /** What the answer rests on: the server's sources, or the quoted evidence when it sends none. */
+  function sourcesList(report) {
+    var rows = [];
+    (Array.isArray(report.sources) ? report.sources : []).forEach(function (source) {
+      if (!source || typeof source !== "object" || !source.name) return;
+      var link = safeHref(source.href);
+      var detail = source.detail || source.kind || "";
+      var right = !detail ? null : link
+        ? el("a", link.external ? { class: "source-detail", href: link.href, target: "_blank", rel: "noopener noreferrer", text: String(detail) } : { class: "source-detail", href: link.href, text: String(detail) })
+        : el("span", { class: "source-detail", text: String(detail) });
+      rows.push({ source: source, node: el("li", { class: "source" }, [el("span", { class: "source-name", text: String(source.name) }), right]) });
+    });
+    if (!rows.length) {
+      knownIds(report.evidence_ids).forEach(function (id) {
+        var fact = facts[id];
+        rows.push({ node: el("li", { class: "source" }, [
+          el("span", { class: "source-name", text: CLAIMS[fact.claim] || humanize(fact.claim) }),
+          el("button", { type: "button", class: "source-detail", text: fmt.period(fact.period), onclick: function () { openEvidence([id]); } })
+        ]) });
+      });
+    }
+    return rows;
+  }
+
+  function unsupportedItem(item) {
+    if (typeof item === "string") return el("li", { text: item });
+    if (!item || typeof item !== "object") return null;
+    var asked = item.asked || item.request || item.what || item.question || item.name;
+    var why = item.reason || item.why;
+    var li = el("li");
+    if (asked) li.appendChild(el("b", { text: String(asked) }));
+    if (why) li.appendChild(el("span", { text: (asked ? ": " : "") + String(why) }));
+    return li.firstChild ? li : null;
+  }
+
+  function renderAnswer(host, report, turn, message) {
+    host.replaceChildren();
+    if (!report || typeof report !== "object") {
+      L.state(host, "error", { compact: true, text: "The run finished without an answer." });
+      return;
+    }
+    var after = [];
+    var sources = sourcesList(report);
+    var assumptions = (Array.isArray(report.assumptions) ? report.assumptions : []).filter(Boolean).map(String);
+    var sourcesButton = null;
+    var sourcesRegion = null;
+    var showSource = function (source) {
+      if (!sourcesRegion) return;
+      setOpen(sourcesRegion, sourcesButton, true);
+      var row = sources.filter(function (r) { return r.source === source; })[0];
+      if (!row) return;
+      row.node.classList.remove("is-marked");
+      void row.node.offsetWidth;
+      row.node.classList.add("is-marked");
+      row.node.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
+    };
+
+    if (report.verified === false && (report.summary || report.title)) {
+      host.appendChild(el("p", { class: "answer-warning", role: "alert", text: "Not verified. " + (report.note ? String(report.note) : "At least one number could not be matched to a model run, so treat this as unchecked.") }));
+    }
+    if (report.title) host.appendChild(el("h3", { class: "answer-title", text: String(report.title) }));
+    var summary = report.summary ? el("p", { class: "answer-summary" }) : null;
+    if (summary) host.appendChild(summary);
+
+    var table = answerTable(report.table);
+    if (table) after.push(table);
+    (Array.isArray(report.sections) ? report.sections : []).forEach(function (section) {
+      if (!section) return;
+      var block = el("div", { class: "answer-section" });
+      if (section.heading) block.appendChild(el("h4", { text: String(section.heading) }));
+      String(section.text || "").split(/\n{2,}/).forEach(function (paragraph) {
+        if (paragraph.trim()) block.appendChild(el("p", { class: "answer-text", text: paragraph.trim() }));
+      });
+      if (block.firstChild) after.push(block);
+    });
     (Array.isArray(report.charts) ? report.charts : []).forEach(function (chart, i) {
       var node = reportChart(chart, turn, i, report);
-      if (node) host.appendChild(node);
+      if (node) after.push(node);
+    });
+    var unsupported = (Array.isArray(report.unsupported) ? report.unsupported : []).map(unsupportedItem).filter(Boolean);
+    if (unsupported.length) after.push(el("div", { class: "answer-section" }, [el("h4", { text: "What this system cannot run" }), el("ul", { class: "answer-list" }, unsupported)]));
+    if (report.note && report.verified !== false) after.push(el("p", { class: "answer-note", text: String(report.note) }));
+    after.forEach(function (node, i) {
+      node.classList.add("fade-up");
+      node.style.animationDelay = 60 + i * 60 + "ms";
+      host.appendChild(node);
     });
 
-    if (unsupported.length) {
-      host.appendChild(el("h4", { text: "What this system cannot run" }));
-      host.appendChild(el("ul", { class: "unsupported" }, unsupported.map(unsupportedItem)));
+    // Actions, sources and follow-ups wait for the text to finish.
+    var ran = (Array.isArray(report.scenarios) ? report.scenarios : []).map(function (run) { return run && run.request; }).filter(looksLikeScenarioRequest);
+    var request = turn.requests[0] || turn.scenarioRequests[0] || ran[0] || null;
+    var copy = el("button", { type: "button", class: "act", "aria-label": "Copy the answer", title: "Copy the answer" }, [icon("copy")]);
+    copy.addEventListener("click", function () {
+      copyText(answerText(report)).then(function () {
+        copy.replaceChildren(icon("check"));
+        announce("Copied");
+        setTimeout(function () { copy.replaceChildren(icon("copy")); }, 1600);
+      }, function () { announce("Copying is not available in this browser"); });
+    });
+    var actions = el("div", { class: "answer-actions" }, [
+      copy,
+      el("button", { type: "button", class: "act", "aria-label": "Ask again", title: "Ask again", onclick: function () { submitQuestion(message); } }, [icon("again")]),
+      request ? el("button", { type: "button", class: "act", title: "Set the controls to these inputs and run", onclick: function () { sendToSimulator(request); } }, [icon("open"), el("span", { text: "Send to the simulator" })]) : null
+    ]);
+    var foot = el("div", { class: "answer-foot" }, [actions]);
+    var more = el("div", { class: "answer-actions" });
+    var tail = [foot];
+    /** A count under the actions that opens a list beneath it. */
+    var disclosure = function (name, count, word, list) {
+      var region = expander(list, false);
+      region.id = name + "-" + ask.turns;
+      var button = el("button", { type: "button", class: "act", "aria-expanded": "false", "aria-controls": region.id },
+        [el("span", { text: count + " " + word + (count === 1 ? "" : "s") }), icon("chevron", "act-chevron")]);
+      button.addEventListener("click", function () { setOpen(region, button, !region.classList.contains("is-open")); });
+      more.appendChild(button);
+      if (!more.parentNode) foot.appendChild(more);
+      foot.appendChild(region);
+      return { button: button, region: region };
+    };
+    if (sources.length) {
+      var opened = disclosure("sources", sources.length, "source", el("ul", { class: "sources-list" }, sources.map(function (row) { return row.node; })));
+      sourcesButton = opened.button;
+      sourcesRegion = opened.region;
     }
-    if (options.length) {
-      host.appendChild(el("h4", { text: "It can run instead" }));
-      host.appendChild(alternatives(options));
+    if (assumptions.length) disclosure("assumptions", assumptions.length, "assumption", el("ul", { class: "answer-list assumptions" }, assumptions.map(function (text) { return el("li", { text: text }); })));
+    var instead = report.status === "not_supported" || !(Array.isArray(report.follow_ups) && report.follow_ups.length);
+    var next = (instead ? report.alternatives : report.follow_ups) || [];
+    next = (Array.isArray(next) ? next : []).map(function (option) {
+      return typeof option === "string" ? option : option && (option.question || option.label || option.text);
+    }).filter(Boolean).slice(0, 3);
+    if (next.length) {
+      tail.push(el("div", { class: "followups" }, [el("p", { class: "followups-label", text: instead ? "It can answer instead" : "Follow-ups" })].concat(next.map(function (question, i) {
+        var row = el("button", { type: "button", class: "followup", onclick: function () { submitQuestion(String(question)); } }, [icon("reply"), el("span", { text: String(question) })]);
+        row.style.animationDelay = i * 90 + "ms";
+        return row;
+      }))));
     }
-    if (Array.isArray(report.assumptions) && report.assumptions.length) {
-      host.appendChild(el("h4", { text: "Assumptions" }));
-      host.appendChild(el("ul", { class: "report-list" }, report.assumptions.map(function (a) { return el("li", { text: String(a) }); })));
-    }
-    var ids = knownIds(report.evidence_ids);
-    var unknown = (Array.isArray(report.evidence_ids) ? report.evidence_ids : []).filter(function (id) { return !facts[id]; });
-    if (ids.length || unknown.length) {
-      host.appendChild(el("h4", { text: "Sources quoted" }));
-      host.appendChild(el("p", { class: "report-sources" }, ids.map(function (id) {
-        var fact = facts[id];
-        return el("button", { type: "button", class: "chip", text: (CLAIMS[fact.claim] || humanize(fact.claim)) + ", " + fmt.period(fact.period), onclick: function () { openEvidence([id]); } });
-      }).concat(unknown.map(function (id) { return el("span", { class: "hash", text: id + " (not in the loaded sources)" }); }))));
-    }
+    var finish = function () {
+      tail.forEach(function (node) {
+        node.classList.add("is-in");
+        host.appendChild(node);
+      });
+    };
+    if (summary) reveal(summary, summaryParts(report, showSource), finish);
+    else finish();
     turn.afterAttach.splice(0).forEach(function (fn) { fn(); });
   }
 
@@ -1730,100 +2316,110 @@
     return pump();
   }
 
+  /** Put a new turn at the top of the panel, with room beneath it for the answer to arrive into. */
+  function pin(node) {
+    var scroller = $("console-body");
+    if (!scroller) return;
+    if (/(auto|scroll)/.test(getComputedStyle(scroller).overflowY)) {
+      Array.prototype.forEach.call(scroller.querySelectorAll(".turn"), function (turn) { turn.style.minHeight = ""; });
+      node.style.minHeight = Math.max(0, scroller.clientHeight - parseFloat(getComputedStyle(scroller).paddingBottom)) + "px";
+      var top = node.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
+      scroller.scrollTo({ top: top, behavior: reducedMotion ? "auto" : "smooth" });
+    } else {
+      node.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
+    }
+  }
+
   function runTurn(message) {
     var turns = $("ask-turns");
-    var list = el("ol", { class: "steps" });
-    var reportHost = el("section", { class: "report", "aria-label": "Report" });
-    var node = el("article", { class: "turn" }, [el("p", { class: "turn-question", text: message }), list, reportHost]);
-    var turn = { scenarioRequests: [], afterAttach: [], drawn: {}, done: false };
-    $("ask-suggest").hidden = true;
+    var tasks = taskList();
+    var answerHost = el("section", { class: "answer", "aria-label": "Answer" });
+    var node = el("article", { class: "turn" }, [el("p", { class: "turn-question", text: message }), tasks.node, answerHost]);
+    var turn = { scenarioRequests: [], requests: [], afterAttach: [], drawn: {}, done: false };
     turns.appendChild(node);
-    var scroller = $("console-body");
-    if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    pin(node);
 
     function finish(report) {
       if (turn.done) return;
       turn.done = true;
-      Array.prototype.forEach.call(list.querySelectorAll('.step[data-state="running"]'), function (row) { finishStep(row, null, null); });
-      renderReport(reportHost, report, turn);
+      tasks.close();
+      renderAnswer(answerHost, report, turn, message);
+      announce("Answer ready");
       ask.history.push({ role: "user", content: message });
       ask.history.push({ role: "assistant", content: String((report && (report.summary || report.title)) || "") });
-      node.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest" });
     }
 
     function fail(kind, text, title) {
       if (turn.done) return;
       turn.done = true;
-      Array.prototype.forEach.call(list.querySelectorAll('.step[data-state="running"]'), function (row) {
-        row.dataset.state = "stopped";
-        var time = row.querySelector(".step-time");
-        if (time) time.textContent = "stopped";
-      });
-      if (!list.firstChild) list.hidden = true;
-      L.state(reportHost, kind, { compact: true, title: title || (kind === "missing" ? "AI is not configured on this server" : "The run stopped"), text: text });
-    }
-
-    function notConfigured() {
-      fail("missing", "No language-model key is set, so questions cannot be answered here. The simulator works without it.");
+      tasks.close("stopped");
+      L.state(answerHost, kind, { compact: true, title: title || "The run stopped", text: text });
     }
 
     function settle(result) {
       if (!result || typeof result !== "object") return fail("error", "The answer was empty.");
-      if (result.status === "not_configured") return notConfigured();
+      if (result.status === "not_configured") return fail("missing", "No language model is connected, so questions cannot be answered here. The simulator works without it.", "Not available here");
       if (!FIXTURES && hasFixtureFlag(result)) return fail("error", "The server returned placeholder data, so it is not shown as an answer.");
       var report = reportOf(result);
       if (report) return finish(report);
-      return fail("error", typeof result.detail === "string" ? result.detail : "The run finished without a report.");
+      return fail("error", typeof result.detail === "string" ? result.detail : "The run finished without an answer.");
     }
 
     function onEvent(payload, type) {
       if (!payload || typeof payload !== "object" || turn.done) return;
-      if (type === "error" || payload.status === "error") {
-        fail("error", String(payload.detail || payload.message || "The server reported an error."));
-      } else if (type === "step" || (STEP_KINDS[payload.kind] && type !== "final")) {
-        addStep(list, payload.step || payload, turn);
-      } else {
-        settle(payload);
-      }
+      if (type === "error" || payload.status === "error") fail("error", String(payload.detail || payload.message || "The server reported an error."));
+      else if (type === "step") tasks.upsert(normalizeStep(payload.step || payload, turn));
+      else settle(payload);
     }
 
+    /** A whole result at once (no stream): its steps are already done, so they are listed and the answer follows. */
     function oneShot(result) {
-      var steps = result && Array.isArray(result.steps) ? result.steps : [];
-      var chain = Promise.resolve();
-      if (!list.firstChild) {
-        steps.forEach(function (step) {
-          chain = chain.then(function () { addStep(list, step, turn); return wait(step.kind === "tool_call" ? 520 : 260); });
-        });
-      }
-      return chain.then(function () { settle(result); });
+      if (!tasks.count()) (result && Array.isArray(result.steps) ? result.steps : []).forEach(function (step) { tasks.upsert(normalizeStep(step, turn)); });
+      settle(result);
     }
 
     if (FIXTURES) {
       return Promise.all([load("chat_stream"), load("chat_report")]).then(function (results) {
         var bad = results.filter(function (x) { return x.status !== "ok"; })[0];
         if (bad) return fail(bad.status === "missing" ? "missing" : "error", "The placeholder run has not been written (" + bad.url + ").", "Placeholder run missing");
-        return oneShot(Object.assign({}, results[1].data, { steps: results[0].data.events || [] }));
+        // The placeholder stream is played at its own recorded pace, so the steps can be watched resolving.
+        var chain = Promise.resolve();
+        (results[0].data.events || []).forEach(function (event) {
+          var pause = event.status === "running" ? 150 : Math.max(150, Math.min(1500, Number(event.elapsed_ms) || 0));
+          chain = chain.then(function () {
+            return new Promise(function (resolve) { setTimeout(resolve, pause); });
+          }).then(function () { onEvent(event, "step"); });
+        });
+        return chain.then(function () { settle(results[1].data); });
       });
     }
 
     var body = { message: message, history: ask.history.slice(-12) };
+    if (ask.model != null) body.model = ask.model;
+    var refused = function (response, json) {
+      if (response.status === 429) {
+        var seconds = Number(response.headers.get("Retry-After"));
+        return fail("error", "Questions are limited to a few at a time." + (isNum(seconds) && seconds > 0 ? " Try again in " + Math.ceil(seconds) + " s." : " Try again shortly."), "One moment");
+      }
+      return fail("error", json && typeof json.detail === "string" ? json.detail : "The server answered " + response.status + ".");
+    };
     var fallback = function () {
       return post("/chat", body).then(function (response) {
         if (response.status === 404 || response.status === 405) return fail("missing", "The question service is not on this server yet. The simulator works without it.", "Not available here");
         return response.json().then(function (json) {
-          if (!response.ok && !(json && json.status === "not_configured")) return fail("error", json && typeof json.detail === "string" ? json.detail : "The server answered " + response.status + ".");
+          if (!response.ok && !(json && json.status === "not_configured")) return refused(response, json);
           return oneShot(json);
-        }, function () { return fail("error", "The server answered " + response.status + " with something that is not JSON."); });
+        }, function () { return response.status === 429 ? refused(response, null) : fail("error", "The server answered " + response.status + " with something that is not JSON."); });
       }, function () { return fail("error", "The server could not be reached."); });
     };
     return post("/chat/stream", body, "text/event-stream").then(function (response) {
       var type = response.headers.get("content-type") || "";
       if (response.ok && type.indexOf("text/event-stream") >= 0 && response.body && response.body.getReader) {
-        // A stream that ends or breaks before its report (a buffering proxy, a dropped line):
-        // clear the half-told log and ask again in one piece.
+        // A stream that ends or breaks before its answer (a buffering proxy, a dropped line):
+        // clear the half-told list and ask again in one piece.
         var again = function () {
           if (turn.done) return null;
-          list.replaceChildren();
+          tasks.clear();
           turn.scenarioRequests = [];
           return fallback();
         };
@@ -1831,27 +2427,22 @@
       }
       if (response.ok && type.indexOf("application/json") >= 0) return response.json().then(oneShot);
       if (response.status === 404 || response.status === 405) return fallback();
-      return response.json().then(function (json) {
-        fail("error", json && typeof json.detail === "string" ? json.detail : "The server answered " + response.status + ".");
-      }, fallback);
+      if (response.status === 429) return response.json().then(function (json) { return refused(response, json); }, function () { return refused(response, null); });
+      return response.json().then(function (json) { return refused(response, json); }, fallback);
     }, fallback);
   }
 
   function submitQuestion(message) {
     message = String(message || "").trim();
     if (!message || ask.busy) return;
-    var input = $("ask-input");
-    var button = $("ask-run");
     var simulatorView = $("view-simulator");
     if (simulatorView && simulatorView.classList.contains("is-console-closed")) toggleConsole(true);
     ask.busy = true;
-    button.disabled = true;
-    button.textContent = "Working";
-    input.value = "";
+    if (ask.composer) ask.composer.clear();
+    $("ask-suggest").hidden = true;
     var done = function () {
       ask.busy = false;
-      button.disabled = false;
-      button.textContent = "Run";
+      if (ask.composer) ask.composer.refresh();
     };
     Promise.resolve(runTurn(message)).then(done, function (error) {
       done();
@@ -1868,33 +2459,266 @@
     button.setAttribute("aria-label", closed ? "Open the ask panel" : "Collapse the ask panel");
   }
 
-  function initAsk() {
+  // 4. The composer -------------------------------------------------------------
+
+  /**
+   * A list that opens above the composer, with one highlight that glides between its rows.
+   * The keyboard stays on the control that opened it, which names the active row to a
+   * screen reader through aria-activedescendant.
+   */
+  function popup(host, owner, options) {
+    var highlight = el("span", { class: "menu-highlight", "aria-hidden": "true" });
+    var list = el("div", { class: "menu-list", role: "listbox", id: host.id + "-list", "aria-label": options.label }, [highlight]);
+    host.replaceChildren.apply(host, [options.head || null, list, options.foot ? el("p", { class: "menu-foot", text: options.foot }) : null].filter(Boolean));
+    var state = { items: [], nodes: [], active: -1 };
+
+    function setActive(index, instant) {
+      state.active = index;
+      state.nodes.forEach(function (node, i) { node.setAttribute("aria-selected", String(i === index)); });
+      var node = state.nodes[index];
+      if (!node) {
+        highlight.style.opacity = "0";
+        owner.removeAttribute("aria-activedescendant");
+        return;
+      }
+      owner.setAttribute("aria-activedescendant", node.id);
+      // The first placement is not a glide.
+      if (instant) highlight.classList.add("is-instant");
+      highlight.style.opacity = "1";
+      highlight.style.height = node.offsetHeight + "px";
+      highlight.style.transform = "translateY(" + node.offsetTop + "px)";
+      if (instant) {
+        void highlight.offsetWidth;
+        highlight.classList.remove("is-instant");
+      }
+    }
+
+    function open(items, active) {
+      state.items = items;
+      state.nodes = items.map(function (item, i) {
+        var node = el("div", { class: "menu-item" + (item.mono ? " is-command" : ""), role: "option", id: host.id + "-" + i, "aria-selected": "false", "aria-disabled": item.disabled ? "true" : null }, [
+          el("span", { class: "menu-name", text: item.name }),
+          item.note ? el("span", { class: "menu-note", text: item.note }) : null,
+          item.checked ? icon("check", "menu-check") : null,
+          item.checked ? el("span", { class: "sr-only", text: ", current" }) : null
+        ]);
+        node.addEventListener("mousemove", function () { if (!item.disabled && state.active !== i) setActive(i); });
+        // The press is taken on mousedown so the control that opened the list keeps the keyboard.
+        node.addEventListener("mousedown", function (event) { event.preventDefault(); });
+        node.addEventListener("click", function () { if (!item.disabled) options.onPick(item); });
+        return node;
+      });
+      list.replaceChildren.apply(list, [highlight].concat(state.nodes.length || !options.empty ? state.nodes : [el("p", { class: "menu-empty", text: options.empty })]));
+      host.hidden = false;
+      owner.setAttribute("aria-expanded", "true");
+      var first = isNum(active) && active >= 0 ? active : items.map(function (item) { return !item.disabled; }).indexOf(true);
+      setActive(first, true);
+    }
+
+    function close() {
+      if (host.hidden) return;
+      host.hidden = true;
+      owner.setAttribute("aria-expanded", "false");
+      owner.removeAttribute("aria-activedescendant");
+      state.active = -1;
+    }
+
+    function move(delta) {
+      var n = state.items.length;
+      if (!n) return;
+      var i = state.active;
+      for (var tries = 0; tries < n; tries++) {
+        i = (i + delta + n) % n;
+        if (!state.items[i].disabled) return setActive(i);
+      }
+    }
+
+    return {
+      open: open, close: close, move: move,
+      isOpen: function () { return !host.hidden; },
+      pick: function () {
+        var item = state.items[state.active];
+        if (item && !item.disabled) options.onPick(item);
+        return !!item;
+      }
+    };
+  }
+
+  function initComposer(status) {
     var form = $("ask-form");
-    if (!form) return;
     var input = $("ask-input");
-    var suggest = $("ask-suggest");
-    SUGGESTIONS.forEach(function (q) {
-      suggest.appendChild(el("button", { type: "button", class: "chip", text: q, onclick: function () { submitQuestion(q); } }));
+    var send = $("ask-run");
+    var commandButton = $("command-btn");
+    var modelButton = $("model-btn");
+    var commands = (status && Array.isArray(status.commands) ? status.commands : []).filter(function (c) { return c && typeof c === "object" && c.name; }).map(function (c) {
+      return { name: "/" + String(c.name).replace(/^\//, ""), note: c.description ? String(c.description) : "", template: typeof c.template === "string" ? c.template : "", mono: true };
+    });
+    var models = (status && Array.isArray(status.models) ? status.models : []).filter(function (m) { return m && typeof m === "object" && m.id != null && m.label; });
+    var measure = document.createElement("canvas").getContext("2d");
+
+    /** One line shares its row with the controls; text that needs more takes the full width and they drop below. */
+    function layout() {
+      var style = getComputedStyle(input);
+      var value = input.value;
+      var controls = [commandButton, modelButton, send].reduce(function (width, node) { return width + (node.hidden ? 0 : node.offsetWidth + 6); }, 0);
+      var room = form.clientWidth - parseFloat(getComputedStyle(form).paddingLeft) * 2 - controls - parseFloat(style.paddingLeft) * 2 - 2;
+      measure.font = style.fontWeight + " " + style.fontSize + " " + style.fontFamily;
+      if (form.clientWidth) form.classList.toggle("is-stacked", value.indexOf("\n") >= 0 || measure.measureText(value).width > room);
+      input.style.height = "auto";
+      input.style.height = Math.min(100, input.scrollHeight) + "px";
+      send.disabled = ask.busy || !value.trim();
+    }
+
+    function useCommand(item) {
+      input.value = item.template;
+      commandMenu.close();
+      layout();
+      input.focus();
+      // The first blank in the template is selected, ready to be typed over.
+      var blank = /\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>|_{2,}/.exec(input.value);
+      if (blank) input.setSelectionRange(blank.index, blank.index + blank[0].length);
+      else input.setSelectionRange(input.value.length, input.value.length);
+    }
+
+    var commandMenu = popup($("command-menu"), input, { label: "Commands", foot: "Up and down to move, Enter or Tab to pick, Esc to close", onPick: useCommand });
+    var modelMenu = popup($("model-menu"), modelButton, { label: "Model", onPick: function (item) {
+      ask.model = item.id;
+      $("model-label").textContent = item.name;
+      modelMenu.close();
+      layout();
+    } });
+
+    function openCommands(typed) {
+      var filter = String(typed || "").toLowerCase();
+      var found = commands.filter(function (c) { return c.name.toLowerCase().indexOf(filter) === 0; });
+      modelMenu.close();
+      if (found.length) commandMenu.open(found);
+      else commandMenu.close();
+    }
+
+    function openModels() {
+      commandMenu.close();
+      var items = models.map(function (m) {
+        return { id: m.id, name: String(m.label), note: m.note ? String(m.note) : "", disabled: m.available === false, checked: m.id === ask.model };
+      });
+      modelMenu.open(items, items.map(function (item) { return item.checked; }).indexOf(true));
+    }
+
+    commandButton.hidden = !commands.length;
+    if (commands.length) {
+      commandButton.addEventListener("click", function () {
+        if (commandMenu.isOpen()) commandMenu.close();
+        else openCommands("/");
+        input.focus();
+      });
+    }
+    modelButton.hidden = !models.length;
+    if (models.length) {
+      var current = models.filter(function (m) { return m.available !== false && m.id === status.model; })[0] || models.filter(function (m) { return m.available !== false; })[0];
+      if (current) {
+        ask.model = current.id;
+        $("model-label").textContent = String(current.label);
+      } else {
+        modelButton.hidden = true;
+      }
+      modelButton.addEventListener("click", function () {
+        if (modelMenu.isOpen()) modelMenu.close();
+        else openModels();
+      });
+      modelButton.addEventListener("keydown", function (event) {
+        if (!modelMenu.isOpen()) {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            openModels();
+          }
+          return;
+        }
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          modelMenu.move(event.key === "ArrowDown" ? 1 : -1);
+        } else if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          modelMenu.pick();
+        } else if (event.key === "Escape" || event.key === "Tab") {
+          if (event.key === "Escape") event.preventDefault();
+          modelMenu.close();
+        }
+      });
+    }
+
+    input.addEventListener("input", function () {
+      layout();
+      var typed = /^\/\S*$/.exec(input.value);
+      if (typed && commands.length) openCommands(typed[0]);
+      else commandMenu.close();
+    });
+    input.addEventListener("keydown", function (event) {
+      if (event.isComposing) return;
+      if (commandMenu.isOpen()) {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          commandMenu.move(event.key === "ArrowDown" ? 1 : -1);
+          return;
+        }
+        if (event.key === "Enter" || event.key === "Tab") {
+          event.preventDefault();
+          commandMenu.pick();
+          return;
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          commandMenu.close();
+          return;
+        }
+      }
+      if (event.key === "Escape" && modelMenu.isOpen()) modelMenu.close();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        submitQuestion(input.value);
+      }
     });
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       submitQuestion(input.value);
     });
-    input.addEventListener("keydown", function (event) {
-      if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
-        event.preventDefault();
-        submitQuestion(input.value);
+    document.addEventListener("pointerdown", function (event) {
+      var target = event.target && event.target.closest ? event.target : form;
+      if (!target.closest("#model-menu, #model-btn")) modelMenu.close();
+      if (!target.closest("#command-menu, #command-btn, #ask-input")) commandMenu.close();
+    });
+    form.addEventListener("focusout", function (event) {
+      if (event.relatedTarget && form.contains(event.relatedTarget)) return;
+      if (event.relatedTarget) {
+        commandMenu.close();
+        modelMenu.close();
       }
     });
+    if (global.ResizeObserver) new ResizeObserver(layout).observe(form);
+    layout();
+
+    ask.composer = {
+      refresh: layout,
+      clear: function () {
+        input.value = "";
+        commandMenu.close();
+        modelMenu.close();
+        layout();
+      }
+    };
+  }
+
+  function initAsk() {
+    var form = $("ask-form");
+    if (!form) return;
     $("console-toggle").addEventListener("click", function () { toggleConsole(); });
-    serverStatus.then(function (status) {
-      if (!status || status.ai_configured !== false) return;
-      suggest.hidden = true;
-      input.disabled = true;
-      $("ask-run").disabled = true;
-      $("ask-turns").appendChild(L.state(null, "missing", { compact: true, title: "No language model is connected",
-        text: "Questions cannot be answered on this server. The simulator works without it." }));
+    // Before anything is asked: a short list of questions to start from.
+    var suggest = $("ask-suggest");
+    SUGGESTIONS.forEach(function (question) {
+      suggest.appendChild(el("button", { type: "button", class: "followup", onclick: function () { submitQuestion(question); } }, [icon("reply"), el("span", { text: question })]));
     });
+    // On placeholder data the console's own status (models, commands) is a placeholder file too.
+    var status = FIXTURES ? load("status").then(function (result) { return result.status === "ok" ? result.data : null; }) : serverStatus;
+    status.then(function (data) { initComposer(data || {}); });
   }
 
   // ------------------------------------------------------------ 2 behaviour
@@ -2233,19 +3057,11 @@
 
     Promise.all(FILES.map(load)).then(function (list) {
       var r = { ctx: {} };
-      var latest = "";
       list.forEach(function (result) {
         r[result.name] = result;
-        if (result.status === "ok") {
-          r.ctx[result.name] = result.data;
-          // The top bar gives the last day of market and operating data. The framing facts and the forecast carry
-          // their own dates in their files and drawers.
-          if (result.name !== "meta" && result.name !== "q3_call" && result.data && typeof result.data.as_of === "string" && result.data.as_of > latest) latest = result.data.as_of;
-        }
+        if (result.status === "ok") r.ctx[result.name] = result.data;
       });
       indexEvidence(r.evidence);
-      var date = $("data-date");
-      if (date) date.textContent = latest ? "Market data to " + fmt.day(latest) : "";
       var about = $("about-btn");
       if (about) about.addEventListener("click", function () { openAbout(r); });
       [renderBehaviour, renderTrack, renderForward].forEach(function (render) {
@@ -2270,7 +3086,7 @@
     words: words,
     view: goToView,
     sim: { set: sendToSimulator, show: showScenario, read: readSimForm, state: sim },
-    ask: { run: submitQuestion, renderReport: renderReport, readEventStream: readEventStream }
+    ask: { run: submitQuestion, renderAnswer: renderAnswer, readEventStream: readEventStream, state: ask }
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

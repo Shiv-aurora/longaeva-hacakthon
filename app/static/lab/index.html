@@ -42,7 +42,6 @@
     </nav>
     <div class="topbar-right">
       <span class="pill" id="fixture-pill" role="status" title="Every number is a made-up stand-in used to build the layout. Nothing here is a finding." hidden>Placeholder data</span>
-      <span class="data-date" id="data-date" title="Latest data used"></span>
       <a class="toplink" href="/report">Report</a>
       <button class="icon-btn" id="about-btn" type="button" aria-label="About this site: data, sources and credits" aria-haspopup="dialog">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.75"/><path d="M8 7.25v3.5" stroke-linecap="round"/><circle cx="8" cy="5.1" r="0.6" fill="currentColor" stroke="none"/></svg>
@@ -59,8 +58,14 @@
     <section class="view view-simulator" id="view-simulator" data-view="simulator" aria-label="Simulator">
 
       <form class="tile rail" id="sim-form" aria-label="Scenario">
-        <div class="rail-block">
-          <div class="chips" id="preset-row" role="group" aria-label="Preset scenarios"></div>
+        <!-- The scenario selector: the presets in one list. lab.js fills the list and names the current one. -->
+        <div class="rail-block scenario" id="scenario">
+          <p class="rail-label" id="scenario-label">Scenario</p>
+          <button class="scenario-trigger" type="button" id="scenario-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="scenario-menu-list" aria-labelledby="scenario-label scenario-name">
+            <span class="scenario-name" id="scenario-name"></span>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6 8 3l3 3M5 10l3 3 3-3"/></svg>
+          </button>
+          <div class="menu scenario-menu" id="scenario-menu" hidden></div>
         </div>
 
         <div class="rail-block controls">
@@ -87,13 +92,14 @@
           <div class="field">
             <label for="sim-aircraft">Aircraft delayed</label>
             <output for="sim-aircraft" id="sim-aircraft-out"></output>
-            <input type="range" id="sim-aircraft" name="delay_aircraft" min="0" max="40" step="5" value="0">
+            <input type="range" id="sim-aircraft" name="delay_aircraft" min="0" max="35" step="5" value="0">
           </div>
           <div class="field">
             <label for="sim-delay">Delay</label>
             <output for="sim-delay" id="sim-delay-out"></output>
             <input type="range" id="sim-delay" name="delay_months" min="0" max="12" step="1" value="0">
           </div>
+          <p class="field-note" id="sim-note" role="status"></p>
           <div class="field">
             <label for="sim-horizon">Horizon</label>
             <output for="sim-horizon" id="sim-horizon-out"></output>
@@ -107,7 +113,6 @@
         </div>
 
         <div class="rail-foot">
-          <p class="sim-status" id="sim-status" role="status" aria-live="polite"></p>
           <button class="btn btn-quiet" type="reset">Reset</button>
         </div>
       </form>
@@ -140,13 +145,25 @@
           </div>
         </header>
         <div class="console-body" id="console-body">
-          <div class="console-turns" id="ask-turns" aria-live="polite"></div>
-          <div class="chips console-suggest" id="ask-suggest" aria-label="Suggested questions"></div>
+          <div class="console-turns" id="ask-turns"></div>
+          <div class="suggest" id="ask-suggest" aria-label="Suggested questions"></div>
+          <p class="sr-only" id="ask-live" role="status"></p>
         </div>
-        <form class="console-form" id="ask-form">
+        <form class="composer" id="ask-form">
+          <div class="menu" id="command-menu" hidden></div>
+          <div class="menu" id="model-menu" hidden></div>
+          <button class="composer-btn" type="button" id="command-btn" aria-label="Commands" title="Commands" aria-haspopup="listbox" aria-expanded="false" aria-controls="command-menu-list" hidden>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M10 3 6 13"/></svg>
+          </button>
           <label class="sr-only" for="ask-input">Your question</label>
-          <textarea id="ask-input" name="message" rows="2" placeholder="Ask a what-if" required></textarea>
-          <button class="btn btn-primary" type="submit" id="ask-run">Run</button>
+          <textarea id="ask-input" name="message" rows="1" placeholder="Ask a what-if" autocomplete="off" aria-haspopup="listbox" aria-expanded="false" aria-controls="command-menu-list"></textarea>
+          <button class="composer-model" type="button" id="model-btn" title="Model" aria-haspopup="listbox" aria-expanded="false" aria-controls="model-menu-list" hidden>
+            <span class="sr-only">Model: </span><span id="model-label"></span>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
+          </button>
+          <button class="composer-send" type="submit" id="ask-run" aria-label="Send" title="Send" disabled>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12.5v-9M4.5 7 8 3.5 11.5 7"/></svg>
+          </button>
         </form>
       </aside>
     </section>

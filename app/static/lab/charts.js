@@ -840,7 +840,7 @@
 
         return plot({
           width: width, height: H,
-          marginLeft: 44, marginRight: narrow ? 112 : 132, marginTop: mTop, marginBottom: mBottom,
+          marginLeft: 44, marginRight: labelRoom(ends, width, narrow ? 112 : 132), marginTop: mTop, marginBottom: mBottom,
           x: { axis: null, domain: [x1, x2] },
           y: { axis: null, domain: domain },
           marks: marks
@@ -1605,6 +1605,16 @@
     return { el: host, redraw: draw, values: values, details: details };
   }
 
+  // The room end-of-line names need on the right, so none is cut where a chart is narrow:
+  // the widest name as the page's own face draws it, never more than half the chart.
+  var ruler = null;
+  function labelRoom(items, width, least) {
+    if (!ruler) ruler = document.createElement("canvas").getContext("2d");
+    ruler.font = "12px " + (getComputedStyle(document.body).fontFamily || "sans-serif");
+    var widest = Math.max.apply(null, [0].concat(items.map(function (item) { return ruler.measureText(String(item.text)).width; })));
+    return Math.round(Math.max(least, Math.min(width * 0.5, widest + 18)));
+  }
+
   // Push labels apart vertically so none overlap; positions are pixels.
   function spread(items, gap, lo, hi) {
     var sorted = items.slice().sort(function (a, b) { return a.y - b.y; });
@@ -1732,7 +1742,7 @@
         marks.push(Plot.ruleX(tipRows, Plot.pointerX({ x: "period", stroke: C.axis })));
         marks.push(tip(tipRows, Plot.pointerX, { x: "period", y: "y", title: "title" }));
         return plot({
-          width: width, height: H, marginLeft: 56, marginRight: mRight, marginTop: mTop, marginBottom: mBottom,
+          width: width, height: H, marginLeft: 56, marginRight: labelRoom(ends, width, mRight), marginTop: mTop, marginBottom: mBottom,
           x: { axis: null, type: "point", domain: periods, padding: 0.25 },
           y: { axis: null, domain: domain },
           marks: marks

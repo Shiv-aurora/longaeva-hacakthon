@@ -277,20 +277,25 @@ th.num {
   height: 16px;
 }
 
-/* Segmented control (radio group): plain words, the chosen one on a quiet ground. */
+/* Segmented control (radio group): a track, with the chosen segment raised out of
+   it on the work-area fill with an ink boundary. */
 .segmented {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 2px;
   max-width: 100%;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--surface-control);
 }
 
 .segmented label {
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 26px;
+  min-height: 24px;
   padding: 0 var(--space-2);
+  border: 1px solid transparent;
   border-radius: var(--radius-m);
   font-size: var(--text-13);
   color: var(--ink-secondary);
@@ -311,7 +316,8 @@ th.num {
 }
 
 .segmented label:has(input:checked) {
-  background: var(--surface-control);
+  border-color: var(--ink);
+  background: var(--surface);
   color: var(--ink);
 }
 
