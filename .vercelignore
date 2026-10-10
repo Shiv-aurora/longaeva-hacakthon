@@ -29,3 +29,6 @@
 .git
 .vercel
 .env*
+
+# Local downloaded data archive
+/downloads/
