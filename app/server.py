@@ -30,6 +30,7 @@ from .failure_search import SearchAxis, FailureSearch, search_failures
 from .target_inversion import OperatingTarget, ValuationScenario, TargetInversion, invert_target
 from .model_archive import archive_source, capture_source, run_preserved, replay_saved, read_verified_study, STUDY_CACHE_ROOT
 from .convergence import ConvergenceSpec, study_convergence
+from .lab.api import router as lab_router
 
 # Capture at module import so edits on disk cannot silently archive a different
 # implementation from the one this server loaded. Restart after model edits.
@@ -40,6 +41,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STATIC = ROOT / "app" / "static"
 app = FastAPI(title="UAL Counterfactual Engine", version="0.1.0", docs_url="/api/docs", redoc_url=None)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
+app.include_router(lab_router)
 
 
 @app.get("/api/traffic/status")
@@ -222,6 +224,14 @@ class TargetInversionPayload(BaseModel):
 
 @app.get("/")
 def index():
+    return FileResponse(STATIC / "monthly.html")
+
+@app.get("/lab")
+def lab_index():
+    return FileResponse(STATIC / "lab" / "index.html")
+
+@app.get("/research")
+def research_index():
     return FileResponse(STATIC / "monthly.html")
 
 @app.get("/fuel-pilot")

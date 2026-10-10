@@ -28,3 +28,4 @@
 !/data/lab/**
 .vercel
 .env*
+!.env.example
