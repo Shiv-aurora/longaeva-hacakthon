@@ -1996,7 +1996,8 @@
       var ft = d.fuel_price_test || {};
       var fuelStats = el("dl", { class: "stat-row" });
       if (isNum(ft.mae_guided)) fuelStats.appendChild(stat("United's assumed fuel price, average miss", [fmt.usd(ft.mae_guided), el("small", { text: " a gallon" })]));
-      if (isNum(ft.mae_marked)) fuelStats.appendChild(stat("Market price on the guidance date, average miss", [fmt.usd(ft.mae_marked), el("small", { text: " a gallon" })]));
+      if (isNum(ft.mae_clock_on_statement_date)) fuelStats.appendChild(stat("Fuel model on the same day, average miss", [fmt.usd(ft.mae_clock_on_statement_date), el("small", { text: " a gallon" })]));
+      if (isNum(ft.mae_marked)) fuelStats.appendChild(stat("Fuel model at quarter end, average miss", [fmt.usd(ft.mae_marked), el("small", { text: " a gallon" })]));
       if (isNum(ft.n)) fuelStats.appendChild(stat("Quarters compared", [fmt.int(ft.n)]));
       L.openDrawer("Scores", [
         el("h3", { text: "How far off each forecaster was" }),
