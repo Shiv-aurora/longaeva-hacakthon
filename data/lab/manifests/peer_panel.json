@@ -1,7 +1,7 @@
 {
  "area": "peer_panel",
  "builder": "scripts/lab/build_peer_panel.py",
- "built_at": "2026-10-10T06:22:27Z",
+ "built_at": "2026-10-09T06:22:27Z",
  "output": {
   "path": "data/lab/peer_quarterly.csv",
   "sha256": "bb92219acd031da639c8951bb951dec552a50de3d901a8e44ad0ec0323f7a831",

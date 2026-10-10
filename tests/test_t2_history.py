@@ -157,7 +157,7 @@ def preserved_lookups(require_local_cache):
     # Git, so a fresh clone skips the offline-build tests instead of failing on a missing file.
     classes=classification()
     for k in LOOKUPS:
-        require_local_cache("data/raw/"+classes[k], "docs/utilization.md (preserved lookup SHA-256 values) and docs/t2_history.md",
+        require_local_cache("data/raw/"+classes[k], "docs/engine/utilization.md (preserved lookup SHA-256 values) and docs/engine/t2_history.md",
             "preserved BTS aircraft lookup source ("+k+" in data/t2_aircraft_classification.json)")
 
 

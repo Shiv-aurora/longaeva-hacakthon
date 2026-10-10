@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:09:08Z",
+ "generated_at": "2026-10-09T06:09:08Z",
  "as_of": "2022-10-05",
  "inputs": [
   {
@@ -16,7 +16,7 @@
   },
   {
    "path": "data/lab/manifests/fares_2022.json",
-   "sha256": "b0bfcf62a0da0c18f209dd0d35722090863ee9b3f7bae3a2a96c8e37d65483ee"
+   "sha256": "e85252cd305ba7d11b9f77ac9d40b1cdd3ae66d6dc7085bdbea80d1992bb2a45"
   },
   {
    "path": "data/lab_raw/fares2022/archive.zip",
@@ -13187,7 +13187,7 @@
   "attribution": "Dillon Wong, 'Flight Prices', Kaggle dataset dilwong/flightprices, version 1 (2022-10-18), licensed CC BY 4.0. The uploader states the source as 'Data from Expedia'.",
   "archive_sha256": "e662b08ebe58ba8cd9fa25938e7cb6476997d071949cb629fa45588aaf8dedcf",
   "archive_bytes": 5920770411,
-  "retrieved_at": "2026-10-10T05:41:39+00:00",
+  "retrieved_at": "2026-10-09T05:41:39+00:00",
   "rows": 82138753,
   "search_dates": {
    "first": "2022-04-16",

@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-10T06:40:40Z",
- "as_of": "2026-10-10",
+ "generated_at": "2026-10-09T06:40:40Z",
+ "as_of": "2026-10-09",
  "inputs": [
   {
    "path": "data/lab/ual_guidance.json",
@@ -36,7 +36,7 @@
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "data/lab/ual_quarterly_sources.json",
@@ -48,7 +48,7 @@
   },
   {
    "path": "data/lab/dal_check.json",
-   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+   "sha256": "b96844fe31aad8ea82cbcfd0244cf8f8e758d7856e71435c33bedaf7059bbf20"
   },
   {
    "path": "data/lab_raw/sec/0000027904-26-000029/deltaairlinesannouncesjune.htm",
@@ -66,7 +66,7 @@
   "call_date": "2026-10-21",
   "published_on": "2026-09-30",
   "source_url": "https://finviz.com/news/397198/united-to-hold-webcast-of-third-quarter-2026-financial-results",
-  "retrieved_on": "2026-10-10",
+  "retrieved_on": "2026-10-09",
   "read_via": "page text returned by a web reader (a language model); wording not machine-checked",
   "evidence_ids": [
    "ual-2026q3-news-release-report-date"
@@ -152,7 +152,7 @@
  "comparators": {
   "consensus_eps": {
    "value": 2.84,
-   "as_of": "2026-10-10",
+   "as_of": "2026-10-09",
    "source_url": "https://tickzen.app/stocks/ual/earnings",
    "quote": "Analysts expect EPS of $2.84.",
    "as_of_note": "The page prints no date; as_of is the day it was read.",
@@ -163,12 +163,12 @@
     "note": "The threshold written into the prediction market below, which opened on 2026-10-07."
    },
    "note": "Aggregators do not agree on this figure. Other values seen in search snippets were not read on their pages and are not recorded.",
-   "retrieved_on": "2026-10-10",
+   "retrieved_on": "2026-10-09",
    "read_via": "page text returned by a web reader (a language model); wording not machine-checked"
   },
   "market_odds_beat": {
    "value": 0.6,
-   "as_of": "2026-10-10",
+   "as_of": "2026-10-09",
    "volume_usd": 689.9,
    "source_url": "https://polymarket.com/event/ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
    "api_url": "https://gamma-api.polymarket.com/events?slug=ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
@@ -179,10 +179,10 @@
    "best_ask": 0.68,
    "last_trade": 0.43,
    "liquidity_usd": 100.66,
-   "market_updated_at": "2026-10-10T06:22:33Z",
+   "market_updated_at": "2026-10-09T06:22:33Z",
    "resolves_on": "2026-10-20",
    "note": "A thin market: about $690 traded in total, about $100 resting in the book and 16 points between bid and ask, with the last trade at 43%. Treat the price as a weak signal.",
-   "retrieved_on": "2026-10-10",
+   "retrieved_on": "2026-10-09",
    "read_via": "page text returned by a web reader (a language model); wording not machine-checked"
   }
  }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:20:09Z",
+ "generated_at": "2026-10-09T06:20:09Z",
  "as_of": "2026-10-09",
  "as_of_detail": {
   "fuel_daily_last_print": "2026-10-06",
@@ -18,7 +18,7 @@
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "data/lab/dal_quarterly.csv",
@@ -26,7 +26,7 @@
   },
   {
    "path": "data/lab/dal_check.json",
-   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+   "sha256": "b96844fe31aad8ea82cbcfd0244cf8f8e758d7856e71435c33bedaf7059bbf20"
   }
  ],
  "seed": 20260715,

@@ -261,8 +261,7 @@ never a silent blank and never fixture values.
 | `POST /chat/stream` | The same turn as Server-Sent Events |
 | `GET /insights` | Three or four ready findings for the console's empty state, built by code from the data files |
 
-Pages: `/lab` is the application, `/report` the technical report, `/research`
-and `/monthly` the earlier workstation.
+Pages: `/` (also `/lab`) is the application and `/report` the technical report.
 
 A scenario response carries `status`, `run_id`, `cached`, `elapsed_ms`, `request`,
 `paths`, `as_of`, `fuel`, `modes` (`costs_only`, `management`, `measured`, each with

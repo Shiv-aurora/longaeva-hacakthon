@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T08:33:21Z",
+ "generated_at": "2026-10-09T08:33:21Z",
  "as_of": "2026-06-30",
  "inputs": [
   {
@@ -16,11 +16,11 @@
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+   "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
   },
   {
    "path": "data/lab/fuel_daily.csv",
@@ -28,7 +28,7 @@
   },
   {
    "path": "app/static/data/cost_clock.json",
-   "sha256": "e2598bf54815ed943d0c8b812e4fcdc3bc0f4899d058d5aa84c270ffff77e1e2"
+   "sha256": "f9e5245b7f3e9b8144d3aa2edae51c37d8289cf92d1c81a39450479ba10d355d"
   }
  ],
  "question": "Is the simulator's range the right width?",

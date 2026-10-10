@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T08:33:43Z",
+ "generated_at": "2026-10-09T08:33:43Z",
  "as_of": "2026-10-06",
  "inputs": [
   {
@@ -20,23 +20,23 @@
   },
   {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+   "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "app/static/data/track_record.json",
-   "sha256": "9bae62fcbd869ef3ad99ca25b5657a6d734bc422ebc876f7168ab45ad73a58f0"
+   "sha256": "dce54e4d5df1cf196a2a155056aee0df4667f7e19887932b1e30da7cf59ac361"
   },
   {
    "path": "app/static/data/q3_call.json",
-   "sha256": "1656bf6e0c44c7d7cb7310eba4a1ec5ec79237443429aaa0e92b7213fd98b5ad"
+   "sha256": "9db4ada63529bbbcf846a323bb572faf530922013c90cb317bacdc963463f2f5"
   },
   {
    "path": "app/static/data/market_clock.json",
-   "sha256": "4c4b855ebaad23f79f80b1b1c31fb8afe7618f9095a2e87e5517d80ca3a9121b"
+   "sha256": "5aa9cc1f66b8543f564a390e43d7da0f64e3e7607fffccc34518891d32255d66"
   }
  ],
  "headline": "Marked to fuel each day, the estimate of United's third-quarter adjusted EPS moved from $3.00 a share on 15 July 2026 to $2.54 by 6 October 2026, against a guided $2.50 to $3.50; United's shares moved -14.1% against the market over the same days.",
@@ -70,7 +70,7 @@
  "settled_from": "2026-09-30",
  "settled_note": "The quarter closed on 2026-09-30. From then until United reports, the estimate cannot move: every fuel price of the quarter is known.",
  "frozen_call": {
-  "sha256": "c5e7de714f5d89a13e3a45d1dcc95ad077bc918381c16ceec0e37e4dff3a5630",
+  "sha256": "053f94c7c2442a506c8948fd3d0c88f1b89888cfd3a5e1ffd9d6fccc3aedc068",
   "eps_p50": 2.541109,
   "matches_last_row": true
  },
@@ -812,7 +812,7 @@
      },
      {
       "path": "app/static/data/cost_clock.json",
-      "sha256": "e2598bf54815ed943d0c8b812e4fcdc3bc0f4899d058d5aa84c270ffff77e1e2"
+      "sha256": "f9e5245b7f3e9b8144d3aa2edae51c37d8289cf92d1c81a39450479ba10d355d"
      }
     ],
     "how": "Latest Gulf Coast jet fuel print 4.342 converted to the price United pays with the cost clock: 0.136945 + 1.04517 x spot. This is the price paid if today's spot lasts; the clock's lag is not applied."
@@ -834,7 +834,7 @@
    "after_hold": "fades by half every 2 months",
    "given_as": "fuel_usd_gal"
   },
-  "run_id": "3af45f290528ec418bd396f3d7783a9f34776268780934132d30a65930173ed1",
+  "run_id": "4c59720bf46a15d83dbb73cf074d67c24ee1d9cbff4e76f4e9ca5de0776e7b5b",
   "paths": 10000,
   "starts_from": "2026-07-16",
   "shock_starts": "2026-10",
@@ -1205,11 +1205,11 @@
    },
    {
     "path": "data/lab/literature.json",
-    "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+    "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
    },
    {
     "path": "app/static/data/fare_clock.json",
-    "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+    "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
    },
    {
     "path": "data/lab/ual_quarterly.csv",

@@ -77,7 +77,7 @@ difference between them is the airline's response and nothing else:
   $2.50 to $3.50, because fuel is put at $3.93 a gallon against the $3.69 United
   assumed. The forecast block, with its freeze time, is fixed in
   `data/lab/q3_call_frozen.json`; its SHA-256 is
-  `c5e7de714f5d89a13e3a45d1dcc95ad077bc918381c16ceec0e37e4dff3a5630`.
+  `053f94c7c2442a506c8948fd3d0c88f1b89888cfd3a5e1ffd9d6fccc3aedc068`.
   `scripts/lab/score_q3_call.py` adds the outcome and scores beside it afterwards.
   Because the replay did not beat the midpoint, this is a test of the method, not
   a claim that it is better than United's number.
@@ -161,7 +161,7 @@ built from them.
 | `data/lab/` | Tidy inputs with provenance |
 | `docs/lab_contract.md` | File shapes and rules |
 | `docs/monthly_model_card.md` | Simulator model card |
-| `docs/earlier_engine.md` | Earlier engine notes and research pipelines. The other files in `docs/` belong to that engine; some describe its retired pages |
+| `docs/engine/` | Notes on the data pipelines and studies behind the simulator |
 
 ## Tests
 

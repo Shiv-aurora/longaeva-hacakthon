@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:29:47Z",
+ "generated_at": "2026-10-09T06:29:47Z",
  "as_of": "2026-09-30",
  "as_of_detail": {
   "fuel_daily_last_print_in_monthly_panel": "2026-08-31",
@@ -19,15 +19,15 @@
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "app/static/data/demand_signal.json",
-   "sha256": "d332a0e7c27c4e6fd2ae9278cf14566b2101b46780de414cac79ab6ff833ad30"
+   "sha256": "0ba1ed6b7446bd24bb529a54318ab487ae5b0f67d1f6165dc1e675a4eb53d932"
   },
   {
    "path": "data/lab/dal_check.json",
-   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+   "sha256": "b96844fe31aad8ea82cbcfd0244cf8f8e758d7856e71435c33bedaf7059bbf20"
   },
   {
    "path": "data/lab/ual_quarterly.csv",

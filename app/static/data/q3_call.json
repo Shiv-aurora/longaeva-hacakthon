@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-10T07:01:45Z",
- "as_of": "2026-10-10",
+ "generated_at": "2026-10-09T07:01:45Z",
+ "as_of": "2026-10-09",
  "inputs": [
   {
    "path": "data/lab/ual_guidance.json",
@@ -20,19 +20,19 @@
   },
   {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+   "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
   },
   {
    "path": "data/lab/literature.json",
-   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+   "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
   },
   {
    "path": "data/lab/dal_check.json",
-   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+   "sha256": "b96844fe31aad8ea82cbcfd0244cf8f8e758d7856e71435c33bedaf7059bbf20"
   },
   {
    "path": "app/static/data/track_record.json",
-   "sha256": "9bae62fcbd869ef3ad99ca25b5657a6d734bc422ebc876f7168ab45ad73a58f0"
+   "sha256": "dce54e4d5df1cf196a2a155056aee0df4667f7e19887932b1e30da7cf59ac361"
   },
   {
    "path": "data/lab/ual_filings_index.csv",
@@ -40,21 +40,21 @@
   },
   {
    "path": "app/static/data/demand_signal.json",
-   "sha256": "d332a0e7c27c4e6fd2ae9278cf14566b2101b46780de414cac79ab6ff833ad30"
+   "sha256": "0ba1ed6b7446bd24bb529a54318ab487ae5b0f67d1f6165dc1e675a4eb53d932"
   },
   {
    "path": "app/static/data/meta.json",
-   "sha256": "5a1a06fd331af42ff7406ba00c5281aecece8a2357dcc54350d418736d7e3232"
+   "sha256": "4b363af54499fd2414a17d433c09d7f3e0fe6ef96ab0183d544d319c40057b67"
   }
  ],
- "headline": "Frozen on 10 October 2026: United's third-quarter adjusted EPS is put at $2.54 a share (P10 $2.18, P90 $2.82) against its own range of $2.50 to $3.50, with fuel at $3.93 a gallon instead of the $3.69 United assumed.",
+ "headline": "Frozen on 9 October 2026: United's third-quarter adjusted EPS is put at $2.54 a share (P10 $2.18, P90 $2.82) against its own range of $2.50 to $3.50, with fuel at $3.93 a gallon instead of the $3.69 United assumed.",
  "plain_summary": [
-  "Frozen on 10 October 2026: United's third-quarter adjusted EPS is put at $2.54 a share (P10 $2.18, P90 $2.82) against its own range of $2.50 to $3.50, with fuel at $3.93 a gallon instead of the $3.69 United assumed.",
+  "Frozen on 9 October 2026: United's third-quarter adjusted EPS is put at $2.54 a share (P10 $2.18, P90 $2.82) against its own range of $2.50 to $3.50, with fuel at $3.93 a gallon instead of the $3.69 United assumed.",
   "Fuel: the cost clock puts the price United paid at $3.93 a gallon (P10 $3.87, P90 $4.00); United assumed about $3.69 on 15 July 2026. The gap is $297 million before tax, or $0.58 a share after tax and profit sharing.",
   "Recovery: 21% of that gap is expected back through revenue within the quarter (P10 6%, P90 27%). United said it expects to recover 80% to 90% of the fuel increase in the quarter, but never defined 'recover', so the two figures are not the same measure.",
   "Unit revenue: up 14.7% on a year earlier (P10 11.1%, P90 17.5%); United said more than 12.1%. This link does not feed the EPS figure.",
   "EPS: $3.00 midpoint less $0.46 of fuel cost not recovered gives $2.54. Applying each of United's 14 earlier misses against its own midpoint, 7 land below the guided range, 6 inside and 1 above.",
-  "Against the $2.84 analyst consensus read on 10 October 2026, 1 of the 14 values is higher (7%); a thinly traded prediction market put the chance of a result above $2.84 at 60%.",
+  "Against the $2.84 analyst consensus read on 9 October 2026, 1 of the 14 values is higher (7%); a thinly traded prediction market put the chance of a result above $2.84 at 60%.",
   "How this method did on the 10 quarters from 2024 to mid-2026: average miss $0.26 a share, against $0.26 for United's own midpoint and $0.26 for costs only. It did not beat the midpoint there, so this call is a test of the method, not a claim that it is better than United's own number.",
   "The forecast block is fixed: its SHA-256 is in `sha256` and the same bytes are in data/lab/q3_call_frozen.json. The outcome and the scores are added beside it after United reports."
  ],
@@ -69,20 +69,20 @@
   "Profit sharing uses a rate read from a paraphrase; the call after tax only is in `without_profit_sharing`.",
   "The unit revenue link uses coefficients fitted on the same quarters its range is drawn from and assumes capacity growth from April; it is a side forecast and does not feed the EPS figure."
  ],
- "frozen_at": "2026-10-10T07:01:44Z",
- "sha256": "c5e7de714f5d89a13e3a45d1dcc95ad077bc918381c16ceec0e37e4dff3a5630",
+ "frozen_at": "2026-10-09T07:01:44Z",
+ "sha256": "053f94c7c2442a506c8948fd3d0c88f1b89888cfd3a5e1ffd9d6fccc3aedc068",
  "sha256_of": "the canonical JSON of `forecast` (sorted keys, separators ',' and ':', UTF-8); the same bytes are in data/lab/q3_call_frozen.json",
  "frozen_file": "data/lab/q3_call_frozen.json",
  "timestamp_proof": null,
  "timestamp_proof_note": "Not created by the build. The file to stamp is data/lab/q3_call_frozen.json.",
- "data_cutoff": "2026-10-10",
+ "data_cutoff": "2026-10-09",
  "known_before_freeze": [
   "Delta reported its September quarter on 2026-10-09: adjusted EPS $1.72 against a guided $2.00 to $2.50; it paid $3.61 a gallon against an assumed $3.15; adjusted unit revenue rose 15% year over year. No Delta figure enters any number in this forecast.",
   "Daily Gulf Coast jet fuel prices through 2026-09-30 for the quarter itself; the quarter ended on 2026-09-30, so its fuel prices are all known.",
   "United's results through the second quarter of 2026, published on 2026-07-15.",
-  "No guidance update from United between 2026-07-16 and 2026-10-10 is in the committed filings (latest filing in the index: 2026-07-15).",
+  "No guidance update from United between 2026-07-16 and 2026-10-09 is in the committed filings (latest filing in the index: 2026-07-15).",
   "Airport security counts for the quarter: travellers -2.8% against a year earlier (national, all airlines). Not an input to the forecast.",
-  "Analyst consensus for the quarter's EPS: $2.84, as read on 2026-10-10 (https://tickzen.app/stocks/ual/earnings). A prediction market priced a result above $2.84 at 60% on 2026-10-10, with about $690 traded in total. Neither enters any number in the chain."
+  "Analyst consensus for the quarter's EPS: $2.84, as read on 2026-10-09 (https://tickzen.app/stocks/ual/earnings). A prediction market priced a result above $2.84 at 60% on 2026-10-09, with about $690 traded in total. Neither enters any number in the chain."
  ],
  "chain": [
   {
@@ -406,7 +406,7 @@
  "comparators": {
   "consensus_eps": {
    "value": 2.84,
-   "as_of": "2026-10-10",
+   "as_of": "2026-10-09",
    "source_url": "https://tickzen.app/stocks/ual/earnings",
    "quote": "Analysts expect EPS of $2.84.",
    "provider_note": "Tickzen, which says its estimates come from Yahoo Finance. It does not name the quarter (\"the next report\") or say whether the figure is adjusted.",
@@ -421,7 +421,7 @@
   },
   "market_odds_beat": {
    "value": 0.6,
-   "as_of": "2026-10-10",
+   "as_of": "2026-10-09",
    "volume_usd": 689.9,
    "source_url": "https://polymarket.com/event/ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
    "question": "Will United Airlines (UAL) beat quarterly earnings?",
@@ -443,8 +443,8 @@
    "report_expected_on": "2026-10-20",
    "report_date_source": "https://finviz.com/news/397198/united-to-hold-webcast-of-third-quarter-2026-financial-results"
   },
-  "frozen_at": "2026-10-10T07:01:44Z",
-  "data_cutoff": "2026-10-10",
+  "frozen_at": "2026-10-09T07:01:44Z",
+  "data_cutoff": "2026-10-09",
   "last_fuel_price": "2026-10-06",
   "method": {
    "variant": "late_moves",
@@ -504,7 +504,7 @@
    "updates_since": {
     "window": [
      "2026-07-16",
-     "2026-10-10"
+     "2026-10-09"
     ],
     "guidance_records_found": [],
     "filings_found": [],
@@ -518,9 +518,9 @@
    "Delta reported its September quarter on 2026-10-09: adjusted EPS $1.72 against a guided $2.00 to $2.50; it paid $3.61 a gallon against an assumed $3.15; adjusted unit revenue rose 15% year over year. No Delta figure enters any number in this forecast.",
    "Daily Gulf Coast jet fuel prices through 2026-09-30 for the quarter itself; the quarter ended on 2026-09-30, so its fuel prices are all known.",
    "United's results through the second quarter of 2026, published on 2026-07-15.",
-   "No guidance update from United between 2026-07-16 and 2026-10-10 is in the committed filings (latest filing in the index: 2026-07-15).",
+   "No guidance update from United between 2026-07-16 and 2026-10-09 is in the committed filings (latest filing in the index: 2026-07-15).",
    "Airport security counts for the quarter: travellers -2.8% against a year earlier (national, all airlines). Not an input to the forecast.",
-   "Analyst consensus for the quarter's EPS: $2.84, as read on 2026-10-10 (https://tickzen.app/stocks/ual/earnings). A prediction market priced a result above $2.84 at 60% on 2026-10-10, with about $690 traded in total. Neither enters any number in the chain."
+   "Analyst consensus for the quarter's EPS: $2.84, as read on 2026-10-09 (https://tickzen.app/stocks/ual/earnings). A prediction market priced a result above $2.84 at 60% on 2026-10-09, with about $690 traded in total. Neither enters any number in the chain."
   ],
   "context": {
    "delta": {
@@ -879,7 +879,7 @@
   "comparators": {
    "consensus_eps": {
     "value": 2.84,
-    "as_of": "2026-10-10",
+    "as_of": "2026-10-09",
     "source_url": "https://tickzen.app/stocks/ual/earnings",
     "quote": "Analysts expect EPS of $2.84.",
     "provider_note": "Tickzen, which says its estimates come from Yahoo Finance. It does not name the quarter (\"the next report\") or say whether the figure is adjusted.",
@@ -894,7 +894,7 @@
    },
    "market_odds_beat": {
     "value": 0.6,
-    "as_of": "2026-10-10",
+    "as_of": "2026-10-09",
     "volume_usd": 689.9,
     "source_url": "https://polymarket.com/event/ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84",
     "question": "Will United Airlines (UAL) beat quarterly earnings?",
@@ -1086,19 +1086,19 @@
    },
    {
     "path": "app/static/data/fare_clock.json",
-    "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+    "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
    },
    {
     "path": "data/lab/literature.json",
-    "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+    "sha256": "8f14ec2522dc232ef5c801f6d1f941687a2badd13d62859d9c6d98fc765f8b25"
    },
    {
     "path": "data/lab/dal_check.json",
-    "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+    "sha256": "b96844fe31aad8ea82cbcfd0244cf8f8e758d7856e71435c33bedaf7059bbf20"
    },
    {
     "path": "app/static/data/track_record.json",
-    "sha256": "9bae62fcbd869ef3ad99ca25b5657a6d734bc422ebc876f7168ab45ad73a58f0"
+    "sha256": "dce54e4d5df1cf196a2a155056aee0df4667f7e19887932b1e30da7cf59ac361"
    },
    {
     "path": "data/lab/ual_filings_index.csv",
@@ -1106,11 +1106,11 @@
    },
    {
     "path": "app/static/data/demand_signal.json",
-    "sha256": "d332a0e7c27c4e6fd2ae9278cf14566b2101b46780de414cac79ab6ff833ad30"
+    "sha256": "0ba1ed6b7446bd24bb529a54318ab487ae5b0f67d1f6165dc1e675a4eb53d932"
    },
    {
     "path": "app/static/data/meta.json",
-    "sha256": "5a1a06fd331af42ff7406ba00c5281aecece8a2357dcc54350d418736d7e3232"
+    "sha256": "4b363af54499fd2414a17d433c09d7f3e0fe6ef96ab0183d544d319c40057b67"
    }
   ]
  },

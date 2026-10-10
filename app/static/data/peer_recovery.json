@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:30:15Z",
+ "generated_at": "2026-10-09T06:30:15Z",
  "as_of": "2026-09-30",
  "inputs": [
   {
@@ -8,11 +8,11 @@
   },
   {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+   "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3"
   },
   {
    "path": "app/static/data/demand_signal.json",
-   "sha256": "d332a0e7c27c4e6fd2ae9278cf14566b2101b46780de414cac79ab6ff833ad30"
+   "sha256": "0ba1ed6b7446bd24bb529a54318ab487ae5b0f67d1f6165dc1e675a4eb53d932"
   }
  ],
  "seed": 20260715,
@@ -7844,7 +7844,7 @@
   "n_united_only": 30,
   "source": {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e",
+   "sha256": "b6842e1707598b09be391a4299dbce68d19ba79ec27c7f78ddd78c8e6e68d5c3",
    "field": "smooth.through_latest"
   },
   "range_width_united_only_p10_p90": 0.319776

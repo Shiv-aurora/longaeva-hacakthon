@@ -13,7 +13,7 @@ def study(require_local_cache):
     # Preserved research fixture; no estimation or network fetch in these tests.
     # The study is a local, untracked cache: absent from a fresh clone, where these tests skip.
     p=require_local_cache('data/monthly_traffic_vintages/31226d81e2e4cc0163b965034b6e9e6127ca61cc04ab0a9873a56adbebf8d164/artifact.json',
-        'docs/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py)','preserved four-case traffic source-comparison study')
+        'docs/engine/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py)','preserved four-case traffic source-comparison study')
     return json.loads(p.read_text())
 
 
@@ -21,7 +21,7 @@ def study(require_local_cache):
 def native_source(study,require_local_cache):
     # Upstream native issue histories named by the study; also local and untracked.
     p=require_local_cache('data/traffic_vintages/'+study['specification']['source_snapshot_id']+'/artifact.json',
-        'docs/traffic_vintages.md (scripts/build_traffic_vintages.py)','native traffic issue-history snapshot used by the preserved study')
+        'docs/engine/traffic_vintages.md (scripts/build_traffic_vintages.py)','native traffic issue-history snapshot used by the preserved study')
     return json.loads(p.read_text())
 
 

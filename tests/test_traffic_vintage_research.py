@@ -9,7 +9,7 @@ from app.traffic_vintage_research import vintage_research_status
 from app.server import app
 
 ROOT=Path(__file__).parents[1]
-DOC='docs/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py, scripts/audit_monthly_traffic_vintages.py)'
+DOC='docs/engine/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py, scripts/audit_monthly_traffic_vintages.py)'
 
 
 @pytest.fixture

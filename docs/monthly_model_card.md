@@ -5,7 +5,7 @@ behavioral and historical validation remain pending.
 
 The separate traffic research scorecard now carries an unresolved AA Q1 2021
 source-review warning. Its fitted traffic component is not deployed in this
-financial sensitivity model. See [traffic vintage review](traffic_vintages.md)
+financial sensitivity model. See [traffic vintage review](engine/traffic_vintages.md)
 before interpreting its historical comparisons or accepting new estimation inputs.
 
 ## Scope currently running
@@ -27,7 +27,7 @@ Original URLs, publication dates and period boundaries are preserved. Normalized
 transcriptions are not verbatim document excerpts. Original SEC Company Facts
 bytes, dated fact versions and exact JSON pointers are preserved for the financial
 history pipeline and the Q1 cash-flow anchors. Original filing/issuer documents
-and their passage extraction remain pending. See `financial_history.md`.
+and their passage extraction remain pending. See `engine/financial_history.md`.
 
 ## Fleet and schedule boundary
 
@@ -56,7 +56,7 @@ source-reconciled gross purchase/delivery queue remains pending.
 Delays shift selected future mainline net entries originally due during the onset
 and duration window. Existing stock, regional contracts and planned exits remain
 unchanged. Delayed entries remain queued beyond the horizon. Optional explicit assumed retention now postpones eligible net exits and carries
-productivity/fuel/upkeep costs through the same paths; see `retention.md`.
+productivity/fuel/upkeep costs through the same paths; see `engine/retention.md`.
 Substitutes and fitted maintenance/crew/hub constraints remain pending.
 
 Committed ASM scales with a configurable fraction of planned group fleet growth,
@@ -103,7 +103,7 @@ incremental cash interest adjust OCF; capex events adjust cash capex. Financing,
 other investing and restricted transfers reconcile spendable cash separately.
 Debt principal, revolver availability and working-capital stock limits are checked.
 All events are incremental analyst assumptions over the retained reference, with
-both-path or shock-only scope. See `cash_bridge.md` for the event contract and limits.
+both-path or shock-only scope. See `engine/cash_bridge.md` for the event contract and limits.
 
 Purchase prices, deposits and financing terms can now be explicit analyst
 assumptions. Mapped delays move settlement/borrowing/fees while earlier deposits
@@ -111,7 +111,7 @@ stay paid; exact counts can split a batch. Allocated deposits and acquired asset
 are subsets, not consolidated stocks. Loan interest begins the next month.
 Complete gross queue reconciliation, PPE, leases and fitted retention costs remain
 unresolved; conditional loan availability and residual capex are not fitted. See
-`purchase_bridge.md` for validation and accounting boundaries. This provisional
+`engine/purchase_bridge.md` for validation and accounting boundaries. This provisional
 cash bridge now aligns Q2 operations and Q2 cash flow by differencing the reported
 YTD totals. It remains a constant reference run rate with no fitted monthly
 cash seasonality. Advance sales, loyalty, depreciation, taxes, debt service,
@@ -146,7 +146,7 @@ pointwise quantiles are never summed. Cash-floor fractions are conditional
 simulation fractions, not calibrated probabilities.
 
 Repeated-seed Monte Carlo error and bounded convergence checks are implemented in
-`docs/convergence.md`, with fixed production assumptions and separate policy results.
+`docs/engine/convergence.md`, with fixed production assumptions and separate policy results.
 Exact incremental batches extend the study budget to one million paths per repeat.
 The retained-aircraft example meets all 200 checks at 500,000 and 750,000 paths,
 with unchanged tolerances and two passing counts required. Its original 10,000-path
@@ -166,7 +166,7 @@ Parquet snapshots are content-addressed. Run records preserve evidence, fuel,
 configuration, seeds, code digest and Python/NumPy versions. API/CLI exports now
 also reference a locally registered executable source bundle. Replay uses that
 bundle in an isolated process and checks every deterministic result field.
-See `model_code_archive.md` for archive transfer, environment checks and older
+See `engine/model_code_archive.md` for archive transfer, environment checks and older
 unavailable versions. No full-engine historical fit, alpha or business outcome
 coverage is claimed.
 
@@ -178,7 +178,7 @@ altering that bundle or losing it does.
 
 ## Joint-driver failure workflow
 
-`failure_search.md` describes the implemented finite-grid What breaks? workflow:
+`engine/failure_search.md` describes the implemented finite-grid What breaks? workflow:
 absolute cumulative FCF or path-minimum cash thresholds, common worlds, two pricing
 modes, exact failing tested-point runs, full-scenario witnesses and preserved-input
 replay. This extends sensitivity exploration; fitted behavior and historical
@@ -186,7 +186,7 @@ validation remain pending. Grid counts are not event probabilities.
 
 ## Operating targets and optional valuation
 
-`target_inversion.md` describes the implemented What must be true? workflow:
+`engine/target_inversion.md` describes the implemented What must be true? workflow:
 explicit absolute FCF/revenue or horizon-weighted margin targets, optional cash
 floors and a fully supplied FCFF operating-asset valuation scenario. It returns
 all compatible tested combinations with actual joint matching path examples.
@@ -199,14 +199,14 @@ behavior, issuer cash reconciliation and held-out evaluation.
 SEC financial and BTS DD/FD operating-history pipelines now preserve raw sources
 and dated normalized panels. BTS history includes scheduled operating-carrier
 traffic, not reconciled issuer or United Express totals; it does not yet feed the
-simulation. See `operating_history.md` for schema, geography and release boundaries.
+simulation. See `engine/operating_history.md` for schema, geography and release boundaries.
 The Form 41 importer now preserves P12/P52 quarterly cost/operations and P12A
-observed monthly fuel history. See `form41_history.md`: these are acquisition-dated
+observed monthly fuel history. See `engine/form41_history.md`: these are acquisition-dated
 current downloads, with separate certificate/financial-region/aircraft grains,
 not historical publication vintages or automatically reconciled SEC issuer totals.
 They do not yet feed the simulator's costs, productivity or delivered fuel basis.
 
-See `proposal_delivery.md`: complete remaining Form 41 schedules/fares/weather and carrier-boundary
+Still open: complete remaining Form 41 schedules/fares/weather and carrier-boundary
 reconciliation; fitted fleet productivity
 and regional mappings; gross purchase/delivery and financing queues; detailed cash
 accounting; fitted policy/demand/competition; extend the inverse workflows to those
@@ -215,7 +215,7 @@ the historical scorecard.
 
 ## Separate fitted utilization study
 
-`docs/utilization.md` records the first quarterly P52 component, fitted on 2013–19
+`docs/engine/utilization.md` records the first quarterly P52 component, fitted on 2013–19
 and compared on eligible 2020–23 observations. It remains a research estimate
 with missing/sparse samples, no locked-test score or calibrated intervals, and no
 change to this simulator's capacity assumptions. The browser shows its source
@@ -234,7 +234,7 @@ share and enters the assumed pricing-pressure rule. Costs affect operating profi
 and the same provisional OCF/tax bridge. Purchase cash timing stays unchanged.
 These fixed assumed actions are shared across pricing modes; crew rosters, verified
 maintenance eligibility, optimal/fitted retirement behavior and historical
-intervention validation remain pending. See `retention.md`.
+intervention validation remain pending. See `engine/retention.md`.
 
 ## Monthly traffic research component
 
@@ -245,4 +245,4 @@ its best state candidate loses to a fixed initial seasonal mean; peer pooling ad
 no skill. Native intervals are uncalibrated and the selected source archives leave
 6–20-month information gaps. Source/statistical reconstruction passes 86,733
 independent checks. Joint fare/demand, pricing/competition and supported integration
-remain pending. See `monthly_traffic.md` for methods, immutable records and results.
+remain pending. See `engine/monthly_traffic.md` for methods, immutable records and results.

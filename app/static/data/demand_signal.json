@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T05:52:15+00:00",
+ "generated_at": "2026-10-09T05:52:15+00:00",
  "as_of": "2026-10-08",
  "inputs": [
   {
@@ -10,49 +10,49 @@
    "path": "data/lab_raw/tsa/0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f.html",
    "sha256": "0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f",
    "url": "https://www.tsa.gov/travel/passenger-volumes",
-   "retrieved_at": "2026-10-10T05:45:19+00:00"
+   "retrieved_at": "2026-10-09T05:45:19+00:00"
   },
   {
    "path": "data/lab_raw/tsa/3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6.html",
    "sha256": "3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2025",
-   "retrieved_at": "2026-10-10T05:45:21+00:00"
+   "retrieved_at": "2026-10-09T05:45:21+00:00"
   },
   {
    "path": "data/lab_raw/tsa/15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6.html",
    "sha256": "15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2024",
-   "retrieved_at": "2026-10-10T05:45:22+00:00"
+   "retrieved_at": "2026-10-09T05:45:22+00:00"
   },
   {
    "path": "data/lab_raw/tsa/227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475.html",
    "sha256": "227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2023",
-   "retrieved_at": "2026-10-10T05:45:24+00:00"
+   "retrieved_at": "2026-10-09T05:45:24+00:00"
   },
   {
    "path": "data/lab_raw/tsa/8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78.html",
    "sha256": "8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2022",
-   "retrieved_at": "2026-10-10T05:45:25+00:00"
+   "retrieved_at": "2026-10-09T05:45:25+00:00"
   },
   {
    "path": "data/lab_raw/tsa/c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207.html",
    "sha256": "c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2021",
-   "retrieved_at": "2026-10-10T05:45:26+00:00"
+   "retrieved_at": "2026-10-09T05:45:26+00:00"
   },
   {
    "path": "data/lab_raw/tsa/65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3.html",
    "sha256": "65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2020",
-   "retrieved_at": "2026-10-10T05:45:27+00:00"
+   "retrieved_at": "2026-10-09T05:45:27+00:00"
   },
   {
    "path": "data/lab_raw/tsa/d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3.html",
    "sha256": "d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3",
    "url": "https://www.tsa.gov/travel/passenger-volumes/2019",
-   "retrieved_at": "2026-10-10T05:45:28+00:00"
+   "retrieved_at": "2026-10-09T05:45:28+00:00"
   },
   {
    "path": "data/lab/ual_quarterly.csv",
