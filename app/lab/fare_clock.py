@@ -1744,14 +1744,15 @@ def _sentences(parts: list[str]) -> list[str]:
 
 
 def smooth_headline(fit: dict) -> str:
-    """The two numbers a reader can hold, each with its range; neutral when the long-run range reaches zero."""
-    long_run, half = fit["L_range"], fit["half_life_range"]
-    spread = f"{int(100 * LEVEL)}% range {_pct(long_run['p05'])} to {_pct(long_run['p95'])}"
-    if long_run["p05"] <= 0.0:
-        return (f"United's history cannot tell a revenue response to fuel cost from none: the long-run share made up "
-                f"is {_pct(fit['L'])} ({spread}).")
-    return (f"United has made up {_pct(fit['L'])} of a fuel cost shock in the long run ({spread}), half of it within "
-            f"{fit['half_life_quarters']:.1f} quarters ({half['p05']:.1f} to {half['p95']:.1f}).")
+    """The number that holds up (the share made up after a year, as the simulator's draws have it) with its range and
+    the single best fit beside it; neutral when the range reaches zero. The speed is said to be open, not quoted."""
+    year = fit["one_year_share"]
+    spread = f"{int(100 * LEVEL)}% range {_pct(year['p05'])} to {_pct(year['p95'])}"
+    if year["p05"] <= 0.0:
+        return (f"United's history cannot tell a revenue response to fuel cost from none: the share made up after a "
+                f"year is {_pct(year['p50'])} ({spread}).")
+    return (f"A year after a fuel cost change, United has made up about {_pct(year['p50'])} of it through revenue "
+            f"({spread}; best single fit {_pct(year['estimate'])}); the speed is not pinned down.")
 
 
 def _smooth_public(fit: dict | None) -> dict | None:

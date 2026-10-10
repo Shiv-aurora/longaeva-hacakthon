@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:22:42Z",
+ "generated_at": "2026-10-10T06:30:15Z",
  "as_of": "2026-09-30",
  "inputs": [
   {
@@ -8,7 +8,7 @@
   },
   {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "a9a8ca3540d19629da0211ff3d5d68affdc449fb5490c09c9d65ce47884d5fb1"
+   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
   },
   {
    "path": "app/static/data/demand_signal.json",
@@ -7844,7 +7844,7 @@
   "n_united_only": 30,
   "source": {
    "path": "app/static/data/fare_clock.json",
-   "sha256": "a9a8ca3540d19629da0211ff3d5d68affdc449fb5490c09c9d65ce47884d5fb1",
+   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e",
    "field": "smooth.through_latest"
   },
   "range_width_united_only_p10_p90": 0.319776

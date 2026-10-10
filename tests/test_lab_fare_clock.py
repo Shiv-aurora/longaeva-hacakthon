@@ -320,10 +320,10 @@ def test_smooth_curve_is_published_for_the_simulator_and_scored_as_post_hoc(payl
 
 
 def test_smooth_headline_is_short_and_goes_neutral_when_the_range_reaches_zero(payload):
-    base = {"L": 0.8, "half_life_quarters": 1.2, "L_range": {"p05": 0.5, "p95": 1.1}, "half_life_range": {"p05": 0.3, "p95": 2.5}}
+    base = {"one_year_share": {"estimate": 0.8, "p05": 0.5, "p50": 0.65, "p95": 0.9}}
     clear = fc.smooth_headline(base)
-    assert "80%" in clear and "50% to 110%" in clear and "1.2 quarters (0.3 to 2.5)" in clear and "cannot" not in clear
-    wide = fc.smooth_headline({**base, "L_range": {"p05": -0.2, "p95": 1.9}})
+    assert "about 65%" in clear and "50% to 90%" in clear and "best single fit 80%" in clear and "cannot" not in clear
+    wide = fc.smooth_headline({"one_year_share": {"estimate": 0.8, "p05": -0.2, "p50": 0.65, "p95": 1.9}})
     assert "cannot tell a revenue response to fuel cost from none" in wide and "-20% to 190%" in wide
     for text in (clear, wide, payload["headline"]):
         assert text.count(".") - text.count("0.") - text.count("1.") - text.count("2.") <= 1 or text.endswith(".")

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T06:09:08Z",
+ "generated_at": "2026-10-10T06:29:47Z",
  "as_of": "2026-09-30",
  "as_of_detail": {
   "fuel_daily_last_print_in_monthly_panel": "2026-08-31",
@@ -40,9 +40,9 @@
  ],
  "seed": 20260715,
  "interval_level": 0.9,
- "headline": "United has made up 77% of a fuel cost shock in the long run (90% range 61% to 279%), half of it within 1.0 quarters (0.4 to 13.5).",
+ "headline": "A year after a fuel cost change, United has made up about 62% of it through revenue (90% range 49% to 91%; best single fit 75%); the speed is not pinned down.",
  "plain_summary": [
-  "United has made up 77% of a fuel cost shock in the long run (90% range 61% to 279%), half of it within 1.0 quarters (0.4 to 13.5).",
+  "A year after a fuel cost change, United has made up about 62% of it through revenue (90% range 49% to 91%; best single fit 75%); the speed is not pinned down.",
   "The curve the simulator reads (through latest, 30 quarters to 2026Q2, 90% ranges): L = 77% (61% to 279%), rho = 0.50 (0.19 to 0.95), half-life 1.0 quarters (0.4 to 13.5), one-year share 75% (49% to 91%).",
   "By quarter after the shock its middle estimate is 18% (12% to 50%), 33% (23% to 66%), 45% (33% to 75%), 54% (43% to 79%), 62% (51% to 83%), with P10 to P90 in brackets.",
   "On the fit split alone (20 quarters): L = 97% (33% to 222%), rho = 0.78 (0.00 to 0.92), half-life 2.8 quarters (0.0 to 8.3), one-year share 69% (33% to 107%).",

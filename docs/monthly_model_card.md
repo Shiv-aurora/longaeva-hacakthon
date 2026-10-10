@@ -134,8 +134,9 @@ three curves on the same simulated worlds: no response, United's own stated path
 and the curve measured from United's reported quarters (`app/lab/fare_clock.py`).
 The response is symmetric and is defined on revenue net of volume effects, so no
 elasticity, pass-through cap or step limit is applied on top of it. The measured
-curve's one-year share is the stable number (about 75%, 49% to 91%); its speed is
-not pinned down, and the pre-specified five-lag version lost its locked test. The
+curve's one-year share is the stable number (about 62% at the middle of the draws,
+49% to 91%; the single best fit is 75%); its speed is not pinned down, and the
+pre-specified five-lag version lost its locked test. The
 two earlier policies are unchanged byte for byte.
 
 Pre-cutoff EIA return volatility is scaled by sqrt(21). Mean reversion, demand
