@@ -1,0 +1,36 @@
+{
+  "version": "traffic-source-correction-design-0.1.0",
+  "vintage_snapshot_id": "b2fa6c7660552e232776e10cd0000770dbef1afe6d117a128e02c55e397b449c",
+  "trace_id": "01d985eb3066862d5fcfc98dd25f0c4c230afc264385819eb560e0115b45777c",
+  "trace_audit_id": "0b8621c61bf34fa904785ace2e44b69bdb3ffce6c156e29577865a83416a118e",
+  "review_known_on": "2026-10-09",
+  "review_timezone": "America/New_York",
+  "carrier": "AA",
+  "period": "2021-01",
+  "service_class": "F",
+  "aircraft_configurations": [
+    "1",
+    "3"
+  ],
+  "source_detection": "Exact one-to-one full-cohort identity with January 2020 in every literal field except year/month, including multiplicity. No partial row or quantity-threshold repair.",
+  "reference_sources": {
+    "DD": "2da520251b5004cc3049ede3b348dd1eb224effd702e9bd1ffbd0eb9f06305ec",
+    "FD": "f3b80d6637b0b1c4941767fad0c395d0a36e195d63e5876f1d593714fc7221dc"
+  },
+  "replacement_sources": {
+    "DD": "44611a348d6b3a683c1d8ebe35cc76e6a15131c7bc32837545d4aa87530c99f3",
+    "FD": "faa200eede5cbbd1161bda3dcae2e1bd91380152e5bd54b94dfcf46018083345"
+  },
+  "expected_reference_rows": {
+    "DD": 1975,
+    "FD": 659
+  },
+  "expected_replacement_rows": {
+    "DD": 1224,
+    "FD": 491
+  },
+  "treatment": "Only confirmed reused AA January cohorts are replaced from the declared earlier original 2021 archive. Keep selected raw release, rejected cohort and replacement provenance separately. Other carriers/months/scopes are unchanged.",
+  "availability": "Original archive release dates still gate selected histories. Replacement original bytes must already have been released by each affected issue date. Review knowledge is present-day hindsight, never claimed historically available.",
+  "evaluation": "Preserve native histories/truth. Build a separate reviewed reconstruction and separately corrected evaluation targets. Later model studies must compare all candidates/baselines on identical targets and disclose raw-versus-reviewed outcomes. No 2024+ access.",
+  "acceptance": "Research source correction only; FF/regional/issuer reporting boundaries, fare/yield matching, demand/pricing, uncertainty calibration and simulator integration remain unresolved. No monthly observations manufactured from T2/issuer quarterly totals."
+}
