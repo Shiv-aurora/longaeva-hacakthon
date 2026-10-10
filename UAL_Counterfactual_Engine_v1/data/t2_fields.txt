@@ -1,0 +1,32 @@
+Field Name	Description	Support Table
+Year	Year	
+Quarter	Quarter(1-4)	Get Lookup Table
+AirlineID	An identification number assigned by US DOT to identify a unique airline (carrier). A unique airline (carrier) is defined as one holding and reporting under the same DOT certificate regardless of its Code, Name, or holding company/corporation.	Get Lookup Table
+UniqueCarrier	Unique Carrier Code. When the same code has been used by multiple carriers, a numeric suffix is used for earlier users, for example, PA, PA(1), PA(2). Use this field for analysis across a range of years.	Get Lookup Table
+UniqueCarrierName	Unique Carrier Name. When the same name has been used by multiple carriers, a numeric suffix is used for earlier users, for example, Air Caribbean, Air Caribbean (1).	
+UniqCarrierEntity	Unique Entity for a Carrier's Operation Region.	Get Lookup Table
+CarrierRegion	Carrier's Operation Region. Carriers Report Data by Operation Region	Get Lookup Table
+Carrier	Code assigned by IATA and commonly used to identify a carrier. As the same code may have been assigned to different carriers over time, the code is not always unique. For analysis, use the Unique Carrier Code.	Get Lookup Table
+CarrierName	Carrier Name	
+CarrierGroup	Carrier Group Code. Used in Legacy Analysis	Get Lookup Table
+CarrierGroupNew	Carrier Group New	Get Lookup Table
+AircraftGroup	Aircraft Group	Get Lookup Table
+AircraftType	Aircraft Type	Get Lookup Table
+AircraftConfig	Aircraft (Cabin) Configuration	Get Lookup Table
+SvcClass	Type of service provided (Scheduled, Non-Scheduled, etc.). Note that some service classes are sums of other detailed classes, for example, K (F+G), V (L+N+P+R), and Z (K+V).	Get Lookup Table
+AvailSeatMiles	All Services, Available Seat Miles, Total	
+RevPaxMiles	All Services, Revenue Passenger Miles, Total	
+RevTonMiles	All Services, Revenue Ton Miles, Total	
+RTMFreight	All Services, Freight Revenue Ton Miles	
+RTMMail	All Services, Mail Revenue Ton Miles	
+AvailTonMiles	All Services, Available Ton Miles, Total	
+RevAirMiles	All Services, Revenue Aircraft Miles Flown	
+RevDepPerformed	All Services, Revenue Aircraft Departures Performed	
+RevAirHours	Revenue Aircraft Hours Flown (Airborne)	
+NonRevAirHours	Non-Revenue Aircraft Hours Flown (Airborne). Note: Data not collected after 2002 Q3.	
+AirHoursRamp	Aircraft Hours, Ramp-to-Ramp	
+AirHours	Total Aircraft Hours Flown (Airborne)	
+AirDaysEquip	Aircraft Days Assigned, Carrier Equipment	
+AirDaysRoute	Aircraft Days Assigned, Carrier Routes. Note: Data not collected after 2002 Q3.	
+AircraftFuel	Aircraft Fuel (gallons)	
+NumMonths	Number of Months that the Carrier Reported in the Quarter (1, 2, or 3)	

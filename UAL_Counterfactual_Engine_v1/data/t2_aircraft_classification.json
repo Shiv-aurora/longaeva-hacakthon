@@ -1,0 +1,195 @@
+{
+  "version": "t2-mainline-aircraft-classification-0.1.0",
+  "type_lookup_sha256": "4fdb4909c671582f0267a730b7a486cab218d2405076d95c344e4d4b2f77d4c4",
+  "configuration_lookup_sha256": "c7dce259005536459b7f9886da5daf2d46143c0688322f54b807c3f7c54c0c4f",
+  "group_lookup_sha256": "811f84eb347087c543ade43bb3fb17ed5a3e098fd052073ac176f20655c6abae",
+  "method": "Explicit analyst NB/WB classification of official type descriptions for UA/DL/AA; E190 and A220 are narrowbody mainline in these certificate carriers. No regional operator consolidation. Type codes can combine variants; no variant-specific inference. T2 adds type 822 Boeing 747SP as widebody; its T2 observations do not establish P52 exposure or an owned-fleet attribution. The original P52 study mapping is unchanged.",
+  "rows": [
+    {
+      "aircraft_type": "608",
+      "description": "Boeing 717-200",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "612",
+      "description": "Boeing 737-700/700LR/Max 7",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "614",
+      "description": "Boeing 737-800",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "616",
+      "description": "Boeing 737-500",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "622",
+      "description": "Boeing 757-200",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "623",
+      "description": "Boeing 757-300",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "634",
+      "description": "Boeing 737-900",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "640",
+      "description": "McDonnell Douglas DC-9-30",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "645",
+      "description": "McDonnell Douglas DC-9-40",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "650",
+      "description": "McDonnell Douglas DC-9-50",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "655",
+      "description": "McDonnell Douglas DC9 Super 80/MD81/82/83/88",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "656",
+      "description": "McDonnell Douglas MD-90",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "678",
+      "description": "Embraer 190",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "694",
+      "description": "Airbus Industrie A320-100/200",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "698",
+      "description": "Airbus Industrie A319",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "699",
+      "description": "Airbus Industrie A321Neoxlr",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "721",
+      "description": "Airbus Industrie A321-200n",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "723",
+      "description": "A200-100 BD-500-1A10",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "724",
+      "description": "A220-300 BD-500-1A11",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "838",
+      "description": "Boeing B737 Max 800",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "839",
+      "description": "Boeing B737 Max 900",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "888",
+      "description": "Boeing 737-900ER",
+      "fleet_group": "narrowbody"
+    },
+    {
+      "aircraft_type": "339",
+      "description": "Airbus Industrie A330-900",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "359",
+      "description": "Airbus Industrie A350-900",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "624",
+      "description": "Boeing 767-400/ER",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "625",
+      "description": "Boeing 767-200/ER/EM",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "626",
+      "description": "Boeing 767-300/300ER",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "627",
+      "description": "Boeing 777-200ER/200LR/233LR",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "637",
+      "description": "Boeing 777-300/300ER/333ER",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "687",
+      "description": "Airbus Industrie A330-300/333",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "691",
+      "description": "Airbus Industrie A300-600/R/CF/RCF",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "696",
+      "description": "Airbus Industrie A330-200",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "819",
+      "description": "Boeing 747-400",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "837",
+      "description": "Boeing 787-10 Dreamliner",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "887",
+      "description": "B787-800 Dreamliner",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "889",
+      "description": "B787-900 Dreamliner",
+      "fleet_group": "widebody"
+    },
+    {
+      "aircraft_type": "822",
+      "description": "Boeing 747SP",
+      "fleet_group": "widebody"
+    }
+  ],
+  "base_classification_digest": "99e30ecb879e9579d2d860cb2ac663c22c58ad566ae514d69f4752fece9cc98a"
+}

@@ -1,0 +1,6 @@
+{
+  "source_url": "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FIH&QO_fu146_anzr=Nv4%20Pn44vr4%20f7zzn4B",
+  "path": "/Users/shivamarora/Downloads/T_SCHEDULE_T2_20261009_165419.zip",
+  "definition_path": "/Users/shivamarora/Documents/Code/longeva-hackathon/UAL_Counterfactual_Engine_v1/data/t2_fields.txt",
+  "filters": {"year": "All Years", "period": "All", "fields": "All"}
+}
