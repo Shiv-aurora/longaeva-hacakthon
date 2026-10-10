@@ -1,0 +1,8 @@
+{
+  "status": "numerically_verified_research",
+  "snapshot_id": "31226d81e2e4cc0163b965034b6e9e6127ca61cc04ab0a9873a56adbebf8d164",
+  "audit_id": "8860c6585dc6ade4c2d1868c936e3765d4db494710965eb70f896549d755fa54",
+  "native_source_audit_id": "067486ee870fd57c0d29543a34f14986455cd6827f659c5503728c79c5037598",
+  "review_known_on": "2026-10-09",
+  "knowledge_label": "Present-day reviewed reconstruction using hindsight source-quality knowledge; not a historical point-in-time forecast."
+}
