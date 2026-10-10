@@ -1,0 +1,84 @@
+{
+ "area": "peer_panel",
+ "builder": "scripts/lab/build_peer_panel.py",
+ "built_at": "2026-10-10T06:22:27Z",
+ "output": {
+  "path": "data/lab/peer_quarterly.csv",
+  "sha256": "bb92219acd031da639c8951bb951dec552a50de3d901a8e44ad0ec0323f7a831",
+  "rows": 140
+ },
+ "tracked_inputs": [
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  },
+  {
+   "path": "data/lab/dal_quarterly.csv",
+   "sha256": "e9c1cee9a42baf1c849c501d3ee82ec9afe00f0e3903a68edbb978bce01555e9"
+  }
+ ],
+ "stores": {
+  "sec_xbrl": {
+   "path": "data/history/007b23f1dbbf05b697a10f9d783cc8851e7f5f029e83433e68e439e8ff5f6881/facts.parquet",
+   "snapshot_id": "007b23f1dbbf05b697a10f9d783cc8851e7f5f029e83433e68e439e8ff5f6881",
+   "sha256": "6f297d10d3a666f86a17c301f3e907234e44cfdaaa55613ae1f4af56eb772e87",
+   "cutoff": "2026-10-09",
+   "tracked": false,
+   "version": "sec-financial-history-0.1.0"
+  },
+  "bts_t100": {
+   "path": "data/operating_history/bc4ee21c76691e623cea52e775808bde23689acdf9c763da9c2e22fb2f1979fc/monthly.parquet",
+   "snapshot_id": "bc4ee21c76691e623cea52e775808bde23689acdf9c763da9c2e22fb2f1979fc",
+   "sha256": "c4e6b777e13dae4b9586271e0b04c7af2be96101b99ef4787a904a737a17fc51",
+   "cutoff": "2026-10-09",
+   "tracked": false,
+   "version": "bts-operating-history-0.1.0"
+  }
+ },
+ "sec_sources": [
+  {
+   "entity": "AAL",
+   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000006201.json",
+   "sha256": "e86aa2120584973c57138a4d9d645d5c9ab641783c1180ce3ce3f74d98288cde",
+   "retrieved_at_utc": "2026-10-09T18:52:13.402540+00:00"
+  }
+ ],
+ "bts_boundary": "Scheduled passenger segments (class F, configuration 1/3), by operating carrier. UA/DL/AA exclude unassigned feeder flights. US Airways remains separate. Foreign-to-foreign (FF) flying is absent. No issuer-reconciled regional or competitor aggregate is claimed.",
+ "american_fuel_scope": {
+  "fiscal_2019_fuel_as_first_filed_musd": 7526.0,
+  "fiscal_2019_fuel_as_first_filed_filed_on": "2020-02-19",
+  "fiscal_2019_fuel_restated_musd": 9395.0,
+  "fiscal_2019_fuel_restated_filed_on": "2022-02-22",
+  "factor": 1.248339,
+  "fact_ids": [
+   "e86aa2120584973c57138a4d9d645d5c9ab641783c1180ce3ce3f74d98288cde:FuelCosts:USD:136",
+   "e86aa2120584973c57138a4d9d645d5c9ab641783c1180ce3ce3f74d98288cde:FuelCosts:USD:138"
+  ]
+ },
+ "coverage": {
+  "UAL": {
+   "rows": 54,
+   "first": "2013-03-31",
+   "last": "2026-06-30"
+  },
+  "DAL": {
+   "rows": 36,
+   "first": "2017-12-31",
+   "last": "2026-09-30"
+  },
+  "AAL": {
+   "rows": 50,
+   "first": "2014-03-31",
+   "last": "2026-06-30"
+  }
+ },
+ "rules": [
+  "United: total revenue, fuel expense and ASM as printed in its earnings releases (data/lab/ual_quarterly.csv).",
+  "Delta: adjusted total revenue (third-party refinery sales removed) and adjusted fuel expense as printed, and ASM, from its earnings releases (data/lab/dal_quarterly.csv); the GAAP columns are not used. Adjusted revenue is not printed for 2017Q4, so that cell is blank.",
+  "American: rows start at 2014-03-31, the first full quarter after the merger with US Airways.",
+  "American revenue: SEC XBRL operating revenue, latest filing; a quarter not reported directly is the difference of two year-to-date facts (app/financial_history.quarter_fact).",
+  "American fuel: SEC XBRL FuelCosts. Through 2019-12-31 the value as first filed (facts filed by 2020-12-31), which covers mainline flying only; later filings restate only some periods to include regional fuel, and mixing them breaks the fourth quarter of 2019. From 2020 the latest filing, which covers all flying.",
+  "fuel_scope_factor: 1 where the fuel figure covers all flying. For American through 2019 it is fiscal 2019 fuel as restated in a later 10-K over fiscal 2019 fuel as first filed, both in the store; multiplying by it brings the mainline-only figure to consolidated scope under the assumption of a constant regional share.",
+  "American ASM: BTS T-100 scheduled passenger seat miles of operating carrier AA, plus US (US Airways) while it reported separately, summed over months; a quarter needs all three months. Mainline only: regional partners and some international flying are not included."
+ ]
+}
