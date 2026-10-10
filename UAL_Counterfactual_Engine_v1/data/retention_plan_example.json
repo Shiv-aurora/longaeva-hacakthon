@@ -1,0 +1,34 @@
+{
+  "basis": "Illustrative replacement links: retain up to ten September and eight December A319/A320 exits when their mapped MAX replacement batch is delayed. Assume maintenance and crew support, one month notice, at most nine months extension and eighteen simultaneous retained aircraft. Additional maintenance $0.02M and rent/other carrying $0.01M per aircraft-month; 90% productivity and 15% extra fuel burn. These are analyst assumptions, not United clearance, costs or a fitted policy.",
+  "max_retained_aircraft": 18,
+  "links": [
+    {
+      "retention_id": "a320-september",
+      "exit_record_id": "fleet.A319_A320.inventory.2026-09-30.ual_july_2026_fleet_plan",
+      "purchase_id": "max-september",
+      "aircraft": 10,
+      "max_extension_months": 9,
+      "minimum_notice_months": 1,
+      "maintenance_supported": true,
+      "crew_supported": true,
+      "additional_maintenance_musd_per_aircraft_month": 0.02,
+      "additional_carrying_musd_per_aircraft_month": 0.01,
+      "extra_fuel_burn_fraction": 0.15,
+      "productivity_fraction": 0.9
+    },
+    {
+      "retention_id": "a320-december",
+      "exit_record_id": "fleet.A319_A320.inventory.2026-12-31.ual_july_2026_fleet_plan",
+      "purchase_id": "max-december",
+      "aircraft": 8,
+      "max_extension_months": 9,
+      "minimum_notice_months": 1,
+      "maintenance_supported": true,
+      "crew_supported": true,
+      "additional_maintenance_musd_per_aircraft_month": 0.02,
+      "additional_carrying_musd_per_aircraft_month": 0.01,
+      "extra_fuel_burn_fraction": 0.15,
+      "productivity_fraction": 0.9
+    }
+  ]
+}
