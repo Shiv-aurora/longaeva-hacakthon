@@ -143,6 +143,7 @@ Tidy inputs (wave 1):
 - `data/lab/ual_guidance.json`: list of verified guidance facts (see `evidence` shape below).
 - `data/lab/dal_check.json`: Delta's July 2026 guidance, Q2 and Q3 2026 actuals, with quotes.
 - `data/lab/literature.json`: published estimates with verbatim quotes and URLs.
+- `data/lab/tsa_daily.csv`: `date,travelers` (TSA checkpoint counts, daily from 2019). Its output is `app/static/data/demand_signal.json` (`daily`, `quarterly`, `monthly_control`, `versus_united`, `limits`, `headline`).
 
 ## Output JSON shapes
 

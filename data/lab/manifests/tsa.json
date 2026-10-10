@@ -1,0 +1,204 @@
+{
+  "area": "tsa",
+  "builder": "scripts/lab/fetch_tsa.py",
+  "raw_dir": "data/lab_raw/tsa",
+  "raw_note": "Each raw file is the response body as received, named by its SHA-256. An entry is one distinct body of one page: retrieved_at is when those bytes were first received, last_seen_at the latest run that received the same bytes again.",
+  "access_note": "curl with the declared User-Agent 'UAL Counterfactual Lab research', one request per second. On 2026-10-10 the same request from Python httpx was answered 403 Access Denied by the site's edge (AkamaiGHost), with the declared agent and with a browser agent; curl with the declared agent was answered 200. No browser is imitated.",
+  "revision_rule": "1. Within one page, a date listed twice with the same number is kept once; listed twice with different numbers, the page is refused. 2. When a date is listed on more than one stored page (the running-year page, a per-year page, or an earlier stored copy of either), the number from the page with the latest last_seen_at is used. 3. In one run the running-year page is requested first and the per-year pages after it, so a per-year page outranks the running-year page of the same run; an exact tie in time also goes to the per-year page. 4. Every date on which two stored pages disagree is listed under revisions with both numbers. No number is averaged, and a date no stored page lists is left out.",
+  "entries": [
+    {
+      "source": "tsa:current",
+      "url": "https://www.tsa.gov/travel/passenger-volumes",
+      "year": null,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:19+00:00",
+      "last_seen_at": "2026-10-10T05:45:19+00:00",
+      "http_status": 200,
+      "sha256": "0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f",
+      "bytes": 194662,
+      "path": "data/lab_raw/tsa/0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f.html",
+      "rows": 281,
+      "first": "2026-01-01",
+      "last": "2026-10-08",
+      "listed_order": "descending",
+      "page_title": "TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Passenger travel numbers are updated Monday through Friday by 9 a.m. Travel numbers during holiday weeks though may be slightly delayed."
+      ]
+    },
+    {
+      "source": "tsa:2025",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2025",
+      "year": 2025,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:21+00:00",
+      "last_seen_at": "2026-10-10T05:45:21+00:00",
+      "http_status": 200,
+      "sha256": "3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6",
+      "bytes": 190365,
+      "path": "data/lab_raw/tsa/3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6.html",
+      "rows": 365,
+      "first": "2025-01-01",
+      "last": "2025-12-31",
+      "listed_order": "ascending",
+      "page_title": "2025 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2024",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2024",
+      "year": 2024,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:22+00:00",
+      "last_seen_at": "2026-10-10T05:45:22+00:00",
+      "http_status": 200,
+      "sha256": "15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6",
+      "bytes": 190448,
+      "path": "data/lab_raw/tsa/15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6.html",
+      "rows": 366,
+      "first": "2024-01-01",
+      "last": "2024-12-31",
+      "listed_order": "ascending",
+      "page_title": "2024 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2023",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2023",
+      "year": 2023,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:24+00:00",
+      "last_seen_at": "2026-10-10T05:45:24+00:00",
+      "http_status": 200,
+      "sha256": "227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475",
+      "bytes": 190349,
+      "path": "data/lab_raw/tsa/227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475.html",
+      "rows": 365,
+      "first": "2023-01-01",
+      "last": "2023-12-31",
+      "listed_order": "ascending",
+      "page_title": "2023 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2022",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2022",
+      "year": 2022,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:25+00:00",
+      "last_seen_at": "2026-10-10T05:45:25+00:00",
+      "http_status": 200,
+      "sha256": "8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78",
+      "bytes": 190349,
+      "path": "data/lab_raw/tsa/8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78.html",
+      "rows": 365,
+      "first": "2022-01-01",
+      "last": "2022-12-31",
+      "listed_order": "ascending",
+      "page_title": "2022 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2021",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2021",
+      "year": 2021,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:26+00:00",
+      "last_seen_at": "2026-10-10T05:45:26+00:00",
+      "http_status": 200,
+      "sha256": "c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207",
+      "bytes": 190241,
+      "path": "data/lab_raw/tsa/c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207.html",
+      "rows": 365,
+      "first": "2021-01-01",
+      "last": "2021-12-31",
+      "listed_order": "ascending",
+      "page_title": "2021 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2020",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2020",
+      "year": 2020,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:27+00:00",
+      "last_seen_at": "2026-10-10T05:45:27+00:00",
+      "http_status": 200,
+      "sha256": "65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3",
+      "bytes": 189918,
+      "path": "data/lab_raw/tsa/65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3.html",
+      "rows": 366,
+      "first": "2020-01-01",
+      "last": "2020-12-31",
+      "listed_order": "ascending",
+      "page_title": "2020 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    },
+    {
+      "source": "tsa:2019",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2019",
+      "year": 2019,
+      "terms_note": "Transportation Security Administration, U.S. Department of Homeland Security. US government data in the public domain; cite TSA as the source.",
+      "retrieved_at": "2026-10-10T05:45:28+00:00",
+      "last_seen_at": "2026-10-10T05:45:28+00:00",
+      "http_status": 200,
+      "sha256": "d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3",
+      "bytes": 190349,
+      "path": "data/lab_raw/tsa/d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3.html",
+      "rows": 365,
+      "first": "2019-01-01",
+      "last": "2019-12-31",
+      "listed_order": "ascending",
+      "page_title": "2019 TSA checkpoint travel numbers | Transportation Security Administration",
+      "page_notes": [
+        "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
+      ]
+    }
+  ],
+  "not_published": [
+    {
+      "source": "tsa:2026",
+      "url": "https://www.tsa.gov/travel/passenger-volumes/2026",
+      "attempted_at": "2026-10-10T05:45:20+00:00",
+      "http_status": 404,
+      "note": "404 for the running year's own page. TSA lists the running year on the base URL; the per-year page is requested on every run so that it is picked up once TSA adds it."
+    }
+  ],
+  "failures": [],
+  "outputs": [
+    {
+      "path": "data/lab/tsa_daily.csv",
+      "sha256": "d10366546063d9ec4bf4f5ecaab44a7d69e2d7fc5e46dc4d00ee300988a0eb37",
+      "rows": 2838,
+      "first": "2019-01-01",
+      "last": "2026-10-08"
+    },
+    {
+      "path": "app/static/data/demand_signal.json",
+      "as_of": "2026-10-08",
+      "versus_united": "computed",
+      "note": "Carries generated_at, so its hash changes on every rebuild and is not recorded."
+    }
+  ],
+  "coverage": {
+    "first": "2019-01-01",
+    "last": "2026-10-08",
+    "days": 2838,
+    "missing_days": 0,
+    "missing_ranges": []
+  },
+  "revisions": [],
+  "not_built": []
+}

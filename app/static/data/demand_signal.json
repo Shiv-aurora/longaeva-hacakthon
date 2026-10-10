@@ -1,0 +1,5130 @@
+{
+ "generated_at": "2026-10-10T05:52:15+00:00",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/tsa_daily.csv",
+   "sha256": "d10366546063d9ec4bf4f5ecaab44a7d69e2d7fc5e46dc4d00ee300988a0eb37"
+  },
+  {
+   "path": "data/lab_raw/tsa/0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f.html",
+   "sha256": "0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f",
+   "url": "https://www.tsa.gov/travel/passenger-volumes",
+   "retrieved_at": "2026-10-10T05:45:19+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6.html",
+   "sha256": "3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2025",
+   "retrieved_at": "2026-10-10T05:45:21+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6.html",
+   "sha256": "15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2024",
+   "retrieved_at": "2026-10-10T05:45:22+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475.html",
+   "sha256": "227a37a406aed77e80f5327dc79b8474180f9613de4c43825e4a0167c22d9475",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2023",
+   "retrieved_at": "2026-10-10T05:45:24+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78.html",
+   "sha256": "8e4539e69f700a4f136054cd3619bd9cc69230eeec0b6649ff3d6dee8e8d9d78",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2022",
+   "retrieved_at": "2026-10-10T05:45:25+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207.html",
+   "sha256": "c3422ea07419b205bd09a5124bbf60a3d648c0043186154a1fc9b13666cb4207",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2021",
+   "retrieved_at": "2026-10-10T05:45:26+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3.html",
+   "sha256": "65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2020",
+   "retrieved_at": "2026-10-10T05:45:27+00:00"
+  },
+  {
+   "path": "data/lab_raw/tsa/d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3.html",
+   "sha256": "d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3",
+   "url": "https://www.tsa.gov/travel/passenger-volumes/2019",
+   "retrieved_at": "2026-10-10T05:45:28+00:00"
+  },
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  }
+ ],
+ "headline": "TSA daily travelers: 2.85% below a year earlier in 2026Q3; 0.66% below a year earlier in 2026Q2.",
+ "plain_summary": "TSA publishes how many people pass through its airport checkpoints each day. This file runs from 2019-01-01 to 2026-10-08: 2,838 days, with no date missing. In July to September 2026 TSA screened an average of 2.51 million travelers a day, 2.85% below the same period a year earlier (92 days against 92). In April to June 2026 TSA screened an average of 2.57 million travelers a day, 0.66% below the same period a year earlier (91 days against 91). The 7-day average ending 2026-10-08 is 2.50 million a day, 2.05% below the same weekdays 364 days earlier. Across the 9 quarters from 2024Q2 to 2026Q2 that the pandemic does not touch, the correlation of TSA growth with United's growth is 0.44 for capacity (n=9), 0.06 for traffic (n=9), -0.32 for unit revenue (n=9). The count covers every airline and airport and counts people screened, not tickets or revenue.",
+ "source": {
+  "publisher": "Transportation Security Administration",
+  "page": "https://www.tsa.gov/travel/passenger-volumes",
+  "series": "TSA checkpoint travel numbers, people screened per day"
+ },
+ "coverage": {
+  "first": "2019-01-01",
+  "last": "2026-10-08",
+  "days": 2838,
+  "missing_days": 0,
+  "missing_ranges": []
+ },
+ "definitions": {
+  "travelers_7d": "Mean of the 7 calendar days ending on the date. Null unless all 7 days are present.",
+  "yoy_7d": "travelers_7d divided by travelers_7d 364 days earlier, minus 1. 364 days is 52 weeks, so both windows hold the same weekdays. Uses no count dated after the date.",
+  "mean_daily_travelers": "Mean of the daily counts published in the month or quarter.",
+  "yoy": "mean_daily_travelers divided by the mean of the same period a year earlier, minus 1. For a period the data ends inside, the prior-year mean runs from the period's start to the same month and day only. Null when the prior-year window is missing a day.",
+  "days_used": "Days with a count behind mean_daily_travelers; prior_days_used is the same for the prior-year mean.",
+  "vs_2019": "mean_daily_travelers divided by the same quarter of 2019.",
+  "pandemic": "True from 2020Q1 until the first complete quarter with vs_2019 at or above 1.",
+  "yoy_base_pandemic": "True when the same quarter a year earlier is a pandemic quarter.",
+  "growth_units": "Fractions: 0.012 is 1.2%."
+ },
+ "daily": [
+  {
+   "date": "2025-01-01",
+   "travelers_7d": 2627954.7,
+   "yoy_7d": 0.067772
+  },
+  {
+   "date": "2025-01-02",
+   "travelers_7d": 2609150.0,
+   "yoy_7d": 0.082235
+  },
+  {
+   "date": "2025-01-03",
+   "travelers_7d": 2568520.7,
+   "yoy_7d": 0.088406
+  },
+  {
+   "date": "2025-01-04",
+   "travelers_7d": 2540153.7,
+   "yoy_7d": 0.100707
+  },
+  {
+   "date": "2025-01-05",
+   "travelers_7d": 2507847.4,
+   "yoy_7d": 0.069272
+  },
+  {
+   "date": "2025-01-06",
+   "travelers_7d": 2430194.1,
+   "yoy_7d": 0.043151
+  },
+  {
+   "date": "2025-01-07",
+   "travelers_7d": 2393415.0,
+   "yoy_7d": 0.079067
+  },
+  {
+   "date": "2025-01-08",
+   "travelers_7d": 2331693.7,
+   "yoy_7d": 0.085053
+  },
+  {
+   "date": "2025-01-09",
+   "travelers_7d": 2249022.6,
+   "yoy_7d": 0.045228
+  },
+  {
+   "date": "2025-01-10",
+   "travelers_7d": 2168561.9,
+   "yoy_7d": 0.004684
+  },
+  {
+   "date": "2025-01-11",
+   "travelers_7d": 2070688.0,
+   "yoy_7d": -0.022224
+  },
+  {
+   "date": "2025-01-12",
+   "travelers_7d": 2034048.3,
+   "yoy_7d": -0.022138
+  },
+  {
+   "date": "2025-01-13",
+   "travelers_7d": 2011449.9,
+   "yoy_7d": -0.034387
+  },
+  {
+   "date": "2025-01-14",
+   "travelers_7d": 1973706.4,
+   "yoy_7d": -0.058328
+  },
+  {
+   "date": "2025-01-15",
+   "travelers_7d": 1967851.3,
+   "yoy_7d": -0.056178
+  },
+  {
+   "date": "2025-01-16",
+   "travelers_7d": 2015865.3,
+   "yoy_7d": -0.019977
+  },
+  {
+   "date": "2025-01-17",
+   "travelers_7d": 2091032.9,
+   "yoy_7d": 0.03326
+  },
+  {
+   "date": "2025-01-18",
+   "travelers_7d": 2102628.4,
+   "yoy_7d": 0.050886
+  },
+  {
+   "date": "2025-01-19",
+   "travelers_7d": 2072708.6,
+   "yoy_7d": 0.026651
+  },
+  {
+   "date": "2025-01-20",
+   "travelers_7d": 2130293.0,
+   "yoy_7d": 0.067315
+  },
+  {
+   "date": "2025-01-21",
+   "travelers_7d": 2145601.1,
+   "yoy_7d": 0.094845
+  },
+  {
+   "date": "2025-01-22",
+   "travelers_7d": 2126481.4,
+   "yoy_7d": 0.088485
+  },
+  {
+   "date": "2025-01-23",
+   "travelers_7d": 2096297.4,
+   "yoy_7d": 0.063087
+  },
+  {
+   "date": "2025-01-24",
+   "travelers_7d": 2057879.3,
+   "yoy_7d": 0.029862
+  },
+  {
+   "date": "2025-01-25",
+   "travelers_7d": 2035950.4,
+   "yoy_7d": 0.017515
+  },
+  {
+   "date": "2025-01-26",
+   "travelers_7d": 2062942.0,
+   "yoy_7d": 0.029675
+  },
+  {
+   "date": "2025-01-27",
+   "travelers_7d": 2008910.9,
+   "yoy_7d": 0.000994
+  },
+  {
+   "date": "2025-01-28",
+   "travelers_7d": 1986201.3,
+   "yoy_7d": -0.010798
+  },
+  {
+   "date": "2025-01-29",
+   "travelers_7d": 1997873.7,
+   "yoy_7d": -0.005118
+  },
+  {
+   "date": "2025-01-30",
+   "travelers_7d": 2006555.1,
+   "yoy_7d": 0.001251
+  },
+  {
+   "date": "2025-01-31",
+   "travelers_7d": 2008740.7,
+   "yoy_7d": 0.007388
+  },
+  {
+   "date": "2025-02-01",
+   "travelers_7d": 2009493.6,
+   "yoy_7d": 0.00925
+  },
+  {
+   "date": "2025-02-02",
+   "travelers_7d": 2013659.1,
+   "yoy_7d": 0.009847
+  },
+  {
+   "date": "2025-02-03",
+   "travelers_7d": 2015656.1,
+   "yoy_7d": 0.004909
+  },
+  {
+   "date": "2025-02-04",
+   "travelers_7d": 2022866.1,
+   "yoy_7d": 0.002968
+  },
+  {
+   "date": "2025-02-05",
+   "travelers_7d": 2026994.7,
+   "yoy_7d": 0.000542
+  },
+  {
+   "date": "2025-02-06",
+   "travelers_7d": 2025872.1,
+   "yoy_7d": -0.007156
+  },
+  {
+   "date": "2025-02-07",
+   "travelers_7d": 2035202.7,
+   "yoy_7d": -0.013755
+  },
+  {
+   "date": "2025-02-08",
+   "travelers_7d": 2040539.0,
+   "yoy_7d": -0.020056
+  },
+  {
+   "date": "2025-02-09",
+   "travelers_7d": 2019765.3,
+   "yoy_7d": -0.02435
+  },
+  {
+   "date": "2025-02-10",
+   "travelers_7d": 2051354.0,
+   "yoy_7d": -0.01747
+  },
+  {
+   "date": "2025-02-11",
+   "travelers_7d": 2066211.4,
+   "yoy_7d": -0.014376
+  },
+  {
+   "date": "2025-02-12",
+   "travelers_7d": 2090307.7,
+   "yoy_7d": -0.01237
+  },
+  {
+   "date": "2025-02-13",
+   "travelers_7d": 2140618.3,
+   "yoy_7d": -0.002712
+  },
+  {
+   "date": "2025-02-14",
+   "travelers_7d": 2181709.6,
+   "yoy_7d": 8.9e-05
+  },
+  {
+   "date": "2025-02-15",
+   "travelers_7d": 2229209.1,
+   "yoy_7d": 0.003703
+  },
+  {
+   "date": "2025-02-16",
+   "travelers_7d": 2259061.6,
+   "yoy_7d": -0.000704
+  },
+  {
+   "date": "2025-02-17",
+   "travelers_7d": 2315830.3,
+   "yoy_7d": 0.003954
+  },
+  {
+   "date": "2025-02-18",
+   "travelers_7d": 2385813.4,
+   "yoy_7d": 0.006115
+  },
+  {
+   "date": "2025-02-19",
+   "travelers_7d": 2404712.6,
+   "yoy_7d": 0.005493
+  },
+  {
+   "date": "2025-02-20",
+   "travelers_7d": 2390873.1,
+   "yoy_7d": -0.000162
+  },
+  {
+   "date": "2025-02-21",
+   "travelers_7d": 2380456.9,
+   "yoy_7d": -0.000914
+  },
+  {
+   "date": "2025-02-22",
+   "travelers_7d": 2380671.7,
+   "yoy_7d": 0.002347
+  },
+  {
+   "date": "2025-02-23",
+   "travelers_7d": 2409189.7,
+   "yoy_7d": 0.009072
+  },
+  {
+   "date": "2025-02-24",
+   "travelers_7d": 2363228.0,
+   "yoy_7d": 0.001865
+  },
+  {
+   "date": "2025-02-25",
+   "travelers_7d": 2316545.0,
+   "yoy_7d": -0.001498
+  },
+  {
+   "date": "2025-02-26",
+   "travelers_7d": 2316822.7,
+   "yoy_7d": -1.3e-05
+  },
+  {
+   "date": "2025-02-27",
+   "travelers_7d": 2333004.9,
+   "yoy_7d": 0.004611
+  },
+  {
+   "date": "2025-02-28",
+   "travelers_7d": 2344107.0,
+   "yoy_7d": 0.006444
+  },
+  {
+   "date": "2025-03-01",
+   "travelers_7d": 2343588.7,
+   "yoy_7d": 0.004648
+  },
+  {
+   "date": "2025-03-02",
+   "travelers_7d": 2344343.9,
+   "yoy_7d": 0.004653
+  },
+  {
+   "date": "2025-03-03",
+   "travelers_7d": 2339566.9,
+   "yoy_7d": 0.00257
+  },
+  {
+   "date": "2025-03-04",
+   "travelers_7d": 2333616.6,
+   "yoy_7d": -0.002942
+  },
+  {
+   "date": "2025-03-05",
+   "travelers_7d": 2335343.9,
+   "yoy_7d": -0.006498
+  },
+  {
+   "date": "2025-03-06",
+   "travelers_7d": 2334939.4,
+   "yoy_7d": -0.008269
+  },
+  {
+   "date": "2025-03-07",
+   "travelers_7d": 2336686.3,
+   "yoy_7d": -0.014564
+  },
+  {
+   "date": "2025-03-08",
+   "travelers_7d": 2354213.7,
+   "yoy_7d": -0.0196
+  },
+  {
+   "date": "2025-03-09",
+   "travelers_7d": 2363324.3,
+   "yoy_7d": -0.024683
+  },
+  {
+   "date": "2025-03-10",
+   "travelers_7d": 2377280.9,
+   "yoy_7d": -0.027942
+  },
+  {
+   "date": "2025-03-11",
+   "travelers_7d": 2399014.4,
+   "yoy_7d": -0.031243
+  },
+  {
+   "date": "2025-03-12",
+   "travelers_7d": 2421982.3,
+   "yoy_7d": -0.031821
+  },
+  {
+   "date": "2025-03-13",
+   "travelers_7d": 2440771.0,
+   "yoy_7d": -0.023802
+  },
+  {
+   "date": "2025-03-14",
+   "travelers_7d": 2458584.6,
+   "yoy_7d": -0.016817
+  },
+  {
+   "date": "2025-03-15",
+   "travelers_7d": 2487972.7,
+   "yoy_7d": -0.008891
+  },
+  {
+   "date": "2025-03-16",
+   "travelers_7d": 2505995.6,
+   "yoy_7d": -0.002532
+  },
+  {
+   "date": "2025-03-17",
+   "travelers_7d": 2539589.3,
+   "yoy_7d": 0.009712
+  },
+  {
+   "date": "2025-03-18",
+   "travelers_7d": 2574269.7,
+   "yoy_7d": 0.023127
+  },
+  {
+   "date": "2025-03-19",
+   "travelers_7d": 2590133.7,
+   "yoy_7d": 0.027932
+  },
+  {
+   "date": "2025-03-20",
+   "travelers_7d": 2598717.9,
+   "yoy_7d": 0.024302
+  },
+  {
+   "date": "2025-03-21",
+   "travelers_7d": 2599207.1,
+   "yoy_7d": 0.023939
+  },
+  {
+   "date": "2025-03-22",
+   "travelers_7d": 2601304.7,
+   "yoy_7d": 0.024072
+  },
+  {
+   "date": "2025-03-23",
+   "travelers_7d": 2607405.0,
+   "yoy_7d": 0.025256
+  },
+  {
+   "date": "2025-03-24",
+   "travelers_7d": 2595715.3,
+   "yoy_7d": 0.019245
+  },
+  {
+   "date": "2025-03-25",
+   "travelers_7d": 2579089.3,
+   "yoy_7d": 0.010561
+  },
+  {
+   "date": "2025-03-26",
+   "travelers_7d": 2569253.7,
+   "yoy_7d": 0.003973
+  },
+  {
+   "date": "2025-03-27",
+   "travelers_7d": 2559931.1,
+   "yoy_7d": -0.005007
+  },
+  {
+   "date": "2025-03-28",
+   "travelers_7d": 2552015.9,
+   "yoy_7d": -0.005947
+  },
+  {
+   "date": "2025-03-29",
+   "travelers_7d": 2530089.0,
+   "yoy_7d": -0.008891
+  },
+  {
+   "date": "2025-03-30",
+   "travelers_7d": 2511241.1,
+   "yoy_7d": -0.007398
+  },
+  {
+   "date": "2025-03-31",
+   "travelers_7d": 2502375.6,
+   "yoy_7d": -0.013715
+  },
+  {
+   "date": "2025-04-01",
+   "travelers_7d": 2506382.1,
+   "yoy_7d": -0.013126
+  },
+  {
+   "date": "2025-04-02",
+   "travelers_7d": 2483487.4,
+   "yoy_7d": -0.011222
+  },
+  {
+   "date": "2025-04-03",
+   "travelers_7d": 2471583.1,
+   "yoy_7d": -0.007742
+  },
+  {
+   "date": "2025-04-04",
+   "travelers_7d": 2463302.6,
+   "yoy_7d": -0.011599
+  },
+  {
+   "date": "2025-04-05",
+   "travelers_7d": 2447866.4,
+   "yoy_7d": -0.018024
+  },
+  {
+   "date": "2025-04-06",
+   "travelers_7d": 2452831.9,
+   "yoy_7d": -0.020534
+  },
+  {
+   "date": "2025-04-07",
+   "travelers_7d": 2449619.7,
+   "yoy_7d": -0.012202
+  },
+  {
+   "date": "2025-04-08",
+   "travelers_7d": 2436156.7,
+   "yoy_7d": -0.014882
+  },
+  {
+   "date": "2025-04-09",
+   "travelers_7d": 2453823.6,
+   "yoy_7d": -0.010624
+  },
+  {
+   "date": "2025-04-10",
+   "travelers_7d": 2468198.1,
+   "yoy_7d": -0.004894
+  },
+  {
+   "date": "2025-04-11",
+   "travelers_7d": 2480377.4,
+   "yoy_7d": -0.000649
+  },
+  {
+   "date": "2025-04-12",
+   "travelers_7d": 2484788.4,
+   "yoy_7d": 0.009491
+  },
+  {
+   "date": "2025-04-13",
+   "travelers_7d": 2486531.7,
+   "yoy_7d": 0.009395
+  },
+  {
+   "date": "2025-04-14",
+   "travelers_7d": 2491167.4,
+   "yoy_7d": 0.008629
+  },
+  {
+   "date": "2025-04-15",
+   "travelers_7d": 2495009.9,
+   "yoy_7d": 0.013969
+  },
+  {
+   "date": "2025-04-16",
+   "travelers_7d": 2503142.9,
+   "yoy_7d": 0.015202
+  },
+  {
+   "date": "2025-04-17",
+   "travelers_7d": 2517567.1,
+   "yoy_7d": 0.017876
+  },
+  {
+   "date": "2025-04-18",
+   "travelers_7d": 2505435.0,
+   "yoy_7d": 0.012543
+  },
+  {
+   "date": "2025-04-19",
+   "travelers_7d": 2488983.7,
+   "yoy_7d": 0.003524
+  },
+  {
+   "date": "2025-04-20",
+   "travelers_7d": 2466673.4,
+   "yoy_7d": -0.009316
+  },
+  {
+   "date": "2025-04-21",
+   "travelers_7d": 2497871.3,
+   "yoy_7d": 0.000499
+  },
+  {
+   "date": "2025-04-22",
+   "travelers_7d": 2519509.4,
+   "yoy_7d": 0.009403
+  },
+  {
+   "date": "2025-04-23",
+   "travelers_7d": 2517197.4,
+   "yoy_7d": 0.010984
+  },
+  {
+   "date": "2025-04-24",
+   "travelers_7d": 2508102.4,
+   "yoy_7d": 0.007874
+  },
+  {
+   "date": "2025-04-25",
+   "travelers_7d": 2523549.0,
+   "yoy_7d": 0.016809
+  },
+  {
+   "date": "2025-04-26",
+   "travelers_7d": 2530312.3,
+   "yoy_7d": 0.024457
+  },
+  {
+   "date": "2025-04-27",
+   "travelers_7d": 2564368.6,
+   "yoy_7d": 0.044921
+  },
+  {
+   "date": "2025-04-28",
+   "travelers_7d": 2538300.7,
+   "yoy_7d": 0.038763
+  },
+  {
+   "date": "2025-04-29",
+   "travelers_7d": 2509932.6,
+   "yoy_7d": 0.026698
+  },
+  {
+   "date": "2025-04-30",
+   "travelers_7d": 2503704.6,
+   "yoy_7d": 0.021141
+  },
+  {
+   "date": "2025-05-01",
+   "travelers_7d": 2501736.1,
+   "yoy_7d": 0.022561
+  },
+  {
+   "date": "2025-05-02",
+   "travelers_7d": 2486441.1,
+   "yoy_7d": 0.016274
+  },
+  {
+   "date": "2025-05-03",
+   "travelers_7d": 2471995.4,
+   "yoy_7d": 0.00816
+  },
+  {
+   "date": "2025-05-04",
+   "travelers_7d": 2462377.7,
+   "yoy_7d": 0.000114
+  },
+  {
+   "date": "2025-05-05",
+   "travelers_7d": 2460657.0,
+   "yoy_7d": -0.00874
+  },
+  {
+   "date": "2025-05-06",
+   "travelers_7d": 2466291.9,
+   "yoy_7d": -0.011745
+  },
+  {
+   "date": "2025-05-07",
+   "travelers_7d": 2464698.0,
+   "yoy_7d": -0.017649
+  },
+  {
+   "date": "2025-05-08",
+   "travelers_7d": 2462749.1,
+   "yoy_7d": -0.026645
+  },
+  {
+   "date": "2025-05-09",
+   "travelers_7d": 2470271.1,
+   "yoy_7d": -0.029904
+  },
+  {
+   "date": "2025-05-10",
+   "travelers_7d": 2473510.9,
+   "yoy_7d": -0.03511
+  },
+  {
+   "date": "2025-05-11",
+   "travelers_7d": 2456879.3,
+   "yoy_7d": -0.039443
+  },
+  {
+   "date": "2025-05-12",
+   "travelers_7d": 2466708.3,
+   "yoy_7d": -0.039353
+  },
+  {
+   "date": "2025-05-13",
+   "travelers_7d": 2470201.0,
+   "yoy_7d": -0.043232
+  },
+  {
+   "date": "2025-05-14",
+   "travelers_7d": 2481334.3,
+   "yoy_7d": -0.039515
+  },
+  {
+   "date": "2025-05-15",
+   "travelers_7d": 2498114.3,
+   "yoy_7d": -0.033578
+  },
+  {
+   "date": "2025-05-16",
+   "travelers_7d": 2515637.3,
+   "yoy_7d": -0.03033
+  },
+  {
+   "date": "2025-05-17",
+   "travelers_7d": 2542252.4,
+   "yoy_7d": -0.023835
+  },
+  {
+   "date": "2025-05-18",
+   "travelers_7d": 2582794.9,
+   "yoy_7d": -0.017225
+  },
+  {
+   "date": "2025-05-19",
+   "travelers_7d": 2602179.6,
+   "yoy_7d": -0.011673
+  },
+  {
+   "date": "2025-05-20",
+   "travelers_7d": 2629327.0,
+   "yoy_7d": -0.006709
+  },
+  {
+   "date": "2025-05-21",
+   "travelers_7d": 2649810.7,
+   "yoy_7d": -0.005837
+  },
+  {
+   "date": "2025-05-22",
+   "travelers_7d": 2665881.7,
+   "yoy_7d": -0.004599
+  },
+  {
+   "date": "2025-05-23",
+   "travelers_7d": 2690978.1,
+   "yoy_7d": -0.000361
+  },
+  {
+   "date": "2025-05-24",
+   "travelers_7d": 2702111.9,
+   "yoy_7d": 0.000393
+  },
+  {
+   "date": "2025-05-25",
+   "travelers_7d": 2634462.7,
+   "yoy_7d": -0.001956
+  },
+  {
+   "date": "2025-05-26",
+   "travelers_7d": 2644483.3,
+   "yoy_7d": 0.000765
+  },
+  {
+   "date": "2025-05-27",
+   "travelers_7d": 2671330.7,
+   "yoy_7d": 0.00478
+  },
+  {
+   "date": "2025-05-28",
+   "travelers_7d": 2644983.7,
+   "yoy_7d": 0.002683
+  },
+  {
+   "date": "2025-05-29",
+   "travelers_7d": 2597262.9,
+   "yoy_7d": -0.002233
+  },
+  {
+   "date": "2025-05-30",
+   "travelers_7d": 2552684.9,
+   "yoy_7d": -0.009756
+  },
+  {
+   "date": "2025-05-31",
+   "travelers_7d": 2547476.1,
+   "yoy_7d": -0.011007
+  },
+  {
+   "date": "2025-06-01",
+   "travelers_7d": 2600156.1,
+   "yoy_7d": -0.01298
+  },
+  {
+   "date": "2025-06-02",
+   "travelers_7d": 2568599.6,
+   "yoy_7d": -0.022166
+  },
+  {
+   "date": "2025-06-03",
+   "travelers_7d": 2526316.1,
+   "yoy_7d": -0.029908
+  },
+  {
+   "date": "2025-06-04",
+   "travelers_7d": 2531824.4,
+   "yoy_7d": -0.033346
+  },
+  {
+   "date": "2025-06-05",
+   "travelers_7d": 2556475.9,
+   "yoy_7d": -0.033193
+  },
+  {
+   "date": "2025-06-06",
+   "travelers_7d": 2566245.0,
+   "yoy_7d": -0.033003
+  },
+  {
+   "date": "2025-06-07",
+   "travelers_7d": 2572380.0,
+   "yoy_7d": -0.035057
+  },
+  {
+   "date": "2025-06-08",
+   "travelers_7d": 2586964.3,
+   "yoy_7d": -0.034399
+  },
+  {
+   "date": "2025-06-09",
+   "travelers_7d": 2614178.3,
+   "yoy_7d": -0.029216
+  },
+  {
+   "date": "2025-06-10",
+   "travelers_7d": 2635668.9,
+   "yoy_7d": -0.025899
+  },
+  {
+   "date": "2025-06-11",
+   "travelers_7d": 2655663.4,
+   "yoy_7d": -0.020989
+  },
+  {
+   "date": "2025-06-12",
+   "travelers_7d": 2668359.3,
+   "yoy_7d": -0.017902
+  },
+  {
+   "date": "2025-06-13",
+   "travelers_7d": 2683421.9,
+   "yoy_7d": -0.016866
+  },
+  {
+   "date": "2025-06-14",
+   "travelers_7d": 2700772.7,
+   "yoy_7d": -0.016589
+  },
+  {
+   "date": "2025-06-15",
+   "travelers_7d": 2695297.9,
+   "yoy_7d": -0.015665
+  },
+  {
+   "date": "2025-06-16",
+   "travelers_7d": 2696877.3,
+   "yoy_7d": -0.013839
+  },
+  {
+   "date": "2025-06-17",
+   "travelers_7d": 2710009.6,
+   "yoy_7d": -0.011651
+  },
+  {
+   "date": "2025-06-18",
+   "travelers_7d": 2738726.4,
+   "yoy_7d": -0.005716
+  },
+  {
+   "date": "2025-06-19",
+   "travelers_7d": 2752031.7,
+   "yoy_7d": 0.000488
+  },
+  {
+   "date": "2025-06-20",
+   "travelers_7d": 2754786.1,
+   "yoy_7d": 0.004415
+  },
+  {
+   "date": "2025-06-21",
+   "travelers_7d": 2768680.7,
+   "yoy_7d": 0.00909
+  },
+  {
+   "date": "2025-06-22",
+   "travelers_7d": 2798391.6,
+   "yoy_7d": 0.012661
+  },
+  {
+   "date": "2025-06-23",
+   "travelers_7d": 2814056.0,
+   "yoy_7d": 0.01033
+  },
+  {
+   "date": "2025-06-24",
+   "travelers_7d": 2821632.7,
+   "yoy_7d": 0.009192
+  },
+  {
+   "date": "2025-06-25",
+   "travelers_7d": 2809538.6,
+   "yoy_7d": 0.003059
+  },
+  {
+   "date": "2025-06-26",
+   "travelers_7d": 2802445.3,
+   "yoy_7d": -0.003952
+  },
+  {
+   "date": "2025-06-27",
+   "travelers_7d": 2816355.9,
+   "yoy_7d": -0.002296
+  },
+  {
+   "date": "2025-06-28",
+   "travelers_7d": 2817776.3,
+   "yoy_7d": -0.002988
+  },
+  {
+   "date": "2025-06-29",
+   "travelers_7d": 2798123.0,
+   "yoy_7d": -0.001795
+  },
+  {
+   "date": "2025-06-30",
+   "travelers_7d": 2773281.1,
+   "yoy_7d": -0.001019
+  },
+  {
+   "date": "2025-07-01",
+   "travelers_7d": 2758130.0,
+   "yoy_7d": -0.002653
+  },
+  {
+   "date": "2025-07-02",
+   "travelers_7d": 2772107.3,
+   "yoy_7d": -0.000923
+  },
+  {
+   "date": "2025-07-03",
+   "travelers_7d": 2770957.6,
+   "yoy_7d": 0.035959
+  },
+  {
+   "date": "2025-07-04",
+   "travelers_7d": 2652977.7,
+   "yoy_7d": 0.019459
+  },
+  {
+   "date": "2025-07-05",
+   "travelers_7d": 2629146.9,
+   "yoy_7d": 0.012041
+  },
+  {
+   "date": "2025-07-06",
+   "travelers_7d": 2640965.4,
+   "yoy_7d": 0.006704
+  },
+  {
+   "date": "2025-07-07",
+   "travelers_7d": 2660669.7,
+   "yoy_7d": 0.012504
+  },
+  {
+   "date": "2025-07-08",
+   "travelers_7d": 2672906.4,
+   "yoy_7d": 0.014837
+  },
+  {
+   "date": "2025-07-09",
+   "travelers_7d": 2649499.3,
+   "yoy_7d": 0.014689
+  },
+  {
+   "date": "2025-07-10",
+   "travelers_7d": 2642420.4,
+   "yoy_7d": -0.021058
+  },
+  {
+   "date": "2025-07-11",
+   "travelers_7d": 2745734.4,
+   "yoy_7d": -0.003759
+  },
+  {
+   "date": "2025-07-12",
+   "travelers_7d": 2764634.1,
+   "yoy_7d": 0.004841
+  },
+  {
+   "date": "2025-07-13",
+   "travelers_7d": 2759751.1,
+   "yoy_7d": 0.007028
+  },
+  {
+   "date": "2025-07-14",
+   "travelers_7d": 2752229.7,
+   "yoy_7d": 0.000369
+  },
+  {
+   "date": "2025-07-15",
+   "travelers_7d": 2762168.0,
+   "yoy_7d": 0.006234
+  },
+  {
+   "date": "2025-07-16",
+   "travelers_7d": 2770667.4,
+   "yoy_7d": 0.008617
+  },
+  {
+   "date": "2025-07-17",
+   "travelers_7d": 2788459.3,
+   "yoy_7d": 0.008907
+  },
+  {
+   "date": "2025-07-18",
+   "travelers_7d": 2799334.9,
+   "yoy_7d": 0.018779
+  },
+  {
+   "date": "2025-07-19",
+   "travelers_7d": 2801251.7,
+   "yoy_7d": 0.018292
+  },
+  {
+   "date": "2025-07-20",
+   "travelers_7d": 2806423.1,
+   "yoy_7d": 0.021688
+  },
+  {
+   "date": "2025-07-21",
+   "travelers_7d": 2809473.9,
+   "yoy_7d": 0.022597
+  },
+  {
+   "date": "2025-07-22",
+   "travelers_7d": 2794384.0,
+   "yoy_7d": 0.013591
+  },
+  {
+   "date": "2025-07-23",
+   "travelers_7d": 2796665.1,
+   "yoy_7d": 0.010355
+  },
+  {
+   "date": "2025-07-24",
+   "travelers_7d": 2792471.0,
+   "yoy_7d": 0.010545
+  },
+  {
+   "date": "2025-07-25",
+   "travelers_7d": 2793683.4,
+   "yoy_7d": 0.002653
+  },
+  {
+   "date": "2025-07-26",
+   "travelers_7d": 2803250.4,
+   "yoy_7d": 0.007282
+  },
+  {
+   "date": "2025-07-27",
+   "travelers_7d": 2799520.1,
+   "yoy_7d": 0.005268
+  },
+  {
+   "date": "2025-07-28",
+   "travelers_7d": 2805677.6,
+   "yoy_7d": 0.011072
+  },
+  {
+   "date": "2025-07-29",
+   "travelers_7d": 2803772.1,
+   "yoy_7d": 0.019122
+  },
+  {
+   "date": "2025-07-30",
+   "travelers_7d": 2795881.6,
+   "yoy_7d": 0.021572
+  },
+  {
+   "date": "2025-07-31",
+   "travelers_7d": 2783590.6,
+   "yoy_7d": 0.01988
+  },
+  {
+   "date": "2025-08-01",
+   "travelers_7d": 2787675.9,
+   "yoy_7d": 0.025325
+  },
+  {
+   "date": "2025-08-02",
+   "travelers_7d": 2783456.6,
+   "yoy_7d": 0.02524
+  },
+  {
+   "date": "2025-08-03",
+   "travelers_7d": 2778584.3,
+   "yoy_7d": 0.03007
+  },
+  {
+   "date": "2025-08-04",
+   "travelers_7d": 2768003.6,
+   "yoy_7d": 0.031281
+  },
+  {
+   "date": "2025-08-05",
+   "travelers_7d": 2757301.6,
+   "yoy_7d": 0.028574
+  },
+  {
+   "date": "2025-08-06",
+   "travelers_7d": 2739094.0,
+   "yoy_7d": 0.025224
+  },
+  {
+   "date": "2025-08-07",
+   "travelers_7d": 2740663.3,
+   "yoy_7d": 0.029279
+  },
+  {
+   "date": "2025-08-08",
+   "travelers_7d": 2719990.7,
+   "yoy_7d": 0.024078
+  },
+  {
+   "date": "2025-08-09",
+   "travelers_7d": 2694488.6,
+   "yoy_7d": 0.018875
+  },
+  {
+   "date": "2025-08-10",
+   "travelers_7d": 2691202.9,
+   "yoy_7d": 0.014892
+  },
+  {
+   "date": "2025-08-11",
+   "travelers_7d": 2678105.0,
+   "yoy_7d": 0.00973
+  },
+  {
+   "date": "2025-08-12",
+   "travelers_7d": 2662756.4,
+   "yoy_7d": 0.011977
+  },
+  {
+   "date": "2025-08-13",
+   "travelers_7d": 2646199.0,
+   "yoy_7d": 0.015338
+  },
+  {
+   "date": "2025-08-14",
+   "travelers_7d": 2637935.3,
+   "yoy_7d": 0.016412
+  },
+  {
+   "date": "2025-08-15",
+   "travelers_7d": 2629623.7,
+   "yoy_7d": 0.013655
+  },
+  {
+   "date": "2025-08-16",
+   "travelers_7d": 2615062.0,
+   "yoy_7d": 0.015376
+  },
+  {
+   "date": "2025-08-17",
+   "travelers_7d": 2607477.0,
+   "yoy_7d": 0.015431
+  },
+  {
+   "date": "2025-08-18",
+   "travelers_7d": 2599072.6,
+   "yoy_7d": 0.013201
+  },
+  {
+   "date": "2025-08-19",
+   "travelers_7d": 2589191.4,
+   "yoy_7d": 0.010146
+  },
+  {
+   "date": "2025-08-20",
+   "travelers_7d": 2583837.7,
+   "yoy_7d": 0.012024
+  },
+  {
+   "date": "2025-08-21",
+   "travelers_7d": 2568975.3,
+   "yoy_7d": 0.010631
+  },
+  {
+   "date": "2025-08-22",
+   "travelers_7d": 2550544.0,
+   "yoy_7d": 0.008405
+  },
+  {
+   "date": "2025-08-23",
+   "travelers_7d": 2525567.7,
+   "yoy_7d": 0.007547
+  },
+  {
+   "date": "2025-08-24",
+   "travelers_7d": 2508280.3,
+   "yoy_7d": 0.006059
+  },
+  {
+   "date": "2025-08-25",
+   "travelers_7d": 2479915.0,
+   "yoy_7d": 0.007596
+  },
+  {
+   "date": "2025-08-26",
+   "travelers_7d": 2446141.1,
+   "yoy_7d": 0.009806
+  },
+  {
+   "date": "2025-08-27",
+   "travelers_7d": 2436972.4,
+   "yoy_7d": 0.011337
+  },
+  {
+   "date": "2025-08-28",
+   "travelers_7d": 2451456.0,
+   "yoy_7d": 0.011837
+  },
+  {
+   "date": "2025-08-29",
+   "travelers_7d": 2494912.7,
+   "yoy_7d": 0.014615
+  },
+  {
+   "date": "2025-08-30",
+   "travelers_7d": 2500302.9,
+   "yoy_7d": 0.018122
+  },
+  {
+   "date": "2025-08-31",
+   "travelers_7d": 2436955.4,
+   "yoy_7d": 0.021014
+  },
+  {
+   "date": "2025-09-01",
+   "travelers_7d": 2484012.9,
+   "yoy_7d": 0.023275
+  },
+  {
+   "date": "2025-09-02",
+   "travelers_7d": 2530471.0,
+   "yoy_7d": 0.024785
+  },
+  {
+   "date": "2025-09-03",
+   "travelers_7d": 2492763.7,
+   "yoy_7d": 0.024678
+  },
+  {
+   "date": "2025-09-04",
+   "travelers_7d": 2417416.0,
+   "yoy_7d": 0.02184
+  },
+  {
+   "date": "2025-09-05",
+   "travelers_7d": 2339686.7,
+   "yoy_7d": 0.020332
+  },
+  {
+   "date": "2025-09-06",
+   "travelers_7d": 2296808.0,
+   "yoy_7d": 0.015525
+  },
+  {
+   "date": "2025-09-07",
+   "travelers_7d": 2344028.9,
+   "yoy_7d": 0.009894
+  },
+  {
+   "date": "2025-09-08",
+   "travelers_7d": 2289840.3,
+   "yoy_7d": 0.005133
+  },
+  {
+   "date": "2025-09-09",
+   "travelers_7d": 2235640.6,
+   "yoy_7d": 0.001765
+  },
+  {
+   "date": "2025-09-10",
+   "travelers_7d": 2255909.0,
+   "yoy_7d": 0.008624
+  },
+  {
+   "date": "2025-09-11",
+   "travelers_7d": 2299486.6,
+   "yoy_7d": 0.005403
+  },
+  {
+   "date": "2025-09-12",
+   "travelers_7d": 2334109.9,
+   "yoy_7d": 0.006425
+  },
+  {
+   "date": "2025-09-13",
+   "travelers_7d": 2347977.4,
+   "yoy_7d": 0.006465
+  },
+  {
+   "date": "2025-09-14",
+   "travelers_7d": 2367554.9,
+   "yoy_7d": 0.007679
+  },
+  {
+   "date": "2025-09-15",
+   "travelers_7d": 2386630.3,
+   "yoy_7d": 0.008419
+  },
+  {
+   "date": "2025-09-16",
+   "travelers_7d": 2402054.0,
+   "yoy_7d": 0.008857
+  },
+  {
+   "date": "2025-09-17",
+   "travelers_7d": 2417966.4,
+   "yoy_7d": 0.003211
+  },
+  {
+   "date": "2025-09-18",
+   "travelers_7d": 2443290.1,
+   "yoy_7d": 0.008374
+  },
+  {
+   "date": "2025-09-19",
+   "travelers_7d": 2460317.1,
+   "yoy_7d": 0.008411
+  },
+  {
+   "date": "2025-09-20",
+   "travelers_7d": 2477558.9,
+   "yoy_7d": 0.011111
+  },
+  {
+   "date": "2025-09-21",
+   "travelers_7d": 2483007.6,
+   "yoy_7d": 0.008435
+  },
+  {
+   "date": "2025-09-22",
+   "travelers_7d": 2484181.7,
+   "yoy_7d": 0.005597
+  },
+  {
+   "date": "2025-09-23",
+   "travelers_7d": 2479932.7,
+   "yoy_7d": 0.002932
+  },
+  {
+   "date": "2025-09-24",
+   "travelers_7d": 2472307.9,
+   "yoy_7d": -0.002521
+  },
+  {
+   "date": "2025-09-25",
+   "travelers_7d": 2465331.6,
+   "yoy_7d": 0.004515
+  },
+  {
+   "date": "2025-09-26",
+   "travelers_7d": 2458609.0,
+   "yoy_7d": 0.011308
+  },
+  {
+   "date": "2025-09-27",
+   "travelers_7d": 2450370.3,
+   "yoy_7d": 0.009259
+  },
+  {
+   "date": "2025-09-28",
+   "travelers_7d": 2449565.4,
+   "yoy_7d": 0.014288
+  },
+  {
+   "date": "2025-09-29",
+   "travelers_7d": 2446538.0,
+   "yoy_7d": 0.01788
+  },
+  {
+   "date": "2025-09-30",
+   "travelers_7d": 2450837.6,
+   "yoy_7d": 0.023581
+  },
+  {
+   "date": "2025-10-01",
+   "travelers_7d": 2455618.4,
+   "yoy_7d": 0.031363
+  },
+  {
+   "date": "2025-10-02",
+   "travelers_7d": 2446154.7,
+   "yoy_7d": 0.02186
+  },
+  {
+   "date": "2025-10-03",
+   "travelers_7d": 2439856.4,
+   "yoy_7d": 0.014159
+  },
+  {
+   "date": "2025-10-04",
+   "travelers_7d": 2441066.1,
+   "yoy_7d": 0.013642
+  },
+  {
+   "date": "2025-10-05",
+   "travelers_7d": 2449394.0,
+   "yoy_7d": 0.011967
+  },
+  {
+   "date": "2025-10-06",
+   "travelers_7d": 2465054.7,
+   "yoy_7d": 0.012091
+  },
+  {
+   "date": "2025-10-07",
+   "travelers_7d": 2479244.1,
+   "yoy_7d": 0.012362
+  },
+  {
+   "date": "2025-10-08",
+   "travelers_7d": 2510353.1,
+   "yoy_7d": 0.027901
+  },
+  {
+   "date": "2025-10-09",
+   "travelers_7d": 2553620.4,
+   "yoy_7d": 0.053312
+  },
+  {
+   "date": "2025-10-10",
+   "travelers_7d": 2599314.1,
+   "yoy_7d": 0.061422
+  },
+  {
+   "date": "2025-10-11",
+   "travelers_7d": 2640671.9,
+   "yoy_7d": 0.069696
+  },
+  {
+   "date": "2025-10-12",
+   "travelers_7d": 2647767.1,
+   "yoy_7d": 0.077003
+  },
+  {
+   "date": "2025-10-13",
+   "travelers_7d": 2674625.9,
+   "yoy_7d": 0.081444
+  },
+  {
+   "date": "2025-10-14",
+   "travelers_7d": 2718723.6,
+   "yoy_7d": 0.084347
+  },
+  {
+   "date": "2025-10-15",
+   "travelers_7d": 2721844.0,
+   "yoy_7d": 0.068769
+  },
+  {
+   "date": "2025-10-16",
+   "travelers_7d": 2711225.1,
+   "yoy_7d": 0.048414
+  },
+  {
+   "date": "2025-10-17",
+   "travelers_7d": 2691416.3,
+   "yoy_7d": 0.042493
+  },
+  {
+   "date": "2025-10-18",
+   "travelers_7d": 2675327.6,
+   "yoy_7d": 0.036325
+  },
+  {
+   "date": "2025-10-19",
+   "travelers_7d": 2680610.7,
+   "yoy_7d": 0.028429
+  },
+  {
+   "date": "2025-10-20",
+   "travelers_7d": 2669173.0,
+   "yoy_7d": 0.023922
+  },
+  {
+   "date": "2025-10-21",
+   "travelers_7d": 2630435.6,
+   "yoy_7d": 0.018486
+  },
+  {
+   "date": "2025-10-22",
+   "travelers_7d": 2607482.9,
+   "yoy_7d": 0.015064
+  },
+  {
+   "date": "2025-10-23",
+   "travelers_7d": 2590143.0,
+   "yoy_7d": 0.011476
+  },
+  {
+   "date": "2025-10-24",
+   "travelers_7d": 2575098.0,
+   "yoy_7d": 0.008579
+  },
+  {
+   "date": "2025-10-25",
+   "travelers_7d": 2554882.9,
+   "yoy_7d": 0.006644
+  },
+  {
+   "date": "2025-10-26",
+   "travelers_7d": 2536449.6,
+   "yoy_7d": 0.007137
+  },
+  {
+   "date": "2025-10-27",
+   "travelers_7d": 2513818.4,
+   "yoy_7d": 0.008711
+  },
+  {
+   "date": "2025-10-28",
+   "travelers_7d": 2485746.3,
+   "yoy_7d": 0.009369
+  },
+  {
+   "date": "2025-10-29",
+   "travelers_7d": 2458479.7,
+   "yoy_7d": 0.005477
+  },
+  {
+   "date": "2025-10-30",
+   "travelers_7d": 2423020.1,
+   "yoy_7d": 0.025304
+  },
+  {
+   "date": "2025-10-31",
+   "travelers_7d": 2352587.6,
+   "yoy_7d": 0.007164
+  },
+  {
+   "date": "2025-11-01",
+   "travelers_7d": 2338691.7,
+   "yoy_7d": 0.009913
+  },
+  {
+   "date": "2025-11-02",
+   "travelers_7d": 2312866.0,
+   "yoy_7d": 0.008114
+  },
+  {
+   "date": "2025-11-03",
+   "travelers_7d": 2292313.1,
+   "yoy_7d": 0.009732
+  },
+  {
+   "date": "2025-11-04",
+   "travelers_7d": 2302347.4,
+   "yoy_7d": 0.017115
+  },
+  {
+   "date": "2025-11-05",
+   "travelers_7d": 2313051.4,
+   "yoy_7d": 0.025321
+  },
+  {
+   "date": "2025-11-06",
+   "travelers_7d": 2337645.0,
+   "yoy_7d": 0.008368
+  },
+  {
+   "date": "2025-11-07",
+   "travelers_7d": 2389783.7,
+   "yoy_7d": 0.024738
+  },
+  {
+   "date": "2025-11-08",
+   "travelers_7d": 2396984.9,
+   "yoy_7d": 0.020644
+  },
+  {
+   "date": "2025-11-09",
+   "travelers_7d": 2390320.0,
+   "yoy_7d": 0.016961
+  },
+  {
+   "date": "2025-11-10",
+   "travelers_7d": 2389720.4,
+   "yoy_7d": -0.001163
+  },
+  {
+   "date": "2025-11-11",
+   "travelers_7d": 2395300.7,
+   "yoy_7d": -0.009216
+  },
+  {
+   "date": "2025-11-12",
+   "travelers_7d": 2371551.9,
+   "yoy_7d": -0.018013
+  },
+  {
+   "date": "2025-11-13",
+   "travelers_7d": 2333021.4,
+   "yoy_7d": -0.031923
+  },
+  {
+   "date": "2025-11-14",
+   "travelers_7d": 2305982.9,
+   "yoy_7d": -0.041658
+  },
+  {
+   "date": "2025-11-15",
+   "travelers_7d": 2280560.1,
+   "yoy_7d": -0.042967
+  },
+  {
+   "date": "2025-11-16",
+   "travelers_7d": 2276636.3,
+   "yoy_7d": -0.04476
+  },
+  {
+   "date": "2025-11-17",
+   "travelers_7d": 2256778.0,
+   "yoy_7d": -0.039144
+  },
+  {
+   "date": "2025-11-18",
+   "travelers_7d": 2222756.4,
+   "yoy_7d": -0.041987
+  },
+  {
+   "date": "2025-11-19",
+   "travelers_7d": 2233837.6,
+   "yoy_7d": -0.036148
+  },
+  {
+   "date": "2025-11-20",
+   "travelers_7d": 2242268.3,
+   "yoy_7d": -0.031842
+  },
+  {
+   "date": "2025-11-21",
+   "travelers_7d": 2290295.0,
+   "yoy_7d": -0.018268
+  },
+  {
+   "date": "2025-11-22",
+   "travelers_7d": 2373214.4,
+   "yoy_7d": -0.015493
+  },
+  {
+   "date": "2025-11-23",
+   "travelers_7d": 2375046.0,
+   "yoy_7d": -0.014516
+  },
+  {
+   "date": "2025-11-24",
+   "travelers_7d": 2405696.0,
+   "yoy_7d": -0.004807
+  },
+  {
+   "date": "2025-11-25",
+   "travelers_7d": 2528359.4,
+   "yoy_7d": -0.001769
+  },
+  {
+   "date": "2025-11-26",
+   "travelers_7d": 2625416.4,
+   "yoy_7d": -0.000434
+  },
+  {
+   "date": "2025-11-27",
+   "travelers_7d": 2491938.4,
+   "yoy_7d": 0.003252
+  },
+  {
+   "date": "2025-11-28",
+   "travelers_7d": 2434730.0,
+   "yoy_7d": 0.001938
+  },
+  {
+   "date": "2025-11-29",
+   "travelers_7d": 2465333.3,
+   "yoy_7d": -0.004074
+  },
+  {
+   "date": "2025-11-30",
+   "travelers_7d": 2539257.7,
+   "yoy_7d": 0.000976
+  },
+  {
+   "date": "2025-12-01",
+   "travelers_7d": 2586339.7,
+   "yoy_7d": 0.001343
+  },
+  {
+   "date": "2025-12-02",
+   "travelers_7d": 2523277.9,
+   "yoy_7d": -0.000362
+  },
+  {
+   "date": "2025-12-03",
+   "travelers_7d": 2433656.7,
+   "yoy_7d": -0.001618
+  },
+  {
+   "date": "2025-12-04",
+   "travelers_7d": 2559139.1,
+   "yoy_7d": -0.002281
+  },
+  {
+   "date": "2025-12-05",
+   "travelers_7d": 2568321.3,
+   "yoy_7d": -0.006707
+  },
+  {
+   "date": "2025-12-06",
+   "travelers_7d": 2467031.1,
+   "yoy_7d": -0.001833
+  },
+  {
+   "date": "2025-12-07",
+   "travelers_7d": 2390356.7,
+   "yoy_7d": -0.004931
+  },
+  {
+   "date": "2025-12-08",
+   "travelers_7d": 2329971.0,
+   "yoy_7d": -0.006983
+  },
+  {
+   "date": "2025-12-09",
+   "travelers_7d": 2293310.1,
+   "yoy_7d": -0.006272
+  },
+  {
+   "date": "2025-12-10",
+   "travelers_7d": 2298353.9,
+   "yoy_7d": -0.005806
+  },
+  {
+   "date": "2025-12-11",
+   "travelers_7d": 2319407.0,
+   "yoy_7d": -0.005585
+  },
+  {
+   "date": "2025-12-12",
+   "travelers_7d": 2347313.1,
+   "yoy_7d": -0.001715
+  },
+  {
+   "date": "2025-12-13",
+   "travelers_7d": 2371507.9,
+   "yoy_7d": 0.000399
+  },
+  {
+   "date": "2025-12-14",
+   "travelers_7d": 2369870.0,
+   "yoy_7d": -5.3e-05
+  },
+  {
+   "date": "2025-12-15",
+   "travelers_7d": 2374585.1,
+   "yoy_7d": 0.004166
+  },
+  {
+   "date": "2025-12-16",
+   "travelers_7d": 2384649.6,
+   "yoy_7d": 0.001869
+  },
+  {
+   "date": "2025-12-17",
+   "travelers_7d": 2400501.9,
+   "yoy_7d": -0.003592
+  },
+  {
+   "date": "2025-12-18",
+   "travelers_7d": 2407945.0,
+   "yoy_7d": -0.004235
+  },
+  {
+   "date": "2025-12-19",
+   "travelers_7d": 2432695.1,
+   "yoy_7d": -0.005215
+  },
+  {
+   "date": "2025-12-20",
+   "travelers_7d": 2517207.0,
+   "yoy_7d": -0.007007
+  },
+  {
+   "date": "2025-12-21",
+   "travelers_7d": 2543321.4,
+   "yoy_7d": -0.007976
+  },
+  {
+   "date": "2025-12-22",
+   "travelers_7d": 2584940.4,
+   "yoy_7d": -0.011412
+  },
+  {
+   "date": "2025-12-23",
+   "travelers_7d": 2695654.7,
+   "yoy_7d": 0.033936
+  },
+  {
+   "date": "2025-12-24",
+   "travelers_7d": 2690546.9,
+   "yoy_7d": 0.049925
+  },
+  {
+   "date": "2025-12-25",
+   "travelers_7d": 2608990.0,
+   "yoy_7d": 0.012884
+  },
+  {
+   "date": "2025-12-26",
+   "travelers_7d": 2593471.9,
+   "yoy_7d": 0.006731
+  },
+  {
+   "date": "2025-12-27",
+   "travelers_7d": 2601483.7,
+   "yoy_7d": 0.011618
+  },
+  {
+   "date": "2025-12-28",
+   "travelers_7d": 2623678.7,
+   "yoy_7d": 0.019998
+  },
+  {
+   "date": "2025-12-29",
+   "travelers_7d": 2626059.7,
+   "yoy_7d": 0.020501
+  },
+  {
+   "date": "2025-12-30",
+   "travelers_7d": 2626762.4,
+   "yoy_7d": 0.01491
+  },
+  {
+   "date": "2025-12-31",
+   "travelers_7d": 2634641.7,
+   "yoy_7d": 0.002545
+  },
+  {
+   "date": "2026-01-01",
+   "travelers_7d": 2672977.0,
+   "yoy_7d": 0.024463
+  },
+  {
+   "date": "2026-01-02",
+   "travelers_7d": 2653252.9,
+   "yoy_7d": 0.032989
+  },
+  {
+   "date": "2026-01-03",
+   "travelers_7d": 2624672.1,
+   "yoy_7d": 0.033273
+  },
+  {
+   "date": "2026-01-04",
+   "travelers_7d": 2609374.4,
+   "yoy_7d": 0.040484
+  },
+  {
+   "date": "2026-01-05",
+   "travelers_7d": 2566054.4,
+   "yoy_7d": 0.055905
+  },
+  {
+   "date": "2026-01-06",
+   "travelers_7d": 2439485.4,
+   "yoy_7d": 0.019249
+  },
+  {
+   "date": "2026-01-07",
+   "travelers_7d": 2383610.7,
+   "yoy_7d": 0.022266
+  },
+  {
+   "date": "2026-01-08",
+   "travelers_7d": 2357418.1,
+   "yoy_7d": 0.048197
+  },
+  {
+   "date": "2026-01-09",
+   "travelers_7d": 2304256.7,
+   "yoy_7d": 0.062574
+  },
+  {
+   "date": "2026-01-10",
+   "travelers_7d": 2213828.4,
+   "yoy_7d": 0.069127
+  },
+  {
+   "date": "2026-01-11",
+   "travelers_7d": 2155822.9,
+   "yoy_7d": 0.059868
+  },
+  {
+   "date": "2026-01-12",
+   "travelers_7d": 2103299.1,
+   "yoy_7d": 0.045663
+  },
+  {
+   "date": "2026-01-13",
+   "travelers_7d": 2067195.9,
+   "yoy_7d": 0.047367
+  },
+  {
+   "date": "2026-01-14",
+   "travelers_7d": 2067713.4,
+   "yoy_7d": 0.050747
+  },
+  {
+   "date": "2026-01-15",
+   "travelers_7d": 2111912.6,
+   "yoy_7d": 0.047646
+  },
+  {
+   "date": "2026-01-16",
+   "travelers_7d": 2169391.3,
+   "yoy_7d": 0.037474
+  },
+  {
+   "date": "2026-01-17",
+   "travelers_7d": 2173746.7,
+   "yoy_7d": 0.033824
+  },
+  {
+   "date": "2026-01-18",
+   "travelers_7d": 2148032.3,
+   "yoy_7d": 0.036341
+  },
+  {
+   "date": "2026-01-19",
+   "travelers_7d": 2207401.9,
+   "yoy_7d": 0.036196
+  },
+  {
+   "date": "2026-01-20",
+   "travelers_7d": 2245073.7,
+   "yoy_7d": 0.046361
+  },
+  {
+   "date": "2026-01-21",
+   "travelers_7d": 2230641.3,
+   "yoy_7d": 0.048982
+  },
+  {
+   "date": "2026-01-22",
+   "travelers_7d": 2198428.4,
+   "yoy_7d": 0.04872
+  },
+  {
+   "date": "2026-01-23",
+   "travelers_7d": 2146292.9,
+   "yoy_7d": 0.042963
+  },
+  {
+   "date": "2026-01-24",
+   "travelers_7d": 2091250.9,
+   "yoy_7d": 0.027162
+  },
+  {
+   "date": "2026-01-25",
+   "travelers_7d": 1960087.1,
+   "yoy_7d": -0.049858
+  },
+  {
+   "date": "2026-01-26",
+   "travelers_7d": 1856321.6,
+   "yoy_7d": -0.075956
+  },
+  {
+   "date": "2026-01-27",
+   "travelers_7d": 1829592.9,
+   "yoy_7d": -0.078848
+  },
+  {
+   "date": "2026-01-28",
+   "travelers_7d": 1840561.0,
+   "yoy_7d": -0.07874
+  },
+  {
+   "date": "2026-01-29",
+   "travelers_7d": 1840608.7,
+   "yoy_7d": -0.082702
+  },
+  {
+   "date": "2026-01-30",
+   "travelers_7d": 1839826.6,
+   "yoy_7d": -0.08409
+  },
+  {
+   "date": "2026-01-31",
+   "travelers_7d": 1855958.0,
+   "yoy_7d": -0.076405
+  },
+  {
+   "date": "2026-02-01",
+   "travelers_7d": 1997404.0,
+   "yoy_7d": -0.008072
+  },
+  {
+   "date": "2026-02-02",
+   "travelers_7d": 2043119.0,
+   "yoy_7d": 0.013625
+  },
+  {
+   "date": "2026-02-03",
+   "travelers_7d": 2028930.7,
+   "yoy_7d": 0.002998
+  },
+  {
+   "date": "2026-02-04",
+   "travelers_7d": 2023173.7,
+   "yoy_7d": -0.001885
+  },
+  {
+   "date": "2026-02-05",
+   "travelers_7d": 2035871.0,
+   "yoy_7d": 0.004936
+  },
+  {
+   "date": "2026-02-06",
+   "travelers_7d": 2052067.1,
+   "yoy_7d": 0.008286
+  },
+  {
+   "date": "2026-02-07",
+   "travelers_7d": 2072616.1,
+   "yoy_7d": 0.01572
+  },
+  {
+   "date": "2026-02-08",
+   "travelers_7d": 2068501.0,
+   "yoy_7d": 0.024129
+  },
+  {
+   "date": "2026-02-09",
+   "travelers_7d": 2102235.3,
+   "yoy_7d": 0.024804
+  },
+  {
+   "date": "2026-02-10",
+   "travelers_7d": 2128892.7,
+   "yoy_7d": 0.030336
+  },
+  {
+   "date": "2026-02-11",
+   "travelers_7d": 2162438.3,
+   "yoy_7d": 0.034507
+  },
+  {
+   "date": "2026-02-12",
+   "travelers_7d": 2216361.7,
+   "yoy_7d": 0.035384
+  },
+  {
+   "date": "2026-02-13",
+   "travelers_7d": 2274651.4,
+   "yoy_7d": 0.0426
+  },
+  {
+   "date": "2026-02-14",
+   "travelers_7d": 2319397.7,
+   "yoy_7d": 0.040458
+  },
+  {
+   "date": "2026-02-15",
+   "travelers_7d": 2356776.7,
+   "yoy_7d": 0.043255
+  },
+  {
+   "date": "2026-02-16",
+   "travelers_7d": 2411131.1,
+   "yoy_7d": 0.041152
+  },
+  {
+   "date": "2026-02-17",
+   "travelers_7d": 2467582.3,
+   "yoy_7d": 0.034273
+  },
+  {
+   "date": "2026-02-18",
+   "travelers_7d": 2489810.9,
+   "yoy_7d": 0.035388
+  },
+  {
+   "date": "2026-02-19",
+   "travelers_7d": 2481618.6,
+   "yoy_7d": 0.037955
+  },
+  {
+   "date": "2026-02-20",
+   "travelers_7d": 2466085.4,
+   "yoy_7d": 0.035971
+  },
+  {
+   "date": "2026-02-21",
+   "travelers_7d": 2480069.3,
+   "yoy_7d": 0.041752
+  },
+  {
+   "date": "2026-02-22",
+   "travelers_7d": 2471378.3,
+   "yoy_7d": 0.025813
+  },
+  {
+   "date": "2026-02-23",
+   "travelers_7d": 2361323.3,
+   "yoy_7d": -0.000806
+  },
+  {
+   "date": "2026-02-24",
+   "travelers_7d": 2319914.9,
+   "yoy_7d": 0.001455
+  },
+  {
+   "date": "2026-02-25",
+   "travelers_7d": 2324057.6,
+   "yoy_7d": 0.003123
+  },
+  {
+   "date": "2026-02-26",
+   "travelers_7d": 2324482.7,
+   "yoy_7d": -0.003653
+  },
+  {
+   "date": "2026-02-27",
+   "travelers_7d": 2320850.7,
+   "yoy_7d": -0.009921
+  },
+  {
+   "date": "2026-02-28",
+   "travelers_7d": 2307382.4,
+   "yoy_7d": -0.015449
+  },
+  {
+   "date": "2026-03-01",
+   "travelers_7d": 2337661.4,
+   "yoy_7d": -0.00285
+  },
+  {
+   "date": "2026-03-02",
+   "travelers_7d": 2399966.0,
+   "yoy_7d": 0.025816
+  },
+  {
+   "date": "2026-03-03",
+   "travelers_7d": 2393166.1,
+   "yoy_7d": 0.025518
+  },
+  {
+   "date": "2026-03-04",
+   "travelers_7d": 2375270.9,
+   "yoy_7d": 0.017097
+  },
+  {
+   "date": "2026-03-05",
+   "travelers_7d": 2370780.3,
+   "yoy_7d": 0.01535
+  },
+  {
+   "date": "2026-03-06",
+   "travelers_7d": 2381020.4,
+   "yoy_7d": 0.018973
+  },
+  {
+   "date": "2026-03-07",
+   "travelers_7d": 2402163.4,
+   "yoy_7d": 0.020368
+  },
+  {
+   "date": "2026-03-08",
+   "travelers_7d": 2415608.4,
+   "yoy_7d": 0.022123
+  },
+  {
+   "date": "2026-03-09",
+   "travelers_7d": 2434347.7,
+   "yoy_7d": 0.024005
+  },
+  {
+   "date": "2026-03-10",
+   "travelers_7d": 2455165.1,
+   "yoy_7d": 0.023406
+  },
+  {
+   "date": "2026-03-11",
+   "travelers_7d": 2489253.7,
+   "yoy_7d": 0.027775
+  },
+  {
+   "date": "2026-03-12",
+   "travelers_7d": 2513946.9,
+   "yoy_7d": 0.029981
+  },
+  {
+   "date": "2026-03-13",
+   "travelers_7d": 2536485.7,
+   "yoy_7d": 0.031685
+  },
+  {
+   "date": "2026-03-14",
+   "travelers_7d": 2569277.6,
+   "yoy_7d": 0.032679
+  },
+  {
+   "date": "2026-03-15",
+   "travelers_7d": 2567011.0,
+   "yoy_7d": 0.024348
+  },
+  {
+   "date": "2026-03-16",
+   "travelers_7d": 2554344.9,
+   "yoy_7d": 0.00581
+  },
+  {
+   "date": "2026-03-17",
+   "travelers_7d": 2607006.6,
+   "yoy_7d": 0.012717
+  },
+  {
+   "date": "2026-03-18",
+   "travelers_7d": 2635717.1,
+   "yoy_7d": 0.017599
+  },
+  {
+   "date": "2026-03-19",
+   "travelers_7d": 2639865.3,
+   "yoy_7d": 0.015834
+  },
+  {
+   "date": "2026-03-20",
+   "travelers_7d": 2627234.9,
+   "yoy_7d": 0.010783
+  },
+  {
+   "date": "2026-03-21",
+   "travelers_7d": 2617296.1,
+   "yoy_7d": 0.006147
+  },
+  {
+   "date": "2026-03-22",
+   "travelers_7d": 2631626.4,
+   "yoy_7d": 0.009289
+  },
+  {
+   "date": "2026-03-23",
+   "travelers_7d": 2655417.3,
+   "yoy_7d": 0.023
+  },
+  {
+   "date": "2026-03-24",
+   "travelers_7d": 2622330.0,
+   "yoy_7d": 0.016766
+  },
+  {
+   "date": "2026-03-25",
+   "travelers_7d": 2594709.1,
+   "yoy_7d": 0.009908
+  },
+  {
+   "date": "2026-03-26",
+   "travelers_7d": 2581282.4,
+   "yoy_7d": 0.008341
+  },
+  {
+   "date": "2026-03-27",
+   "travelers_7d": 2578225.6,
+   "yoy_7d": 0.01027
+  },
+  {
+   "date": "2026-03-28",
+   "travelers_7d": 2567933.1,
+   "yoy_7d": 0.014958
+  },
+  {
+   "date": "2026-03-29",
+   "travelers_7d": 2552594.7,
+   "yoy_7d": 0.016467
+  },
+  {
+   "date": "2026-03-30",
+   "travelers_7d": 2537183.4,
+   "yoy_7d": 0.01391
+  },
+  {
+   "date": "2026-03-31",
+   "travelers_7d": 2531614.6,
+   "yoy_7d": 0.010067
+  },
+  {
+   "date": "2026-04-01",
+   "travelers_7d": 2528904.4,
+   "yoy_7d": 0.018288
+  },
+  {
+   "date": "2026-04-02",
+   "travelers_7d": 2527020.6,
+   "yoy_7d": 0.02243
+  },
+  {
+   "date": "2026-04-03",
+   "travelers_7d": 2514830.3,
+   "yoy_7d": 0.020918
+  },
+  {
+   "date": "2026-04-04",
+   "travelers_7d": 2493063.7,
+   "yoy_7d": 0.018464
+  },
+  {
+   "date": "2026-04-05",
+   "travelers_7d": 2464968.3,
+   "yoy_7d": 0.004948
+  },
+  {
+   "date": "2026-04-06",
+   "travelers_7d": 2489542.4,
+   "yoy_7d": 0.016298
+  },
+  {
+   "date": "2026-04-07",
+   "travelers_7d": 2497109.1,
+   "yoy_7d": 0.02502
+  },
+  {
+   "date": "2026-04-08",
+   "travelers_7d": 2485399.3,
+   "yoy_7d": 0.012868
+  },
+  {
+   "date": "2026-04-09",
+   "travelers_7d": 2482641.7,
+   "yoy_7d": 0.005852
+  },
+  {
+   "date": "2026-04-10",
+   "travelers_7d": 2486760.9,
+   "yoy_7d": 0.002574
+  },
+  {
+   "date": "2026-04-11",
+   "travelers_7d": 2486084.3,
+   "yoy_7d": 0.000522
+  },
+  {
+   "date": "2026-04-12",
+   "travelers_7d": 2523278.3,
+   "yoy_7d": 0.014778
+  },
+  {
+   "date": "2026-04-13",
+   "travelers_7d": 2509159.9,
+   "yoy_7d": 0.007222
+  },
+  {
+   "date": "2026-04-14",
+   "travelers_7d": 2485960.0,
+   "yoy_7d": -0.003627
+  },
+  {
+   "date": "2026-04-15",
+   "travelers_7d": 2482021.0,
+   "yoy_7d": -0.008438
+  },
+  {
+   "date": "2026-04-16",
+   "travelers_7d": 2488749.7,
+   "yoy_7d": -0.011447
+  },
+  {
+   "date": "2026-04-17",
+   "travelers_7d": 2491152.9,
+   "yoy_7d": -0.0057
+  },
+  {
+   "date": "2026-04-18",
+   "travelers_7d": 2462615.0,
+   "yoy_7d": -0.010594
+  },
+  {
+   "date": "2026-04-19",
+   "travelers_7d": 2458999.9,
+   "yoy_7d": -0.003111
+  },
+  {
+   "date": "2026-04-20",
+   "travelers_7d": 2453961.6,
+   "yoy_7d": -0.017579
+  },
+  {
+   "date": "2026-04-21",
+   "travelers_7d": 2455544.7,
+   "yoy_7d": -0.025388
+  },
+  {
+   "date": "2026-04-22",
+   "travelers_7d": 2462856.7,
+   "yoy_7d": -0.021588
+  },
+  {
+   "date": "2026-04-23",
+   "travelers_7d": 2463143.7,
+   "yoy_7d": -0.017925
+  },
+  {
+   "date": "2026-04-24",
+   "travelers_7d": 2463067.3,
+   "yoy_7d": -0.023967
+  },
+  {
+   "date": "2026-04-25",
+   "travelers_7d": 2466545.7,
+   "yoy_7d": -0.025201
+  },
+  {
+   "date": "2026-04-26",
+   "travelers_7d": 2462491.7,
+   "yoy_7d": -0.039728
+  },
+  {
+   "date": "2026-04-27",
+   "travelers_7d": 2457848.4,
+   "yoy_7d": -0.031695
+  },
+  {
+   "date": "2026-04-28",
+   "travelers_7d": 2452763.1,
+   "yoy_7d": -0.022777
+  },
+  {
+   "date": "2026-04-29",
+   "travelers_7d": 2447367.0,
+   "yoy_7d": -0.022502
+  },
+  {
+   "date": "2026-04-30",
+   "travelers_7d": 2448504.4,
+   "yoy_7d": -0.021278
+  },
+  {
+   "date": "2026-05-01",
+   "travelers_7d": 2439826.7,
+   "yoy_7d": -0.018747
+  },
+  {
+   "date": "2026-05-02",
+   "travelers_7d": 2432500.3,
+   "yoy_7d": -0.015977
+  },
+  {
+   "date": "2026-05-03",
+   "travelers_7d": 2428610.1,
+   "yoy_7d": -0.013713
+  },
+  {
+   "date": "2026-05-04",
+   "travelers_7d": 2428862.4,
+   "yoy_7d": -0.012921
+  },
+  {
+   "date": "2026-05-05",
+   "travelers_7d": 2431802.3,
+   "yoy_7d": -0.013984
+  },
+  {
+   "date": "2026-05-06",
+   "travelers_7d": 2429916.9,
+   "yoy_7d": -0.014112
+  },
+  {
+   "date": "2026-05-07",
+   "travelers_7d": 2423275.4,
+   "yoy_7d": -0.016028
+  },
+  {
+   "date": "2026-05-08",
+   "travelers_7d": 2412699.6,
+   "yoy_7d": -0.023306
+  },
+  {
+   "date": "2026-05-09",
+   "travelers_7d": 2419242.3,
+   "yoy_7d": -0.02194
+  },
+  {
+   "date": "2026-05-10",
+   "travelers_7d": 2397280.1,
+   "yoy_7d": -0.024258
+  },
+  {
+   "date": "2026-05-11",
+   "travelers_7d": 2414495.6,
+   "yoy_7d": -0.021167
+  },
+  {
+   "date": "2026-05-12",
+   "travelers_7d": 2429218.3,
+   "yoy_7d": -0.016591
+  },
+  {
+   "date": "2026-05-13",
+   "travelers_7d": 2450358.1,
+   "yoy_7d": -0.012484
+  },
+  {
+   "date": "2026-05-14",
+   "travelers_7d": 2472706.7,
+   "yoy_7d": -0.010171
+  },
+  {
+   "date": "2026-05-15",
+   "travelers_7d": 2505124.9,
+   "yoy_7d": -0.004179
+  },
+  {
+   "date": "2026-05-16",
+   "travelers_7d": 2529765.9,
+   "yoy_7d": -0.004912
+  },
+  {
+   "date": "2026-05-17",
+   "travelers_7d": 2572666.1,
+   "yoy_7d": -0.003922
+  },
+  {
+   "date": "2026-05-18",
+   "travelers_7d": 2589989.6,
+   "yoy_7d": -0.004685
+  },
+  {
+   "date": "2026-05-19",
+   "travelers_7d": 2614202.1,
+   "yoy_7d": -0.005752
+  },
+  {
+   "date": "2026-05-20",
+   "travelers_7d": 2636755.9,
+   "yoy_7d": -0.004927
+  },
+  {
+   "date": "2026-05-21",
+   "travelers_7d": 2650686.3,
+   "yoy_7d": -0.0057
+  },
+  {
+   "date": "2026-05-22",
+   "travelers_7d": 2676311.3,
+   "yoy_7d": -0.00545
+  },
+  {
+   "date": "2026-05-23",
+   "travelers_7d": 2693372.3,
+   "yoy_7d": -0.003234
+  },
+  {
+   "date": "2026-05-24",
+   "travelers_7d": 2626290.7,
+   "yoy_7d": -0.003102
+  },
+  {
+   "date": "2026-05-25",
+   "travelers_7d": 2631434.7,
+   "yoy_7d": -0.004934
+  },
+  {
+   "date": "2026-05-26",
+   "travelers_7d": 2659121.4,
+   "yoy_7d": -0.00457
+  },
+  {
+   "date": "2026-05-27",
+   "travelers_7d": 2633073.6,
+   "yoy_7d": -0.004503
+  },
+  {
+   "date": "2026-05-28",
+   "travelers_7d": 2590959.9,
+   "yoy_7d": -0.002427
+  },
+  {
+   "date": "2026-05-29",
+   "travelers_7d": 2550054.6,
+   "yoy_7d": -0.00103
+  },
+  {
+   "date": "2026-05-30",
+   "travelers_7d": 2539578.9,
+   "yoy_7d": -0.0031
+  },
+  {
+   "date": "2026-05-31",
+   "travelers_7d": 2596810.7,
+   "yoy_7d": -0.001287
+  },
+  {
+   "date": "2026-06-01",
+   "travelers_7d": 2576182.3,
+   "yoy_7d": 0.002952
+  },
+  {
+   "date": "2026-06-02",
+   "travelers_7d": 2534893.6,
+   "yoy_7d": 0.003395
+  },
+  {
+   "date": "2026-06-03",
+   "travelers_7d": 2538569.7,
+   "yoy_7d": 0.002664
+  },
+  {
+   "date": "2026-06-04",
+   "travelers_7d": 2554649.9,
+   "yoy_7d": -0.000714
+  },
+  {
+   "date": "2026-06-05",
+   "travelers_7d": 2557595.1,
+   "yoy_7d": -0.003371
+  },
+  {
+   "date": "2026-06-06",
+   "travelers_7d": 2565027.0,
+   "yoy_7d": -0.002858
+  },
+  {
+   "date": "2026-06-07",
+   "travelers_7d": 2571679.9,
+   "yoy_7d": -0.005908
+  },
+  {
+   "date": "2026-06-08",
+   "travelers_7d": 2584609.0,
+   "yoy_7d": -0.011311
+  },
+  {
+   "date": "2026-06-09",
+   "travelers_7d": 2604932.9,
+   "yoy_7d": -0.011662
+  },
+  {
+   "date": "2026-06-10",
+   "travelers_7d": 2621573.6,
+   "yoy_7d": -0.012837
+  },
+  {
+   "date": "2026-06-11",
+   "travelers_7d": 2626664.3,
+   "yoy_7d": -0.015626
+  },
+  {
+   "date": "2026-06-12",
+   "travelers_7d": 2649910.1,
+   "yoy_7d": -0.012488
+  },
+  {
+   "date": "2026-06-13",
+   "travelers_7d": 2674965.4,
+   "yoy_7d": -0.009556
+  },
+  {
+   "date": "2026-06-14",
+   "travelers_7d": 2678645.7,
+   "yoy_7d": -0.006178
+  },
+  {
+   "date": "2026-06-15",
+   "travelers_7d": 2690743.7,
+   "yoy_7d": -0.002274
+  },
+  {
+   "date": "2026-06-16",
+   "travelers_7d": 2708145.4,
+   "yoy_7d": -0.000688
+  },
+  {
+   "date": "2026-06-17",
+   "travelers_7d": 2725437.1,
+   "yoy_7d": -0.004852
+  },
+  {
+   "date": "2026-06-18",
+   "travelers_7d": 2751003.0,
+   "yoy_7d": -0.000374
+  },
+  {
+   "date": "2026-06-19",
+   "travelers_7d": 2752154.7,
+   "yoy_7d": -0.000955
+  },
+  {
+   "date": "2026-06-20",
+   "travelers_7d": 2756371.0,
+   "yoy_7d": -0.004446
+  },
+  {
+   "date": "2026-06-21",
+   "travelers_7d": 2769250.9,
+   "yoy_7d": -0.010413
+  },
+  {
+   "date": "2026-06-22",
+   "travelers_7d": 2773164.1,
+   "yoy_7d": -0.014531
+  },
+  {
+   "date": "2026-06-23",
+   "travelers_7d": 2785872.4,
+   "yoy_7d": -0.012674
+  },
+  {
+   "date": "2026-06-24",
+   "travelers_7d": 2788438.1,
+   "yoy_7d": -0.00751
+  },
+  {
+   "date": "2026-06-25",
+   "travelers_7d": 2777330.9,
+   "yoy_7d": -0.008962
+  },
+  {
+   "date": "2026-06-26",
+   "travelers_7d": 2780664.9,
+   "yoy_7d": -0.012673
+  },
+  {
+   "date": "2026-06-27",
+   "travelers_7d": 2782329.7,
+   "yoy_7d": -0.01258
+  },
+  {
+   "date": "2026-06-28",
+   "travelers_7d": 2775070.7,
+   "yoy_7d": -0.008238
+  },
+  {
+   "date": "2026-06-29",
+   "travelers_7d": 2748520.6,
+   "yoy_7d": -0.008928
+  },
+  {
+   "date": "2026-06-30",
+   "travelers_7d": 2735190.6,
+   "yoy_7d": -0.008317
+  },
+  {
+   "date": "2026-07-01",
+   "travelers_7d": 2734885.9,
+   "yoy_7d": -0.013427
+  },
+  {
+   "date": "2026-07-02",
+   "travelers_7d": 2733643.0,
+   "yoy_7d": -0.013466
+  },
+  {
+   "date": "2026-07-03",
+   "travelers_7d": 2686184.0,
+   "yoy_7d": 0.012517
+  },
+  {
+   "date": "2026-07-04",
+   "travelers_7d": 2587161.4,
+   "yoy_7d": -0.015969
+  },
+  {
+   "date": "2026-07-05",
+   "travelers_7d": 2584833.3,
+   "yoy_7d": -0.021254
+  },
+  {
+   "date": "2026-07-06",
+   "travelers_7d": 2614553.0,
+   "yoy_7d": -0.017333
+  },
+  {
+   "date": "2026-07-07",
+   "travelers_7d": 2629646.7,
+   "yoy_7d": -0.016185
+  },
+  {
+   "date": "2026-07-08",
+   "travelers_7d": 2612401.0,
+   "yoy_7d": -0.014002
+  },
+  {
+   "date": "2026-07-09",
+   "travelers_7d": 2584405.0,
+   "yoy_7d": -0.021955
+  },
+  {
+   "date": "2026-07-10",
+   "travelers_7d": 2615177.4,
+   "yoy_7d": -0.047549
+  },
+  {
+   "date": "2026-07-11",
+   "travelers_7d": 2703752.0,
+   "yoy_7d": -0.022022
+  },
+  {
+   "date": "2026-07-12",
+   "travelers_7d": 2703984.6,
+   "yoy_7d": -0.020207
+  },
+  {
+   "date": "2026-07-13",
+   "travelers_7d": 2684817.1,
+   "yoy_7d": -0.024494
+  },
+  {
+   "date": "2026-07-14",
+   "travelers_7d": 2664859.4,
+   "yoy_7d": -0.035229
+  },
+  {
+   "date": "2026-07-15",
+   "travelers_7d": 2674585.9,
+   "yoy_7d": -0.034678
+  },
+  {
+   "date": "2026-07-16",
+   "travelers_7d": 2695221.3,
+   "yoy_7d": -0.033437
+  },
+  {
+   "date": "2026-07-17",
+   "travelers_7d": 2701857.3,
+   "yoy_7d": -0.034822
+  },
+  {
+   "date": "2026-07-18",
+   "travelers_7d": 2702597.0,
+   "yoy_7d": -0.035218
+  },
+  {
+   "date": "2026-07-19",
+   "travelers_7d": 2705969.6,
+   "yoy_7d": -0.035794
+  },
+  {
+   "date": "2026-07-20",
+   "travelers_7d": 2719120.9,
+   "yoy_7d": -0.03216
+  },
+  {
+   "date": "2026-07-21",
+   "travelers_7d": 2709618.3,
+   "yoy_7d": -0.030334
+  },
+  {
+   "date": "2026-07-22",
+   "travelers_7d": 2717583.4,
+   "yoy_7d": -0.028277
+  },
+  {
+   "date": "2026-07-23",
+   "travelers_7d": 2725136.3,
+   "yoy_7d": -0.024113
+  },
+  {
+   "date": "2026-07-24",
+   "travelers_7d": 2730244.3,
+   "yoy_7d": -0.022708
+  },
+  {
+   "date": "2026-07-25",
+   "travelers_7d": 2730200.6,
+   "yoy_7d": -0.026059
+  },
+  {
+   "date": "2026-07-26",
+   "travelers_7d": 2728059.6,
+   "yoy_7d": -0.025526
+  },
+  {
+   "date": "2026-07-27",
+   "travelers_7d": 2712656.7,
+   "yoy_7d": -0.033155
+  },
+  {
+   "date": "2026-07-28",
+   "travelers_7d": 2706183.7,
+   "yoy_7d": -0.034806
+  },
+  {
+   "date": "2026-07-29",
+   "travelers_7d": 2703535.9,
+   "yoy_7d": -0.033029
+  },
+  {
+   "date": "2026-07-30",
+   "travelers_7d": 2697778.4,
+   "yoy_7d": -0.030828
+  },
+  {
+   "date": "2026-07-31",
+   "travelers_7d": 2697291.9,
+   "yoy_7d": -0.032423
+  },
+  {
+   "date": "2026-08-01",
+   "travelers_7d": 2710397.1,
+   "yoy_7d": -0.026248
+  },
+  {
+   "date": "2026-08-02",
+   "travelers_7d": 2704557.1,
+   "yoy_7d": -0.026642
+  },
+  {
+   "date": "2026-08-03",
+   "travelers_7d": 2701406.0,
+   "yoy_7d": -0.02406
+  },
+  {
+   "date": "2026-08-04",
+   "travelers_7d": 2708523.7,
+   "yoy_7d": -0.01769
+  },
+  {
+   "date": "2026-08-05",
+   "travelers_7d": 2678837.6,
+   "yoy_7d": -0.021999
+  },
+  {
+   "date": "2026-08-06",
+   "travelers_7d": 2669048.7,
+   "yoy_7d": -0.02613
+  },
+  {
+   "date": "2026-08-07",
+   "travelers_7d": 2648002.6,
+   "yoy_7d": -0.026466
+  },
+  {
+   "date": "2026-08-08",
+   "travelers_7d": 2625545.4,
+   "yoy_7d": -0.025587
+  },
+  {
+   "date": "2026-08-09",
+   "travelers_7d": 2621528.0,
+   "yoy_7d": -0.02589
+  },
+  {
+   "date": "2026-08-10",
+   "travelers_7d": 2616328.4,
+   "yoy_7d": -0.023067
+  },
+  {
+   "date": "2026-08-11",
+   "travelers_7d": 2595868.7,
+   "yoy_7d": -0.02512
+  },
+  {
+   "date": "2026-08-12",
+   "travelers_7d": 2584333.7,
+   "yoy_7d": -0.023379
+  },
+  {
+   "date": "2026-08-13",
+   "travelers_7d": 2572132.0,
+   "yoy_7d": -0.024945
+  },
+  {
+   "date": "2026-08-14",
+   "travelers_7d": 2563101.3,
+   "yoy_7d": -0.025297
+  },
+  {
+   "date": "2026-08-15",
+   "travelers_7d": 2540828.9,
+   "yoy_7d": -0.028387
+  },
+  {
+   "date": "2026-08-16",
+   "travelers_7d": 2528104.9,
+   "yoy_7d": -0.03044
+  },
+  {
+   "date": "2026-08-17",
+   "travelers_7d": 2518173.4,
+   "yoy_7d": -0.031126
+  },
+  {
+   "date": "2026-08-18",
+   "travelers_7d": 2501038.0,
+   "yoy_7d": -0.034047
+  },
+  {
+   "date": "2026-08-19",
+   "travelers_7d": 2480731.9,
+   "yoy_7d": -0.039904
+  },
+  {
+   "date": "2026-08-20",
+   "travelers_7d": 2464498.0,
+   "yoy_7d": -0.040669
+  },
+  {
+   "date": "2026-08-21",
+   "travelers_7d": 2450478.1,
+   "yoy_7d": -0.039233
+  },
+  {
+   "date": "2026-08-22",
+   "travelers_7d": 2431031.3,
+   "yoy_7d": -0.037432
+  },
+  {
+   "date": "2026-08-23",
+   "travelers_7d": 2415861.1,
+   "yoy_7d": -0.036846
+  },
+  {
+   "date": "2026-08-24",
+   "travelers_7d": 2392260.9,
+   "yoy_7d": -0.035346
+  },
+  {
+   "date": "2026-08-25",
+   "travelers_7d": 2366584.0,
+   "yoy_7d": -0.032524
+  },
+  {
+   "date": "2026-08-26",
+   "travelers_7d": 2350605.7,
+   "yoy_7d": -0.03544
+  },
+  {
+   "date": "2026-08-27",
+   "travelers_7d": 2337325.3,
+   "yoy_7d": -0.046556
+  },
+  {
+   "date": "2026-08-28",
+   "travelers_7d": 2327210.7,
+   "yoy_7d": -0.067218
+  },
+  {
+   "date": "2026-08-29",
+   "travelers_7d": 2303110.4,
+   "yoy_7d": -0.078867
+  },
+  {
+   "date": "2026-08-30",
+   "travelers_7d": 2287499.1,
+   "yoy_7d": -0.061329
+  },
+  {
+   "date": "2026-08-31",
+   "travelers_7d": 2270745.7,
+   "yoy_7d": -0.085856
+  },
+  {
+   "date": "2026-09-01",
+   "travelers_7d": 2257701.0,
+   "yoy_7d": -0.107794
+  },
+  {
+   "date": "2026-09-02",
+   "travelers_7d": 2251218.9,
+   "yoy_7d": -0.096898
+  },
+  {
+   "date": "2026-09-03",
+   "travelers_7d": 2279766.3,
+   "yoy_7d": -0.056941
+  },
+  {
+   "date": "2026-09-04",
+   "travelers_7d": 2326697.3,
+   "yoy_7d": -0.005552
+  },
+  {
+   "date": "2026-09-05",
+   "travelers_7d": 2343357.0,
+   "yoy_7d": 0.020267
+  },
+  {
+   "date": "2026-09-06",
+   "travelers_7d": 2285917.7,
+   "yoy_7d": -0.024791
+  },
+  {
+   "date": "2026-09-07",
+   "travelers_7d": 2349153.1,
+   "yoy_7d": 0.025903
+  },
+  {
+   "date": "2026-09-08",
+   "travelers_7d": 2410880.9,
+   "yoy_7d": 0.078385
+  },
+  {
+   "date": "2026-09-09",
+   "travelers_7d": 2407288.4,
+   "yoy_7d": 0.067104
+  },
+  {
+   "date": "2026-09-10",
+   "travelers_7d": 2367114.1,
+   "yoy_7d": 0.02941
+  },
+  {
+   "date": "2026-09-11",
+   "travelers_7d": 2308278.0,
+   "yoy_7d": -0.011067
+  },
+  {
+   "date": "2026-09-12",
+   "travelers_7d": 2289220.3,
+   "yoy_7d": -0.025025
+  },
+  {
+   "date": "2026-09-13",
+   "travelers_7d": 2361562.4,
+   "yoy_7d": -0.002531
+  },
+  {
+   "date": "2026-09-14",
+   "travelers_7d": 2327487.1,
+   "yoy_7d": -0.024781
+  },
+  {
+   "date": "2026-09-15",
+   "travelers_7d": 2280212.0,
+   "yoy_7d": -0.050724
+  },
+  {
+   "date": "2026-09-16",
+   "travelers_7d": 2301784.0,
+   "yoy_7d": -0.04805
+  },
+  {
+   "date": "2026-09-17",
+   "travelers_7d": 2341753.0,
+   "yoy_7d": -0.041558
+  },
+  {
+   "date": "2026-09-18",
+   "travelers_7d": 2379771.1,
+   "yoy_7d": -0.032738
+  },
+  {
+   "date": "2026-09-19",
+   "travelers_7d": 2389246.0,
+   "yoy_7d": -0.035645
+  },
+  {
+   "date": "2026-09-20",
+   "travelers_7d": 2397613.1,
+   "yoy_7d": -0.034392
+  },
+  {
+   "date": "2026-09-21",
+   "travelers_7d": 2400959.4,
+   "yoy_7d": -0.033501
+  },
+  {
+   "date": "2026-09-22",
+   "travelers_7d": 2419322.7,
+   "yoy_7d": -0.02444
+  },
+  {
+   "date": "2026-09-23",
+   "travelers_7d": 2421369.1,
+   "yoy_7d": -0.020604
+  },
+  {
+   "date": "2026-09-24",
+   "travelers_7d": 2423925.3,
+   "yoy_7d": -0.016795
+  },
+  {
+   "date": "2026-09-25",
+   "travelers_7d": 2426341.0,
+   "yoy_7d": -0.013124
+  },
+  {
+   "date": "2026-09-26",
+   "travelers_7d": 2416442.0,
+   "yoy_7d": -0.013846
+  },
+  {
+   "date": "2026-09-27",
+   "travelers_7d": 2409972.3,
+   "yoy_7d": -0.016163
+  },
+  {
+   "date": "2026-09-28",
+   "travelers_7d": 2413451.1,
+   "yoy_7d": -0.013524
+  },
+  {
+   "date": "2026-09-29",
+   "travelers_7d": 2398777.6,
+   "yoy_7d": -0.021242
+  },
+  {
+   "date": "2026-09-30",
+   "travelers_7d": 2400816.6,
+   "yoy_7d": -0.022317
+  },
+  {
+   "date": "2026-10-01",
+   "travelers_7d": 2401463.9,
+   "yoy_7d": -0.01827
+  },
+  {
+   "date": "2026-10-02",
+   "travelers_7d": 2398845.3,
+   "yoy_7d": -0.016809
+  },
+  {
+   "date": "2026-10-03",
+   "travelers_7d": 2416297.7,
+   "yoy_7d": -0.010147
+  },
+  {
+   "date": "2026-10-04",
+   "travelers_7d": 2431221.3,
+   "yoy_7d": -0.007419
+  },
+  {
+   "date": "2026-10-05",
+   "travelers_7d": 2434740.9,
+   "yoy_7d": -0.012297
+  },
+  {
+   "date": "2026-10-06",
+   "travelers_7d": 2451137.4,
+   "yoy_7d": -0.011337
+  },
+  {
+   "date": "2026-10-07",
+   "travelers_7d": 2475828.0,
+   "yoy_7d": -0.013753
+  },
+  {
+   "date": "2026-10-08",
+   "travelers_7d": 2501325.4,
+   "yoy_7d": -0.020479
+  }
+ ],
+ "quarterly": [
+  {
+   "period": "2019Q1",
+   "mean_daily_travelers": 2143835.7,
+   "yoy": null,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "vs_2019": 1.0,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2019Q2",
+   "mean_daily_travelers": 2426667.6,
+   "yoy": null,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "vs_2019": 1.0,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2019Q3",
+   "mean_daily_travelers": 2408129.9,
+   "yoy": null,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "vs_2019": 1.0,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2019Q4",
+   "mean_daily_travelers": 2312849.2,
+   "yoy": null,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "vs_2019": 1.0,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2020Q1",
+   "mean_daily_travelers": 1802011.6,
+   "yoy": -0.159445,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 90,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.840555,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2020Q2",
+   "mean_daily_travelers": 299573.6,
+   "yoy": -0.876549,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.123451,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2020Q3",
+   "mean_daily_travelers": 735353.1,
+   "yoy": -0.694637,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.305363,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2020Q4",
+   "mean_daily_travelers": 879108.8,
+   "yoy": -0.619902,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.380098,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2021Q1",
+   "mean_daily_travelers": 974460.6,
+   "yoy": -0.459237,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.454541,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2021Q2",
+   "mean_daily_travelers": 1644433.1,
+   "yoy": 4.489245,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.677651,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2021Q3",
+   "mean_daily_travelers": 1879396.1,
+   "yoy": 1.555774,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.780438,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2021Q4",
+   "mean_daily_travelers": 1902192.2,
+   "yoy": 1.163773,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.822445,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2022Q1",
+   "mean_daily_travelers": 1764575.1,
+   "yoy": 0.810822,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": 90,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.823092,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2022Q2",
+   "mean_daily_travelers": 2198546.4,
+   "yoy": 0.336963,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.905994,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2022Q3",
+   "mean_daily_travelers": 2200662.3,
+   "yoy": 0.170941,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.913847,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2022Q4",
+   "mean_daily_travelers": 2160118.9,
+   "yoy": 0.135594,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.933964,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2023Q1",
+   "mean_daily_travelers": 2124305.3,
+   "yoy": 0.203862,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": 90,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 0.99089,
+   "pandemic": true,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2023Q2",
+   "mean_daily_travelers": 2438844.8,
+   "yoy": 0.109299,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.005018,
+   "pandemic": false,
+   "yoy_base_pandemic": true
+  },
+  {
+   "period": "2023Q3",
+   "mean_daily_travelers": 2450290.7,
+   "yoy": 0.113433,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.017508,
+   "pandemic": false,
+   "yoy_base_pandemic": true
+  },
+  {
+   "period": "2023Q4",
+   "mean_daily_travelers": 2391294.6,
+   "yoy": 0.10702,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.033917,
+   "pandemic": false,
+   "yoy_base_pandemic": true
+  },
+  {
+   "period": "2024Q1",
+   "mean_daily_travelers": 2269412.2,
+   "yoy": 0.068308,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 90,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.058576,
+   "pandemic": false,
+   "yoy_base_pandemic": true
+  },
+  {
+   "period": "2024Q2",
+   "mean_daily_travelers": 2601339.4,
+   "yoy": 0.066628,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.07198,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2024Q3",
+   "mean_daily_travelers": 2556822.4,
+   "yoy": 0.043477,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.061746,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2024Q4",
+   "mean_daily_travelers": 2452201.3,
+   "yoy": 0.02547,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.060251,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2025Q1",
+   "mean_daily_travelers": 2284413.4,
+   "yoy": 0.00661,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.065573,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2025Q2",
+   "mean_daily_travelers": 2585998.4,
+   "yoy": -0.005897,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.065658,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2025Q3",
+   "mean_daily_travelers": 2581691.0,
+   "yoy": 0.009726,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.072073,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2025Q4",
+   "mean_daily_travelers": 2481492.8,
+   "yoy": 0.011945,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.072916,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2026Q1",
+   "mean_daily_travelers": 2318447.7,
+   "yoy": 0.014898,
+   "days_used": 90,
+   "days_in_period": 90,
+   "complete": true,
+   "prior_days_used": 90,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.081448,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2026Q2",
+   "mean_daily_travelers": 2568827.4,
+   "yoy": -0.00664,
+   "days_used": 91,
+   "days_in_period": 91,
+   "complete": true,
+   "prior_days_used": 91,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.058582,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2026Q3",
+   "mean_daily_travelers": 2508148.5,
+   "yoy": -0.028486,
+   "days_used": 92,
+   "days_in_period": 92,
+   "complete": true,
+   "prior_days_used": 92,
+   "yoy_basis": "whole period a year earlier",
+   "vs_2019": 1.041534,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  },
+  {
+   "period": "2026Q4",
+   "mean_daily_travelers": 2529045.0,
+   "yoy": 0.023295,
+   "days_used": 8,
+   "days_in_period": 92,
+   "complete": false,
+   "prior_days_used": 8,
+   "yoy_basis": "start of period to the same month and day a year earlier",
+   "vs_2019": null,
+   "pandemic": false,
+   "yoy_base_pandemic": false
+  }
+ ],
+ "current_quarter_note": {
+  "2026Q3": {
+   "period": "2026Q3",
+   "months": "July to September 2026",
+   "mean_daily_travelers": 2508148.5,
+   "prior_mean_daily_travelers": 2581691.0,
+   "yoy": -0.028486,
+   "days_used": 92,
+   "prior_days_used": 92,
+   "complete": true,
+   "yoy_basis": "whole period a year earlier"
+  },
+  "2026Q2": {
+   "period": "2026Q2",
+   "months": "April to June 2026",
+   "mean_daily_travelers": 2568827.4,
+   "prior_mean_daily_travelers": 2585998.4,
+   "yoy": -0.00664,
+   "days_used": 91,
+   "prior_days_used": 91,
+   "complete": true,
+   "yoy_basis": "whole period a year earlier"
+  },
+  "text": "In July to September 2026 TSA screened an average of 2.51 million travelers a day, 2.85% below the same period a year earlier (92 days against 92). In April to June 2026 TSA screened an average of 2.57 million travelers a day, 0.66% below the same period a year earlier (91 days against 91)."
+ },
+ "versus_united": {
+  "source": {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  },
+  "columns": {
+   "tsa_yoy": "TSA mean daily travelers, growth on the same quarter a year earlier",
+   "ual_asm_yoy": "United available seat miles (capacity), same comparison",
+   "ual_rpm_yoy": "United revenue passenger miles (traffic), same comparison",
+   "ual_trasm_yoy": "United total revenue per available seat mile (unit revenue), same comparison"
+  },
+  "rows": [
+   {
+    "period": "2020Q1",
+    "tsa_yoy": -0.159445,
+    "ual_asm_yoy": -0.071704,
+    "ual_rpm_yoy": -0.185849,
+    "ual_trasm_yoy": -0.104038,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2020Q2",
+    "tsa_yoy": -0.876549,
+    "ual_asm_yoy": -0.877622,
+    "ual_rpm_yoy": -0.952858,
+    "ual_trasm_yoy": 0.057161,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2020Q3",
+    "tsa_yoy": -0.694637,
+    "ual_asm_yoy": -0.70414,
+    "ual_rpm_yoy": -0.835786,
+    "ual_trasm_yoy": -0.260554,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2020Q4",
+    "tsa_yoy": -0.619902,
+    "ual_asm_yoy": -0.567964,
+    "ual_rpm_yoy": -0.70885,
+    "ual_trasm_yoy": -0.274625,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2021Q1",
+    "tsa_yoy": -0.459237,
+    "ual_asm_yoy": -0.501625,
+    "ual_rpm_yoy": -0.601009,
+    "ual_trasm_yoy": -0.189458,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2021Q2",
+    "tsa_yoy": 4.489245,
+    "ual_asm_yoy": 3.419614,
+    "ual_rpm_yoy": 8.600673,
+    "ual_trasm_yoy": -0.160996,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2021Q3",
+    "tsa_yoy": 1.555774,
+    "ual_asm_yoy": 1.425986,
+    "ual_rpm_yoy": 2.866108,
+    "ual_trasm_yoy": 0.282783,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2021Q4",
+    "tsa_yoy": 1.163773,
+    "ual_asm_yoy": 0.786028,
+    "ual_rpm_yoy": 1.471208,
+    "ual_trasm_yoy": 0.343525,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2022Q1",
+    "tsa_yoy": 0.810822,
+    "ual_asm_yoy": 0.753836,
+    "ual_rpm_yoy": 1.240492,
+    "ual_trasm_yoy": 0.33836,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2022Q2",
+    "tsa_yoy": 0.336963,
+    "ual_asm_yoy": 0.580416,
+    "ual_rpm_yoy": 0.904398,
+    "ual_trasm_yoy": 0.401159,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2022Q3",
+    "tsa_yoy": 0.170941,
+    "ual_asm_yoy": 0.256263,
+    "ual_rpm_yoy": 0.440058,
+    "ual_trasm_yoy": 0.32267,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2022Q4",
+    "tsa_yoy": 0.135594,
+    "ual_asm_yoy": 0.172927,
+    "ual_rpm_yoy": 0.298014,
+    "ual_trasm_yoy": 0.291165,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2023Q1",
+    "tsa_yoy": 0.203862,
+    "ual_asm_yoy": 0.233854,
+    "ual_rpm_yoy": 0.359383,
+    "ual_trasm_yoy": 0.224648,
+    "pandemic": true,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2023Q2",
+    "tsa_yoy": 0.109299,
+    "ual_asm_yoy": 0.174635,
+    "ual_rpm_yoy": 0.170141,
+    "ual_trasm_yoy": -0.003618,
+    "pandemic": false,
+    "yoy_base_pandemic": true
+   },
+   {
+    "period": "2023Q3",
+    "tsa_yoy": 0.113433,
+    "ual_asm_yoy": 0.157368,
+    "ual_rpm_yoy": 0.145616,
+    "ual_trasm_yoy": -0.027865,
+    "pandemic": false,
+    "yoy_base_pandemic": true
+   },
+   {
+    "period": "2023Q4",
+    "tsa_yoy": 0.10702,
+    "ual_asm_yoy": 0.146717,
+    "ual_rpm_yoy": 0.107984,
+    "ual_trasm_yoy": -0.041991,
+    "pandemic": false,
+    "yoy_base_pandemic": true
+   },
+   {
+    "period": "2024Q1",
+    "tsa_yoy": 0.068308,
+    "ual_asm_yoy": 0.090505,
+    "ual_rpm_yoy": 0.093181,
+    "ual_trasm_yoy": 0.006325,
+    "pandemic": false,
+    "yoy_base_pandemic": true
+   },
+   {
+    "period": "2024Q2",
+    "tsa_yoy": 0.066628,
+    "ual_asm_yoy": 0.083494,
+    "ual_rpm_yoy": 0.055445,
+    "ual_trasm_yoy": -0.024378,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2024Q3",
+    "tsa_yoy": 0.043477,
+    "ual_asm_yoy": 0.040754,
+    "ual_rpm_yoy": 0.027448,
+    "ual_trasm_yoy": -0.015684,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2024Q4",
+    "tsa_yoy": 0.02547,
+    "ual_asm_yoy": 0.061999,
+    "ual_rpm_yoy": 0.062501,
+    "ual_trasm_yoy": 0.015693,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2025Q1",
+    "tsa_yoy": 0.00661,
+    "ual_asm_yoy": 0.048655,
+    "ual_rpm_yoy": 0.036394,
+    "ual_trasm_yoy": 0.004571,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2025Q2",
+    "tsa_yoy": -0.005897,
+    "ual_asm_yoy": 0.058598,
+    "ual_rpm_yoy": 0.045091,
+    "ual_trasm_yoy": -0.039872,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2025Q3",
+    "tsa_yoy": 0.009726,
+    "ual_asm_yoy": 0.072062,
+    "ual_rpm_yoy": 0.060677,
+    "ual_trasm_yoy": -0.042857,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2025Q4",
+    "tsa_yoy": 0.011945,
+    "ual_asm_yoy": 0.064714,
+    "ual_rpm_yoy": 0.058685,
+    "ual_trasm_yoy": -0.015983,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2026Q1",
+    "tsa_yoy": 0.014898,
+    "ual_asm_yoy": 0.033837,
+    "ual_rpm_yoy": 0.06499,
+    "ual_trasm_yoy": 0.069397,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2026Q2",
+    "tsa_yoy": -0.00664,
+    "ual_asm_yoy": 0.034761,
+    "ual_rpm_yoy": 0.038195,
+    "ual_trasm_yoy": 0.121262,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   },
+   {
+    "period": "2026Q3",
+    "tsa_yoy": -0.028486,
+    "ual_asm_yoy": null,
+    "ual_rpm_yoy": null,
+    "ual_trasm_yoy": null,
+    "pandemic": false,
+    "yoy_base_pandemic": false
+   }
+  ],
+  "correlation": {
+   "sample": "non_pandemic",
+   "rule": "Complete quarters where neither the quarter nor the same quarter a year earlier is a pandemic quarter.",
+   "tsa_vs_ual_asm": {
+    "r": 0.4375,
+    "n": 9
+   },
+   "tsa_vs_ual_rpm": {
+    "r": 0.0624,
+    "n": 9
+   },
+   "tsa_vs_ual_trasm": {
+    "r": -0.3248,
+    "n": 9
+   },
+   "n": 9,
+   "first": "2024Q2",
+   "last": "2026Q2"
+  },
+  "other_samples": [
+   {
+    "sample": "pandemic_quarters_dropped_base_kept",
+    "rule": "Complete quarters that are not pandemic quarters; growth measured against a pandemic quarter stays in.",
+    "tsa_vs_ual_asm": {
+     "r": 0.9035,
+     "n": 13
+    },
+    "tsa_vs_ual_rpm": {
+     "r": 0.8401,
+     "n": 13
+    },
+    "tsa_vs_ual_trasm": {
+     "r": -0.3879,
+     "n": 13
+    },
+    "n": 13,
+    "first": "2023Q2",
+    "last": "2026Q2"
+   },
+   {
+    "sample": "all_quarters",
+    "rule": "Every complete quarter with a growth rate, pandemic quarters included.",
+    "tsa_vs_ual_asm": {
+     "r": 0.9903,
+     "n": 26
+    },
+    "tsa_vs_ual_rpm": {
+     "r": 0.9909,
+     "n": 26
+    },
+    "tsa_vs_ual_trasm": {
+     "r": 0.1556,
+     "n": 26
+    },
+    "n": 26,
+    "first": "2020Q1",
+    "last": "2026Q2"
+   }
+  ],
+  "note": "Pearson correlation of the quarterly growth rates. United's growth compares each quarter's earnings-release figure with the figure released for the same quarter a year earlier. The non_pandemic sample was fixed before any correlation was computed; the other two samples are listed so the choice can be checked."
+ },
+ "versus_united_reason": null,
+ "monthly_control": [
+  {
+   "month": "2019-01",
+   "mean_daily_travelers": 1990158.0,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-02",
+   "mean_daily_travelers": 2090555.2,
+   "yoy": null,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-03",
+   "mean_daily_travelers": 2345637.8,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-04",
+   "mean_daily_travelers": 2325166.6,
+   "yoy": null,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-05",
+   "mean_daily_travelers": 2405883.8,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-06",
+   "mean_daily_travelers": 2549645.2,
+   "yoy": null,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-07",
+   "mean_daily_travelers": 2543272.7,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-08",
+   "mean_daily_travelers": 2454316.9,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-09",
+   "mean_daily_travelers": 2220755.8,
+   "yoy": null,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-10",
+   "mean_daily_travelers": 2323257.0,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-11",
+   "mean_daily_travelers": 2255788.7,
+   "yoy": null,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2019-12",
+   "mean_daily_travelers": 2357661.2,
+   "yoy": null,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": null,
+   "yoy_basis": null,
+   "pandemic": false
+  },
+  {
+   "month": "2020-01",
+   "mean_daily_travelers": 2094600.7,
+   "yoy": 0.05248,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-02",
+   "mean_daily_travelers": 2135855.9,
+   "yoy": 0.021669,
+   "days_used": 29,
+   "days_in_period": 29,
+   "complete": true,
+   "prior_days_used": 28,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-03",
+   "mean_daily_travelers": 1197116.6,
+   "yoy": -0.489641,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-04",
+   "mean_daily_travelers": 136261.4,
+   "yoy": -0.941397,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-05",
+   "mean_daily_travelers": 252961.2,
+   "yoy": -0.894857,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-06",
+   "mean_daily_travelers": 511052.1,
+   "yoy": -0.79956,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-07",
+   "mean_daily_travelers": 707799.9,
+   "yoy": -0.721697,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-08",
+   "mean_daily_travelers": 742458.3,
+   "yoy": -0.697489,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-09",
+   "mean_daily_travelers": 756482.7,
+   "yoy": -0.659358,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-10",
+   "mean_daily_travelers": 866865.0,
+   "yoy": -0.626875,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-11",
+   "mean_daily_travelers": 874004.6,
+   "yoy": -0.61255,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2020-12",
+   "mean_daily_travelers": 896292.2,
+   "yoy": -0.619838,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-01",
+   "mean_daily_travelers": 803976.4,
+   "yoy": -0.616167,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-02",
+   "mean_daily_travelers": 879766.0,
+   "yoy": -0.588097,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": 29,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-03",
+   "mean_daily_travelers": 1230475.3,
+   "yoy": 0.027866,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-04",
+   "mean_daily_travelers": 1402914.2,
+   "yoy": 9.295759,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-05",
+   "mean_daily_travelers": 1622611.6,
+   "yoy": 5.414469,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-06",
+   "mean_daily_travelers": 1908500.9,
+   "yoy": 2.734454,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-07",
+   "mean_daily_travelers": 2059246.0,
+   "yoy": 1.909362,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-08",
+   "mean_daily_travelers": 1864674.8,
+   "yoy": 1.511488,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-09",
+   "mean_daily_travelers": 1708763.3,
+   "yoy": 1.258827,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-10",
+   "mean_daily_travelers": 1859986.5,
+   "yoy": 1.145647,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-11",
+   "mean_daily_travelers": 1933416.9,
+   "yoy": 1.212136,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2021-12",
+   "mean_daily_travelers": 1914180.3,
+   "yoy": 1.135665,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-01",
+   "mean_daily_travelers": 1490196.7,
+   "yoy": 0.853533,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-02",
+   "mean_daily_travelers": 1739608.6,
+   "yoy": 0.977354,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": 28,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-03",
+   "mean_daily_travelers": 2061503.9,
+   "yoy": 0.675372,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-04",
+   "mean_daily_travelers": 2124893.2,
+   "yoy": 0.514628,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-05",
+   "mean_daily_travelers": 2179355.8,
+   "yoy": 0.343116,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-06",
+   "mean_daily_travelers": 2292030.0,
+   "yoy": 0.200958,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-07",
+   "mean_daily_travelers": 2292870.1,
+   "yoy": 0.113451,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-08",
+   "mean_daily_travelers": 2187298.6,
+   "yoy": 0.173019,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-09",
+   "mean_daily_travelers": 2119190.2,
+   "yoy": 0.240189,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-10",
+   "mean_daily_travelers": 2186855.3,
+   "yoy": 0.175737,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-11",
+   "mean_daily_travelers": 2160234.0,
+   "yoy": 0.117314,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2022-12",
+   "mean_daily_travelers": 2133271.3,
+   "yoy": 0.114457,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2023-01",
+   "mean_daily_travelers": 1964738.1,
+   "yoy": 0.318442,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2023-02",
+   "mean_daily_travelers": 2084326.1,
+   "yoy": 0.198158,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": 28,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2023-03",
+   "mean_daily_travelers": 2319982.6,
+   "yoy": 0.125384,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": true
+  },
+  {
+   "month": "2023-04",
+   "mean_daily_travelers": 2340564.2,
+   "yoy": 0.101497,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-05",
+   "mean_daily_travelers": 2405217.9,
+   "yoy": 0.103637,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-06",
+   "mean_daily_travelers": 2571873.3,
+   "yoy": 0.122094,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-07",
+   "mean_daily_travelers": 2575711.3,
+   "yoy": 0.123357,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-08",
+   "mean_daily_travelers": 2431162.0,
+   "yoy": 0.111491,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-09",
+   "mean_daily_travelers": 2340455.6,
+   "yoy": 0.10441,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-10",
+   "mean_daily_travelers": 2442873.6,
+   "yoy": 0.117071,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-11",
+   "mean_daily_travelers": 2390262.6,
+   "yoy": 0.106483,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2023-12",
+   "mean_daily_travelers": 2340714.2,
+   "yoy": 0.097242,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-01",
+   "mean_daily_travelers": 2085395.2,
+   "yoy": 0.061411,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-02",
+   "mean_daily_travelers": 2224387.5,
+   "yoy": 0.067197,
+   "days_used": 29,
+   "days_in_period": 29,
+   "complete": true,
+   "prior_days_used": 28,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-03",
+   "mean_daily_travelers": 2495549.0,
+   "yoy": 0.075676,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-04",
+   "mean_daily_travelers": 2467984.1,
+   "yoy": 0.05444,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-05",
+   "mean_daily_travelers": 2598621.4,
+   "yoy": 0.08041,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-06",
+   "mean_daily_travelers": 2737503.3,
+   "yoy": 0.064401,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-07",
+   "mean_daily_travelers": 2713552.3,
+   "yoy": 0.053516,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-08",
+   "mean_daily_travelers": 2564788.3,
+   "yoy": 0.054964,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-09",
+   "mean_daily_travelers": 2386636.8,
+   "yoy": 0.019732,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-10",
+   "mean_daily_travelers": 2462323.9,
+   "yoy": 0.007962,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-11",
+   "mean_daily_travelers": 2396184.9,
+   "yoy": 0.002478,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2024-12",
+   "mean_daily_travelers": 2496288.2,
+   "yoy": 0.066464,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-01",
+   "mean_daily_travelers": 2121846.2,
+   "yoy": 0.017479,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-02",
+   "mean_daily_travelers": 2235369.0,
+   "yoy": 0.004937,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": 29,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-03",
+   "mean_daily_travelers": 2491278.7,
+   "yoy": -0.001711,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-04",
+   "mean_daily_travelers": 2473542.0,
+   "yoy": 0.002252,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-05",
+   "mean_daily_travelers": 2560099.7,
+   "yoy": -0.014824,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-06",
+   "mean_daily_travelers": 2725216.8,
+   "yoy": -0.004488,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-07",
+   "mean_daily_travelers": 2744936.6,
+   "yoy": 0.011566,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-08",
+   "mean_daily_travelers": 2591324.9,
+   "yoy": 0.010346,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-09",
+   "mean_daily_travelers": 2403048.9,
+   "yoy": 0.006877,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-10",
+   "mean_daily_travelers": 2551583.6,
+   "yoy": 0.03625,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-11",
+   "mean_daily_travelers": 2392565.7,
+   "yoy": -0.00151,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2025-12",
+   "mean_daily_travelers": 2497460.5,
+   "yoy": 0.00047,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-01",
+   "mean_daily_travelers": 2124545.5,
+   "yoy": 0.001272,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-02",
+   "mean_daily_travelers": 2294866.4,
+   "yoy": 0.026616,
+   "days_used": 28,
+   "days_in_period": 28,
+   "complete": true,
+   "prior_days_used": 28,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-03",
+   "mean_daily_travelers": 2533649.2,
+   "yoy": 0.017008,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-04",
+   "mean_daily_travelers": 2475087.6,
+   "yoy": 0.000625,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-05",
+   "mean_daily_travelers": 2541268.1,
+   "yoy": -0.007356,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-06",
+   "mean_daily_travelers": 2691045.1,
+   "yoy": -0.012539,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-07",
+   "mean_daily_travelers": 2688392.4,
+   "yoy": -0.020599,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-08",
+   "mean_daily_travelers": 2477173.1,
+   "yoy": -0.044051,
+   "days_used": 31,
+   "days_in_period": 31,
+   "complete": true,
+   "prior_days_used": 31,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-09",
+   "mean_daily_travelers": 2353904.4,
+   "yoy": -0.020451,
+   "days_used": 30,
+   "days_in_period": 30,
+   "complete": true,
+   "prior_days_used": 30,
+   "yoy_basis": "whole period a year earlier",
+   "pandemic": false
+  },
+  {
+   "month": "2026-10",
+   "mean_daily_travelers": 2529045.0,
+   "yoy": 0.023295,
+   "days_used": 8,
+   "days_in_period": 31,
+   "complete": false,
+   "prior_days_used": 8,
+   "yoy_basis": "start of period to the same month and day a year earlier",
+   "pandemic": false
+  }
+ ],
+ "limits": [
+  "The count is TSA's national total: all airlines and all airports with a TSA checkpoint. It is not a United figure and says nothing about United's share.",
+  "It counts people screened at checkpoints, not tickets, fares, miles flown or revenue.",
+  "United's ASM, RPM and TRASM cover its whole network, including flights that start outside the United States, where TSA does not screen.",
+  "The series starts on 2019-01-01, so it cannot inform the 2013-2019 fit period, and year-over-year growth starts in 2020.",
+  "TSA revises the numbers. This file holds the values served on the retrieval dates listed under inputs, not the values first published. TSA page note: \"Passenger travel numbers are updated Monday through Friday by 9 a.m. Travel numbers during holiday weeks though may be slightly delayed.\" TSA page note: \"Archived Data has been updated including Known Crewmembers and later flight travel numbers.\"",
+  "The running year comes from TSA's running-year page and earlier years from its per-year archive pages. Growth for the running year therefore compares a page TSA may still revise with pages it has already revised; the stored pages do not show how large such a revision is.",
+  "Pandemic quarters (2020Q1 to 2023Q1) are marked: a quarter is marked from 2020Q1 until the mean is back at or above the same quarter of 2019. Growth in 2023Q2 to 2024Q1 is measured against a pandemic quarter and is marked yoy_base_pandemic.",
+  "The daily growth rate compares with 364 days earlier, which lines up weekdays but not holidays: a holiday that falls in a different week than a year before moves the rate for reasons other than demand.",
+  "Month and quarter growth compares calendar periods, so the two years can differ in their mix of weekdays and by a leap day.",
+  "2026Q4 is incomplete (8 of 92 days); its growth compares the prior year from the quarter's start to the same month and day.",
+  "This is an observed series, not a forecast. Nothing here predicts future travel.",
+  "The United correlation rests on 9 quarters. It describes those quarters and does not establish that TSA volume drives United's results."
+ ]
+}
