@@ -147,6 +147,20 @@ def test_strict_schema_duplicate_known_grain_and_nonfinite_values():
     with pytest.raises(ValueError, match="schema"): normalized(b"YEAR,QUARTER\n2019,4\n")
 
 
+LOOKUPS = ("type_lookup_sha256","configuration_lookup_sha256","group_lookup_sha256")
+
+
+@pytest.fixture
+def preserved_lookups(require_local_cache):
+    # build_fixture copies the three official BTS aircraft lookups named by the tracked
+    # classification out of the local immutable raw store. Those bytes are not tracked in
+    # Git, so a fresh clone skips the offline-build tests instead of failing on a missing file.
+    classes=classification()
+    for k in LOOKUPS:
+        require_local_cache("data/raw/"+classes[k], "docs/utilization.md (preserved lookup SHA-256 values) and docs/t2_history.md",
+            "preserved BTS aircraft lookup source ("+k+" in data/t2_aircraft_classification.json)")
+
+
 def build_fixture(tmp_path, monkeypatch):
     # Synthetic acquisition must stay aligned with the declared fixture cutoff,
     # independently of the wall clock. Production metadata is never changed.
@@ -162,7 +176,7 @@ def build_fixture(tmp_path, monkeypatch):
     entry={"path":str(export),"definition_path":str(definitions),"source_url":URL,"filters":{"year":"All Years","period":"All","fields":"All"}}
     source=preserve_export(entry,raw)
     classes=classification()
-    for k in ("type_lookup_sha256","configuration_lookup_sha256","group_lookup_sha256"):
+    for k in LOOKUPS:
         content,meta=read_source(classes[k]); preserve_source(content,meta["source_url"],meta["media_type"],raw)
     class_path=tmp_path / "classes.json"; class_path.write_text(json.dumps(classes))
     p52={"rows":[]}
@@ -172,7 +186,7 @@ def build_fixture(tmp_path, monkeypatch):
     return source,form41,class_path,tmp_path/"output",raw
 
 
-def test_immutable_offline_build_and_four_parquet_roundtrips(tmp_path, monkeypatch):
+def test_immutable_offline_build_and_four_parquet_roundtrips(preserved_lookups, tmp_path, monkeypatch):
     source,form41,classes,dest,raw=build_fixture(tmp_path, monkeypatch)
     out=build_t2_history(source,form41,classes,"2026-10-09",dest,raw)
     folder=Path(out["path"])
@@ -184,7 +198,7 @@ def test_immutable_offline_build_and_four_parquet_roundtrips(tmp_path, monkeypat
     assert (dest/"latest.json").read_bytes() == pointer
 
 
-def test_acquisition_and_upstream_checksum_gates(tmp_path, monkeypatch):
+def test_acquisition_and_upstream_checksum_gates(preserved_lookups, tmp_path, monkeypatch):
     source,form41,classes,dest,raw=build_fixture(tmp_path, monkeypatch)
     with pytest.raises(ValueError,match="not acquired"): build_t2_history(source,form41,classes,"2026-07-16",dest,raw)
     (form41/"P52.json").write_text('{"rows":[{}]}')

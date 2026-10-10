@@ -9,9 +9,22 @@ from app.traffic_vintage_research import vintage_research_status
 from app.server import app
 
 ROOT=Path(__file__).parents[1]
+DOC='docs/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py, scripts/audit_monthly_traffic_vintages.py)'
 
 
-def test_verified_research_exposes_common_counts_and_failures():
+@pytest.fixture
+def preserved_study(require_local_cache):
+    # data/monthly_traffic_vintage_review.json is tracked, but the study and audit record it
+    # pins are local, untracked caches. Absent from a fresh clone, where the reader tests skip.
+    # A study that is present but incomplete or altered is not skipped: the reader must reject it.
+    review=json.loads((ROOT/'data/monthly_traffic_vintage_review.json').read_text())
+    require_local_cache('data/monthly_traffic_vintages/'+review['snapshot_id']+'/manifest.json',DOC,
+        'preserved four-case traffic source-comparison study pinned by data/monthly_traffic_vintage_review.json')
+    require_local_cache('data/monthly_traffic_vintage_checks/'+review['audit_id']+'.json',DOC,
+        'independent statistical audit record pinned by data/monthly_traffic_vintage_review.json')
+
+
+def test_verified_research_exposes_common_counts_and_failures(preserved_study):
     s=vintage_research_status()
     assert s['status']=='available' and s['checks_passed']==735982
     assert s['requested_predictions_per_model_per_case']==1800 and s['common_predictions_per_model_per_case']==1763
@@ -19,7 +32,7 @@ def test_verified_research_exposes_common_counts_and_failures():
     assert all(not c['beats_best_declared_baseline'] for c in s['cases'])
 
 
-def test_artifact_or_audit_corruption_blocks_reader(monkeypatch):
+def test_artifact_or_audit_corruption_blocks_reader(preserved_study,monkeypatch):
     original=Path.read_text
     def altered(path,*args,**kwargs):
         content=original(path,*args,**kwargs)
@@ -37,7 +50,7 @@ def test_artifact_or_audit_corruption_blocks_reader(monkeypatch):
     with pytest.raises(ValueError,match='audit binding'):vintage_research_status()
 
 
-def test_api_downloads_match_verified_artifact_and_audit():
+def test_api_downloads_match_verified_artifact_and_audit(preserved_study):
     client=TestClient(app);s=client.get('/api/traffic-vintages/status').json()
     record=client.get('/api/traffic-vintages/record');audit=client.get('/api/traffic-vintages/audit')
     assert record.status_code==audit.status_code==200

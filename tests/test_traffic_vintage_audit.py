@@ -1,27 +1,33 @@
 """Independent-oracle tamper and numerical-support checks, not estimator mirrors."""
 from copy import deepcopy
 import json
-from pathlib import Path
 
 import pytest
 
 from app.evidence import digest
 from scripts.audit_monthly_traffic_vintages import Checks, recursive_ar, audit_point, audit_scorecards, key
 
-ROOT=Path(__file__).parents[1]
-
 
 @pytest.fixture(scope='module')
-def study():
+def study(require_local_cache):
     # Preserved research fixture; no estimation or network fetch in these tests.
-    p=ROOT/'data/monthly_traffic_vintages/31226d81e2e4cc0163b965034b6e9e6127ca61cc04ab0a9873a56adbebf8d164/artifact.json'
+    # The study is a local, untracked cache: absent from a fresh clone, where these tests skip.
+    p=require_local_cache('data/monthly_traffic_vintages/31226d81e2e4cc0163b965034b6e9e6127ca61cc04ab0a9873a56adbebf8d164/artifact.json',
+        'docs/reviewed_traffic.md (scripts/fit_monthly_traffic_vintages.py)','preserved four-case traffic source-comparison study')
     return json.loads(p.read_text())
 
 
-def point_context(study):
+@pytest.fixture(scope='module')
+def native_source(study,require_local_cache):
+    # Upstream native issue histories named by the study; also local and untracked.
+    p=require_local_cache('data/traffic_vintages/'+study['specification']['source_snapshot_id']+'/artifact.json',
+        'docs/traffic_vintages.md (scripts/build_traffic_vintages.py)','native traffic issue-history snapshot used by the preserved study')
+    return json.loads(p.read_text())
+
+
+def point_context(study,source):
     r=study['history_fits']['native']['forecasts'][0]
     fit=study['history_fits']['native']['fits'][r['fit_index']]
-    source=json.loads((ROOT/'data/traffic_vintages'/study['specification']['source_snapshot_id']/'artifact.json').read_text())
     origin=next(o for o in source['origins'] if o['issue_on']==r['cutoff'])
     known={(v['carrier'],v['market'],v['period']):v for v in (source['observation_versions'][i] for i in origin['observation_ids'])}
     initial={(v['carrier'],v['market'],v['period']):v for v in study['initial_anchor']['rows']}
@@ -29,16 +35,16 @@ def point_context(study):
     return r,fit,known,initial,scales
 
 
-def test_rehashed_prediction_tamper_fails_independent_equation(study):
-    r,*context=point_context(study)
+def test_rehashed_prediction_tamper_fails_independent_equation(study,native_source):
+    r,*context=point_context(study,native_source)
     audit_point(r,*context,Checks())
     forged=deepcopy(r);forged['predictions']['state_rho_0']*=1.1
     assert digest(forged)!=digest(r) # Attacker can update a checksum; numerical witness must still reject.
     with pytest.raises(ValueError,match='state point median'):audit_point(forged,*context,Checks())
 
 
-def test_future_target_cannot_be_accepted_by_point_oracle(study):
-    r,*context=point_context(study);forged=deepcopy(r);forged['target']='2024-01'
+def test_future_target_cannot_be_accepted_by_point_oracle(study,native_source):
+    r,*context=point_context(study,native_source);forged=deepcopy(r);forged['target']='2024-01'
     with pytest.raises(ValueError,match='locked target'):audit_point(forged,*context,Checks())
 
 
