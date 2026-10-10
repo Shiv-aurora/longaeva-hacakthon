@@ -1,0 +1,319 @@
+{
+  "area": "market",
+  "builder": "scripts/lab/fetch_market.py",
+  "raw_dir": "data/lab_raw/market",
+  "raw_note": "Each raw file is the response body as received (after HTTP content decoding), named by its SHA-256.",
+  "entries": [
+    {
+      "source": "eia_fuel",
+      "url": "https://www.eia.gov/dnav/pet/hist_xls/EER_EPJK_PF4_RGC_DPGd.xls",
+      "terms_note": "U.S. Energy Information Administration. US government statistical data in the public domain; cite the agency as the source.",
+      "data_note": "Current history, not a real-time vintage: earlier prints may have been revised by the publisher.",
+      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "sha256": "8e78b7fd08ce6a81ed4fb52ce33709f19979a6bda883cbed35754c2a3d2cd42b",
+      "bytes": 460288,
+      "path": "data/lab_raw/market/8e78b7fd08ce6a81ed4fb52ce33709f19979a6bda883cbed35754c2a3d2cd42b.xls"
+    },
+    {
+      "source": "fred_fuel",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DJFUELUSGULF",
+      "fred_id": "DJFUELUSGULF",
+      "terms_note": "U.S. agency data redistributed by FRED (Federal Reserve Bank of St. Louis). US government statistical data in the public domain; cite the agency as the source. FRED's own terms of use apply to its service.",
+      "data_note": "Cross-check only. Current history, not a real-time vintage: earlier prints may have been revised by the publisher.",
+      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "sha256": "b5e1f4f8fe3a3d109cf32cf4a922fbb1bd7984350394580b23f7ae0cb4f14f27",
+      "bytes": 154609,
+      "path": "data/lab_raw/market/b5e1f4f8fe3a3d109cf32cf4a922fbb1bd7984350394580b23f7ae0cb4f14f27.csv"
+    },
+    {
+      "source": "yahoo:UAL",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/UAL?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "UAL",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "sha256": "24bbf867dc5f0da96fe0723616daa9904c79e83ea3438b89336591794103874c",
+      "bytes": 397266,
+      "path": "data/lab_raw/market/24bbf867dc5f0da96fe0723616daa9904c79e83ea3438b89336591794103874c.json"
+    },
+    {
+      "source": "yahoo:DAL",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/DAL?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "DAL",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:35+00:00",
+      "sha256": "a7d6e0d53c21e38573ebd4c849d7476e2a98d14d7b941d70f23bbf03b0d1fe6d",
+      "bytes": 402724,
+      "path": "data/lab_raw/market/a7d6e0d53c21e38573ebd4c849d7476e2a98d14d7b941d70f23bbf03b0d1fe6d.json"
+    },
+    {
+      "source": "yahoo:AAL",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAL?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "AAL",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:36+00:00",
+      "sha256": "1c95bc2628890b956cd5d8c25a49fdf6dc152deee3fdde4b3d4fcdfeadcb7ad0",
+      "bytes": 407365,
+      "path": "data/lab_raw/market/1c95bc2628890b956cd5d8c25a49fdf6dc152deee3fdde4b3d4fcdfeadcb7ad0.json"
+    },
+    {
+      "source": "yahoo:LUV",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/LUV?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "LUV",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:38+00:00",
+      "sha256": "984f7ccfd411b9fa9d2ca97408bdd40ff129dd138ade6157da113602ba664c9a",
+      "bytes": 405055,
+      "path": "data/lab_raw/market/984f7ccfd411b9fa9d2ca97408bdd40ff129dd138ade6157da113602ba664c9a.json"
+    },
+    {
+      "source": "yahoo:SPY",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "SPY",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:40+00:00",
+      "sha256": "7ec7b2f770886a06341c1954d3fe2bdc42f89a7156a3b12f5062675ce8c1e692",
+      "bytes": 410898,
+      "path": "data/lab_raw/market/7ec7b2f770886a06341c1954d3fe2bdc42f89a7156a3b12f5062675ce8c1e692.json"
+    },
+    {
+      "source": "yahoo:JETS",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/JETS?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "JETS",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters.",
+      "retrieved_at": "2026-10-10T05:22:41+00:00",
+      "sha256": "82ad0595215acc691a14abada15ce0de06b5d9b7e801409a4025395016d861ea",
+      "bytes": 314148,
+      "path": "data/lab_raw/market/82ad0595215acc691a14abada15ce0de06b5d9b7e801409a4025395016d861ea.json"
+    },
+    {
+      "source": "yahoo:HO=F",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/HO%3DF?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
+      "ticker": "HO=F",
+      "terms_note": "Unofficial Yahoo Finance chart endpoint: undocumented, no service guarantee, and covered by Yahoo's own terms of use, which this project has not cleared for redistribution. Research use only; flag under project limits.",
+      "data_note": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part in a million apart, so rebuild from the stored raw file when an exact match matters. Continuous front-month NY Harbor ULSD future as Yahoo defines it; Yahoo does not document roll dates or whether a close is the exchange settlement.",
+      "retrieved_at": "2026-10-10T05:22:43+00:00",
+      "sha256": "56ef5a62030a37b3aeaa5f963128a1d9c2e1a4460efe2d5d3febc10c96fe63d9",
+      "bytes": 408924,
+      "path": "data/lab_raw/market/56ef5a62030a37b3aeaa5f963128a1d9c2e1a4460efe2d5d3febc10c96fe63d9.json"
+    },
+    {
+      "source": "fred_cpi:CUSR0000SETG01",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CUSR0000SETG01",
+      "series_id": "CUSR0000SETG01",
+      "fred_id": "CUSR0000SETG01",
+      "terms_note": "U.S. agency data redistributed by FRED (Federal Reserve Bank of St. Louis). US government statistical data in the public domain; cite the agency as the source. FRED's own terms of use apply to its service.",
+      "data_note": "Seasonally adjusted: BLS revises recent years annually, so this is the current vintage, not the figures first published.",
+      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "sha256": "e96985e0cf5c77fd626d1dbee8908f14cce746418e5464911d71feb0777e8d70",
+      "bytes": 8613,
+      "path": "data/lab_raw/market/e96985e0cf5c77fd626d1dbee8908f14cce746418e5464911d71feb0777e8d70.csv"
+    },
+    {
+      "source": "fred_cpi:CUUR0000SETG01",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CUUR0000SETG01",
+      "series_id": "CUUR0000SETG01",
+      "fred_id": "CUUR0000SETG01",
+      "terms_note": "U.S. agency data redistributed by FRED (Federal Reserve Bank of St. Louis). US government statistical data in the public domain; cite the agency as the source. FRED's own terms of use apply to its service.",
+      "data_note": "Not seasonally adjusted.",
+      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "sha256": "2bfb2c0fadf9ebc06cff361b99a306209819491208364752c9a1ce3fe489874a",
+      "bytes": 13833,
+      "path": "data/lab_raw/market/2bfb2c0fadf9ebc06cff361b99a306209819491208364752c9a1ce3fe489874a.csv"
+    },
+    {
+      "source": "fred_cpi:CUSR0000SA0",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL",
+      "series_id": "CUSR0000SA0",
+      "fred_id": "CPIAUCSL",
+      "terms_note": "U.S. agency data redistributed by FRED (Federal Reserve Bank of St. Louis). US government statistical data in the public domain; cite the agency as the source. FRED's own terms of use apply to its service.",
+      "data_note": "FRED id CPIAUCSL is BLS series CUSR0000SA0 (all items, seasonally adjusted) and is stored under the BLS id. Current vintage, revised annually.",
+      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "sha256": "f8ecddf53a9a9a74dda92c2c4204e6039466fcb744bc74171b73b5f6aac48119",
+      "bytes": 17744,
+      "path": "data/lab_raw/market/f8ecddf53a9a9a74dda92c2c4204e6039466fcb744bc74171b73b5f6aac48119.csv"
+    },
+    {
+      "source": "bls_api",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+      "method": "POST",
+      "request_body": {
+        "seriesid": [
+          "CUSR0000SETG01",
+          "CUUR0000SETG01",
+          "CUSR0000SA0"
+        ],
+        "startyear": "2024",
+        "endyear": "2026"
+      },
+      "terms_note": "U.S. Bureau of Labor Statistics public API v2, unregistered. US government statistical data in the public domain; cite the agency as the source.",
+      "data_note": "Cross-check only; no tidy file is built from this response.",
+      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "sha256": "3452f0c0467a93f98b1bac062fee9a75ae6dbab0e01e45231c8cea88590bc03b",
+      "bytes": 8903,
+      "path": "data/lab_raw/market/3452f0c0467a93f98b1bac062fee9a75ae6dbab0e01e45231c8cea88590bc03b.json"
+    }
+  ],
+  "failures": [],
+  "outputs": [
+    {
+      "path": "data/lab/fuel_daily.csv",
+      "sha256": "3803f2602891ce2e597cf2fa062d7226ea24f35c1e5dde21a6a18d454a522af6",
+      "rows": 4190,
+      "first": "2010-01-04",
+      "last": "2026-10-06"
+    },
+    {
+      "path": "data/lab/prices_daily.csv",
+      "sha256": "c403296a2a80568e2c2198b08767fd9391393dccfa1d0c7c9c7306407e76199a",
+      "rows": 25163,
+      "first": "2012-01-03",
+      "last": "2026-10-09",
+      "by_ticker": {
+        "UAL": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        },
+        "DAL": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        },
+        "AAL": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        },
+        "LUV": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        },
+        "SPY": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        },
+        "JETS": {
+          "rows": 2879,
+          "first": "2015-04-30",
+          "last": "2026-10-09"
+        },
+        "HO=F": {
+          "rows": 3714,
+          "first": "2012-01-03",
+          "last": "2026-10-09"
+        }
+      }
+    },
+    {
+      "path": "data/lab/cpi_monthly.csv",
+      "sha256": "c451ab24e1112dd47037e856156f8b42b0dd243e16e82cfaf88266217d7e1105",
+      "rows": 597,
+      "first": "2010-01-01",
+      "last": "2026-08-01",
+      "by_series": {
+        "CUSR0000SETG01": {
+          "rows": 199,
+          "first": "2010-01-01",
+          "last": "2026-08-01",
+          "fred_id": "CUSR0000SETG01"
+        },
+        "CUUR0000SETG01": {
+          "rows": 199,
+          "first": "2010-01-01",
+          "last": "2026-08-01",
+          "fred_id": "CUUR0000SETG01"
+        },
+        "CUSR0000SA0": {
+          "rows": 199,
+          "first": "2010-01-01",
+          "last": "2026-08-01",
+          "fred_id": "CPIAUCSL"
+        }
+      }
+    }
+  ],
+  "cross_checks": {
+    "eia_vs_fred_fuel": {
+      "overlap": 4190,
+      "first": "2010-01-04",
+      "last": "2026-10-06",
+      "max_abs_diff": 0.0,
+      "max_abs_diff_date": null,
+      "tolerance": 0.0005,
+      "mismatches": [],
+      "only_in_a": [],
+      "only_in_b": []
+    },
+    "fuel_vs_eia_gulf_coast_2026_csv": {
+      "legacy_rows": 190,
+      "overlap": 190,
+      "first": "2026-01-05",
+      "last": "2026-10-06",
+      "max_abs_diff": 0.0,
+      "max_abs_diff_date": null,
+      "tolerance": 0.005,
+      "mismatches": [],
+      "only_in_a": [],
+      "only_in_b": []
+    },
+    "bls_vs_fred_cpi": {
+      "CUSR0000SETG01": {
+        "overlap": 31,
+        "first": "2024-01-01",
+        "last": "2026-08-01",
+        "max_abs_diff": 0.0,
+        "max_abs_diff_date": null,
+        "tolerance": 0.0005,
+        "mismatches": [],
+        "only_in_a": [],
+        "only_in_b": [],
+        "latest": {
+          "date": "2026-08-01",
+          "bls": 323.244,
+          "fred": 323.244
+        }
+      },
+      "CUUR0000SETG01": {
+        "overlap": 31,
+        "first": "2024-01-01",
+        "last": "2026-08-01",
+        "max_abs_diff": 0.0,
+        "max_abs_diff_date": null,
+        "tolerance": 0.0005,
+        "mismatches": [],
+        "only_in_a": [],
+        "only_in_b": [],
+        "latest": {
+          "date": "2026-08-01",
+          "bls": 309.736,
+          "fred": 309.736
+        }
+      },
+      "CUSR0000SA0": {
+        "overlap": 31,
+        "first": "2024-01-01",
+        "last": "2026-08-01",
+        "max_abs_diff": 0.0,
+        "max_abs_diff_date": null,
+        "tolerance": 0.0005,
+        "mismatches": [],
+        "only_in_a": [],
+        "only_in_b": [],
+        "latest": {
+          "date": "2026-08-01",
+          "bls": 334.131,
+          "fred": 334.131
+        }
+      }
+    }
+  },
+  "not_built": []
+}

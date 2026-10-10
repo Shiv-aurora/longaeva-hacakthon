@@ -1,0 +1,78 @@
+{
+ "sheet": "Data 1",
+ "datemode": 0,
+ "rows": [
+  [
+   "Back to Contents",
+   "Data 1: U.S. Gulf Coast Kerosene-Type Jet Fuel Spot Price FOB (Dollars per Gallon)"
+  ],
+  [
+   "Sourcekey",
+   "EER_EPJK_PF4_RGC_DPG"
+  ],
+  [
+   "Date",
+   "U.S. Gulf Coast Kerosene-Type Jet Fuel Spot Price FOB (Dollars per Gallon)"
+  ],
+  [
+   45824.0,
+   2.197
+  ],
+  [
+   45825.0,
+   2.304
+  ],
+  [
+   45826.0,
+   2.35
+  ],
+  [
+   45828.0,
+   2.349
+  ],
+  [
+   45831.0,
+   2.132
+  ],
+  [
+   45832.0,
+   2.11
+  ],
+  [
+   45833.0,
+   2.128
+  ],
+  [
+   45834.0,
+   2.199
+  ],
+  [
+   45835.0,
+   2.107
+  ],
+  [
+   45838.0,
+   2.177
+  ],
+  [
+   45839.0,
+   2.152
+  ],
+  [
+   45840.0,
+   2.238
+  ],
+  [
+   45841.0,
+   2.192
+  ],
+  [
+   45845.0,
+   2.24
+  ],
+  [
+   45846.0,
+   2.266
+  ]
+ ]
+}
