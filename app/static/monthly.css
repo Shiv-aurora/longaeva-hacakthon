@@ -13,3 +13,22 @@
 #cash-funding{padding:22px}#cash-funding caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#cashPlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#cashPlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}.cash-event{border-top:1px solid var(--border);padding:12px 0;margin-top:10px}.cash-event label{display:block;color:var(--sub);font-size:12px;margin:8px 0}.cash-event input,.cash-event select{width:100%;margin-top:6px}#cashPlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#cashPlanControls input[type=checkbox]{width:auto}
 #purchase-funding{padding:22px}#purchase-funding caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#purchasePlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#purchasePlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}#purchasePlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#purchasePlanControls input[type=checkbox]{width:auto}.purchase-row{border-top:1px solid var(--border);padding:12px 0;margin:12px 0}.purchase-row label{display:block;color:var(--sub);font-size:12px;margin:8px 0}.purchase-row input,.purchase-row select{margin-top:6px}.purchase-deposits{border-left:2px solid var(--border);padding-left:10px;margin:12px 0}.purchase-deposit{margin:12px 0}
 #retention-result{padding:22px}#retention-result caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#retentionPlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#retentionPlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}#retentionPlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#retentionPlanControls input[type=checkbox]{width:auto}.retention-link{border-top:1px solid var(--border);padding:10px 0;margin:12px 0}.retention-link label{display:block;color:var(--sub);font-size:12px;margin:10px 0}.retention-link input,.retention-link select{margin-top:6px}.retention-link .support-label{display:flex;align-items:center;gap:8px}
+
+/* Judge-first narrative. The scenario uses the existing engine, not canned results. */
+.judge-demo{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,290px);gap:24px;align-items:center;margin:0 0 24px;border:1px solid var(--border2)}
+.judge-demo h2,.judge-summary h2{margin:8px 0 10px;font-size:clamp(22px,2.8vw,30px)}
+.judge-demo p{line-height:1.55;margin:8px 0 0;color:var(--sub)}
+.judge-demo .micro,.judge-summary .micro{font-size:12px;color:var(--sub)}
+.judge-demo-action{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.judge-demo-action button{width:100%;min-height:48px}
+.judge-demo-action p{margin:0}
+.judge-summary{scroll-margin-top:18px;margin:24px 0}
+.judge-summary>p:not(.micro){line-height:1.65;color:var(--sub)}
+.judge-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}
+.judge-summary-grid>div{border:1px solid var(--border);border-radius:6px;padding:14px;min-width:0}
+.judge-summary-grid span{display:block;font-size:11px;color:var(--sub);line-height:1.5;min-height:34px}
+.judge-summary-grid strong{display:block;margin-top:6px;font-size:clamp(17px,2.1vw,25px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.judge-boundary{border-left:3px solid var(--amber);padding-left:12px;margin-top:12px}
+@media(max-width:850px){.judge-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.judge-demo{grid-template-columns:1fr}.judge-demo-action{max-width:none}.judge-summary-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:375px){.judge-summary-grid{grid-template-columns:1fr}}
