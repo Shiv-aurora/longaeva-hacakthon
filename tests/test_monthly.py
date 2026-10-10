@@ -139,7 +139,6 @@ def test_months_quarters_and_onset_duration_recovery():
 
 def test_monthly_api_rejects_unimplemented_modes_and_invalid_cutoffs():
     client = TestClient(app)
-    assert client.get("/monthly").status_code == 200
     assert client.get("/api/monthly/bootstrap").status_code == 200
     assert client.post("/api/monthly/simulate", json={"paths": 20, "horizon_months": 3}).status_code == 200
     for body in ({"response_mode": "fitted"}, {"information_cutoff": "2026-07-14"}, {"information_cutoff": "bad"}, {"competitor_capacity_pct": 9}):

@@ -21,10 +21,8 @@ def test_website_and_template():
     assert client.get('/').status_code==200
     assert client.get('/').content == client.get('/lab').content
     assert b'lab.js' in client.get('/').content
-    assert client.get('/monthly').content == client.get('/research').content
-    assert b'monthly.js' in client.get('/monthly').content
-    assert client.get('/fuel-pilot').status_code==200
-    assert b'Price shocks.' in client.get('/fuel-pilot').content
+    for retired in ('/monthly', '/research', '/fuel-pilot'):   # the earlier interfaces were removed
+        assert client.get(retired).status_code==404
     assert client.get('/static/quotes_template.csv').status_code==200
     assert 'fares' not in client.get('/api/bootstrap').json().get('quotes',{}).get('status','').lower()
 

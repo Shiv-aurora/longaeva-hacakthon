@@ -22,7 +22,7 @@ DATA = STATIC / "data"
 FIXTURES = DATA / "fixtures"
 
 # Paths the server answers itself (app/server.py), not files under /static.
-ROUTES = {"/", "/lab", "/report", "/research"}
+ROUTES = {"/", "/lab", "/report"}
 # One fixture per output file in docs/lab_contract.md, plus the API responses the page draws.
 CONTRACT_FILES = ("meta", "cost_clock", "fare_clock", "market_clock", "track_record", "q3_call", "signal", "evidence")
 API_FIXTURES = ("scenario", "grid", "grid_target", "today", "chat_stream", "chat_report")

@@ -243,18 +243,6 @@ def report_index():
         raise HTTPException(status_code=404, detail="The report has not been built yet")
     return FileResponse(page, headers=FRESH)
 
-@app.get("/research")
-def research_index():
-    return FileResponse(STATIC / "monthly.html")
-
-@app.get("/fuel-pilot")
-def fuel_pilot():
-    return FileResponse(STATIC / "index.html")
-
-@app.get("/monthly")
-def monthly_index():
-    return FileResponse(STATIC / "monthly.html")
-
 @app.get("/api/monthly/bootstrap")
 def monthly_bootstrap(cutoff: str = "2026-07-16"):
     try:

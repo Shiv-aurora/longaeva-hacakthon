@@ -5,20 +5,11 @@ from app.server import app
 ROOT = Path(__file__).resolve().parents[1]
 client = TestClient(app)
 
-def test_judge_entry_points_have_real_controls_and_warnings():
+def test_the_landing_page_is_the_lab_dashboard():
     landing = client.get("/")
-    monthly = client.get("/monthly")
-    assert landing.status_code == monthly.status_code == 200
+    assert landing.status_code == 200
     assert landing.content == client.get("/lab").content
-    assert monthly.content == client.get("/research").content
-    assert 'role="tablist"' in monthly.text
-    assert 'id="judgeDemo"' in monthly.text
-    assert 'id="judgeSummary"' in monthly.text
-    assert 'This preset is a stress test' in monthly.text
-    script = (ROOT / "app" / "static" / "monthly.js").read_text()
-    assert "el('judgeDemo').addEventListener('click'" in script
-    assert "renderJudgeSummary(run)" in script
-    assert "/api/monthly/simulate" in script
+    assert "lab.js" in landing.text
 
 def test_judge_preset_runs_the_actual_model_and_exposes_scope():
     r = client.post("/api/monthly/simulate", json={
