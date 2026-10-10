@@ -36,13 +36,25 @@
   <header class="topbar">
     <a class="wordmark" href="#simulator">UAL Counterfactual Lab</a>
     <!-- The view switcher. gooey-nav.js animates it; it is adapted from Rare UI (credit in the About panel). -->
-    <nav class="gooey" id="view-nav" aria-label="Views" data-size="sm">
-      <ul class="gooey-list">
-        <li class="gooey-seg is-active"><button class="gooey-item" type="button" data-value="simulator" aria-current="true">Simulator</button></li>
-        <li class="gooey-seg"><button class="gooey-item" type="button" data-value="behaviour">Behavior</button></li>
-        <li class="gooey-seg"><button class="gooey-item" type="button" data-value="reality">Reality check</button></li>
-      </ul>
-    </nav>
+    <div class="view-switch">
+      <nav class="gooey" id="view-nav" aria-label="Views" data-size="sm">
+        <ul class="gooey-list">
+          <li class="gooey-seg is-active"><button class="gooey-item" type="button" data-value="simulator" aria-current="true" title="Set a scenario and see what it does to United">Simulator</button></li>
+          <li class="gooey-seg"><button class="gooey-item" type="button" data-value="behaviour" title="How United has responded in the past, measured from its history">Behavior</button></li>
+          <li class="gooey-seg"><button class="gooey-item" type="button" data-value="reality" title="The method replayed on past quarters against what United reported">Reality check</button></li>
+        </ul>
+      </nav>
+      <button class="icon-btn views-help-btn" id="views-help-btn" type="button" aria-label="What the three views are" aria-expanded="false" aria-controls="views-help">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.75"/><path d="M8 7.25v3.5" stroke-linecap="round"/><circle cx="8" cy="5.1" r="0.6" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <div class="views-help" id="views-help" hidden>
+        <dl>
+          <div><dt>Simulator</dt><dd>Set a scenario and see what it does to United's earnings and cash.</dd></div>
+          <div><dt>Behavior</dt><dd>How United has actually responded to fuel and demand in the past, measured from its history. These measurements drive the simulator.</dd></div>
+          <div><dt>Reality check</dt><dd>The same method replayed on past quarters and compared with what United reported.</dd></div>
+        </dl>
+      </div>
+    </div>
     <div class="topbar-right">
       <span class="pill" id="fixture-pill" role="status" title="Every number is a made-up stand-in used to build the layout. Nothing here is a finding." hidden>Placeholder data</span>
       <button class="toplink tour-btn" type="button" id="tour-btn" hidden>Tour</button>

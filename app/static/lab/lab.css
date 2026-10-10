@@ -40,11 +40,58 @@ body.app {
   background: var(--surface-rail);
 }
 
-.topbar .wordmark {
+.topbar .view-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Sits outside the switcher's box, so the switcher itself stays at the center of the window. */
+.views-help-btn {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translateY(-50%);
+}
+
+.views-help {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 30;
+  width: min(340px, calc(100vw - 32px));
+  padding: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateX(-50%);
+}
+
+.views-help dl {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.views-help dt {
+  color: var(--ink);
+  font-size: var(--text-13);
+  font-weight: 600;
+}
+
+.views-help dd {
+  margin: 2px 0 0;
+  color: var(--ink-secondary);
+  font-size: var(--text-13);
+  line-height: 1.45;
+}
+
+.wordmark {
   justify-self: start;
 }
 
-.topbar .gooey {
+.topbar .view-switch {
   justify-self: center;
 }
 
@@ -2330,7 +2377,7 @@ tr.is-ours .cellbar i {
   }
 
   /* The switcher drops to its own row, still centered. */
-  .topbar .gooey {
+  .topbar .view-switch {
     grid-row: 2;
     grid-column: 1 / -1;
   }
@@ -2365,7 +2412,7 @@ tr.is-ours .cellbar i {
     padding: 0 20px;
   }
 
-  .topbar .gooey {
+  .topbar .view-switch {
     grid-row: auto;
     grid-column: auto;
   }

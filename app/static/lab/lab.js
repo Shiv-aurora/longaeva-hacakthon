@@ -164,7 +164,26 @@
     else global.location.hash = "#" + name;
   }
 
+  /** The small "i" beside the switcher: one line on what each view is. */
+  function initViewsHelp() {
+    var button = $("views-help-btn"), panel = $("views-help");
+    if (!button || !panel) return;
+    function set(open) {
+      panel.hidden = !open;
+      button.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    button.addEventListener("click", function () { set(panel.hidden); });
+    document.addEventListener("click", function (event) {
+      if (!panel.hidden && !panel.contains(event.target) && !button.contains(event.target)) set(false);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !panel.hidden) { set(false); button.focus(); }
+    });
+    global.addEventListener("hashchange", function () { set(false); });
+  }
+
   function initViews() {
+    initViewsHelp();
     var host = $("view-nav");
     if (host && global.GooeyNav) {
       viewNav = global.GooeyNav.mount(host, {
@@ -3091,7 +3110,11 @@
     splitTable: splitTable,
     words: words,
     view: goToView,
-    sim: { set: sendToSimulator, show: showScenario, read: readSimForm, state: sim },
+    sim: { set: sendToSimulator, show: showScenario, read: readSimForm, state: sim,
+      preset: function (id) {
+        var preset = PRESETS.filter(function (p) { return p.id === id; })[0];
+        if (preset && (sim.today || !preset.needsToday)) applyPreset(preset);
+      } },
     ask: { run: submitQuestion, renderAnswer: renderAnswer, readEventStream: readEventStream, state: ask }
   };
 
