@@ -381,11 +381,11 @@ def test_store_fetches_once_then_reads_the_held_file(tmp_path, monkeypatch):
 
     class Once:
         def get(self, url):
-            return b"<html>held</html>", "2026-10-10T00:00:00+00:00"
+            return b"<html>held</html>", "2026-10-09T00:00:00+00:00"
     url, target = "https://www.sec.gov/Archives/edgar/data/100517/x/a.htm", tmp_path / "raw" / "x" / "a.htm"
     first = fetch.Store(None, Once(), refresh=False)
     assert first.get(url, target, kind="exhibit", accession="x") == b"<html>held</html>" and first.fetched == 1
-    assert first.entries == [{"kind": "exhibit", "accession": "x", "url": url, "retrieved_at": "2026-10-10T00:00:00+00:00",
+    assert first.entries == [{"kind": "exhibit", "accession": "x", "url": url, "retrieved_at": "2026-10-09T00:00:00+00:00",
                               "sha256": byte_hash(b"<html>held</html>"), "bytes": 17, "path": "raw/x/a.htm"}]
     again = fetch.Store({"entries": first.entries}, Refuse(), refresh=False)
     assert again.get(url, target, kind="exhibit", accession="x") == b"<html>held</html>" and again.fetched == 0

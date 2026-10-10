@@ -152,7 +152,7 @@ def upstream(tmp_path):
     traffic, releases, *_ = inputs()
     operating = tmp_path / "traffic"; form41 = tmp_path / "financial"
     save_upstream(operating, {"normalized_digest": digest(traffic), "panel_digest": digest({"selected_releases": releases}),
-        "cutoff": "2026-10-09", "sources": [{"retrieved_at_utc": "2026-10-10T01:00:00+00:00"}],
+        "cutoff": "2026-10-09", "sources": [{"retrieved_at_utc": "2026-10-09T01:00:00+00:00"}],
         "wac_source": {"retrieved_at_utc": "2026-10-09T01:00:00+00:00"}},
         {"normalized.json": traffic, "panel.json": {"selected_releases": releases}})
     panels = {s: normalized_fixture(s) for s in TABLE_CODES}
@@ -165,7 +165,7 @@ def test_preserved_actual_financial_fixtures_roundtrip_and_rebuild(tmp_path):
     operating, form41 = upstream(tmp_path)
     target = tmp_path / "joined"
     first = build_reporting_panel(operating, form41, target)
-    assert first["available_on"] == "2026-10-10"
+    assert first["available_on"] == "2026-10-09"
     assert build_reporting_panel(operating, form41, target)["snapshot_id"] == first["snapshot_id"]
     path = latest_snapshot(target)
     panel = json.loads((path / "panel.json").read_text())

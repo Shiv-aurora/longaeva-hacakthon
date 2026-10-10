@@ -1,71 +1,305 @@
 {
- "fixture": true,
- "generated_at": "2026-01-01T00:00:00Z",
- "as_of": "2026-10-08",
- "events": [
-  {
-   "kind": "plan",
-   "name": "plan",
-   "args": {
-    "steps": [
-     "Placeholder step one",
-     "Placeholder step two",
-     "Placeholder step three"
-    ]
-   },
-   "summary": "Placeholder plan: run one scenario under the three responses, read the measured curve, then check every number",
-   "elapsed_ms": 100
-  },
-  {
-   "kind": "tool_call",
-   "name": "run_scenario",
-   "args": {
-    "fuel_shock_pct": 30,
-    "fuel_shock_months": 6,
-    "capacity_change_pct": -3,
-    "demand_shock_pct": 0,
-    "delivery_delay": {
-     "aircraft": 0,
-     "months": 0
+  "fixture": true,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "as_of": "2026-10-08",
+  "events": [
+    {
+      "id": "plan",
+      "kind": "plan",
+      "status": "running",
+      "label": "Working out what to run.",
+      "meta": null,
+      "details": [],
+      "name": "plan",
+      "args": {},
+      "summary": "Working out what to run.",
+      "elapsed_ms": 0
     },
-    "horizon_months": 12,
-    "seed": 1
-   },
-   "summary": "Placeholder call: run the simulator with fuel up 30% for six months and capacity down 3%",
-   "elapsed_ms": 0
-  },
-  {
-   "kind": "tool_result",
-   "name": "run_scenario",
-   "args": {},
-   "summary": "Placeholder result: three response modes returned, four quarters each",
-   "elapsed_ms": 1000
-  },
-  {
-   "kind": "tool_call",
-   "name": "get_clock",
-   "args": {
-    "clock": "fare"
-   },
-   "summary": "Placeholder call: read the measured recovery curve",
-   "elapsed_ms": 0
-  },
-  {
-   "kind": "tool_result",
-   "name": "get_clock",
-   "args": {},
-   "summary": "Placeholder result: five quarters of the curve read",
-   "elapsed_ms": 100
-  },
-  {
-   "kind": "check",
-   "name": "verify",
-   "args": {
-    "numbers_in_report": 0,
-    "matched_to_model_output": 0
-   },
-   "summary": "Placeholder check: every number in the report matched a model output",
-   "elapsed_ms": 100
-  }
- ]
+    {
+      "id": "plan",
+      "kind": "plan",
+      "status": "done",
+      "label": "Plan: run the simulator, read the clock, read what United said, write the report.",
+      "meta": "0.4 s",
+      "details": [
+        {
+          "label": "Planned by",
+          "meta": "Model Large"
+        },
+        {
+          "label": "Tokens",
+          "meta": "900"
+        },
+        {
+          "label": "Step 1",
+          "meta": "Running the simulator: jet fuel +30% for 6 months, capacity -3%"
+        },
+        {
+          "label": "Step 2",
+          "meta": "Reading the fare clock"
+        },
+        {
+          "label": "Step 3",
+          "meta": "Reading what United said it would recover, and its guidance"
+        }
+      ],
+      "name": "plan",
+      "args": {
+        "kind": "simulation",
+        "calls": [
+          {
+            "tool": "run_scenario",
+            "args": {
+              "fuel_shock_pct": 30,
+              "fuel_shock_months": 6,
+              "capacity_change_pct": -3
+            }
+          },
+          {
+            "tool": "get_clock",
+            "args": {
+              "name": "fare"
+            }
+          },
+          {
+            "tool": "get_promise",
+            "args": {}
+          }
+        ],
+        "missing_inputs": []
+      },
+      "summary": "Plan: run the simulator, read the clock, read what United said, write the report.",
+      "elapsed_ms": 400,
+      "planned_by": "model"
+    },
+    {
+      "id": "tool-1",
+      "kind": "tool",
+      "status": "running",
+      "label": "Running the simulator: jet fuel +30% for 6 months, capacity -3%.",
+      "meta": null,
+      "details": [
+        {
+          "label": "fuel shock pct",
+          "meta": "30"
+        },
+        {
+          "label": "fuel shock months",
+          "meta": "6"
+        },
+        {
+          "label": "capacity change pct",
+          "meta": "-3"
+        }
+      ],
+      "name": "run_scenario",
+      "args": {
+        "fuel_shock_pct": 30,
+        "fuel_shock_months": 6,
+        "capacity_change_pct": -3
+      },
+      "summary": "Running the simulator: jet fuel +30% for 6 months, capacity -3%.",
+      "elapsed_ms": 0
+    },
+    {
+      "id": "tool-1",
+      "kind": "tool",
+      "status": "done",
+      "label": "Ran the simulator: fuel at $5.00 a gallon for 12 months.",
+      "meta": "0.9 s",
+      "details": [
+        {
+          "label": "fuel shock pct",
+          "meta": "30"
+        },
+        {
+          "label": "fuel shock months",
+          "meta": "6"
+        },
+        {
+          "label": "capacity change pct",
+          "meta": "-3"
+        },
+        {
+          "label": "Run",
+          "meta": "run1"
+        },
+        {
+          "label": "Paths",
+          "meta": "1,000"
+        },
+        {
+          "label": "Behaviors computed",
+          "meta": "3"
+        },
+        {
+          "label": "As history shows, operating income change over 12 months",
+          "meta": "-$900m (P10 -$1.2bn, P90 -$600m)"
+        }
+      ],
+      "name": "run_scenario",
+      "args": {
+        "fuel_shock_pct": 30,
+        "fuel_shock_months": 6,
+        "capacity_change_pct": -3
+      },
+      "summary": "Ran the simulator (run1): fuel at $5.00 a gallon for 12 months, 3 behaviors, 1,000 paths, 0.9 s. As history shows, operating income change over 12 months: -$900m (P10 -$1.2bn, P90 -$600m).",
+      "elapsed_ms": 900,
+      "result": "ok",
+      "run_id": "run1"
+    },
+    {
+      "id": "tool-2",
+      "kind": "tool",
+      "status": "running",
+      "label": "Reading the fare clock.",
+      "meta": null,
+      "details": [
+        {
+          "label": "name",
+          "meta": "fare"
+        }
+      ],
+      "name": "get_clock",
+      "args": {
+        "name": "fare"
+      },
+      "summary": "Reading the fare clock.",
+      "elapsed_ms": 0
+    },
+    {
+      "id": "tool-2",
+      "kind": "tool",
+      "status": "done",
+      "label": "Read the fare clock.",
+      "meta": "20 ms",
+      "details": [
+        {
+          "label": "name",
+          "meta": "fare"
+        },
+        {
+          "label": "File",
+          "meta": "fare_clock.json"
+        },
+        {
+          "label": "Headline",
+          "meta": "Placeholder headline for the fare clock (fixture, not a finding)"
+        },
+        {
+          "label": "Figures read",
+          "meta": "16"
+        },
+        {
+          "label": "Sections not read",
+          "meta": "rivals, united points, industry monthly, by split"
+        }
+      ],
+      "name": "get_clock",
+      "args": {
+        "name": "fare"
+      },
+      "summary": "Read fare_clock.json: Placeholder headline for the fare clock (fixture, not a finding)",
+      "elapsed_ms": 20,
+      "result": "ok"
+    },
+    {
+      "id": "tool-3",
+      "kind": "tool",
+      "status": "running",
+      "label": "Reading what United said it would recover, and its guidance.",
+      "meta": null,
+      "details": [],
+      "name": "get_promise",
+      "args": {},
+      "summary": "Reading what United said it would recover, and its guidance.",
+      "elapsed_ms": 0
+    },
+    {
+      "id": "tool-3",
+      "kind": "tool",
+      "status": "done",
+      "label": "Read what United said it would recover, and its guidance.",
+      "meta": "20 ms",
+      "details": [
+        {
+          "label": "File",
+          "meta": "meta.json"
+        },
+        {
+          "label": "Headline",
+          "meta": "For Q3 2026, United guided adjusted EPS of $1.00 to $2.00, assuming fuel at $3.00 a gallon, and said it expects to recover 50% to 60% of the fuel increase in the quarter."
+        },
+        {
+          "label": "Figures read",
+          "meta": "15"
+        }
+      ],
+      "name": "get_promise",
+      "args": {},
+      "summary": "Read meta.json: For Q3 2026, United guided adjusted EPS of $1.00 to $2.00, assuming fuel at $3.00 a gallon, and said it expects to recover 50% to 60% of the fuel increase in the quarter.",
+      "elapsed_ms": 20,
+      "result": "ok"
+    },
+    {
+      "id": "write-1",
+      "kind": "write",
+      "status": "running",
+      "label": "Writing the answer.",
+      "meta": null,
+      "details": [],
+      "name": "write",
+      "args": {},
+      "summary": "Writing the answer.",
+      "elapsed_ms": 0
+    },
+    {
+      "id": "write-1",
+      "kind": "write",
+      "status": "done",
+      "label": "The model wrote the answer.",
+      "meta": "1.2 s",
+      "details": [
+        {
+          "label": "Answered by",
+          "meta": "Model Large"
+        },
+        {
+          "label": "Tokens",
+          "meta": "900"
+        }
+      ],
+      "name": "write",
+      "args": {},
+      "summary": "The model wrote the answer.",
+      "elapsed_ms": 1200
+    },
+    {
+      "id": "check-1",
+      "kind": "check",
+      "status": "done",
+      "label": "Checked: every figure was filled in by code.",
+      "meta": "17 figures",
+      "details": [
+        {
+          "label": "Filled in by code",
+          "meta": "17"
+        },
+        {
+          "label": "Typed by the model",
+          "meta": "none"
+        }
+      ],
+      "name": "verify",
+      "args": {
+        "filled": 17,
+        "typed": [],
+        "unknown": [],
+        "embedded": [],
+        "wording": []
+      },
+      "summary": "Checked the report: 17 figure(s), each filled in by code from a fact id; none typed by the model.",
+      "elapsed_ms": 0
+    }
+  ]
 }

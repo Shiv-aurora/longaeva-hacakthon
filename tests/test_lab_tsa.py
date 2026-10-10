@@ -17,10 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures" / "lab_tsa"
 CUTS = {BASE: "page_current_2026.html", f"{BASE}/2025": "page_2025.html", f"{BASE}/2024": "page_2024.html",
         f"{BASE}/2020": "page_2020.html", f"{BASE}/2019": "page_2019.html"}
-TODAY = date(2026, 10, 10)
-NOW = datetime(2026, 10, 10, 6, 0, tzinfo=timezone.utc)
+TODAY = date(2026, 10, 9)
+NOW = datetime(2026, 10, 9, 6, 0, tzinfo=timezone.utc)
 ARCHIVE_NOTE = "Archived Data has been updated including Known Crewmembers and later flight travel numbers."
-# The body tsa.gov's edge returned with HTTP 403 to Python httpx on 2026-10-10.
+# The body tsa.gov's edge returned with HTTP 403 to Python httpx on 2026-10-09.
 DENIED = (b'<HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don\'t have '
           b'permission to access "http&#58;&#47;&#47;www&#46;tsa&#46;gov&#47;travel&#47;passenger&#45;volumes" on this '
           b'server.<P>\nReference&#32;&#35;18&#46;aee82d17&#46;1791610469&#46;a20ed6a1\n</BODY>\n</HTML>\n')
@@ -291,7 +291,7 @@ def test_offline_build_from_the_real_cuts_invents_no_day(tmp_path):
 
     payload = json.loads(paths["json_path"].read_text())
     check_payload(payload)
-    assert payload["generated_at"] == "2026-10-10T06:00:00+00:00" and payload["as_of"] == "2026-10-08"
+    assert payload["generated_at"] == "2026-10-09T06:00:00+00:00" and payload["as_of"] == "2026-10-08"
     assert payload["versus_united"] is None and "does not exist" in payload["versus_united_reason"]
     assert payload["inputs"][0]["sha256"] == byte_hash(paths["csv_path"].read_bytes()) == result["outputs"][0]["sha256"]
     assert {i["sha256"] for i in payload["inputs"][1:]} == {e["sha256"] for e in manifest["entries"]}

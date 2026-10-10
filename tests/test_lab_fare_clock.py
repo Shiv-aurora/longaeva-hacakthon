@@ -13,7 +13,7 @@ from scripts.lab import build_fare_clock
 
 TRUE_CURVE = np.array([0.10, 0.40, 0.60, 0.70, 0.75])   # share recovered 0..4 quarters after a shock
 TRUE_LAGS = np.diff(np.concatenate([[0.0], TRUE_CURVE]))
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 
 
 # ------------------------------------------------------------------ simulators

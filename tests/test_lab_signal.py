@@ -10,7 +10,7 @@ from app.lab import market_clock, market_data, outlook
 from app.lab import track_record as tr
 from scripts.lab import build_signal
 
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 
 
 @pytest.fixture(scope="module")

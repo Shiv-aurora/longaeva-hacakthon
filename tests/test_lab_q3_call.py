@@ -11,7 +11,7 @@ from app.lab import stats
 from app.lab import track_record as tr
 from scripts.lab import build_q3_call, score_q3_call
 
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 
 
 @pytest.fixture(scope="module")

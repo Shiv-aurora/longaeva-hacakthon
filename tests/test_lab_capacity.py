@@ -10,7 +10,7 @@ from app.lab import capacity_response as cr
 from app.lab import stats
 from scripts.lab import build_capacity_response
 
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 TRUE_LAGS = np.array([0.0, -0.15, -0.25, -0.10, 0.0])     # nothing in the quarter of the rise, then a cut
 TRUE_CURVE = np.cumsum(TRUE_LAGS)
 

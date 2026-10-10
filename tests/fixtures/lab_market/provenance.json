@@ -1,5 +1,5 @@
 {
-  "note": "Rows cut from the raw downloads of 2026-10-10 identified by raw_sha256 (the files that data/lab/manifests/market.json listed on that date). Values are copied unchanged; only the row range is reduced. A later refresh replaces the Yahoo and BLS raw files, so these hashes then refer to an earlier retrieval.",
+  "note": "Rows cut from the raw downloads of 2026-10-09 identified by raw_sha256 (the files that data/lab/manifests/market.json listed on that date). Values are copied unchanged; only the row range is reduced. A later refresh replaces the Yahoo and BLS raw files, so these hashes then refer to an earlier retrieval.",
   "window": [
     "2025-06-16",
     "2025-07-08"
@@ -9,42 +9,42 @@
       "source": "eia_fuel",
       "url": "https://www.eia.gov/dnav/pet/hist_xls/EER_EPJK_PF4_RGC_DPGd.xls",
       "raw_sha256": "8e78b7fd08ce6a81ed4fb52ce33709f19979a6bda883cbed35754c2a3d2cd42b",
-      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "retrieved_at": "2026-10-09T05:22:33+00:00",
       "kept": "3 header rows and the 15 data rows in the window, as xlrd cell values (Excel serial date, price)"
     },
     "fred_DJFUELUSGULF.csv": {
       "source": "fred_fuel",
       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DJFUELUSGULF",
       "raw_sha256": "b5e1f4f8fe3a3d109cf32cf4a922fbb1bd7984350394580b23f7ae0cb4f14f27",
-      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "retrieved_at": "2026-10-09T05:22:33+00:00",
       "kept": "header and the 17 lines dated 2025-06-16 to 2025-07-08, blanks included"
     },
     "fred_CUSR0000SETG01.csv": {
       "source": "fred_cpi:CUSR0000SETG01",
       "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CUSR0000SETG01",
       "raw_sha256": "e96985e0cf5c77fd626d1dbee8908f14cce746418e5464911d71feb0777e8d70",
-      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "retrieved_at": "2026-10-09T05:22:45+00:00",
       "kept": "header and the 7 lines dated 2025-07-01 to 2026-01-01, blanks included"
     },
     "yahoo_chart_UAL.json": {
       "source": "yahoo:UAL",
       "url": "https://query1.finance.yahoo.com/v8/finance/chart/UAL?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
       "raw_sha256": "24bbf867dc5f0da96fe0723616daa9904c79e83ea3438b89336591794103874c",
-      "retrieved_at": "2026-10-10T05:22:33+00:00",
+      "retrieved_at": "2026-10-09T05:22:33+00:00",
       "kept": "meta unchanged; the 15 bars in the window; events block omitted"
     },
     "yahoo_chart_HO_F.json": {
       "source": "yahoo:HO=F",
       "url": "https://query1.finance.yahoo.com/v8/finance/chart/HO%3DF?period1=1325376000&period2=1791609753&interval=1d&events=div%2Csplit",
       "raw_sha256": "56ef5a62030a37b3aeaa5f963128a1d9c2e1a4460efe2d5d3febc10c96fe63d9",
-      "retrieved_at": "2026-10-10T05:22:43+00:00",
+      "retrieved_at": "2026-10-09T05:22:43+00:00",
       "kept": "meta unchanged; the 17 bars in the window; events block omitted"
     },
     "bls_timeseries.json": {
       "source": "bls_api",
       "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
       "raw_sha256": "3452f0c0467a93f98b1bac062fee9a75ae6dbab0e01e45231c8cea88590bc03b",
-      "retrieved_at": "2026-10-10T05:22:45+00:00",
+      "retrieved_at": "2026-10-09T05:22:45+00:00",
       "kept": "all three series; months 2025-07 to 2026-01, including the unpublished October 2025 row"
     }
   }

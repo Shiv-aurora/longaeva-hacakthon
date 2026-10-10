@@ -531,7 +531,7 @@ def test_download_keeps_bytes_and_a_manifest_without_the_agent(monkeypatch, tmp_
     class Offline:
         def get(self, url):
             requested.append(url)
-            return served[url], "2026-10-10T00:00:00+00:00"
+            return served[url], "2026-10-09T00:00:00+00:00"
 
     manifest = fetch.download(Offline(), "2026-10-01", None, None)
     assert manifest["failures"] == [] and [e["kind"] for e in manifest["entries"]].count("exhibit") == 1

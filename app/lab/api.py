@@ -1,4 +1,4 @@
-"""Lab API: status, the analyst chat (whole and streamed) and the simulator.
+"""Lab API: status, the analyst chat (whole and streamed), ready insights and the simulator.
 
 `app/server.py` includes `router`. These endpoints are public, so every request is
 bounded in size, each client has a token bucket, model calls have a daily ceiling,
@@ -118,6 +118,7 @@ class ChatPayload(BaseModel):
     model_config = {"extra": "forbid"}
     message: str
     history: list[ChatTurn] = Field(default_factory=list)
+    model: str | None = None
 
 
 def _client(request: Request) -> str:
@@ -150,12 +151,15 @@ async def _read(request: Request):
         raise HTTPException(status_code=422, detail="Request body is not valid JSON") from None
 
 
-async def _chat_request(request: Request) -> tuple[str, list[dict]]:
+async def _chat_request(request: Request) -> tuple[str, list[dict], str | None]:
     """Validate, then charge the client's bucket. A turn costs one token however many steps it takes."""
     try:
         body = ChatPayload.model_validate(await _read(request))
     except ValueError:
-        raise HTTPException(status_code=422, detail="Expected {message, history: [{role, content}]}") from None
+        raise HTTPException(status_code=422, detail="Expected {message, history: [{role, content}], model}") from None
+    choices = [chat.RULES, *groq_client.model_chain()]
+    if body.model is not None and body.model not in choices:
+        raise HTTPException(status_code=422, detail="model must be one of: " + ", ".join(choices))
     message = body.message.strip()
     if not message:
         raise HTTPException(status_code=422, detail="Message is empty")
@@ -165,7 +169,7 @@ async def _chat_request(request: Request) -> tuple[str, list[dict]]:
         raise HTTPException(status_code=422, detail=f"History is too long (maximum {MAX_HISTORY_MESSAGES} messages "
                                                     f"of {MAX_HISTORY_CHARS} characters)")
     _admit(request)
-    return message, [turn.model_dump() for turn in body.history]
+    return message, [turn.model_dump() for turn in body.history], body.model
 
 
 def _agent() -> str:
@@ -176,13 +180,19 @@ def _agent() -> str:
 def lab_status():
     """What is connected. `agent` is "model" or "rules": in rules mode the chat still answers,
     through the rules planner, so there is no "not configured" state for the page to handle.
-    `models` is the order a turn falls through on a rate limit; `models_resting` the seconds
-    until a rate-limited one is free."""
+
+    `models` is what a turn may be sent with as `model`: [{id, label, note, available}], the
+    models in the order a turn falls through them on a rate limit and then {"id": "rules"},
+    the rules planner alone. A model is unavailable with no key or while it is rate-limited
+    (`models_resting`: seconds until it is free); a turn sent with one answers by the rules.
+    `commands` is the console's slash commands: [{name, description, template}], where
+    `template` is the question put in the box, with __ where a figure goes.
+    `suggested` is questions that work as they are."""
     configured = groq_client.is_configured()
     agent = _agent()
     return {"ai_configured": configured, "agent": agent, "agent_note": AGENT_NOTES[agent],
-            "model": groq_client.default_model() if configured else None, "models": groq_client.model_chain() if configured else [],
-            "models_resting": groq_client.cooling(), "suggested": list(chat.CAN_ASK),
+            "model": groq_client.default_model() if configured else None, "models": chat.model_options(),
+            "models_resting": groq_client.cooling(), "commands": [dict(command) for command in chat.COMMANDS], "suggested": list(chat.CAN_ASK),
             "data_files": chat.data_files(), "simulator": chat.scenario_connected(), "simulator_parts": chat.simulator_parts(),
             "limits": {"max_message_chars": MAX_MESSAGE_CHARS, "max_history_messages": MAX_HISTORY_MESSAGES,
                        "max_history_chars": MAX_HISTORY_CHARS, "max_tool_calls": chat.MAX_TOOL_CALLS,
@@ -193,26 +203,29 @@ def lab_status():
 async def lab_chat(request: Request):
     """One analyst turn as a single JSON object.
 
-    Request:  {"message": "...", "history": [{"role": "user" | "assistant", "content": "..."}]}
+    Request:  {"message": "...", "history": [{"role": "user" | "assistant", "content": "..."}], "model": null}
+      `model` is optional: an id from /status `models`, or "rules" for the rules planner
+      alone. Anything else is a 422.
     Response: the result documented on `chat.iter_chat` ({status, answer, verified, note,
-    planned_by, written_by, report, facts, steps, charts, evidence_ids, scenarios, grids,
-    usage, ...}). There is always an answer: with no API key, a rate-limited model or a
-    spent daily ceiling the rules planner plans and writes it (planned_by "rules"). A turn
-    takes one token from the client's bucket however many steps it runs; each model call
-    counts against the daily ceiling. Errors: 413, 422 and 429 (with Retry-After).
+    planned_by, written_by, report, facts, sources, follow_ups, steps, charts, evidence_ids,
+    scenarios, grids, usage, ...}). There is always an answer: with no API key, a
+    rate-limited model or a spent daily ceiling the rules planner plans and writes it
+    (planned_by "rules"). A turn takes one token from the client's bucket however many
+    steps it runs; each model call counts against the daily ceiling.
+    Errors: 413, 422 and 429 (with Retry-After).
     """
-    message, history = await _chat_request(request)
-    return await run_in_threadpool(chat.run_chat, message, history, allow_call=_limiter.spend_model_call)
+    message, history, model = await _chat_request(request)
+    return await run_in_threadpool(chat.run_chat, message, history, model=model, allow_call=_limiter.spend_model_call)
 
 
 def _event(name: str, data: dict) -> str:
     return f"event: {name}\ndata: {json.dumps(data, separators=(',', ':'))}\n\n"
 
 
-def _events(message: str, history: list[dict]):
+def _events(message: str, history: list[dict], model: str | None = None):
     yield ": open\n\n"
     try:
-        for name, payload in chat.iter_chat(message, history, allow_call=_limiter.spend_model_call):
+        for name, payload in chat.iter_chat(message, history, model=model, allow_call=_limiter.spend_model_call):
             yield _event(name, payload)
     except Exception as error:  # the stream has started, so a failure has to arrive as an event
         # The type only: an exception's text can quote what the user typed.
@@ -225,12 +238,25 @@ async def lab_chat_stream(request: Request):
     """The same turn as Server-Sent Events, for hosts that do not buffer responses.
 
     Same request and same pre-flight errors as /chat. Events, in order:
-      event: step    data: {kind, name, args, summary, elapsed_ms}   one per step, as it happens
-      event: final   data: the /chat response                        always last on success
-      event: error   data: {status, detail}                          instead of final if the turn breaks
+      event: step    data: {id, kind, status, label, meta, details, name, args, summary, elapsed_ms}
+                     One state of one step, as it happens: a step that takes time arrives as
+                     "running" and again, with the same id, as "done" or "failed".
+                     kind is plan | tool | write | check (see `chat.iter_chat`).
+      event: final   data: the /chat response; its `steps` is each step's last state   always last on success
+      event: error   data: {status, detail}                                            instead of final if the turn breaks
     """
     return StreamingResponse(_events(*await _chat_request(request)), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"})
+
+
+@router.get("/insights")
+async def lab_insights():
+    """Ready findings for the console's empty state, each written by code from a built file
+    or from one simulator run at today's fuel price (`chat.insights`):
+      {"status": "ok", "items": [{"id", "text", "chart": {"file", "kind"} | null, "question", "source": {id, name, kind, detail, href}}]}
+    An item whose file is missing is left out; with none the status is "not_computed".
+    Kept in memory for a few minutes, so it costs at most one simulator run now and then."""
+    return await run_in_threadpool(chat.insights)
 
 
 @router.post("/scenario")

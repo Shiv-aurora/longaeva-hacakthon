@@ -1,11 +1,11 @@
 {
-  "note": "Cuts of the raw tsa.gov pages retrieved on 2026-10-10 and identified by raw_sha256 (the files data/lab/manifests/tsa.json listed on that date). Each cut keeps, byte for byte, the page's <title> element and the markup from the page-title block through </article>; inside the table every row except the listed dates is removed. The cut is wrapped in bare doctype, html, head and body tags. No value is altered.",
+  "note": "Cuts of the raw tsa.gov pages retrieved on 2026-10-09 and identified by raw_sha256 (the files data/lab/manifests/tsa.json listed on that date). Each cut keeps, byte for byte, the page's <title> element and the markup from the page-title block through </article>; inside the table every row except the listed dates is removed. The cut is wrapped in bare doctype, html, head and body tags. No value is altered.",
   "fixtures": {
     "page_current_2026.html": {
       "source": "tsa:current",
       "url": "https://www.tsa.gov/travel/passenger-volumes",
       "raw_sha256": "0463753ba16f22b549f7383ca1cbaffbc84ed9ca4d504b42c3f4c9d3312c883f",
-      "retrieved_at": "2026-10-10T05:45:19+00:00",
+      "retrieved_at": "2026-10-09T05:45:19+00:00",
       "rows_in_raw": 281,
       "kept_dates": [
         "10/8/2026",
@@ -26,7 +26,7 @@
       "source": "tsa:2025",
       "url": "https://www.tsa.gov/travel/passenger-volumes/2025",
       "raw_sha256": "3cc69c8ea35ae1a39426e5170123fb99f34fa8ac76051e1de99371751f24d4b6",
-      "retrieved_at": "2026-10-10T05:45:21+00:00",
+      "retrieved_at": "2026-10-09T05:45:21+00:00",
       "rows_in_raw": 365,
       "kept_dates": [
         "1/1/2025",
@@ -49,7 +49,7 @@
       "source": "tsa:2024",
       "url": "https://www.tsa.gov/travel/passenger-volumes/2024",
       "raw_sha256": "15854cbbd70df19f69ac3837e86ad2fde1c0b1e3094a583bfa1efbf197797de6",
-      "retrieved_at": "2026-10-10T05:45:22+00:00",
+      "retrieved_at": "2026-10-09T05:45:22+00:00",
       "rows_in_raw": 366,
       "kept_dates": [
         "1/1/2024",
@@ -64,7 +64,7 @@
       "source": "tsa:2020",
       "url": "https://www.tsa.gov/travel/passenger-volumes/2020",
       "raw_sha256": "65aca58ca6a8a1f84b65d79b49241bd5bb33555c096fbe80fa2fba21bdf3ffb3",
-      "retrieved_at": "2026-10-10T05:45:27+00:00",
+      "retrieved_at": "2026-10-09T05:45:27+00:00",
       "rows_in_raw": 366,
       "kept_dates": [
         "1/1/2020",
@@ -80,7 +80,7 @@
       "source": "tsa:2019",
       "url": "https://www.tsa.gov/travel/passenger-volumes/2019",
       "raw_sha256": "d5bafc619f48215d81e33c68db956f9817f3caf832f218accc2e274c5e9059f3",
-      "retrieved_at": "2026-10-10T05:45:28+00:00",
+      "retrieved_at": "2026-10-09T05:45:28+00:00",
       "rows_in_raw": 365,
       "kept_dates": [
         "1/1/2019",

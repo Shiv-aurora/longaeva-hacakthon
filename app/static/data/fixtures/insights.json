@@ -1,0 +1,77 @@
+{
+  "fixture": true,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "as_of": "2026-10-08",
+  "status": "ok",
+  "items": [
+    {
+      "id": "fuel_gap",
+      "question": "What does this project's forecast say?",
+      "source": {
+        "id": "q3_call.json",
+        "name": "This project's forecast",
+        "kind": "data",
+        "detail": "q3_call.json",
+        "href": "/static/data/q3_call.json"
+      },
+      "chart": {
+        "file": "signal.json",
+        "kind": "daily_estimate"
+      },
+      "text": "Placeholder. The quarter's fuel is estimated at $3.00 a gallon, the same as United assumed."
+    },
+    {
+      "id": "recovery",
+      "question": "How much of a fuel cost shock does United win back?",
+      "source": {
+        "id": "fare_clock.json",
+        "name": "Fuel cost made up through revenue",
+        "kind": "data",
+        "detail": "fare_clock.json",
+        "href": "/static/data/fare_clock.json"
+      },
+      "chart": {
+        "file": "fare_clock.json",
+        "kind": "recovery_curve"
+      },
+      "text": "Placeholder. A year after a fuel cost change, United has made up about 100% of it through revenue (80% to 120%)."
+    },
+    {
+      "id": "scores",
+      "question": "How has the method done on past quarters?",
+      "source": {
+        "id": "track_record.json",
+        "name": "Replay of past quarters",
+        "kind": "data",
+        "detail": "track_record.json",
+        "href": "/static/data/track_record.json"
+      },
+      "chart": {
+        "file": "track_record.json",
+        "kind": "scores"
+      },
+      "text": "Placeholder. Across 12 replayed quarters the method missed EPS by $0.25 on average; United's own midpoint missed by $0.25."
+    },
+    {
+      "id": "today",
+      "question": "What does today's jet fuel price mean for United?",
+      "request": {
+        "fuel_usd_gal": 5.0,
+        "fuel_shock_months": 12,
+        "horizon_months": 12
+      },
+      "source": {
+        "id": "simulator",
+        "name": "Simulator run",
+        "kind": "simulator",
+        "href": null,
+        "detail": "1,000 paths"
+      },
+      "chart": {
+        "file": null,
+        "kind": "scenario_fan"
+      },
+      "text": "Placeholder. Today's fuel price makes free cash flow negative in 30% of runs as history shows, against 10% with no shock."
+    }
+  ]
+}

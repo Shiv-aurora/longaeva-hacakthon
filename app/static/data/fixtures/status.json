@@ -1,0 +1,97 @@
+{
+  "fixture": true,
+  "generated_at": "2026-01-01T00:00:00Z",
+  "as_of": "2026-10-08",
+  "ai_configured": true,
+  "agent": "model",
+  "agent_note": "A language model plans the work and words the report from facts that code fills in. The rules planner takes over when the model is rate-limited.",
+  "model": "placeholder/model-large",
+  "models": [
+    {
+      "id": "placeholder/model-large",
+      "label": "Placeholder Large",
+      "note": "The default: plans the work and words the answer.",
+      "available": true
+    },
+    {
+      "id": "placeholder/model-small",
+      "label": "Placeholder Small",
+      "note": "Smaller and faster. Steps in when the default is rate-limited.",
+      "available": true
+    },
+    {
+      "id": "rules",
+      "label": "Rules only, no model",
+      "available": true,
+      "note": "Reads the common question shapes without a model. Every figure still comes from the simulator and the built files."
+    }
+  ],
+  "models_resting": {},
+  "commands": [
+    {
+      "name": "/whatif",
+      "description": "Run a fuel shock through the simulator",
+      "template": "What happens if jet fuel is __% higher for __ months?"
+    },
+    {
+      "name": "/compare",
+      "description": "Put a case beside no shock",
+      "template": "Compare jet fuel __% higher for __ months with the baseline."
+    },
+    {
+      "name": "/breaks",
+      "description": "Find what keeps free cash flow positive",
+      "template": "What keeps free cash flow positive with fuel __% higher?"
+    },
+    {
+      "name": "/today",
+      "description": "Run today's jet fuel price",
+      "template": "What does today's jet fuel price mean for United?"
+    },
+    {
+      "name": "/history",
+      "description": "See how the method did on past quarters",
+      "template": "How has the method done on past quarters?"
+    },
+    {
+      "name": "/forecast",
+      "description": "Read this project's forecast for the quarter",
+      "template": "What does this project's forecast say?"
+    }
+  ],
+  "suggested": [
+    "What happens if jet fuel stays 25% higher for 6 months and United cuts capacity by 3%?",
+    "Compare jet fuel at 4.50 dollars a gallon with the baseline.",
+    "What must be true for free cash flow to stay positive if jet fuel is 25% higher?",
+    "What does today's jet fuel price mean for United?",
+    "How much of a fuel cost shock does United win back through revenue, and how fast?",
+    "What did United guide for the quarter, and what does this project's forecast say?",
+    "How has the method done on past quarters against simple rivals?",
+    "How fast does the stock react to a fuel move?"
+  ],
+  "data_files": {
+    "meta.json": true,
+    "cost_clock.json": true,
+    "fare_clock.json": true,
+    "market_clock.json": true,
+    "track_record.json": true,
+    "q3_call.json": true,
+    "signal.json": true,
+    "evidence.json": true,
+    "capacity_response.json": true,
+    "peer_recovery.json": true
+  },
+  "simulator": true,
+  "simulator_parts": {
+    "run_scenario": true,
+    "run_grid": true,
+    "today_request": true
+  },
+  "limits": {
+    "max_message_chars": 600,
+    "max_history_messages": 12,
+    "max_history_chars": 2000,
+    "max_tool_calls": 6,
+    "model_calls_left_today": 600
+  }
+}

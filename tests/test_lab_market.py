@@ -16,7 +16,7 @@ from scripts.lab.fetch_market import (cpi_lines, cross_check, exact, fuel_lines,
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures" / "lab_market"
-LATER = "2026-10-10T05:16:07+00:00"
+LATER = "2026-10-09T05:16:07+00:00"
 JUNETEENTH, JULY_FOURTH = date(2025, 6, 19), date(2025, 7, 4)
 
 

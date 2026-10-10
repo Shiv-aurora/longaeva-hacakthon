@@ -11,7 +11,7 @@ from app.lab import fare_clock as fc
 from app.lab import peer_panel as pp
 from scripts.lab import build_peer_panel
 
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 TRUE_L, TRUE_RHO = 0.8, 0.6
 WINDOW = {"first": fc.PANDEMIC_Q[0], "last": fc.PANDEMIC_Q[1], "label": "2020Q1-2021Q4", "source": "test"}
 

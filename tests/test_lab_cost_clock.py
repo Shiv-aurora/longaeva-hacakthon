@@ -11,7 +11,7 @@ from app.lab import cost_clock as cc
 from app.lab import market_data
 from scripts.lab import build_cost_clock
 
-STAMP = "2026-10-10T00:00:00Z"
+STAMP = "2026-10-09T00:00:00Z"
 TIERS = ("Profit sharing is the sum of three tiers: about 3.6% of adjusted pre-tax earnings up to and above a 6.9% "
          "margin, about 6.0% up to $2.5 billion and about 12.0% above it, and about 3.3% of earnings above the prior year's.")
 
