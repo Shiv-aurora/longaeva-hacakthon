@@ -53,3 +53,21 @@ The initial history was created locally, then published to
 promotes the application directory to the repository root while preserving those
 existing commits. The original proposal PDFs and distribution ZIP remain in the
 parent workspace; they are not part of the current application-root snapshot.
+
+## Focused submission workstation
+
+The monthly workstation now opens at `/`, with the original daily fuel pilot at
+`/fuel-pilot`. Five tabs separate scenario analysis, failure search, target
+inversion, evidence and thesis export. Four illustrative presets keep purchase
+and retention assumptions visible without placing every advanced control on the
+first screen.
+
+Verification for this change: **112 targeted tests passed** (four API/route tests
+and 108 monthly, purchase, retention, search, inversion and thesis tests). Browser
+checks exercised the combined and no-retention presets, both 3×3 inverse grids,
+inspection of a compatible target point, and a downloaded one-page thesis PDF.
+The combined result matched the numerical case in `demo_case_verification.md`.
+The primary controls, chart and three metrics fit a 1366×769 desktop viewport;
+the 389×843 mobile layout scrolls without horizontal overflow. No browser console
+errors or warnings were observed. These checks establish implementation behavior,
+not forecast calibration or validation of assumed airline responses.

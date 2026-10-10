@@ -13,3 +13,102 @@
 #cash-funding{padding:22px}#cash-funding caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#cashPlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#cashPlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}.cash-event{border-top:1px solid var(--border);padding:12px 0;margin-top:10px}.cash-event label{display:block;color:var(--sub);font-size:12px;margin:8px 0}.cash-event input,.cash-event select{width:100%;margin-top:6px}#cashPlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#cashPlanControls input[type=checkbox]{width:auto}
 #purchase-funding{padding:22px}#purchase-funding caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#purchasePlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#purchasePlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}#purchasePlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#purchasePlanControls input[type=checkbox]{width:auto}.purchase-row{border-top:1px solid var(--border);padding:12px 0;margin:12px 0}.purchase-row label{display:block;color:var(--sub);font-size:12px;margin:8px 0}.purchase-row input,.purchase-row select{margin-top:6px}.purchase-deposits{border-left:2px solid var(--border);padding-left:10px;margin:12px 0}.purchase-deposit{margin:12px 0}
 #retention-result{padding:22px}#retention-result caption{text-align:left;color:var(--sub);font-size:12px;padding:12px 0}#retentionPlanFields{border:1px solid var(--border);padding:12px;margin-top:12px}#retentionPlanControls textarea{width:100%;background:#0b131e;color:var(--text);border:1px solid var(--border2);border-radius:5px;padding:10px;resize:vertical}#retentionPlanControls .check-label{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:12px}#retentionPlanControls input[type=checkbox]{width:auto}.retention-link{border-top:1px solid var(--border);padding:10px 0;margin:12px 0}.retention-link label{display:block;color:var(--sub);font-size:12px;margin:10px 0}.retention-link input,.retention-link select{margin-top:6px}.retention-link .support-label{display:flex;align-items:center;gap:8px}
+
+/* A compact analyst workspace: each workflow has its own accessible view. */
+[hidden]{display:none!important}
+body{background:var(--bg)}
+.topbar{padding:14px 30px;min-height:66px}
+.workspace-label{color:var(--muted);font-size:12px}
+.workspace{max-width:1480px;padding:0 30px}
+.workspace-heading{padding:22px 0 14px}
+.workspace-heading h1{font-size:25px;letter-spacing:-.8px;margin:0;font-weight:600}
+.workspace-heading p{font-size:12px;color:var(--sub);margin:7px 0 0}
+.foundation-notice{font-size:11px;padding:10px 13px;margin-bottom:15px;line-height:1.5;border-radius:4px}
+.foundation-notice strong{font-weight:600}
+.workspace-tabs{display:flex;gap:24px;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
+.workspace-tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:12px 0;color:var(--sub);font:inherit;font-size:13px;white-space:nowrap}
+.workspace-tabs button[aria-selected=true]{color:var(--mint);border-bottom-color:var(--mint)}
+.workspace-tabs button:hover{color:var(--text)}
+.workspace-view{min-width:0}
+.workspace-view>.panel{padding:22px;margin-bottom:16px}
+.workspace-view .main-grid{grid-template-columns:320px minmax(0,1fr);gap:16px;margin:0;align-items:start}
+.workspace-view .control-panel{grid-column:1;grid-row:1;padding:18px}
+.workspace-view .primary-panel{grid-column:2;grid-row:1;padding:18px 22px}
+.control-panel h2{font-size:16px;margin:0 0 12px}
+.control-panel .control{margin-top:12px}
+.control-panel .inline-controls{margin:12px 0;gap:10px}
+.control-panel .compact-row .control{margin-top:0}
+.control-panel input:not([type=range]),.control-panel select{padding:8px;min-height:36px;font-size:12px}
+.control-panel label{font-size:11px}
+.control-panel .micro{font-size:10px}
+.scenario-presets{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.scenario-presets button{font-size:11px;min-height:33px;border:1px solid var(--border2);color:var(--sub);background:#0b131e;border-radius:4px;padding:7px}
+.scenario-presets button:hover,.scenario-presets button[aria-pressed=true]{border-color:var(--mint);color:var(--mint)}
+#presetStatus{margin:8px 0 12px;line-height:1.45}
+.basic-assumptions{font-size:10px;color:var(--sub);line-height:1.5;margin:12px 0}
+.control-panel .run-button{min-height:40px;font-size:12px;letter-spacing:.3px;justify-content:center;padding:10px}
+#advancedAssumptions{border-top:1px solid var(--border);padding-top:12px;margin:14px 0 0}
+#advancedAssumptions>summary{font-size:12px}
+.advanced-fields>div>label{display:block;color:var(--sub);margin:10px 0 6px;font-size:11px}
+.advanced-fields details{margin:16px 0;font-size:12px}
+.primary-panel .panel-head h2{font-size:19px;margin-top:5px}
+.primary-panel .chart-legend{margin:16px 0 4px;font-size:10px;gap:14px}
+#monthlyChart{display:block;max-height:275px;min-height:200px}
+#monthlyStatus{margin:8px 0;font-size:10px;color:var(--sub)}
+.monthly-kpis{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:14px 0 0}
+.monthly-kpis .kpi{border:0;border-radius:0;background:transparent;padding:12px 14px}
+.monthly-kpis .kpi:first-child{padding-left:0}
+.monthly-kpis .kpi+.kpi{border-left:1px solid var(--border)}
+.monthly-kpis .kpi-title{font-size:9px;min-height:15px;letter-spacing:.3px}
+.monthly-kpis .kpi-number{font-size:26px;margin:6px 0;letter-spacing:-.6px}
+.monthly-kpis .kpi-foot{font-size:8px}
+.result-reading{font-size:12px;padding-top:12px;color:var(--sub)}
+.result-reading>strong{color:var(--text);font-size:12px;font-weight:500}
+.result-reading p{margin:5px 0;line-height:1.5}
+.result-reading .micro{font-size:10px}
+.view-intro h2{font-size:22px;margin:5px 0 8px;letter-spacing:-.5px}
+.view-intro p{max-width:860px;color:var(--sub);font-size:12px;line-height:1.6}
+.view-intro .text-link{display:inline-block;margin:0 0 12px}
+.supporting-kpis{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 16px}
+.workspace footer{padding:17px 0;font-size:9px}
+textarea:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+@media(min-width:1100px){.workspace-view .control-panel{max-height:calc(100dvh - 255px);overflow:auto;min-height:470px}.workspace-view .primary-panel{max-height:calc(100dvh - 255px);overflow:auto;min-height:470px}}
+@media(max-width:1099px){.workspace-view .main-grid{grid-template-columns:290px minmax(0,1fr)}.monthly-kpis .kpi-number{font-size:21px}.workspace-label{display:none}}
+@media(max-width:790px){.workspace{padding:0 16px}.topbar{padding:13px 16px}.workspace-heading h1{font-size:22px;line-height:1.2}.workspace-heading{padding-top:20px}.workspace-tabs{gap:20px}.workspace-view .main-grid{grid-template-columns:1fr}.workspace-view .control-panel,.workspace-view .primary-panel{grid-column:1;grid-row:auto}.workspace-view .control-panel{order:0}.workspace-view .primary-panel{order:1;padding:18px}.monthly-kpis .kpi-number{font-size:20px}#monthlyChart{min-height:160px}.workspace footer{display:block}}
+@media(max-width:450px){.monthly-kpis{grid-template-columns:1fr}.monthly-kpis .kpi{padding:10px 0;display:grid;grid-template-columns:1fr auto;gap:3px 10px}.monthly-kpis .kpi+.kpi{border-left:0;border-top:1px solid var(--border)}.monthly-kpis .kpi-number{grid-column:2;grid-row:1/3;align-self:center;margin:0}.monthly-kpis .kpi-foot{grid-column:1}.supporting-kpis{grid-template-columns:1fr}.workspace-view>.panel{padding:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* On short desktop displays, keep the decision controls and results in view. */
+@media(min-width:1100px) and (max-height:850px){
+  .topbar{min-height:56px;padding-top:10px;padding-bottom:10px}
+  .workspace-heading{padding:14px 0 10px}
+  .workspace-heading h1{font-size:22px}
+  .workspace-heading p{margin-top:5px}
+  .foundation-notice{padding:8px 11px;margin-bottom:10px}
+  .workspace-tabs{margin-bottom:12px}
+  .workspace-tabs button{padding:10px 0}
+  .workspace-view .control-panel,.workspace-view .primary-panel{min-height:0;max-height:calc(100dvh - 245px);padding:14px 16px}
+  .control-panel .control{margin-top:9px}
+  .control-panel .inline-controls{margin:9px 0}
+  .control-panel input:not([type=range]),.control-panel select{min-height:31px;padding:6px 8px}
+  .control-panel label{margin-bottom:5px}
+  .control-panel h2{margin-bottom:9px}
+  .scenario-presets button{min-height:30px;padding:5px 6px}
+  #presetStatus{margin:7px 0 10px;font-size:9px;line-height:1.4}
+  .basic-assumptions{margin:9px 0;font-size:9px;line-height:1.45}
+  .control-panel .run-button{min-height:36px;padding:8px}
+  #advancedAssumptions{margin-top:10px;padding-top:10px}
+  .primary-panel .panel-head h2{font-size:18px}
+  .primary-panel .chart-legend{margin:10px 0 3px}
+  #monthlyChart{min-height:0;height:190px;max-height:190px}
+  .primary-panel .chart-note{font-size:10px;line-height:1.45}
+  #monthlyStatus{margin:6px 0}
+  .monthly-kpis{margin-top:9px}
+  .monthly-kpis .kpi{padding-top:9px;padding-bottom:9px}
+  .monthly-kpis .kpi-number{font-size:24px;margin:4px 0}
+  .result-reading{padding-top:8px;font-size:11px}
+  .result-reading>strong{font-size:11px}
+  .result-reading p{margin:4px 0;line-height:1.4}
+  .result-reading .micro{font-size:9px}
+  .workspace footer{padding:10px 0}
+}

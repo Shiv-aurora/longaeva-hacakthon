@@ -3,12 +3,30 @@
   const el = id => document.getElementById(id);
   const fmt = n => Number(n).toLocaleString('en-US', {maximumFractionDigits:1});
   const money = n => (n < 0 ? '−' : '+') + '$' + fmt(Math.abs(n)) + 'M';
+  // Views retain their forms and result state; navigation never resets a scenario.
+  const tabs=[...document.querySelectorAll('[data-view]')];
+  function showView(name,focus=false){
+    const selected=tabs.find(tab=>tab.dataset.view===name);if(!selected)return;
+    for(const tab of tabs){const active=tab===selected;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;el(tab.getAttribute('aria-controls')).hidden=!active}
+    if(focus)selected.focus();
+  }
+  for(const tab of tabs){
+    tab.addEventListener('click',()=>showView(tab.dataset.view));
+    tab.addEventListener('keydown',event=>{const index=tabs.indexOf(tab);let next;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;else return;event.preventDefault();showView(tabs[next].dataset.view,true)});
+  }
+  const sectionViews={'failure-search':'failure','target-inversion':'target','thesis-export':'thesis',evidence:'evidence','cash-funding':'evidence','purchase-funding':'evidence','retention-result':'evidence','convergence-check':'evidence','traffic-vintage-evidence':'evidence','traffic-evidence':'evidence','capacity-evidence':'evidence','utilization-evidence':'evidence'};
+  function followSection(){const section=location.hash.slice(1);if(sectionViews[section])showView(sectionViews[section]);else if(section.startsWith('view-'))showView(section.slice(5))}
+  window.addEventListener('hashchange',followSection);followSection();
+  // Hidden disclosures must open before browser validation focuses a required field.
+  el('monthlyForm').addEventListener('invalid',event=>{showView('scenario');for(let node=event.target.parentElement;node;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true},true);
+
   function comparisonTable(headers,rows,captionText){
     const node=document.createElement('table'),caption=document.createElement('caption');caption.textContent=captionText;node.append(caption);
     const head=document.createElement('thead'),header=document.createElement('tr');for(const text of headers){const cell=document.createElement('th');cell.scope='col';cell.textContent=text;header.append(cell)}head.append(header);node.append(head);
     const body=document.createElement('tbody');for(const values of rows){const row=document.createElement('tr');for(const text of values){const cell=document.createElement('td');cell.textContent=text;row.append(cell)}body.append(row)}node.append(body);return node;
   }
   let current = null;
+  let presetBusy=false;
   let thesisBusy=false, thesisNotesVersion=0;
   let convergenceBusy=false,currentConvergence=null,convergenceControlsVersion=0;
   const cashKinds={borrow:'Debt borrowing',repay:'Debt principal repayment',revolver_draw:'Revolver draw',revolver_repay:'Revolver repayment',advance_sales_change:'Advance sales balance change',loyalty_balance_change:'Loyalty deferred balance change',receivables_change:'Receivables balance change',inventory_change:'Inventory balance change',prepaids_change:'Prepaids balance change',payables_change:'Payables balance change',additional_capex:'Additional cash capex',capex_refund:'Cash capex refund',cash_interest:'Additional cash interest',financing_fee:'Financing cash fee',asset_sale:'Asset sale cash proceeds',investment_trade:'Investment purchase (+) / sale (−)',restricted_transfer:'To (+) / from (−) restricted cash'};
@@ -148,6 +166,18 @@
     el('policyImpact').textContent=money(run.summary.response_contribution_to_fcf_musd.p50);
     el('endingCash').textContent='$'+fmt(run.summary.ending_cash_musd.p50)+'M';
     el('cashBreach').textContent=fmt(run.summary.cash_floor_breach_path_fraction*100)+'%';
+    // Capacity is deterministic under the current fleet assumptions, unlike cash.
+    const controlCapacity=run.control.monthly.asm_million.reduce((sum,row)=>sum+row.p50,0);
+    const actualCapacity=run.intervention.monthly.asm_million.reduce((sum,row)=>sum+row.p50,0);
+    const capacityPct=controlCapacity?100*(actualCapacity/controlCapacity-1):0;
+    el('capacityImpact').textContent=(Math.abs(capacityPct)<0.00005?'0':(capacityPct<0?'−':'+')+Math.abs(capacityPct).toLocaleString('en-US',{maximumFractionDigits:3}))+'%';
+    const delayed=run.fleet.intervention.effective_queue.filter(event=>event.original_month&&event.kind==='entry').reduce((sum,event)=>sum+event.aircraft,0);
+    const retained=run.intervention.monthly.retained_aircraft?.some(row=>row.p50>0);
+    el('scenarioExplanation').textContent=delayed
+      ? `${delayed} aircraft entries are delayed. ${Math.abs(capacityPct)<0.00005?'Assumed '+(retained?'retention and spare capacity':'spare capacity')+' preserve operated capacity in this case.':'Offered capacity '+(capacityPct<0?'falls':'rises')+' relative to the no-shock case.'} ${run.scenario.purchase_plan?'Delivery payments and borrowing follow the delayed purchases; earlier deposits keep their dates.':'Purchase cash timing remains unchanged without an explicit schedule.'}`
+      : 'The selected operating shocks flow through capacity, revenue and costs. Pricing response assumes delayed fare adjustment and its effect on demand; compare it with the frozen-policy line.';
+    el('scenarioBasis').textContent=`Cutoff ${run.scenario.information_cutoff} · ${run.scenario.horizon_months} months · ${fmt(run.scenario.nonfuel_fixed_fraction*100)}% fixed nonfuel costs · ${run.scenario.response_mode==='frozen'?'frozen pricing':'assumed constrained pricing'} · ${run.scenario.purchase_plan?'explicit purchase schedule enabled':'historical aggregate capex'} · ${run.scenario.retention_plan?'retention enabled':'no retention plan'}. Financing and retirement support are not verified United terms.`;
+
     const table=el('quarterlyRows');table.replaceChildren();
     for(const q of run.intervention.quarterly) {
       const row=document.createElement('tr');
@@ -176,9 +206,10 @@
   function scenarioSettings() {return {information_cutoff:el('cutoff').value,fuel_shock_pct:Number(el('fuelShock').value),demand_shock_pct:Number(el('demandShock').value),capacity_shock_pct:Number(el('capacityShock').value),geography:el('market').value,horizon_months:Number(el('horizonMonths').value),onset_month:Number(el('onsetMonths').value),duration_months:Number(el('durationMonths').value),delivery_delay_months:Number(el('entryDelay').value),delivery_aircraft_count:numericField(el('deliveryCount')),delivery_group:el('deliveryGroup').value,aircraft_unavailable_pct:Number(el('unavailable').value),availability_group:el('availabilityGroup').value,regional_contract_shock_pct:Number(el('contractShock').value),fleet_spare_fraction:Number(el('sparePct').value)/100,schedule_growth_fraction:Number(el('scheduleGrowthPct').value)/100,regional_contract_fixed_fraction:Number(el('contractFixedPct').value)/100,nonfuel_fixed_fraction:Number(el('nonfuelFixedPct').value)/100,response_lag_months:Number(el('lagMonths').value),response_mode:el('mode').value,cash_plan:cashPlanSettings(),purchase_plan:purchasePlanSettings(),retention_plan:retentionPlanSettings()}}
   async function run(event) {
     if(event)event.preventDefault();
+    if(presetBusy||el('monthlyRun').disabled)return null;
     if(!el('monthlyForm').reportValidity())return null;
     el('failureWitness').hidden=true;
-    el('monthlyRun').disabled=true;el('monthlyStatus').textContent='Running paired monthly paths…';
+    el('monthlyRun').disabled=true;for(const button of document.querySelectorAll('[data-preset]'))button.disabled=true;el('monthlyStatus').textContent='Running paired monthly paths…';
     updateThesisState();el('thesisDownloads').hidden=true;
     const settings=scenarioSettings();
     try {
@@ -186,7 +217,7 @@
       const body=await response.json();
       if(!response.ok)throw Error(typeof body.detail==='string'?body.detail:'Check the scenario inputs');
       render(body);return body;
-    } catch(error) {el('monthlyStatus').textContent='Scenario failed: '+error.message;return null} finally {el('monthlyRun').disabled=false;updateThesisState()}
+    } catch(error) {el('monthlyStatus').textContent='Scenario failed: '+error.message;return null} finally {el('monthlyRun').disabled=false;for(const button of document.querySelectorAll('[data-preset]'))button.disabled=false;updateThesisState();if(current&&!thesisIsCurrent())el('monthlyStatus').textContent='Saved scenario displayed · inputs changed during the run. Run again to update results.'}
   }
   el('monthlyForm').addEventListener('submit',run);
   el('monthlyForm').addEventListener('input',()=>{if(current)el('monthlyStatus').textContent='Inputs changed · run to update results'});
@@ -255,7 +286,7 @@
     for(const [key,id] of Object.entries(fieldMap))el(id).value=settings[key]??'';
     for(const [key,id] of Object.entries(percentMap))el(id).value=settings[key]*100;
     restoreCashPlan(settings.cash_plan);restorePurchasePlan(settings.purchase_plan);restoreRetentionPlan(settings.retention_plan);
-    el('monthlyStatus').scrollIntoView({behavior:'smooth',block:'center'});
+    showView('scenario');el('monthlyStatus').scrollIntoView({behavior:'smooth',block:'center'});
     const witness=await run();
     if(witness){const spec=result.manifest.search,outcome=cell.policies[mode];el('failureWitness').textContent=`Search point: ${result.manifest.base_scenario.horizon_months}-month ${spec.statistic.toUpperCase()} ${spec.criterion==='cumulative_fcf'?'absolute cumulative FCF':'path minimum cash'} ${fmt(outcome.criterion_value_musd)} $M, ${outcome.fails?'below':'meeting'} the ${fmt(spec.threshold_musd)} $M threshold. ${mode==='frozen'?'Frozen':'Assumed constrained'} pricing. The chart shows paired FCF impact relative to control.`;el('failureWitness').hidden=false}
   }
@@ -315,7 +346,7 @@
     el('targetWitness').hidden=false;
     el('targetWitnessLabel').textContent=`${mode==='frozen'?'Frozen':'Assumed constrained'} pricing · ${driverNames[spec.x.driver]} ${fmt(cell.x)} · ${driverNames[spec.y.driver]} ${fmt(cell.y)}. ${outcome.compatible_path_count} of ${settings.paths} assumed paths jointly meet the path-level conditions. First ${outcome.witness_paths.length} matching indexes shown; these examples are not ranked by likelihood. The selected quantile ${outcome.compatible?'also meets':'does not meet'} the grid-point tests.`;
     if(spec.valuation){const v=outcome.valuation;el('targetWitnessLabel').textContent+=` ${target.statistic.toUpperCase()} operating-asset value ${fmt(v.enterprise_value_musd[target.statistic])} $M = explicit operating FCFF present value ${fmt(v.explicit_fcff_pv_musd[target.statistic])} $M + discounted terminal contribution ${fmt(v.terminal_pv_musd)} $M.`}
-    el('monthlyStatus').scrollIntoView({behavior:'smooth',block:'center'});
+    showView('scenario');el('monthlyStatus').scrollIntoView({behavior:'smooth',block:'center'});
     const witness=await run();
     if(witness){el('failureWitness').textContent=`Target point: ${settings.horizon_months}-month ${target.statistic.toUpperCase()} absolute ${targetNames[target.metric]} ${fmt(outcome.selected_target_value)} ${target.metric==='operating_margin_pct'?'%':'$M'}. ${outcome.compatible?'Meets':'Does not meet'} the requested joint tests. ${spec.valuation?'The separate FCFF valuation assumptions are recorded in the target search. ':''}The chart shows paired FCF impact relative to control.`;el('failureWitness').hidden=false}
   }
@@ -436,5 +467,24 @@
       : data.message;
     el('form41HistoryCoverage').textContent=JSON.stringify(data,null,2);
   }).catch(error=>{el('form41HistoryStatus').textContent='Form 41 history: '+error.message});
-  run();
+
+  async function applyPreset(name){
+    if(presetBusy||el('monthlyRun').disabled)return false;
+    presetBusy=true;el('monthlyRun').disabled=true;updateThesisState();const buttons=[...document.querySelectorAll('[data-preset]')];for(const button of buttons)button.disabled=true;
+    el('presetStatus').textContent='Loading illustrative purchase and retention assumptions…';
+    try{
+      const responses=await Promise.all([fetch('/api/monthly/purchase-example'),fetch('/api/monthly/retention-example')]);
+      if(responses.some(response=>!response.ok))throw Error('Illustrative assumptions unavailable. Existing inputs were retained.');
+      const [purchase,retention]=await Promise.all(responses.map(response=>response.json()));
+      const values={cutoff:'2026-07-16',fuelShock:name==='delay'?0:25,demandShock:0,capacityShock:0,market:'all',horizonMonths:12,onsetMonths:1,durationMonths:6,entryDelay:name==='fuel'?0:9,deliveryCount:30,deliveryGroup:'narrowbody',unavailable:0,availabilityGroup:'all',contractShock:0,lagMonths:1,mode:'assumed_constrained',sparePct:2,scheduleGrowthPct:100,contractFixedPct:70,nonfuelFixedPct:70};
+      for(const [id,value] of Object.entries(values))el(id).value=value;
+      restoreCashPlan(null);restorePurchasePlan(purchase);restoreRetentionPlan(name==='no-retention'?null:retention);
+      changedPlan();for(const button of buttons)button.setAttribute('aria-pressed',String(button.dataset.preset===name));
+      el('presetStatus').textContent=(name==='no-retention'?'Illustrative terms; retention disabled. ':'Illustrative purchase and retention terms. ')+'12-month horizon. Run to update; review terms in Advanced assumptions.';
+      return true;
+    }catch(error){el('presetStatus').textContent=error.message;return false}
+    finally{presetBusy=false;el('monthlyRun').disabled=false;for(const button of buttons)button.disabled=false;updateThesisState()}
+  }
+  for(const button of document.querySelectorAll('[data-preset]'))button.addEventListener('click',()=>applyPreset(button.dataset.preset));
+  applyPreset('combined').then(()=>run());
 })();

@@ -1,12 +1,26 @@
 # UAL Counterfactual Engine · V1
 
+The main application is a monthly analyst workstation for testing how aircraft
+delivery delays and fuel changes affect United's operating capacity and cash flow.
+It compares explicit scenarios, searches tested failure boundaries, finds
+assumptions compatible with operating targets, and exports a one-page thesis.
+Pricing, cost flexibility, financing and retention decisions are assumptions;
+simulated outcome ranges are not calibrated forecasts or investment signals.
+
+Open the server root (`/`) or `/monthly` for the main application. The original
+daily fuel sensitivity pilot remains available at `/fuel-pilot`.
+See [submission brief](docs/submission_brief.md),
+[demo walkthrough](docs/demo_walkthrough.md), and
+[case verification](docs/demo_case_verification.md).
+
 The current fare-source follow-up adds a separate original airport/city/WAC
 scanner. Its first real quarter passes an independent audit over 3,046,411 tickets
 and 11,444,839 endpoint occurrences; every one of that quarter's 177,699 fare cells
-has exact geographic endpoint evidence. Both full 44-quarter builders are still
-running, and full-history audits and joint fare/demand estimation remain open.
-The latest full suite passed 382 tests, followed by three passing new coverage
-tests. See [original fare geography and scope](docs/fare_geography.md).
+has exact geographic endpoint evidence. Both full 44-quarter builders have now
+published outputs over 166,499,254 ticket records. Full-history audits and joint
+fare/demand estimation remain open; import completion is not model validation.
+The latest pre-redesign full suite passed 385 tests.
+See [original fare geography and scope](docs/fare_geography.md).
 
 ## Monthly proposal implementation (in progress)
 
@@ -185,7 +199,7 @@ python -m pip install -r requirements.txt
 ./run.sh                         # Or: python -m uvicorn app.server:app --host 127.0.0.1 --port 8000
 ```
 
-Open **http://127.0.0.1:8000**. The server runs on your own machine and does not send uploaded quotes to a cloud service. Only run on loopback without authentication.
+Open **http://127.0.0.1:8000/fuel-pilot** for this original pilot. The server runs on your own machine and does not send uploaded quotes to a cloud service. Only run on loopback without authentication.
 
 Run tests:
 
@@ -301,19 +315,18 @@ The dashboard provides verified artifact/audit downloads alongside the original
 annual-only scorecard. See [correction, protocol amendment and full results](docs/reviewed_traffic.md).
 
 
-## Fare acquisition and import in progress
+## Fare acquisition and published import
 
 All 44 public DB1B quarters for 2013–2023 are preserved (1.25 GB compressed),
 with a separate quarterly US-only fare importer retaining ticketed/operating/
 reporting roles, directional markets, overlapping brand/mainline cohorts and
 quality/source-line provenance. The first real quarter passes 1,954,698 independent
 original-record checks; eleven focused tests cover the parser, independent oracle,
-Parquet/offline rebuild and failure gates. The full real import is still running,
-and full-history/Parquet source audit, scope matching and joint pricing/demand
+Parquet/offline rebuild and failure gates. The full 44-quarter import has published
+its output; full-history/Parquet source audit, scope matching and joint pricing/demand
 estimation remain required. This does not fill Canada/international or monthly
 fare coverage, identify realized yield, establish causal elasticity or close M03.
 See [fare source methods and current import](docs/fare_history.md).
 
-The complete software suite now passes 376 tests after the fare importer/oracle
-changes. This is software evidence; the real 44-quarter import and full-history
-source audit are still in progress.
+The complete software suite passed 385 tests before the focused-interface changes.
+This is software evidence; full-history source audits remain pending.

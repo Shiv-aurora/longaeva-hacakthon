@@ -217,6 +217,10 @@ class TargetInversionPayload(BaseModel):
 
 @app.get("/")
 def index():
+    return FileResponse(STATIC / "monthly.html")
+
+@app.get("/fuel-pilot")
+def fuel_pilot():
     return FileResponse(STATIC / "index.html")
 
 @app.get("/monthly")
