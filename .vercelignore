@@ -1,0 +1,31 @@
+# Local runtimes, credentials and operating-system metadata.
+.DS_Store
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/dist/
+
+# Generated previews, exports and temporary acquisition files remain local.
+/tmp/
+/output/
+/screenshots/
+
+# Track small public inputs, declarations and acquisition manifests. Raw source
+# archives and generated research/run stores have a separate local lifecycle.
+/data/*
+!/data/README.md
+!/data/*.json
+!/data/*.csv
+!/data/*_fields.txt
+!/data/eia_2026_weekly_source.txt
+/data/user_quotes.csv
+.vercel
+.env*
+
+.git
+.vercel
+.env*

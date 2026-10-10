@@ -23,3 +23,5 @@
 !/data/*_fields.txt
 !/data/eia_2026_weekly_source.txt
 /data/user_quotes.csv
+.vercel
+.env*

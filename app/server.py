@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import asdict
 from pathlib import Path
 import json
+import base64
+import os
 import tempfile
 from typing import Annotated
 from fastapi import FastAPI, HTTPException
@@ -24,12 +26,13 @@ from .traffic_vintage_research import vintage_research_status
 from .thesis import ThesisNotes, export_thesis, verified_export
 from .failure_search import SearchAxis, FailureSearch, search_failures
 from .target_inversion import OperatingTarget, ValuationScenario, TargetInversion, invert_target
-from .model_archive import capture_source, run_preserved, replay_saved, read_verified_study, STUDY_CACHE_ROOT
+from .model_archive import archive_source, capture_source, run_preserved, replay_saved, read_verified_study, STUDY_CACHE_ROOT
 from .convergence import ConvergenceSpec, study_convergence
 
 # Capture at module import so edits on disk cannot silently archive a different
 # implementation from the one this server loaded. Restart after model edits.
 MODEL_SOURCE = {kind: capture_source(kind) for kind in ("monthly", "failure_search", "target_inversion", "convergence")}
+HOSTED_DEMO = os.environ.get("VERCEL") == "1"
 
 ROOT = Path(__file__).resolve().parents[1]
 STATIC = ROOT / "app" / "static"
@@ -286,8 +289,18 @@ def fitted_capacity_status():
 @app.post("/api/monthly/thesis")
 def monthly_thesis(settings: ThesisPayload):
     try:
+        if HOSTED_DEMO:
+            # A cold instance can verify a current-code run from another instance.
+            archive_source(MODEL_SOURCE["monthly"])
         result = export_thesis(settings.run_record, ThesisNotes(**settings.notes.model_dump()))
         identity = result["artifact_id"]
+        if HOSTED_DEMO:
+            folder, _, _ = verified_export(identity)
+            # Deliver immutable bytes in this response; later requests may reach
+            # a different instance whose temporary filesystem has no export.
+            urls = {kind + "_url": "data:" + mime + ";base64," + base64.b64encode((folder / ("thesis." + kind)).read_bytes()).decode("ascii")
+                    for kind, mime in (("pdf", "application/pdf"), ("json", "application/json"))}
+            return {"artifact_id": identity, "run_id": result["run_id"], "thesis": result["thesis"], **urls}
         return {"artifact_id": identity, "run_id": result["run_id"], "thesis": result["thesis"],
                 "pdf_url": f"/api/theses/{identity}/pdf", "json_url": f"/api/theses/{identity}/json"}
     except (ValueError, KeyError, TypeError) as e:
@@ -318,6 +331,8 @@ def monthly_simulation(settings: MonthlyPayload):
 
 @app.post("/api/monthly/convergence")
 def monthly_convergence(settings: ConvergencePayload):
+    if HOSTED_DEMO:
+        raise HTTPException(status_code=422, detail="Large sampling studies run locally. Download the run record and use the local convergence workflow.")
     try:
         base = MonthlyScenario(**settings.run_record["scenario"])
         spec = ConvergenceSpec(**settings.convergence.model_dump())
@@ -344,6 +359,8 @@ def monthly_convergence(settings: ConvergencePayload):
 
 @app.post("/api/monthly/failure-search")
 def failure_search(settings: FailureSearchPayload):
+    if HOSTED_DEMO and settings.base_scenario.paths * settings.x.points * settings.y.points > 250000:
+        raise HTTPException(status_code=422, detail="Hosted grid budget exceeded. Use fewer points or paths, or run this study locally.")
     try:
         search = FailureSearch(x=SearchAxis(**settings.x.model_dump()), y=SearchAxis(**settings.y.model_dump()),
             criterion=settings.criterion, threshold_musd=settings.threshold_musd, statistic=settings.statistic)
@@ -354,6 +371,8 @@ def failure_search(settings: FailureSearchPayload):
 
 @app.post("/api/monthly/target-inversion")
 def target_inversion(settings: TargetInversionPayload):
+    if HOSTED_DEMO and settings.base_scenario.paths * settings.x.points * settings.y.points > 250000:
+        raise HTTPException(status_code=422, detail="Hosted grid budget exceeded. Use fewer points or paths, or run this study locally.")
     try:
         spec = TargetInversion(x=SearchAxis(**settings.x.model_dump()), y=SearchAxis(**settings.y.model_dump()),
             target=OperatingTarget(**settings.target.model_dump()),
@@ -365,7 +384,7 @@ def target_inversion(settings: TargetInversionPayload):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "service": "UAL Counterfactual Engine V1"}
+    return {"status": "ok", "service": "UAL Counterfactual Engine V1", "hosted_demo": HOSTED_DEMO}
 
 @app.get("/api/bootstrap")
 def bootstrap():
@@ -400,6 +419,8 @@ def quotes(route: str = ""):
 
 @app.post("/api/quotes")
 def upload_quotes(body: QuoteUpload):
+    if HOSTED_DEMO:
+        raise HTTPException(status_code=403, detail="Quote uploads are available in the local application only.")
     try:
         count = save_quotes(body.csv_text)
     except ValueError as e:
@@ -408,5 +429,7 @@ def upload_quotes(body: QuoteUpload):
 
 @app.delete("/api/quotes")
 def delete_quotes():
+    if HOSTED_DEMO:
+        raise HTTPException(status_code=403, detail="Quote changes are available in the local application only.")
     QUOTES_FILE.unlink(missing_ok=True)
     return {"count": 0}

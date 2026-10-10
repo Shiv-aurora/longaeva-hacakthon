@@ -15,8 +15,10 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-ARCHIVE_ROOT = ROOT / "data" / "model_code"
-STUDY_CACHE_ROOT = ROOT / "data" / "convergence"
+# Hosted functions keep executable receipts in writable, ephemeral storage.
+RUNTIME_DATA_ROOT = Path(os.environ.get("UAL_RUNTIME_DIR", "/tmp/ual-twin")) if os.environ.get("VERCEL") == "1" else ROOT / "data"
+ARCHIVE_ROOT = RUNTIME_DATA_ROOT / "model_code"
+STUDY_CACHE_ROOT = RUNTIME_DATA_ROOT / "convergence"
 SCHEMA = "model-code-0.1.0"
 LEGACY_CORE_FILES = {
     "monthly": ("monthly.py", "fleet.py", "evidence.py", "data.py"),

@@ -26,7 +26,7 @@
     const body=document.createElement('tbody');for(const values of rows){const row=document.createElement('tr');for(const text of values){const cell=document.createElement('td');cell.textContent=text;row.append(cell)}body.append(row)}node.append(body);return node;
   }
   let current = null;
-  let presetBusy=false;
+  let presetBusy=false, hostedDemo=false;
   let thesisBusy=false, thesisNotesVersion=0;
   let convergenceBusy=false,currentConvergence=null,convergenceControlsVersion=0;
   const cashKinds={borrow:'Debt borrowing',repay:'Debt principal repayment',revolver_draw:'Revolver draw',revolver_repay:'Revolver repayment',advance_sales_change:'Advance sales balance change',loyalty_balance_change:'Loyalty deferred balance change',receivables_change:'Receivables balance change',inventory_change:'Inventory balance change',prepaids_change:'Prepaids balance change',payables_change:'Payables balance change',additional_capex:'Additional cash capex',capex_refund:'Cash capex refund',cash_interest:'Additional cash interest',financing_fee:'Financing cash fee',asset_sale:'Asset sale cash proceeds',investment_trade:'Investment purchase (+) / sale (−)',restricted_transfer:'To (+) / from (−) restricted cash'};
@@ -260,7 +260,7 @@
   el('monthlyForm').addEventListener('submit',run);
   el('monthlyForm').addEventListener('input',()=>{if(current)el('monthlyStatus').textContent='Inputs changed · run to update results'});
   el('monthlyForm').addEventListener('input',()=>{updateThesisState();el('thesisDownloads').hidden=true;el('thesisStatus').textContent=thesisIsCurrent()?'Scenario matches the saved run · export to save the current notes.':'Scenario inputs changed · run again before exporting.'});
-  function updateConvergenceState(){el('convergenceRun').disabled=convergenceBusy||el('monthlyRun').disabled||!thesisIsCurrent()}
+  function updateConvergenceState(){el('convergenceRun').disabled=hostedDemo||convergenceBusy||el('monthlyRun').disabled||!thesisIsCurrent()}
   function invalidateConvergence(message){currentConvergence=null;el('convergenceResults').hidden=true;el('downloadConvergence').disabled=true;el('convergenceStatus').textContent=message;updateConvergenceState()}
   el('monthlyForm').addEventListener('input',()=>invalidateConvergence(thesisIsCurrent()?'Scenario matches saved run · check sampling stability.':'Scenario changed · run again before checking sampling stability.'));
   el('convergenceForm').addEventListener('input',()=>{convergenceControlsVersion++;invalidateConvergence('Sampling controls changed · check again to use these tolerances.')});
@@ -306,7 +306,7 @@
     thesisBusy=true;updateThesisState();el('thesisDownloads').hidden=true;el('thesisStatus').textContent='Replaying the saved run and preparing the one-page record…';
     try{const response=await fetch('/api/monthly/thesis',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({run_record:saved,notes})});const result=await response.json();if(!response.ok)throw Error(typeof result.detail==='string'?result.detail:'Check the thesis notes');
       if(current!==saved||!thesisIsCurrent()||notesVersion!==thesisNotesVersion){el('thesisStatus').textContent='Inputs changed during export · export again to use the current scenario and notes.';return}
-      el('thesisPdf').href=result.pdf_url;el('thesisJson').href=result.json_url;el('thesisDownloads').hidden=false;el('thesisStatus').textContent=`One page saved · run ${result.run_id.slice(0,12)} · ${saved.scenario.paths.toLocaleString('en-US')} paths independently replayed · PDF and companion JSON ready.`;
+      el('thesisPdf').href=result.pdf_url;el('thesisJson').href=result.json_url;el('thesisPdf').download='ual-thesis-'+result.artifact_id.slice(0,12)+'.pdf';el('thesisJson').download='ual-thesis-'+result.artifact_id.slice(0,12)+'.json';el('thesisDownloads').hidden=false;el('thesisStatus').textContent=`One page saved · run ${result.run_id.slice(0,12)} · ${saved.scenario.paths.toLocaleString('en-US')} paths independently replayed · PDF and companion JSON ready.`;
     }catch(error){el('thesisStatus').textContent='Thesis export failed: '+error.message}finally{thesisBusy=false;updateThesisState()}
   });
   el('downloadRun').addEventListener('click',()=>{
@@ -524,5 +524,6 @@
     finally{presetBusy=false;el('monthlyRun').disabled=false;for(const button of buttons)button.disabled=false;updateThesisState()}
   }
   for(const button of document.querySelectorAll('[data-preset]'))button.addEventListener('click',()=>applyPreset(button.dataset.preset));
+  fetch('/api/health').then(response=>response.json()).then(data=>{hostedDemo=Boolean(data.hosted_demo);if(hostedDemo){el('cloudNotice').hidden=false;el('convergenceRun').textContent='Sampling studies · local application';updateConvergenceState()}}).catch(()=>{});
   applyPreset('combined').then(()=>run());
 })();

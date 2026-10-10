@@ -27,7 +27,7 @@ from .model_archive import deterministic, digest, replay_saved
 from .source_store import ROOT
 
 VERSION='thesis-export-0.4.0'
-EXPORTS=ROOT/'data/theses'
+EXPORTS=(Path(os.environ.get('UAL_RUNTIME_DIR','/tmp/ual-twin')) if os.environ.get('VERCEL')=='1' else ROOT/'data')/'theses'
 CODE_BYTES=Path(__file__).read_bytes()
 FONT_ROOT=Path(reportlab.__file__).parent/'fonts'
 FONTS={'Vera.ttf':(FONT_ROOT/'Vera.ttf').read_bytes(),'VeraBd.ttf':(FONT_ROOT/'VeraBd.ttf').read_bytes()}

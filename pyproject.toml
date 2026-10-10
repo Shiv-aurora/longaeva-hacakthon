@@ -1,0 +1,15 @@
+[project]
+name = "ual-counterfactual-engine"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "uvicorn>=0.30,<1.0",
+  "numpy>=2,<3",
+  "duckdb>=1.1,<2",
+  "reportlab>=4.4,<5",
+  "pypdf>=6,<7",
+]
+
+[tool.vercel]
+entrypoint = "app.server:app"
