@@ -1,0 +1,23 @@
+{
+  "company": "United Airlines Holdings, Inc.",
+  "ticker": "UAL",
+  "period_start": "2026-04-01",
+  "period_end": "2026-06-30",
+  "published_on": "2026-07-15",
+  "period_days": 91,
+  "asm_million": 87279,
+  "rpm_million": 72765,
+  "fuel_gallons_million": 1219,
+  "average_paid_fuel_usd_per_gallon": 4.19,
+  "prasm_cents_per_asm": 18.45,
+  "trasm_cents_per_asm": 20.25,
+  "casm_cents_per_asm": 18.99,
+  "passenger_load_factor": 0.834,
+  "source_url": "https://united.mediaroom.com/2026-07-15-United-Posts-Q2-Results-Above-Wall-Street-Expectations-and-Raises-Full-Year-2026-Adjusted-EPS-Guidance1-Despite-a-Nearly-6-Billion-Increase-In-Anticipated-Fuel-Costs",
+  "notes": "United's Q2 2026 reported operating statistics. Average paid fuel price is not the same as Gulf Coast EIA spot price. Quarterly run-rate is a simplifying modeling anchor; it is not a forecast.",
+  "passenger_revenue_million": 16100,
+  "total_operating_revenue_million": 17672,
+  "total_operating_expense_million": 16576,
+  "operating_income_million": 1096,
+  "reported_fuel_expense_million": 5110
+}
