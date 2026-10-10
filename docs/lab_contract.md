@@ -45,18 +45,37 @@ predictor. So the pieces fit together like this:
    one scoreboard among several (fuel price paid, unit revenue, margin), not the
    product.
 
-Page order follows from this:
+The site is an application, not an article. On a desktop screen it fits the
+window without page scrolling: a slim top bar with three views, and panels that
+show a title, a chart and numbers. Explanations open on demand in a side drawer;
+long-form writing lives in `/report`. Rule of thumb: a visitor should never have
+to read a paragraph to use it.
 
-1. The simulator. What United's business looks like as a system (drivers in,
-   outcomes out), the scenario controls, and the resulting ranges under each
-   behaviour mode. This is the first thing a visitor sees and uses.
-2. How United behaves. The measured relationships that drive the simulator: fuel
-   price to fuel bill, fuel cost to revenue, capacity, demand, and how the stock
-   reacts. Each with its uncertainty and its source.
-3. Does it match reality. The simulator's behaviour replayed on past quarters
-   against simple rivals, the Delta check, and a dated forward test on the next
-   quarter. Management's own statements appear here as one comparison line.
-4. Ask it. The agent console.
+1. Simulator (default view). Scenario controls and presets on the left; outcome
+   tiles and the main chart in the middle with three tabs (What if, What breaks,
+   What must be true); the agent console docked on the right.
+2. Behaviour. A grid of chart tiles for the measured relationships that drive the
+   simulator: fuel price to fuel bill, fuel cost to revenue, capacity, travel
+   demand, stock reaction, daily fares.
+3. Reality check. The past-quarter replay against simple rivals, the Delta check
+   and the dated forward test. Management's own statements appear here only, as
+   one comparison row.
+
+`POST /api/lab/grid` serves both "What breaks" and "What must be true":
+```json
+{"x": {"driver": "fuel_shock_pct", "values": [-20, 0, 20, 40]},
+ "y": {"driver": "demand_shock_pct", "values": [-6, -3, 0, 3]},
+ "metric": "fcf_12m_musd", "threshold": 0, "direction": "below",
+ "mode": "measured", "base": {"horizon_months": 12}}
+```
+returns
+```json
+{"status": "ok", "metric": "fcf_12m_musd", "threshold": 0, "direction": "below", "mode": "measured",
+ "cells": [{"x": 20, "y": -3, "prob": 0.0, "p50": 0.0}],
+ "boundary": [{"x": 0.0, "y": 0.0}], "paths": 0, "elapsed_ms": 0}
+```
+`prob` is the share of runs on the stated side of the threshold at that tested
+point; it is not the probability of the event in the world.
 
 `POST /api/lab/scenario` (draft; `app/lab/scenario.py` owns the final shape):
 ```json
