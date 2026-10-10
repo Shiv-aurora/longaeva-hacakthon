@@ -1,0 +1,58 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "status": "ok",
+ "file": null,
+ "request": {
+  "fuel_usd_gal": 5.0,
+  "fuel_shock_months": 12,
+  "horizon_months": 12
+ },
+ "basis": [
+  {
+   "field": "fuel_usd_gal",
+   "value": 5.0,
+   "date": "2026-10-08",
+   "source": [
+    {
+     "path": "data/lab/placeholder_input_a.csv",
+     "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+   ],
+   "how": "Placeholder: the latest fuel price converted to the price United pays (fixture, not a finding)."
+  },
+  {
+   "field": "fuel_shock_months",
+   "value": 12,
+   "date": null,
+   "source": [],
+   "how": "Placeholder: today's fuel price is held for all 12 months."
+  }
+ ],
+ "information_cutoff": "2026-07-01",
+ "context": {
+  "fuel": {
+   "spot_usd_gal": 4.5,
+   "date": "2026-10-08",
+   "converted_with_cost_clock": true,
+   "reference_usd_gal": 4.0,
+   "level_usd_gal": 5.0,
+   "shock_pct": 25.0,
+   "shock_usd_gal": 1.0,
+   "held_months": 12,
+   "after_hold": "placeholder",
+   "given_as": "fuel_usd_gal"
+  },
+  "demand": {
+   "status": "ok",
+   "yoy_pct": -1.0,
+   "period": "2026Q4",
+   "as_of": "2026-10-08",
+   "applied": false
+  }
+ },
+ "assumptions": [
+  "Placeholder assumption about today's scenario (fixture, not a finding)."
+ ]
+}

@@ -1,0 +1,308 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "headline": "Placeholder headline for the fare clock (fixture, not a finding)",
+ "recovery_definition": "Placeholder definition of the recovery share. The builder writes the real one.",
+ "curve": [
+  {
+   "quarters_after": 0,
+   "p10": 0.0,
+   "p50": 0.2,
+   "p90": 0.4
+  },
+  {
+   "quarters_after": 1,
+   "p10": 0.2,
+   "p50": 0.4,
+   "p90": 0.6
+  },
+  {
+   "quarters_after": 2,
+   "p10": 0.4,
+   "p50": 0.6,
+   "p90": 0.8
+  },
+  {
+   "quarters_after": 3,
+   "p10": 0.6,
+   "p50": 0.8,
+   "p90": 1.0
+  },
+  {
+   "quarters_after": 4,
+   "p10": 0.8,
+   "p50": 1.0,
+   "p90": 1.2
+  }
+ ],
+ "rivals": {
+  "costs_only": [
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "management": [
+   {
+    "period": "2026Q3",
+    "low": 0.5,
+    "high": 0.6,
+    "path": "placeholder_path"
+   },
+   {
+    "period": "2026Q4",
+    "low": 1.0,
+    "high": 1.0,
+    "path": "placeholder_path"
+   }
+  ],
+  "published": [
+   {
+    "label": "Placeholder study A",
+    "value": 0.3,
+    "url": "https://example.invalid/placeholder-study-a"
+   },
+   {
+    "label": "Placeholder study B",
+    "value": 0.7,
+    "url": "https://example.invalid/placeholder-study-b"
+   }
+  ],
+  "management_paths": {
+   "paths": {
+    "placeholder_path": {
+     "mapped": [
+      {
+       "quarters_after": 0,
+       "low": 0.25,
+       "high": 0.25,
+       "period": "2026Q2",
+       "basis": "placeholder: reported outcome"
+      },
+      {
+       "quarters_after": 1,
+       "low": 0.5,
+       "high": 0.6,
+       "period": "2026Q3",
+       "basis": "placeholder: expectation"
+      },
+      {
+       "quarters_after": 2,
+       "low": 1.0,
+       "high": 1.0,
+       "period": "2026Q4",
+       "basis": "placeholder: expectation"
+      },
+      {
+       "quarters_after": 3,
+       "low": 1.0,
+       "high": 1.0,
+       "period": "2026Q4",
+       "basis": "not stated: last stated range held"
+      },
+      {
+       "quarters_after": 4,
+       "low": 1.0,
+       "high": 1.0,
+       "period": "2026Q4",
+       "basis": "not stated: last stated range held"
+      }
+     ]
+    }
+   },
+   "mapping": "Placeholder: how a statement about a calendar quarter is placed at a quarter after the shock (fixture, not a finding)."
+  }
+ },
+ "united_points": [
+  {
+   "period_end": "2014-03-31",
+   "fuel_shock": -0.3,
+   "revenue_response": -0.15,
+   "split": "fit"
+  },
+  {
+   "period_end": "2014-06-30",
+   "fuel_shock": -0.25,
+   "revenue_response": -0.125,
+   "split": "fit"
+  },
+  {
+   "period_end": "2014-09-30",
+   "fuel_shock": -0.2,
+   "revenue_response": -0.1,
+   "split": "fit"
+  },
+  {
+   "period_end": "2014-12-31",
+   "fuel_shock": -0.15,
+   "revenue_response": -0.075,
+   "split": "fit"
+  },
+  {
+   "period_end": "2015-03-31",
+   "fuel_shock": -0.1,
+   "revenue_response": -0.05,
+   "split": "select"
+  },
+  {
+   "period_end": "2015-06-30",
+   "fuel_shock": -0.05,
+   "revenue_response": -0.025,
+   "split": "select"
+  },
+  {
+   "period_end": "2015-09-30",
+   "fuel_shock": 0.0,
+   "revenue_response": 0.0,
+   "split": "select"
+  },
+  {
+   "period_end": "2015-12-31",
+   "fuel_shock": 0.05,
+   "revenue_response": 0.025,
+   "split": "select"
+  },
+  {
+   "period_end": "2016-03-31",
+   "fuel_shock": 0.1,
+   "revenue_response": 0.05,
+   "split": "test"
+  },
+  {
+   "period_end": "2016-06-30",
+   "fuel_shock": 0.15,
+   "revenue_response": 0.075,
+   "split": "test"
+  },
+  {
+   "period_end": "2016-09-30",
+   "fuel_shock": 0.2,
+   "revenue_response": 0.1,
+   "split": "test"
+  },
+  {
+   "period_end": "2016-12-31",
+   "fuel_shock": 0.25,
+   "revenue_response": 0.125,
+   "split": "test"
+  }
+ ],
+ "industry_monthly": [
+  {
+   "lag_months": 0,
+   "coef": 0.0,
+   "lo": -0.1,
+   "hi": 0.1
+  },
+  {
+   "lag_months": 1,
+   "coef": 0.05,
+   "lo": -0.05,
+   "hi": 0.15
+  },
+  {
+   "lag_months": 2,
+   "coef": 0.1,
+   "lo": 0.0,
+   "hi": 0.2
+  },
+  {
+   "lag_months": 3,
+   "coef": 0.15,
+   "lo": 0.05,
+   "hi": 0.25
+  },
+  {
+   "lag_months": 4,
+   "coef": 0.2,
+   "lo": 0.1,
+   "hi": 0.3
+  },
+  {
+   "lag_months": 5,
+   "coef": 0.25,
+   "lo": 0.15,
+   "hi": 0.35
+  },
+  {
+   "lag_months": 6,
+   "coef": 0.3,
+   "lo": 0.2,
+   "hi": 0.4
+  },
+  {
+   "lag_months": 7,
+   "coef": 0.35,
+   "lo": 0.25,
+   "hi": 0.45
+  },
+  {
+   "lag_months": 8,
+   "coef": 0.4,
+   "lo": 0.3,
+   "hi": 0.5
+  },
+  {
+   "lag_months": 9,
+   "coef": 0.45,
+   "lo": 0.35,
+   "hi": 0.55
+  },
+  {
+   "lag_months": 10,
+   "coef": 0.5,
+   "lo": 0.4,
+   "hi": 0.6
+  },
+  {
+   "lag_months": 11,
+   "coef": 0.55,
+   "lo": 0.45,
+   "hi": 0.65
+  },
+  {
+   "lag_months": 12,
+   "coef": 0.6,
+   "lo": 0.5,
+   "hi": 0.7
+  }
+ ],
+ "asymmetry": {
+  "up": 0.5,
+  "down": 0.5,
+  "p_value": 0.5
+ },
+ "by_split": {
+  "fit": {
+   "n": 10,
+   "recovery_4q": 0.5
+  },
+  "select": {
+   "n": 10,
+   "recovery_4q": 0.5
+  },
+  "test": {
+   "n": 10,
+   "recovery_4q": 0.5
+  }
+ },
+ "n": 30,
+ "variants_tried": [
+  "placeholder variant A",
+  "placeholder variant B"
+ ],
+ "plain_summary": "Placeholder summary. One or two plain sentences about the recovery curve appear here.",
+ "curve_definition": "Placeholder: what the line and the band are (fixture)."
+}

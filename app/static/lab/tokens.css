@@ -1,0 +1,240 @@
+/*
+ * Design tokens for the lab site. Colour scales follow Vercel's Geist system
+ * (the --ds-* names and steps are Geist's); everything else on the site reads
+ * the role tokens at the bottom of each block, never a raw scale step.
+ *
+ * Themes: light by default, dark when the system asks for it, and an explicit
+ * data-theme on <html> (set by the toggle) wins in both directions.
+ *
+ * Chart series colours were checked with the palette validator (OKLab distance
+ * under simulated protanopia and deuteranopia, lightness band, contrast against
+ * the page surface) in both themes. Where Geist has no step inside the dark
+ * lightness band, the hue is kept and the lightness stepped (amber in dark).
+ */
+
+@font-face {
+  font-family: "Geist";
+  src: url("/static/lab/fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/static/lab/fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Geist scale, light */
+  --ds-background-100: #ffffff;
+  --ds-background-200: #fafafa;
+  --ds-gray-100: #f2f2f2;
+  --ds-gray-200: #ebebeb;
+  --ds-gray-300: #e6e6e6;
+  --ds-gray-400: #eaeaea;
+  --ds-gray-500: #c9c9c9;
+  --ds-gray-600: #a8a8a8;
+  --ds-gray-700: #8f8f8f;
+  --ds-gray-800: #7d7d7d;
+  --ds-gray-900: #666666;
+  --ds-gray-1000: #171717;
+  --ds-gray-alpha-100: rgba(0, 0, 0, 0.05);
+  --ds-gray-alpha-200: rgba(0, 0, 0, 0.08);
+  --ds-gray-alpha-400: rgba(0, 0, 0, 0.08);
+  --ds-gray-alpha-500: rgba(0, 0, 0, 0.21);
+  --ds-blue-100: #f0f7ff;
+  --ds-blue-300: #e0f0ff;
+  --ds-blue-600: #52a8ff;
+  --ds-blue-700: #0072f5;
+  --ds-blue-900: #0068d6;
+  --ds-blue-1000: #002f66;
+  --ds-amber-100: #fff6e6;
+  --ds-amber-400: #ffdd8f;
+  --ds-amber-700: #ffb224;
+  --ds-amber-900: #a35200;
+  --ds-teal-700: #12a594;
+  --ds-teal-900: #067a6e;
+  --ds-red-900: #cb2a2f;
+  --ds-green-900: #297a3a;
+
+  /* Roles: surfaces and ink */
+  --surface: var(--ds-background-100);
+  --surface-sunken: var(--ds-background-200);
+  --surface-hover: var(--ds-gray-100);
+  --surface-control: var(--ds-gray-100);
+  --ink: var(--ds-gray-1000);
+  --ink-secondary: var(--ds-gray-900);
+  --ink-muted: var(--ds-gray-800);
+  --line: var(--ds-gray-alpha-400);
+  --line-strong: var(--ds-gray-alpha-500);
+  /* Near-monochrome: links are ink with an underline. The one accent is kept for
+     the selected view and the primary data series. */
+  --link: var(--ds-gray-1000);
+  --focus: var(--ds-blue-700);
+  --accent: var(--ds-blue-700);
+  --accent-solid: #0068d6;
+  --on-accent: #ffffff;
+  --accent-wash: var(--ds-blue-100);
+  --notice-surface: var(--ds-amber-100);
+  --notice-line: var(--ds-amber-400);
+  --notice-ink: var(--ds-amber-900);
+  --danger: var(--ds-red-900);
+  --ok: var(--ds-green-900);
+  --scrim: rgba(0, 0, 0, 0.32);
+
+  /* Roles: charts. Identity colours follow the forecaster, never its rank. */
+  --chart-surface: var(--surface);
+  --chart-ink: var(--ds-gray-1000);
+  --chart-label: var(--ds-gray-900);
+  --chart-grid: #ededed;
+  --chart-axis: var(--ds-gray-500);
+  --chart-ours: #0072f5;
+  --chart-management: #a35200;
+  --chart-costs: #12a594;
+  --chart-context: #8f8f8f;
+  --chart-band: rgba(0, 0, 0, 0.07);
+  --chart-band-edge: rgba(0, 0, 0, 0.28);
+  --chart-ord-1: #52a8ff;
+  --chart-ord-2: #0068d6;
+  --chart-ord-3: #002f66;
+  --chart-on-fill: #ffffff;
+
+  /* Type */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --text-12: 0.75rem;
+  --text-13: 0.8125rem;
+  --text-14: 0.875rem;
+  --text-16: 1rem;
+  --text-18: 1.125rem;
+  --text-20: 1.25rem;
+  --text-24: 1.5rem;
+  --text-32: 2rem;
+  --text-40: 2.5rem;
+  --text-56: 3.5rem;
+
+  /* Space (4px base) and shape */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 12px;
+  --measure: 68ch;
+  --page-max: 1200px;
+  --gutter: 24px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --fast: 140ms;
+}
+
+/* Dark values are declared twice on purpose: once for the system setting, once
+   for the toggle. Keep the two blocks identical. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ds-background-100: #0a0a0a;
+    --ds-background-200: #000000;
+    --ds-gray-100: #1a1a1a;
+    --ds-gray-200: #1f1f1f;
+    --ds-gray-300: #292929;
+    --ds-gray-400: #2e2e2e;
+    --ds-gray-500: #454545;
+    --ds-gray-600: #878787;
+    --ds-gray-700: #8f8f8f;
+    --ds-gray-800: #7d7d7d;
+    --ds-gray-900: #a1a1a1;
+    --ds-gray-1000: #ededed;
+    --ds-gray-alpha-100: rgba(255, 255, 255, 0.06);
+    --ds-gray-alpha-200: rgba(255, 255, 255, 0.09);
+    --ds-gray-alpha-400: rgba(255, 255, 255, 0.14);
+    --ds-gray-alpha-500: rgba(255, 255, 255, 0.24);
+    --ds-blue-100: #0f1b2d;
+    --ds-blue-300: #0f3058;
+    --ds-blue-600: #0099ff;
+    --ds-blue-700: #0072f5;
+    --ds-blue-900: #52a8ff;
+    --ds-blue-1000: #ebf6ff;
+    --ds-amber-100: #291800;
+    --ds-amber-400: #573a00;
+    --ds-amber-700: #ffb224;
+    --ds-amber-900: #ff990a;
+    --ds-teal-700: #12a594;
+    --ds-teal-900: #0ac7b4;
+    --ds-red-900: #ff6166;
+    --ds-green-900: #62c073;
+
+    --ink-muted: var(--ds-gray-700);
+    --surface-control: var(--ds-gray-300);
+    --scrim: rgba(0, 0, 0, 0.6);
+    --chart-grid: #1f1f1f;
+    --chart-ours: #0072f5;
+    --chart-management: #cc7700;
+    --chart-costs: #12a594;
+    --chart-context: #7d7d7d;
+    --chart-band: rgba(255, 255, 255, 0.1);
+    --chart-band-edge: rgba(255, 255, 255, 0.36);
+    --chart-ord-1: #0d4a94;
+    --chart-ord-2: #0072f5;
+    --chart-ord-3: #7dbdff;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ds-background-100: #0a0a0a;
+  --ds-background-200: #000000;
+  --ds-gray-100: #1a1a1a;
+  --ds-gray-200: #1f1f1f;
+  --ds-gray-300: #292929;
+  --ds-gray-400: #2e2e2e;
+  --ds-gray-500: #454545;
+  --ds-gray-600: #878787;
+  --ds-gray-700: #8f8f8f;
+  --ds-gray-800: #7d7d7d;
+  --ds-gray-900: #a1a1a1;
+  --ds-gray-1000: #ededed;
+  --ds-gray-alpha-100: rgba(255, 255, 255, 0.06);
+  --ds-gray-alpha-200: rgba(255, 255, 255, 0.09);
+  --ds-gray-alpha-400: rgba(255, 255, 255, 0.14);
+  --ds-gray-alpha-500: rgba(255, 255, 255, 0.24);
+  --ds-blue-100: #0f1b2d;
+  --ds-blue-300: #0f3058;
+  --ds-blue-600: #0099ff;
+  --ds-blue-700: #0072f5;
+  --ds-blue-900: #52a8ff;
+  --ds-blue-1000: #ebf6ff;
+  --ds-amber-100: #291800;
+  --ds-amber-400: #573a00;
+  --ds-amber-700: #ffb224;
+  --ds-amber-900: #ff990a;
+  --ds-teal-700: #12a594;
+  --ds-teal-900: #0ac7b4;
+  --ds-red-900: #ff6166;
+  --ds-green-900: #62c073;
+
+  --ink-muted: var(--ds-gray-700);
+  --surface-control: var(--ds-gray-300);
+  --scrim: rgba(0, 0, 0, 0.6);
+  --chart-grid: #1f1f1f;
+  --chart-ours: #0072f5;
+  --chart-management: #cc7700;
+  --chart-costs: #12a594;
+  --chart-context: #7d7d7d;
+  --chart-band: rgba(255, 255, 255, 0.1);
+  --chart-band-edge: rgba(255, 255, 255, 0.36);
+  --chart-ord-1: #0d4a94;
+  --chart-ord-2: #0072f5;
+  --chart-ord-3: #7dbdff;
+}

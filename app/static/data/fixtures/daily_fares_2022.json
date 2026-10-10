@@ -1,0 +1,983 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2022-08-15",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "headline": "Placeholder headline for the 2022 daily fares (fixture, not a finding)",
+ "plain_summary": "Placeholder summary. One or two plain sentences about the 2022 fuel spike appear here.",
+ "daily": [
+  {
+   "date": "2022-04-18",
+   "fuel": 4.0,
+   "index_ua": 85.9,
+   "index_dl": 87.0,
+   "index_aa": 90.3,
+   "index_all": 89.6
+  },
+  {
+   "date": "2022-04-19",
+   "fuel": 4.05,
+   "index_ua": 86.6,
+   "index_dl": 87.4,
+   "index_aa": 90.5,
+   "index_all": 89.9
+  },
+  {
+   "date": "2022-04-20",
+   "fuel": 4.1,
+   "index_ua": 87.4,
+   "index_dl": 87.9,
+   "index_aa": 90.7,
+   "index_all": 90.3
+  },
+  {
+   "date": "2022-04-21",
+   "fuel": 4.16,
+   "index_ua": 88.2,
+   "index_dl": 88.3,
+   "index_aa": 90.9,
+   "index_all": 90.7
+  },
+  {
+   "date": "2022-04-22",
+   "fuel": 4.21,
+   "index_ua": 89.1,
+   "index_dl": 88.9,
+   "index_aa": 91.1,
+   "index_all": 91.1
+  },
+  {
+   "date": "2022-04-23",
+   "fuel": null,
+   "index_ua": 90.0,
+   "index_dl": 89.4,
+   "index_aa": 91.3,
+   "index_all": 91.5
+  },
+  {
+   "date": "2022-04-24",
+   "fuel": null,
+   "index_ua": 90.9,
+   "index_dl": 90.0,
+   "index_aa": 91.6,
+   "index_all": 92.0
+  },
+  {
+   "date": "2022-04-25",
+   "fuel": 4.36,
+   "index_ua": 91.9,
+   "index_dl": 90.6,
+   "index_aa": 91.9,
+   "index_all": 92.4
+  },
+  {
+   "date": "2022-04-26",
+   "fuel": 4.41,
+   "index_ua": 92.8,
+   "index_dl": 91.2,
+   "index_aa": 92.2,
+   "index_all": 92.9
+  },
+  {
+   "date": "2022-04-27",
+   "fuel": 4.45,
+   "index_ua": 93.8,
+   "index_dl": 91.8,
+   "index_aa": 92.6,
+   "index_all": 93.5
+  },
+  {
+   "date": "2022-04-28",
+   "fuel": 4.5,
+   "index_ua": 94.8,
+   "index_dl": 92.5,
+   "index_aa": 92.9,
+   "index_all": 94.0
+  },
+  {
+   "date": "2022-04-29",
+   "fuel": 4.54,
+   "index_ua": 95.8,
+   "index_dl": 93.2,
+   "index_aa": 93.3,
+   "index_all": 94.6
+  },
+  {
+   "date": "2022-04-30",
+   "fuel": null,
+   "index_ua": 96.9,
+   "index_dl": 93.9,
+   "index_aa": 93.7,
+   "index_all": 95.1
+  },
+  {
+   "date": "2022-05-01",
+   "fuel": null,
+   "index_ua": 97.9,
+   "index_dl": 94.6,
+   "index_aa": 94.1,
+   "index_all": 95.7
+  },
+  {
+   "date": "2022-05-02",
+   "fuel": 4.67,
+   "index_ua": 99.0,
+   "index_dl": 95.4,
+   "index_aa": 94.6,
+   "index_all": 96.3
+  },
+  {
+   "date": "2022-05-03",
+   "fuel": 4.71,
+   "index_ua": 100.0,
+   "index_dl": 96.1,
+   "index_aa": 95.0,
+   "index_all": 96.9
+  },
+  {
+   "date": "2022-05-04",
+   "fuel": 4.74,
+   "index_ua": 101.0,
+   "index_dl": 96.9,
+   "index_aa": 95.5,
+   "index_all": 97.5
+  },
+  {
+   "date": "2022-05-05",
+   "fuel": 4.78,
+   "index_ua": 102.1,
+   "index_dl": 97.7,
+   "index_aa": 95.9,
+   "index_all": 98.1
+  },
+  {
+   "date": "2022-05-06",
+   "fuel": 4.81,
+   "index_ua": 103.1,
+   "index_dl": 98.4,
+   "index_aa": 96.4,
+   "index_all": 98.7
+  },
+  {
+   "date": "2022-05-07",
+   "fuel": null,
+   "index_ua": 104.2,
+   "index_dl": 99.2,
+   "index_aa": 96.9,
+   "index_all": 99.4
+  },
+  {
+   "date": "2022-05-08",
+   "fuel": null,
+   "index_ua": 105.2,
+   "index_dl": 100.0,
+   "index_aa": 97.4,
+   "index_all": 100.0
+  },
+  {
+   "date": "2022-05-09",
+   "fuel": 4.89,
+   "index_ua": 106.2,
+   "index_dl": 100.8,
+   "index_aa": 97.9,
+   "index_all": 100.6
+  },
+  {
+   "date": "2022-05-10",
+   "fuel": 4.91,
+   "index_ua": 107.2,
+   "index_dl": 101.6,
+   "index_aa": 98.4,
+   "index_all": 101.3
+  },
+  {
+   "date": "2022-05-11",
+   "fuel": 4.93,
+   "index_ua": 108.1,
+   "index_dl": 102.3,
+   "index_aa": 99.0,
+   "index_all": 101.9
+  },
+  {
+   "date": "2022-05-12",
+   "fuel": 4.95,
+   "index_ua": 109.1,
+   "index_dl": 103.1,
+   "index_aa": 99.5,
+   "index_all": 102.5
+  },
+  {
+   "date": "2022-05-13",
+   "fuel": 4.97,
+   "index_ua": 110.0,
+   "index_dl": 103.9,
+   "index_aa": 100.0,
+   "index_all": 103.1
+  },
+  {
+   "date": "2022-05-14",
+   "fuel": null,
+   "index_ua": 110.9,
+   "index_dl": 104.6,
+   "index_aa": 100.5,
+   "index_all": 103.7
+  },
+  {
+   "date": "2022-05-15",
+   "fuel": null,
+   "index_ua": 111.8,
+   "index_dl": 105.4,
+   "index_aa": 101.0,
+   "index_all": 104.3
+  },
+  {
+   "date": "2022-05-16",
+   "fuel": 4.99,
+   "index_ua": 112.6,
+   "index_dl": 106.1,
+   "index_aa": 101.6,
+   "index_all": 104.9
+  },
+  {
+   "date": "2022-05-17",
+   "fuel": 5.0,
+   "index_ua": 113.4,
+   "index_dl": 106.8,
+   "index_aa": 102.1,
+   "index_all": 105.4
+  },
+  {
+   "date": "2022-05-18",
+   "fuel": 5.0,
+   "index_ua": 114.1,
+   "index_dl": 107.5,
+   "index_aa": 102.6,
+   "index_all": 106.0
+  },
+  {
+   "date": "2022-05-19",
+   "fuel": 5.0,
+   "index_ua": 114.9,
+   "index_dl": 108.2,
+   "index_aa": 103.1,
+   "index_all": 106.5
+  },
+  {
+   "date": "2022-05-20",
+   "fuel": 4.99,
+   "index_ua": 115.5,
+   "index_dl": 108.8,
+   "index_aa": 103.6,
+   "index_all": 107.1
+  },
+  {
+   "date": "2022-05-21",
+   "fuel": null,
+   "index_ua": 116.2,
+   "index_dl": 109.4,
+   "index_aa": 104.1,
+   "index_all": 107.6
+  },
+  {
+   "date": "2022-05-22",
+   "fuel": null,
+   "index_ua": 116.8,
+   "index_dl": 110.0,
+   "index_aa": 104.5,
+   "index_all": 108.0
+  },
+  {
+   "date": "2022-05-23",
+   "fuel": 4.97,
+   "index_ua": 117.3,
+   "index_dl": 110.6,
+   "index_aa": 105.0,
+   "index_all": 108.5
+  },
+  {
+   "date": "2022-05-24",
+   "fuel": 4.95,
+   "index_ua": 117.8,
+   "index_dl": 111.1,
+   "index_aa": 105.4,
+   "index_all": 108.9
+  },
+  {
+   "date": "2022-05-25",
+   "fuel": 4.93,
+   "index_ua": 118.3,
+   "index_dl": 111.7,
+   "index_aa": 105.9,
+   "index_all": 109.3
+  },
+  {
+   "date": "2022-05-26",
+   "fuel": 4.91,
+   "index_ua": 118.7,
+   "index_dl": 112.1,
+   "index_aa": 106.3,
+   "index_all": 109.7
+  },
+  {
+   "date": "2022-05-27",
+   "fuel": 4.89,
+   "index_ua": 119.0,
+   "index_dl": 112.6,
+   "index_aa": 106.7,
+   "index_all": 110.1
+  },
+  {
+   "date": "2022-05-28",
+   "fuel": null,
+   "index_ua": 119.3,
+   "index_dl": 113.0,
+   "index_aa": 107.1,
+   "index_all": 110.4
+  },
+  {
+   "date": "2022-05-29",
+   "fuel": null,
+   "index_ua": 119.6,
+   "index_dl": 113.4,
+   "index_aa": 107.4,
+   "index_all": 110.7
+  },
+  {
+   "date": "2022-05-30",
+   "fuel": 4.81,
+   "index_ua": 119.8,
+   "index_dl": 113.7,
+   "index_aa": 107.8,
+   "index_all": 111.0
+  },
+  {
+   "date": "2022-05-31",
+   "fuel": 4.78,
+   "index_ua": 119.9,
+   "index_dl": 114.0,
+   "index_aa": 108.1,
+   "index_all": 111.2
+  },
+  {
+   "date": "2022-06-01",
+   "fuel": 4.74,
+   "index_ua": 120.0,
+   "index_dl": 114.3,
+   "index_aa": 108.4,
+   "index_all": 111.4
+  },
+  {
+   "date": "2022-06-02",
+   "fuel": 4.71,
+   "index_ua": 120.0,
+   "index_dl": 114.5,
+   "index_aa": 108.7,
+   "index_all": 111.6
+  },
+  {
+   "date": "2022-06-03",
+   "fuel": 4.67,
+   "index_ua": 120.0,
+   "index_dl": 114.7,
+   "index_aa": 108.9,
+   "index_all": 111.7
+  },
+  {
+   "date": "2022-06-04",
+   "fuel": null,
+   "index_ua": 119.9,
+   "index_dl": 114.8,
+   "index_aa": 109.1,
+   "index_all": 111.9
+  },
+  {
+   "date": "2022-06-05",
+   "fuel": null,
+   "index_ua": 119.8,
+   "index_dl": 114.9,
+   "index_aa": 109.3,
+   "index_all": 111.9
+  },
+  {
+   "date": "2022-06-06",
+   "fuel": 4.54,
+   "index_ua": 119.6,
+   "index_dl": 115.0,
+   "index_aa": 109.5,
+   "index_all": 112.0
+  },
+  {
+   "date": "2022-06-07",
+   "fuel": 4.5,
+   "index_ua": 119.3,
+   "index_dl": 115.0,
+   "index_aa": 109.7,
+   "index_all": 112.0
+  },
+  {
+   "date": "2022-06-08",
+   "fuel": 4.45,
+   "index_ua": 119.0,
+   "index_dl": 115.0,
+   "index_aa": 109.8,
+   "index_all": 112.0
+  },
+  {
+   "date": "2022-06-09",
+   "fuel": 4.41,
+   "index_ua": 118.7,
+   "index_dl": 114.9,
+   "index_aa": 109.9,
+   "index_all": 111.9
+  },
+  {
+   "date": "2022-06-10",
+   "fuel": 4.36,
+   "index_ua": 118.3,
+   "index_dl": 114.8,
+   "index_aa": 109.9,
+   "index_all": 111.9
+  },
+  {
+   "date": "2022-06-11",
+   "fuel": null,
+   "index_ua": 117.8,
+   "index_dl": 114.7,
+   "index_aa": 110.0,
+   "index_all": 111.7
+  },
+  {
+   "date": "2022-06-12",
+   "fuel": null,
+   "index_ua": 117.3,
+   "index_dl": 114.5,
+   "index_aa": 110.0,
+   "index_all": 111.6
+  },
+  {
+   "date": "2022-06-13",
+   "fuel": 4.21,
+   "index_ua": 116.8,
+   "index_dl": 114.3,
+   "index_aa": 110.0,
+   "index_all": 111.4
+  },
+  {
+   "date": "2022-06-14",
+   "fuel": 4.16,
+   "index_ua": 116.2,
+   "index_dl": 114.0,
+   "index_aa": 109.9,
+   "index_all": 111.2
+  },
+  {
+   "date": "2022-06-15",
+   "fuel": 4.1,
+   "index_ua": 115.5,
+   "index_dl": 113.7,
+   "index_aa": 109.9,
+   "index_all": 111.0
+  },
+  {
+   "date": "2022-06-16",
+   "fuel": 4.05,
+   "index_ua": 114.9,
+   "index_dl": 113.4,
+   "index_aa": 109.8,
+   "index_all": 110.7
+  },
+  {
+   "date": "2022-06-17",
+   "fuel": 4.0,
+   "index_ua": 114.1,
+   "index_dl": 113.0,
+   "index_aa": 109.7,
+   "index_all": 110.4
+  },
+  {
+   "date": "2022-06-18",
+   "fuel": null,
+   "index_ua": 113.4,
+   "index_dl": 112.6,
+   "index_aa": 109.5,
+   "index_all": 110.1
+  },
+  {
+   "date": "2022-06-19",
+   "fuel": null,
+   "index_ua": 112.6,
+   "index_dl": 112.1,
+   "index_aa": 109.3,
+   "index_all": 109.7
+  },
+  {
+   "date": "2022-06-20",
+   "fuel": 3.84,
+   "index_ua": 111.8,
+   "index_dl": 111.7,
+   "index_aa": 109.1,
+   "index_all": 109.3
+  },
+  {
+   "date": "2022-06-21",
+   "fuel": 3.79,
+   "index_ua": 110.9,
+   "index_dl": 111.1,
+   "index_aa": 108.9,
+   "index_all": 108.9
+  },
+  {
+   "date": "2022-06-22",
+   "fuel": 3.74,
+   "index_ua": 110.0,
+   "index_dl": 110.6,
+   "index_aa": 108.7,
+   "index_all": 108.5
+  },
+  {
+   "date": "2022-06-23",
+   "fuel": 3.69,
+   "index_ua": 109.1,
+   "index_dl": 110.0,
+   "index_aa": 108.4,
+   "index_all": 108.0
+  },
+  {
+   "date": "2022-06-24",
+   "fuel": 3.64,
+   "index_ua": 108.1,
+   "index_dl": 109.4,
+   "index_aa": 108.1,
+   "index_all": 107.6
+  },
+  {
+   "date": "2022-06-25",
+   "fuel": null,
+   "index_ua": 107.2,
+   "index_dl": 108.8,
+   "index_aa": 107.8,
+   "index_all": 107.1
+  },
+  {
+   "date": "2022-06-26",
+   "fuel": null,
+   "index_ua": 106.2,
+   "index_dl": 108.2,
+   "index_aa": 107.4,
+   "index_all": 106.5
+  },
+  {
+   "date": "2022-06-27",
+   "fuel": 3.5,
+   "index_ua": 105.2,
+   "index_dl": 107.5,
+   "index_aa": 107.1,
+   "index_all": 106.0
+  },
+  {
+   "date": "2022-06-28",
+   "fuel": 3.46,
+   "index_ua": 104.2,
+   "index_dl": 106.8,
+   "index_aa": 106.7,
+   "index_all": 105.4
+  },
+  {
+   "date": "2022-06-29",
+   "fuel": 3.41,
+   "index_ua": 103.1,
+   "index_dl": 106.1,
+   "index_aa": 106.3,
+   "index_all": 104.9
+  },
+  {
+   "date": "2022-06-30",
+   "fuel": 3.37,
+   "index_ua": 102.1,
+   "index_dl": 105.4,
+   "index_aa": 105.9,
+   "index_all": 104.3
+  },
+  {
+   "date": "2022-07-01",
+   "fuel": 3.33,
+   "index_ua": 101.0,
+   "index_dl": 104.6,
+   "index_aa": 105.4,
+   "index_all": 103.7
+  },
+  {
+   "date": "2022-07-02",
+   "fuel": null,
+   "index_ua": 100.0,
+   "index_dl": 103.9,
+   "index_aa": 105.0,
+   "index_all": 103.1
+  },
+  {
+   "date": "2022-07-03",
+   "fuel": null,
+   "index_ua": 99.0,
+   "index_dl": 103.1,
+   "index_aa": 104.5,
+   "index_all": 102.5
+  },
+  {
+   "date": "2022-07-04",
+   "fuel": 3.22,
+   "index_ua": 97.9,
+   "index_dl": 102.3,
+   "index_aa": 104.1,
+   "index_all": 101.9
+  },
+  {
+   "date": "2022-07-05",
+   "fuel": 3.19,
+   "index_ua": 96.9,
+   "index_dl": 101.6,
+   "index_aa": 103.6,
+   "index_all": 101.3
+  },
+  {
+   "date": "2022-07-06",
+   "fuel": 3.16,
+   "index_ua": 95.8,
+   "index_dl": 100.8,
+   "index_aa": 103.1,
+   "index_all": 100.6
+  },
+  {
+   "date": "2022-07-07",
+   "fuel": 3.13,
+   "index_ua": 94.8,
+   "index_dl": 100.0,
+   "index_aa": 102.6,
+   "index_all": 100.0
+  },
+  {
+   "date": "2022-07-08",
+   "fuel": 3.11,
+   "index_ua": 93.8,
+   "index_dl": 99.2,
+   "index_aa": 102.1,
+   "index_all": 99.4
+  },
+  {
+   "date": "2022-07-09",
+   "fuel": null,
+   "index_ua": 92.8,
+   "index_dl": 98.4,
+   "index_aa": 101.6,
+   "index_all": 98.7
+  },
+  {
+   "date": "2022-07-10",
+   "fuel": null,
+   "index_ua": 91.9,
+   "index_dl": 97.7,
+   "index_aa": 101.0,
+   "index_all": 98.1
+  },
+  {
+   "date": "2022-07-11",
+   "fuel": 3.05,
+   "index_ua": 90.9,
+   "index_dl": 96.9,
+   "index_aa": 100.5,
+   "index_all": 97.5
+  },
+  {
+   "date": "2022-07-12",
+   "fuel": 3.03,
+   "index_ua": 90.0,
+   "index_dl": 96.1,
+   "index_aa": 100.0,
+   "index_all": 96.9
+  },
+  {
+   "date": "2022-07-13",
+   "fuel": 3.02,
+   "index_ua": 89.1,
+   "index_dl": 95.4,
+   "index_aa": 99.5,
+   "index_all": 96.3
+  },
+  {
+   "date": "2022-07-14",
+   "fuel": 3.01,
+   "index_ua": 88.2,
+   "index_dl": 94.6,
+   "index_aa": 99.0,
+   "index_all": 95.7
+  },
+  {
+   "date": "2022-07-15",
+   "fuel": 3.01,
+   "index_ua": 87.4,
+   "index_dl": 93.9,
+   "index_aa": 98.4,
+   "index_all": 95.1
+  },
+  {
+   "date": "2022-07-16",
+   "fuel": null,
+   "index_ua": 86.6,
+   "index_dl": 93.2,
+   "index_aa": 97.9,
+   "index_all": 94.6
+  },
+  {
+   "date": "2022-07-17",
+   "fuel": null,
+   "index_ua": 85.9,
+   "index_dl": 92.5,
+   "index_aa": 97.4,
+   "index_all": 94.0
+  },
+  {
+   "date": "2022-07-18",
+   "fuel": 3.0,
+   "index_ua": 85.1,
+   "index_dl": 91.8,
+   "index_aa": 96.9,
+   "index_all": 93.5
+  },
+  {
+   "date": "2022-07-19",
+   "fuel": 3.01,
+   "index_ua": 84.5,
+   "index_dl": 91.2,
+   "index_aa": 96.4,
+   "index_all": 92.9
+  },
+  {
+   "date": "2022-07-20",
+   "fuel": 3.01,
+   "index_ua": 83.8,
+   "index_dl": 90.6,
+   "index_aa": 95.9,
+   "index_all": 92.4
+  },
+  {
+   "date": "2022-07-21",
+   "fuel": 3.02,
+   "index_ua": 83.2,
+   "index_dl": 90.0,
+   "index_aa": 95.5,
+   "index_all": 92.0
+  },
+  {
+   "date": "2022-07-22",
+   "fuel": 3.03,
+   "index_ua": 82.7,
+   "index_dl": 89.4,
+   "index_aa": 95.0,
+   "index_all": 91.5
+  },
+  {
+   "date": "2022-07-23",
+   "fuel": null,
+   "index_ua": 82.2,
+   "index_dl": 88.9,
+   "index_aa": 94.6,
+   "index_all": 91.1
+  },
+  {
+   "date": "2022-07-24",
+   "fuel": null,
+   "index_ua": 81.7,
+   "index_dl": 88.3,
+   "index_aa": 94.1,
+   "index_all": 90.7
+  },
+  {
+   "date": "2022-07-25",
+   "fuel": 3.09,
+   "index_ua": 81.3,
+   "index_dl": 87.9,
+   "index_aa": 93.7,
+   "index_all": 90.3
+  },
+  {
+   "date": "2022-07-26",
+   "fuel": 3.11,
+   "index_ua": 81.0,
+   "index_dl": 87.4,
+   "index_aa": 93.3,
+   "index_all": 89.9
+  },
+  {
+   "date": "2022-07-27",
+   "fuel": 3.13,
+   "index_ua": 80.7,
+   "index_dl": 87.0,
+   "index_aa": 92.9,
+   "index_all": 89.6
+  },
+  {
+   "date": "2022-07-28",
+   "fuel": 3.16,
+   "index_ua": 80.4,
+   "index_dl": 86.6,
+   "index_aa": 92.6,
+   "index_all": 89.3
+  },
+  {
+   "date": "2022-07-29",
+   "fuel": 3.19,
+   "index_ua": 80.2,
+   "index_dl": 86.3,
+   "index_aa": 92.2,
+   "index_all": 89.0
+  },
+  {
+   "date": "2022-07-30",
+   "fuel": null,
+   "index_ua": 80.1,
+   "index_dl": 86.0,
+   "index_aa": 91.9,
+   "index_all": 88.8
+  },
+  {
+   "date": "2022-07-31",
+   "fuel": null,
+   "index_ua": 80.0,
+   "index_dl": 85.7,
+   "index_aa": 91.6,
+   "index_all": 88.6
+  },
+  {
+   "date": "2022-08-01",
+   "fuel": 3.29,
+   "index_ua": 80.0,
+   "index_dl": 85.5,
+   "index_aa": 91.3,
+   "index_all": 88.4
+  },
+  {
+   "date": "2022-08-02",
+   "fuel": 3.33,
+   "index_ua": 80.0,
+   "index_dl": 85.3,
+   "index_aa": 91.1,
+   "index_all": 88.3
+  },
+  {
+   "date": "2022-08-03",
+   "fuel": 3.37,
+   "index_ua": 80.1,
+   "index_dl": 85.2,
+   "index_aa": 90.9,
+   "index_all": 88.1
+  },
+  {
+   "date": "2022-08-04",
+   "fuel": 3.41,
+   "index_ua": 80.2,
+   "index_dl": 85.1,
+   "index_aa": 90.7,
+   "index_all": 88.1
+  },
+  {
+   "date": "2022-08-05",
+   "fuel": 3.46,
+   "index_ua": 80.4,
+   "index_dl": 85.0,
+   "index_aa": 90.5,
+   "index_all": 88.0
+  },
+  {
+   "date": "2022-08-06",
+   "fuel": null,
+   "index_ua": 80.7,
+   "index_dl": 85.0,
+   "index_aa": 90.3,
+   "index_all": 88.0
+  },
+  {
+   "date": "2022-08-07",
+   "fuel": null,
+   "index_ua": 81.0,
+   "index_dl": 85.0,
+   "index_aa": 90.2,
+   "index_all": 88.0
+  },
+  {
+   "date": "2022-08-08",
+   "fuel": 3.59,
+   "index_ua": 81.3,
+   "index_dl": 85.1,
+   "index_aa": 90.1,
+   "index_all": 88.1
+  },
+  {
+   "date": "2022-08-09",
+   "fuel": 3.64,
+   "index_ua": 81.7,
+   "index_dl": 85.2,
+   "index_aa": 90.1,
+   "index_all": 88.1
+  },
+  {
+   "date": "2022-08-10",
+   "fuel": 3.69,
+   "index_ua": 82.2,
+   "index_dl": 85.3,
+   "index_aa": 90.0,
+   "index_all": 88.3
+  },
+  {
+   "date": "2022-08-11",
+   "fuel": 3.74,
+   "index_ua": 82.7,
+   "index_dl": 85.5,
+   "index_aa": 90.0,
+   "index_all": 88.4
+  },
+  {
+   "date": "2022-08-12",
+   "fuel": 3.79,
+   "index_ua": 83.2,
+   "index_dl": 85.7,
+   "index_aa": 90.0,
+   "index_all": 88.6
+  },
+  {
+   "date": "2022-08-13",
+   "fuel": null,
+   "index_ua": 83.8,
+   "index_dl": 86.0,
+   "index_aa": 90.1,
+   "index_all": 88.8
+  },
+  {
+   "date": "2022-08-14",
+   "fuel": null,
+   "index_ua": 84.5,
+   "index_dl": 86.3,
+   "index_aa": 90.1,
+   "index_all": 89.0
+  },
+  {
+   "date": "2022-08-15",
+   "fuel": 3.95,
+   "index_ua": 85.1,
+   "index_dl": 86.6,
+   "index_aa": 90.2,
+   "index_all": 89.3
+  }
+ ],
+ "limits": [
+  "Placeholder limit A.",
+  "Placeholder limit B."
+ ]
+}

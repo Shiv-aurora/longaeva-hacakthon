@@ -1,0 +1,96 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "items": [
+  {
+   "id": "fixture-guidance-eps",
+   "claim": "adj_eps_guidance",
+   "period": "2026Q3",
+   "value": [
+    1.0,
+    2.0
+   ],
+   "unit": "usd_per_share",
+   "quote": "Placeholder quote for adj_eps_guidance. The exact text from the filing appears here once evidence.json is built.",
+   "doc_url": "https://example.invalid/placeholder-document",
+   "doc_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "char_start": 0,
+   "char_end": 0,
+   "picked_by": "rules",
+   "verified": false
+  },
+  {
+   "id": "fixture-fuel-assumption",
+   "claim": "fuel_assumed_usd_gal",
+   "period": "2026Q3",
+   "value": 3.0,
+   "unit": "usd_per_gallon",
+   "quote": "Placeholder quote for fuel_assumed_usd_gal. The exact text from the filing appears here once evidence.json is built.",
+   "doc_url": "https://example.invalid/placeholder-document",
+   "doc_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "char_start": 0,
+   "char_end": 0,
+   "picked_by": "rules",
+   "verified": true
+  },
+  {
+   "id": "fixture-promise-q3",
+   "claim": "fuel_recovery_share",
+   "period": "2026Q3",
+   "value": [
+    0.5,
+    0.6
+   ],
+   "unit": "share",
+   "quote": "Placeholder quote for fuel_recovery_share. The exact text from the filing appears here once evidence.json is built.",
+   "doc_url": "https://example.invalid/placeholder-document",
+   "doc_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "char_start": 0,
+   "char_end": 0,
+   "picked_by": "rules",
+   "verified": false
+  },
+  {
+   "id": "fixture-promise-q4",
+   "claim": "fuel_recovery_share",
+   "period": "2026Q4",
+   "value": 1.0,
+   "unit": "share",
+   "quote": "Placeholder quote for fuel_recovery_share. The exact text from the filing appears here once evidence.json is built.",
+   "doc_url": "https://example.invalid/placeholder-document",
+   "doc_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "char_start": 0,
+   "char_end": 0,
+   "picked_by": "rules",
+   "verified": false
+  },
+  {
+   "id": "fixture-delta-guidance",
+   "claim": "dal_adj_eps_guidance",
+   "period": "2026Q3",
+   "value": [
+    1.0,
+    1.5
+   ],
+   "unit": "usd_per_share",
+   "quote": "Placeholder quote for dal_adj_eps_guidance. The exact text from the filing appears here once evidence.json is built.",
+   "doc_url": "https://example.invalid/placeholder-document",
+   "doc_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "char_start": 0,
+   "char_end": 0,
+   "picked_by": "rules",
+   "verified": false
+  }
+ ]
+}

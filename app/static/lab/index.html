@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>UAL Counterfactual Lab</title>
+  <meta name="description" content="A forward simulation of United Airlines as a business: scenario controls, the measured behavior behind it, and checks against what happened.">
+  <link rel="icon" href="data:,">
+  <script>
+    /* Apply a saved theme before first paint so the page never flashes. */
+    (function () {
+      try {
+        var saved = localStorage.getItem("lab-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+      } catch (error) { /* storage can be unavailable; the system setting still applies */ }
+    })();
+  </script>
+  <link rel="preload" href="/static/lab/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/lab/tokens.css">
+  <link rel="stylesheet" href="/static/lab/base.css">
+  <link rel="stylesheet" href="/static/lab/gooey-nav.css">
+  <link rel="stylesheet" href="/static/lab/lab.css">
+  <script defer src="/static/lab/vendor/d3.min.js"></script>
+  <script defer src="/static/lab/vendor/plot.umd.min.js"></script>
+  <script defer src="/static/lab/gooey-nav.js"></script>
+  <script defer src="/static/lab/charts.js"></script>
+  <script defer src="/static/lab/lab.js"></script>
+</head>
+<body class="app" data-page="index">
+  <a class="skip" href="#main">Skip to the content</a>
+
+  <header class="topbar">
+    <a class="wordmark" href="#simulator">UAL Counterfactual Lab</a>
+    <!-- The view switcher. gooey-nav.js animates it; it is adapted from Rare UI (credit in the About panel). -->
+    <nav class="gooey" id="view-nav" aria-label="Views" data-size="sm">
+      <ul class="gooey-list">
+        <li class="gooey-seg is-active"><button class="gooey-item" type="button" data-value="simulator" aria-current="true">Simulator</button></li>
+        <li class="gooey-seg"><button class="gooey-item" type="button" data-value="behaviour">Behavior</button></li>
+        <li class="gooey-seg"><button class="gooey-item" type="button" data-value="reality">Reality check</button></li>
+      </ul>
+    </nav>
+    <div class="topbar-right">
+      <span class="pill" id="fixture-pill" role="status" title="Every number is a made-up stand-in used to build the layout. Nothing here is a finding." hidden>Placeholder data</span>
+      <span class="data-date" id="data-date" title="Latest data used"></span>
+      <a class="toplink" href="/report">Report</a>
+      <a class="toplink" href="/research">Research</a>
+      <button class="icon-btn" id="about-btn" type="button" aria-label="About this site: data, sources and credits" aria-haspopup="dialog">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.75"/><path d="M8 7.25v3.5" stroke-linecap="round"/><circle cx="8" cy="5.1" r="0.6" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.25"/><path d="M8 2.75v10.5A5.25 5.25 0 0 0 8 2.75Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- View 1: the simulator -->
+    <section class="view view-simulator" id="view-simulator" data-view="simulator" aria-label="Simulator">
+
+      <form class="tile rail" id="sim-form" aria-label="Scenario">
+        <div class="rail-block">
+          <div class="chips" id="preset-row" role="group" aria-label="Preset scenarios"></div>
+        </div>
+
+        <div class="rail-block controls">
+          <div class="field">
+            <label for="sim-fuel">Fuel price</label>
+            <output for="sim-fuel" id="sim-fuel-out"></output>
+            <input type="range" id="sim-fuel" name="fuel_shock_pct" min="-40" max="80" step="1" value="0">
+          </div>
+          <div class="field">
+            <label for="sim-months">Held for</label>
+            <output for="sim-months" id="sim-months-out"></output>
+            <input type="range" id="sim-months" name="fuel_shock_months" min="1" max="12" step="1" value="6">
+          </div>
+          <div class="field">
+            <label for="sim-demand">Travel demand</label>
+            <output for="sim-demand" id="sim-demand-out"></output>
+            <input type="range" id="sim-demand" name="demand_shock_pct" min="-15" max="10" step="1" value="0">
+          </div>
+          <div class="field">
+            <label for="sim-capacity">Capacity cut</label>
+            <output for="sim-capacity" id="sim-capacity-out"></output>
+            <input type="range" id="sim-capacity" name="capacity_change_pct" min="-15" max="0" step="1" value="0">
+          </div>
+          <div class="field">
+            <label for="sim-aircraft">Aircraft delayed</label>
+            <output for="sim-aircraft" id="sim-aircraft-out"></output>
+            <input type="range" id="sim-aircraft" name="delay_aircraft" min="0" max="40" step="5" value="0">
+          </div>
+          <div class="field">
+            <label for="sim-delay">Delay</label>
+            <output for="sim-delay" id="sim-delay-out"></output>
+            <input type="range" id="sim-delay" name="delay_months" min="0" max="12" step="1" value="0">
+          </div>
+          <div class="field">
+            <label for="sim-horizon">Horizon</label>
+            <output for="sim-horizon" id="sim-horizon-out"></output>
+            <input type="range" id="sim-horizon" name="horizon_months" min="12" max="21" step="3" value="12">
+          </div>
+        </div>
+
+        <div class="rail-block">
+          <p class="rail-label">How fares respond</p>
+          <div class="modes" id="mode-key"></div>
+        </div>
+
+        <div class="rail-foot">
+          <p class="sim-status" id="sim-status" role="status" aria-live="polite"></p>
+          <button class="btn btn-quiet" type="reset">Reset</button>
+        </div>
+      </form>
+
+      <div class="centre">
+        <div class="outcomes" id="outcomes" aria-label="Outcomes"></div>
+
+        <section class="tile main-chart" id="main-chart" aria-label="Scenario chart">
+          <header class="tile-head">
+            <div class="tabs" role="tablist" aria-label="Question" id="main-tabs">
+              <button type="button" role="tab" id="tab-whatif" aria-controls="main-body" aria-selected="true" data-tab="whatif">What if</button>
+              <button type="button" role="tab" id="tab-breaks" aria-controls="main-body" aria-selected="false" data-tab="breaks" tabindex="-1">What breaks</button>
+              <button type="button" role="tab" id="tab-target" aria-controls="main-body" aria-selected="false" data-tab="target" tabindex="-1">What must be true</button>
+            </div>
+            <div class="tile-tools" id="main-tools"></div>
+          </header>
+          <div class="tab-body" id="main-body" role="tabpanel" aria-labelledby="tab-whatif"></div>
+        </section>
+
+        <section class="tile bridge-tile" id="fig-bridge" aria-label="Per-share bridge"></section>
+      </div>
+
+      <aside class="tile console" id="console" aria-label="Ask the simulator">
+        <header class="tile-head">
+          <h2 class="tile-title">Ask</h2>
+          <div class="tile-tools">
+            <button class="icon-btn" type="button" id="console-toggle" aria-expanded="true" aria-controls="console-body" aria-label="Collapse the ask panel">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+            </button>
+          </div>
+        </header>
+        <div class="console-body" id="console-body">
+          <div class="console-turns" id="ask-turns" aria-live="polite"></div>
+          <div class="chips console-suggest" id="ask-suggest" aria-label="Suggested questions"></div>
+        </div>
+        <form class="console-form" id="ask-form">
+          <label class="sr-only" for="ask-input">Your question</label>
+          <textarea id="ask-input" name="message" rows="2" placeholder="Ask a what-if" required></textarea>
+          <button class="btn btn-primary" type="submit" id="ask-run">Run</button>
+        </form>
+      </aside>
+    </section>
+
+    <!-- View 2: how United behaves (the hash route keeps its first spelling) -->
+    <section class="view view-behaviour" id="view-behaviour" data-view="behaviour" aria-label="Behavior" hidden>
+      <section class="tile is-large" id="fig-fare"></section>
+      <section class="tile" id="fig-cost"></section>
+      <section class="tile" id="fig-capacity" hidden></section>
+      <section class="tile" id="fig-market"></section>
+      <section class="tile" id="fig-demand"></section>
+      <section class="tile" id="fig-fares" hidden></section>
+    </section>
+
+    <!-- View 3: does it match reality -->
+    <section class="view view-reality" id="view-reality" data-view="reality" aria-label="Reality check" hidden>
+      <section class="tile" id="fig-track"></section>
+      <div class="side">
+        <section class="tile" id="scores"></section>
+        <section class="tile" id="delta"></section>
+        <section class="tile" id="forward"></section>
+      </div>
+    </section>
+  </main>
+
+  <nav class="footlinks" aria-label="More">
+    <a href="/report">Report</a>
+    <a href="/research">Research</a>
+  </nav>
+
+  <noscript>
+    <p class="noscript">This application draws its charts in the browser and needs JavaScript.</p>
+  </noscript>
+</body>
+</html>

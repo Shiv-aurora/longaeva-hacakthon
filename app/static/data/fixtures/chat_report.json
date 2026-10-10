@@ -1,0 +1,1213 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "status": "ok",
+ "answer": "Placeholder summary. The two-sentence answer to the question appears here, written from the model output.",
+ "verified": true,
+ "note": null,
+ "report": {
+  "title": "Placeholder report title (fixture, not a finding)",
+  "summary": "Placeholder summary. The two-sentence answer to the question appears here, written from the model output.",
+  "sections": [
+   {
+    "heading": "Placeholder section one",
+    "text": "Placeholder text. The first short section of the report appears here.\n\nA second paragraph shows how paragraphs are spaced."
+   },
+   {
+    "heading": "Placeholder section two",
+    "text": "Placeholder text. The second short section of the report appears here."
+   }
+  ],
+  "charts": [
+   {
+    "file": null,
+    "key": "modes",
+    "kind": "scenario",
+    "run_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+   },
+   {
+    "file": "fare_clock.json",
+    "key": "curve",
+    "kind": "band"
+   }
+  ],
+  "assumptions": [
+   "Placeholder assumption A.",
+   "Placeholder assumption B."
+  ],
+  "evidence_ids": [
+   "fixture-promise-q3",
+   "fixture-fuel-assumption"
+  ],
+  "verified": true,
+  "unsupported": []
+ },
+ "charts": [
+  {
+   "file": null,
+   "key": "modes",
+   "kind": "scenario",
+   "run_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "file": "fare_clock.json",
+   "key": "curve",
+   "kind": "band"
+  }
+ ],
+ "evidence_ids": [
+  "fixture-promise-q3",
+  "fixture-fuel-assumption"
+ ],
+ "model": "placeholder-model",
+ "tool_calls": [
+  {
+   "name": "run_scenario",
+   "arguments": {
+    "fuel_shock_pct": 30,
+    "fuel_shock_months": 6,
+    "capacity_change_pct": -3,
+    "demand_shock_pct": 0,
+    "delivery_delay": {
+     "aircraft": 0,
+     "months": 0
+    },
+    "horizon_months": 12,
+    "seed": 1
+   },
+   "status": "ok",
+   "file": null
+  }
+ ],
+ "steps": [],
+ "scenarios": [
+  {
+   "run_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+   "request": {
+    "fuel_shock_pct": 30,
+    "fuel_usd_gal": null,
+    "fuel_shock_months": 6,
+    "capacity_change_pct": -3,
+    "demand_shock_pct": 0,
+    "horizon_months": 12,
+    "seed": 1,
+    "paths": 1000,
+    "delivery_delay": {
+     "aircraft": 0,
+     "months": 0
+    },
+    "capacity_response": "none"
+   },
+   "result": {
+    "status": "ok",
+    "run_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "elapsed_ms": 0,
+    "cached": false,
+    "request": {
+     "fuel_shock_pct": 30,
+     "fuel_usd_gal": null,
+     "fuel_shock_months": 6,
+     "capacity_change_pct": -3,
+     "demand_shock_pct": 0,
+     "horizon_months": 12,
+     "seed": 1,
+     "paths": 1000,
+     "delivery_delay": {
+      "aircraft": 0,
+      "months": 0
+     },
+     "capacity_response": "none"
+    },
+    "paths": 1000,
+    "as_of": {
+     "information_cutoff": "2026-07-01",
+     "fuel_last_observation": "2026-07-01",
+     "shock_starts": "2026-10",
+     "months": [
+      "2026-10",
+      "2026-11",
+      "2026-12",
+      "2027-01",
+      "2027-02",
+      "2027-03",
+      "2027-04",
+      "2027-05",
+      "2027-06",
+      "2027-07",
+      "2027-08",
+      "2027-09"
+     ],
+     "unreported_lead_months": [
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    "fuel": {
+     "reference_usd_gal": 4.0,
+     "level_usd_gal": 5.2,
+     "shock_pct": 30,
+     "shock_usd_gal": 1.2,
+     "held_months": 6,
+     "after_hold": "placeholder: fades by half every 2 months",
+     "given_as": "fuel_shock_pct"
+    },
+    "modes": {
+     "costs_only": {
+      "status": "ok",
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "months": [
+         "2026-10",
+         "2026-11",
+         "2026-12"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": -100.0,
+         "p50": 400.0,
+         "p90": 900.0
+        },
+        "operating_margin": {
+         "p10": 0.0,
+         "p50": 0.03,
+         "p90": 0.06
+        },
+        "fcf_musd": {
+         "p10": -800.0,
+         "p50": -200.0,
+         "p90": 400.0
+        },
+        "operating_income_change_musd": {
+         "p10": -700.0,
+         "p50": -600.0,
+         "p90": -500.0
+        },
+        "eps_change": {
+         "p10": -1.75,
+         "p50": -1.5,
+         "p90": -1.25
+        },
+        "fare_change_pct": {
+         "p10": -1.0,
+         "p50": 0.0,
+         "p90": 1.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q1",
+        "months": [
+         "2027-01",
+         "2027-02",
+         "2027-03"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": -100.0,
+         "p50": 400.0,
+         "p90": 900.0
+        },
+        "operating_margin": {
+         "p10": 0.0,
+         "p50": 0.03,
+         "p90": 0.06
+        },
+        "fcf_musd": {
+         "p10": -800.0,
+         "p50": -200.0,
+         "p90": 400.0
+        },
+        "operating_income_change_musd": {
+         "p10": -700.0,
+         "p50": -600.0,
+         "p90": -500.0
+        },
+        "eps_change": {
+         "p10": -1.75,
+         "p50": -1.5,
+         "p90": -1.25
+        },
+        "fare_change_pct": {
+         "p10": -1.0,
+         "p50": 0.0,
+         "p90": 1.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q2",
+        "months": [
+         "2027-04",
+         "2027-05",
+         "2027-06"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": -100.0,
+         "p50": 400.0,
+         "p90": 900.0
+        },
+        "operating_margin": {
+         "p10": 0.0,
+         "p50": 0.03,
+         "p90": 0.06
+        },
+        "fcf_musd": {
+         "p10": -800.0,
+         "p50": -200.0,
+         "p90": 400.0
+        },
+        "operating_income_change_musd": {
+         "p10": -700.0,
+         "p50": -600.0,
+         "p90": -500.0
+        },
+        "eps_change": {
+         "p10": -1.75,
+         "p50": -1.5,
+         "p90": -1.25
+        },
+        "fare_change_pct": {
+         "p10": -1.0,
+         "p50": 0.0,
+         "p90": 1.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q3",
+        "months": [
+         "2027-07",
+         "2027-08",
+         "2027-09"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": -100.0,
+         "p50": 400.0,
+         "p90": 900.0
+        },
+        "operating_margin": {
+         "p10": 0.0,
+         "p50": 0.03,
+         "p90": 0.06
+        },
+        "fcf_musd": {
+         "p10": -800.0,
+         "p50": -200.0,
+         "p90": 400.0
+        },
+        "operating_income_change_musd": {
+         "p10": -700.0,
+         "p50": -600.0,
+         "p90": -500.0
+        },
+        "eps_change": {
+         "p10": -1.75,
+         "p50": -1.5,
+         "p90": -1.25
+        },
+        "fare_change_pct": {
+         "p10": -1.0,
+         "p50": 0.0,
+         "p90": 1.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       }
+      ],
+      "prob": {
+       "fcf_negative_12m": 0.4,
+       "fcf_negative_12m_no_shock": 0.1
+      },
+      "next_12m": {
+       "months": [
+        "2026-10",
+        "2026-11",
+        "2026-12",
+        "2027-01",
+        "2027-02",
+        "2027-03",
+        "2027-04",
+        "2027-05",
+        "2027-06",
+        "2027-07",
+        "2027-08",
+        "2027-09"
+       ],
+       "operating_income_musd": {
+        "p10": 100.0,
+        "p50": 1600.0,
+        "p90": 3100.0
+       },
+       "operating_income_change_musd": {
+        "p10": -2700.0,
+        "p50": -2400.0,
+        "p90": -2100.0
+       },
+       "eps_change": {
+        "p10": -6.5,
+        "p50": -6.0,
+        "p90": -5.5
+       },
+       "fcf_musd": {
+        "p10": -2800.0,
+        "p50": -800.0,
+        "p90": 1200.0
+       }
+      },
+      "bridge": [
+       {
+        "step": "fuel cost",
+        "value": -7.0,
+        "operating_income_musd": -2800.0
+       },
+       {
+        "step": "fare recovery",
+        "value": 0.0,
+        "operating_income_musd": 0.0
+       },
+       {
+        "step": "capacity",
+        "value": 1.0,
+        "operating_income_musd": 400.0
+       },
+       {
+        "step": "demand",
+        "value": 0.0,
+        "operating_income_musd": 0.0
+       },
+       {
+        "step": "profit sharing",
+        "value": null,
+        "operating_income_musd": null
+       },
+       {
+        "step": "net",
+        "value": -6.0,
+        "operating_income_musd": -2400.0
+       }
+      ]
+     },
+     "management": {
+      "status": "ok",
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "months": [
+         "2026-10",
+         "2026-11",
+         "2026-12"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 250.0,
+         "p50": 750.0,
+         "p90": 1250.0
+        },
+        "operating_margin": {
+         "p10": 0.0233,
+         "p50": 0.0533,
+         "p90": 0.0833
+        },
+        "fcf_musd": {
+         "p10": -450.0,
+         "p50": 150.0,
+         "p90": 750.0
+        },
+        "operating_income_change_musd": {
+         "p10": -350.0,
+         "p50": -250.0,
+         "p90": -150.0
+        },
+        "eps_change": {
+         "p10": -0.88,
+         "p50": -0.62,
+         "p90": -0.38
+        },
+        "fare_change_pct": {
+         "p10": 1.0,
+         "p50": 2.0,
+         "p90": 3.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q1",
+        "months": [
+         "2027-01",
+         "2027-02",
+         "2027-03"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 530.0,
+         "p50": 1030.0,
+         "p90": 1530.0
+        },
+        "operating_margin": {
+         "p10": 0.042,
+         "p50": 0.072,
+         "p90": 0.102
+        },
+        "fcf_musd": {
+         "p10": -170.0,
+         "p50": 430.0,
+         "p90": 1030.0
+        },
+        "operating_income_change_musd": {
+         "p10": -70.0,
+         "p50": 30.0,
+         "p90": 130.0
+        },
+        "eps_change": {
+         "p10": -0.17,
+         "p50": 0.08,
+         "p90": 0.33
+        },
+        "fare_change_pct": {
+         "p10": 2.6,
+         "p50": 3.6,
+         "p90": 4.6
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q2",
+        "months": [
+         "2027-04",
+         "2027-05",
+         "2027-06"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 600.0,
+         "p50": 1100.0,
+         "p90": 1600.0
+        },
+        "operating_margin": {
+         "p10": 0.0467,
+         "p50": 0.0767,
+         "p90": 0.1067
+        },
+        "fcf_musd": {
+         "p10": -100.0,
+         "p50": 500.0,
+         "p90": 1100.0
+        },
+        "operating_income_change_musd": {
+         "p10": 0.0,
+         "p50": 100.0,
+         "p90": 200.0
+        },
+        "eps_change": {
+         "p10": 0.0,
+         "p50": 0.25,
+         "p90": 0.5
+        },
+        "fare_change_pct": {
+         "p10": 3.0,
+         "p50": 4.0,
+         "p90": 5.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q3",
+        "months": [
+         "2027-07",
+         "2027-08",
+         "2027-09"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 600.0,
+         "p50": 1100.0,
+         "p90": 1600.0
+        },
+        "operating_margin": {
+         "p10": 0.0467,
+         "p50": 0.0767,
+         "p90": 0.1067
+        },
+        "fcf_musd": {
+         "p10": -100.0,
+         "p50": 500.0,
+         "p90": 1100.0
+        },
+        "operating_income_change_musd": {
+         "p10": 0.0,
+         "p50": 100.0,
+         "p90": 200.0
+        },
+        "eps_change": {
+         "p10": 0.0,
+         "p50": 0.25,
+         "p90": 0.5
+        },
+        "fare_change_pct": {
+         "p10": 3.0,
+         "p50": 4.0,
+         "p90": 5.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       }
+      ],
+      "prob": {
+       "fcf_negative_12m": 0.2,
+       "fcf_negative_12m_no_shock": 0.1
+      },
+      "next_12m": {
+       "months": [
+        "2026-10",
+        "2026-11",
+        "2026-12",
+        "2027-01",
+        "2027-02",
+        "2027-03",
+        "2027-04",
+        "2027-05",
+        "2027-06",
+        "2027-07",
+        "2027-08",
+        "2027-09"
+       ],
+       "operating_income_musd": {
+        "p10": 2480.0,
+        "p50": 3980.0,
+        "p90": 5480.0
+       },
+       "operating_income_change_musd": {
+        "p10": -320.0,
+        "p50": -20.0,
+        "p90": 280.0
+       },
+       "eps_change": {
+        "p10": -0.55,
+        "p50": -0.05,
+        "p90": 0.45
+       },
+       "fcf_musd": {
+        "p10": -420.0,
+        "p50": 1580.0,
+        "p90": 3580.0
+       }
+      },
+      "bridge": [
+       {
+        "step": "fuel cost",
+        "value": -7.0,
+        "operating_income_musd": -2800.0
+       },
+       {
+        "step": "fare recovery",
+        "value": 5.95,
+        "operating_income_musd": 2380.0
+       },
+       {
+        "step": "capacity",
+        "value": 1.0,
+        "operating_income_musd": 400.0
+       },
+       {
+        "step": "demand",
+        "value": 0.0,
+        "operating_income_musd": 0.0
+       },
+       {
+        "step": "profit sharing",
+        "value": null,
+        "operating_income_musd": null
+       },
+       {
+        "step": "net",
+        "value": -0.05,
+        "operating_income_musd": -20.0
+       }
+      ]
+     },
+     "measured": {
+      "status": "ok",
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "months": [
+         "2026-10",
+         "2026-11",
+         "2026-12"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 75.0,
+         "p50": 575.0,
+         "p90": 1075.0
+        },
+        "operating_margin": {
+         "p10": 0.0117,
+         "p50": 0.0417,
+         "p90": 0.0717
+        },
+        "fcf_musd": {
+         "p10": -625.0,
+         "p50": -25.0,
+         "p90": 575.0
+        },
+        "operating_income_change_musd": {
+         "p10": -525.0,
+         "p50": -425.0,
+         "p90": -325.0
+        },
+        "eps_change": {
+         "p10": -1.31,
+         "p50": -1.06,
+         "p90": -0.81
+        },
+        "fare_change_pct": {
+         "p10": 0.0,
+         "p50": 1.0,
+         "p90": 2.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q1",
+        "months": [
+         "2027-01",
+         "2027-02",
+         "2027-03"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 250.0,
+         "p50": 750.0,
+         "p90": 1250.0
+        },
+        "operating_margin": {
+         "p10": 0.0233,
+         "p50": 0.0533,
+         "p90": 0.0833
+        },
+        "fcf_musd": {
+         "p10": -450.0,
+         "p50": 150.0,
+         "p90": 750.0
+        },
+        "operating_income_change_musd": {
+         "p10": -350.0,
+         "p50": -250.0,
+         "p90": -150.0
+        },
+        "eps_change": {
+         "p10": -0.88,
+         "p50": -0.62,
+         "p90": -0.38
+        },
+        "fare_change_pct": {
+         "p10": 1.0,
+         "p50": 2.0,
+         "p90": 3.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q2",
+        "months": [
+         "2027-04",
+         "2027-05",
+         "2027-06"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 425.0,
+         "p50": 925.0,
+         "p90": 1425.0
+        },
+        "operating_margin": {
+         "p10": 0.035,
+         "p50": 0.065,
+         "p90": 0.095
+        },
+        "fcf_musd": {
+         "p10": -275.0,
+         "p50": 325.0,
+         "p90": 925.0
+        },
+        "operating_income_change_musd": {
+         "p10": -175.0,
+         "p50": -75.0,
+         "p90": 25.0
+        },
+        "eps_change": {
+         "p10": -0.44,
+         "p50": -0.19,
+         "p90": 0.06
+        },
+        "fare_change_pct": {
+         "p10": 2.0,
+         "p50": 3.0,
+         "p90": 4.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       },
+       {
+        "period": "2027Q3",
+        "months": [
+         "2027-07",
+         "2027-08",
+         "2027-09"
+        ],
+        "complete": true,
+        "operating_income_musd": {
+         "p10": 600.0,
+         "p50": 1100.0,
+         "p90": 1600.0
+        },
+        "operating_margin": {
+         "p10": 0.0467,
+         "p50": 0.0767,
+         "p90": 0.1067
+        },
+        "fcf_musd": {
+         "p10": -100.0,
+         "p50": 500.0,
+         "p90": 1100.0
+        },
+        "operating_income_change_musd": {
+         "p10": 0.0,
+         "p50": 100.0,
+         "p90": 200.0
+        },
+        "eps_change": {
+         "p10": 0.0,
+         "p50": 0.25,
+         "p90": 0.5
+        },
+        "fare_change_pct": {
+         "p10": 3.0,
+         "p50": 4.0,
+         "p90": 5.0
+        },
+        "no_shock": {
+         "operating_income_musd": {
+          "p10": 500,
+          "p50": 1000,
+          "p90": 1500
+         },
+         "operating_margin": {
+          "p10": 0.04,
+          "p50": 0.07,
+          "p90": 0.1
+         },
+         "fcf_musd": {
+          "p10": -200,
+          "p50": 400,
+          "p90": 1000
+         }
+        }
+       }
+      ],
+      "prob": {
+       "fcf_negative_12m": 0.3,
+       "fcf_negative_12m_no_shock": 0.1
+      },
+      "next_12m": {
+       "months": [
+        "2026-10",
+        "2026-11",
+        "2026-12",
+        "2027-01",
+        "2027-02",
+        "2027-03",
+        "2027-04",
+        "2027-05",
+        "2027-06",
+        "2027-07",
+        "2027-08",
+        "2027-09"
+       ],
+       "operating_income_musd": {
+        "p10": 1850.0,
+        "p50": 3350.0,
+        "p90": 4850.0
+       },
+       "operating_income_change_musd": {
+        "p10": -950.0,
+        "p50": -650.0,
+        "p90": -350.0
+       },
+       "eps_change": {
+        "p10": -2.12,
+        "p50": -1.62,
+        "p90": -1.12
+       },
+       "fcf_musd": {
+        "p10": -1050.0,
+        "p50": 950.0,
+        "p90": 2950.0
+       }
+      },
+      "bridge": [
+       {
+        "step": "fuel cost",
+        "value": -7.0,
+        "operating_income_musd": -2800.0
+       },
+       {
+        "step": "fare recovery",
+        "value": 4.38,
+        "operating_income_musd": 1750.0
+       },
+       {
+        "step": "capacity",
+        "value": 1.0,
+        "operating_income_musd": 400.0
+       },
+       {
+        "step": "demand",
+        "value": 0.0,
+        "operating_income_musd": 0.0
+       },
+       {
+        "step": "profit sharing",
+        "value": null,
+        "operating_income_musd": null
+       },
+       {
+        "step": "net",
+        "value": -1.62,
+        "operating_income_musd": -650.0
+       }
+      ]
+     }
+    },
+    "bridge_per_share": [
+     {
+      "step": "fuel cost",
+      "value": -7.0,
+      "operating_income_musd": -2800.0
+     },
+     {
+      "step": "fare recovery",
+      "value": 4.38,
+      "operating_income_musd": 1750.0
+     },
+     {
+      "step": "capacity",
+      "value": 1.0,
+      "operating_income_musd": 400.0
+     },
+     {
+      "step": "demand",
+      "value": 0.0,
+      "operating_income_musd": 0.0
+     },
+     {
+      "step": "profit sharing",
+      "value": null,
+      "operating_income_musd": null
+     },
+     {
+      "step": "net",
+      "value": -1.62,
+      "operating_income_musd": -650.0
+     }
+    ],
+    "response_used": {
+     "costs_only": {
+      "name": "costs_only",
+      "curve_p10": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "curve_p50": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "curve_p90": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "draws": 1,
+      "source": {
+       "kind": "placeholder"
+      },
+      "note": "Placeholder curve (fixture, not a finding)."
+     },
+     "management": {
+      "name": "management",
+      "curve_p10": [
+       0.35,
+       0.75,
+       0.9,
+       0.9,
+       0.9
+      ],
+      "curve_p50": [
+       0.45,
+       0.85,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "curve_p90": [
+       0.55,
+       0.95,
+       1.1,
+       1.1,
+       1.1
+      ],
+      "draws": 1,
+      "source": {
+       "kind": "placeholder"
+      },
+      "note": "Placeholder curve (fixture, not a finding)."
+     },
+     "measured": {
+      "name": "measured",
+      "curve_p10": [
+       -0.1,
+       0.15,
+       0.4,
+       0.65,
+       0.9
+      ],
+      "curve_p50": [
+       0.0,
+       0.25,
+       0.5,
+       0.75,
+       1.0
+      ],
+      "curve_p90": [
+       0.1,
+       0.35,
+       0.6,
+       0.85,
+       1.1
+      ],
+      "draws": 1,
+      "source": {
+       "kind": "placeholder"
+      },
+      "note": "Placeholder curve (fixture, not a finding)."
+     }
+    },
+    "capacity_response": {
+     "status": "not_requested"
+    },
+    "per_share": {
+     "available": true,
+     "tax_rate": 0.2,
+     "diluted_shares_m": 320.0,
+     "method": "Placeholder method (fixture).",
+     "source": {
+      "path": "data/lab/placeholder_input_a.csv",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+     }
+    },
+    "monte_carlo": {
+     "paths": 1000,
+     "seed": 1,
+     "method": "placeholder",
+     "standard_error": {}
+    },
+    "assumptions": [
+     "Placeholder assumption A. The simulator lists what it held fixed here.",
+     "Placeholder assumption B.",
+     "Placeholder assumption C."
+    ]
+   }
+  }
+ ],
+ "grids": [],
+ "usage": {
+  "model_calls": 0,
+  "total_tokens": 0
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "headline": "Placeholder headline for the capacity response (fixture, not a finding)",
+ "plain_summary": "Placeholder summary. One or two plain sentences about what the curve shows appear here.",
+ "unit": "percentage points of capacity growth per 10% fuel price increase",
+ "curve": [
+  {
+   "quarters_after": 0,
+   "p10": -0.25,
+   "p50": 0.0,
+   "p90": 0.25
+  },
+  {
+   "quarters_after": 1,
+   "p10": -0.5,
+   "p50": -0.25,
+   "p90": 0.0
+  },
+  {
+   "quarters_after": 2,
+   "p10": -0.75,
+   "p50": -0.5,
+   "p90": -0.25
+  },
+  {
+   "quarters_after": 3,
+   "p10": -0.75,
+   "p50": -0.5,
+   "p90": -0.25
+  },
+  {
+   "quarters_after": 4,
+   "p10": -0.5,
+   "p50": -0.25,
+   "p90": 0.0
+  }
+ ],
+ "limits": [
+  "Placeholder limit A.",
+  "Placeholder limit B."
+ ],
+ "variants_tried": [
+  "Placeholder variant A",
+  "Placeholder variant B"
+ ]
+}

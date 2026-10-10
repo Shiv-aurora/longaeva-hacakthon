@@ -1,0 +1,63 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "company": "UAL",
+ "report_date": "2026-10-20",
+ "guidance": {
+  "made_on": "2026-07-15",
+  "period": "2026Q3",
+  "eps_low": 1.0,
+  "eps_high": 2.0,
+  "fuel_assumed_usd_gal": 3.0,
+  "evidence_ids": [
+   "fixture-guidance-eps",
+   "fixture-fuel-assumption"
+  ]
+ },
+ "promises": [
+  {
+   "made_on": "2026-07-15",
+   "period": "2026Q3",
+   "recovery_low": 0.5,
+   "recovery_high": 0.6,
+   "evidence_ids": [
+    "fixture-promise-q3"
+   ],
+   "outcome": null
+  },
+  {
+   "made_on": "2026-07-15",
+   "period": "2026Q4",
+   "recovery_low": 1.0,
+   "recovery_high": 1.0,
+   "evidence_ids": [
+    "fixture-promise-q4"
+   ],
+   "outcome": null
+  }
+ ],
+ "comparators": {
+  "consensus_eps": {
+   "value": 1.6,
+   "as_of": "2026-10-08",
+   "source_url": "https://example.invalid/placeholder-consensus"
+  },
+  "market_odds_beat": {
+   "value": 0.5,
+   "as_of": "2026-10-08",
+   "volume_usd": 100,
+   "source_url": "https://example.invalid/placeholder-market"
+  }
+ }
+}

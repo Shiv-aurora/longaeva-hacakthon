@@ -1,0 +1,312 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "headline": "Placeholder headline for the track record (fixture, not a finding)",
+ "quarters": [
+  {
+   "period": "2023Q3",
+   "guided_on": "2023-07-15",
+   "guidance_low": 1.0,
+   "guidance_high": 2.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 2.9,
+   "actual_eps": 1.0,
+   "split": "select",
+   "calls": {
+    "guidance_mid": 1.5,
+    "costs_only": 1.0,
+    "management": 1.7,
+    "fitted": {
+     "p10": 1.1,
+     "p50": 1.4,
+     "p90": 1.7
+    }
+   }
+  },
+  {
+   "period": "2023Q4",
+   "guided_on": "2023-10-15",
+   "guidance_low": 1.5,
+   "guidance_high": 2.5,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.0,
+   "actual_eps": 1.75,
+   "split": "select",
+   "calls": {
+    "guidance_mid": 2.0,
+    "costs_only": 1.6,
+    "management": 2.2,
+    "fitted": {
+     "p10": 1.7,
+     "p50": 2.0,
+     "p90": 2.3
+    }
+   }
+  },
+  {
+   "period": "2024Q1",
+   "guided_on": "2024-01-15",
+   "guidance_low": 2.0,
+   "guidance_high": 3.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.1,
+   "actual_eps": 2.5,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.2,
+    "management": 2.7,
+    "fitted": {
+     "p10": 2.3,
+     "p50": 2.6,
+     "p90": 2.9
+    }
+   }
+  },
+  {
+   "period": "2024Q2",
+   "guided_on": "2024-04-15",
+   "guidance_low": 1.0,
+   "guidance_high": 2.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 2.9,
+   "actual_eps": 1.75,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 1.5,
+    "costs_only": 1.3,
+    "management": 1.7,
+    "fitted": {
+     "p10": 1.1,
+     "p50": 1.4,
+     "p90": 1.7
+    }
+   }
+  },
+  {
+   "period": "2024Q3",
+   "guided_on": "2024-07-15",
+   "guidance_low": 1.5,
+   "guidance_high": 2.5,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.0,
+   "actual_eps": 2.5,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.0,
+    "costs_only": 1.5,
+    "management": 2.2,
+    "fitted": {
+     "p10": 1.7,
+     "p50": 2.0,
+     "p90": 2.3
+    }
+   }
+  },
+  {
+   "period": "2024Q4",
+   "guided_on": "2024-10-15",
+   "guidance_low": 2.0,
+   "guidance_high": 3.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.1,
+   "actual_eps": 2.0,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.1,
+    "management": 2.7,
+    "fitted": {
+     "p10": 2.3,
+     "p50": 2.6,
+     "p90": 2.9
+    }
+   }
+  },
+  {
+   "period": "2025Q1",
+   "guided_on": "2025-01-15",
+   "guidance_low": 1.0,
+   "guidance_high": 2.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 2.9,
+   "actual_eps": 1.25,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 1.5,
+    "costs_only": 1.2,
+    "management": 1.7,
+    "fitted": {
+     "p10": 1.1,
+     "p50": 1.4,
+     "p90": 1.7
+    }
+   }
+  },
+  {
+   "period": "2025Q2",
+   "guided_on": "2025-04-15",
+   "guidance_low": 1.5,
+   "guidance_high": 2.5,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.0,
+   "actual_eps": 2.0,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.0,
+    "costs_only": 1.8,
+    "management": 2.2,
+    "fitted": {
+     "p10": 1.7,
+     "p50": 2.0,
+     "p90": 2.3
+    }
+   }
+  },
+  {
+   "period": "2025Q3",
+   "guided_on": "2025-07-15",
+   "guidance_low": 2.0,
+   "guidance_high": 3.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.1,
+   "actual_eps": 2.75,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.0,
+    "management": 2.7,
+    "fitted": {
+     "p10": 2.3,
+     "p50": 2.6,
+     "p90": 2.9
+    }
+   }
+  },
+  {
+   "period": "2025Q4",
+   "guided_on": "2025-10-15",
+   "guidance_low": 1.0,
+   "guidance_high": 2.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 2.9,
+   "actual_eps": 2.0,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 1.5,
+    "costs_only": 1.1,
+    "management": 1.7,
+    "fitted": {
+     "p10": 1.1,
+     "p50": 1.4,
+     "p90": 1.7
+    }
+   }
+  },
+  {
+   "period": "2026Q1",
+   "guided_on": "2026-01-15",
+   "guidance_low": 1.5,
+   "guidance_high": 2.5,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.0,
+   "actual_eps": 1.5,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.0,
+    "costs_only": 1.7,
+    "management": 2.2,
+    "fitted": {
+     "p10": 1.7,
+     "p50": 2.0,
+     "p90": 2.3
+    }
+   }
+  },
+  {
+   "period": "2026Q2",
+   "guided_on": "2026-04-15",
+   "guidance_low": 2.0,
+   "guidance_high": 3.0,
+   "fuel_assumed": 3.0,
+   "fuel_realized": 3.1,
+   "actual_eps": 2.25,
+   "split": "test",
+   "calls": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.3,
+    "management": 2.7,
+    "fitted": {
+     "p10": 2.3,
+     "p50": 2.6,
+     "p90": 2.9
+    }
+   }
+  }
+ ],
+ "scores": [
+  {
+   "model": "fitted",
+   "mae": 0.25,
+   "crps": 0.2,
+   "inside_p10_p90": 0.8,
+   "n": 12
+  },
+  {
+   "model": "guidance_mid",
+   "mae": 0.25,
+   "crps": 0.25,
+   "inside_p10_p90": null,
+   "n": 12
+  },
+  {
+   "model": "costs_only",
+   "mae": 0.5,
+   "crps": 0.5,
+   "inside_p10_p90": null,
+   "n": 12
+  },
+  {
+   "model": "management",
+   "mae": 0.5,
+   "crps": 0.5,
+   "inside_p10_p90": null,
+   "n": 12
+  }
+ ],
+ "fuel_price_test": {
+  "n": 12,
+  "mae_guided": 0.2,
+  "mae_marked": 0.1
+ },
+ "delta_check": {
+  "period": "2026Q3",
+  "guidance_low": 1.0,
+  "guidance_high": 1.5,
+  "actual_eps": 1.25,
+  "calls": {
+   "guidance_mid": 1.25,
+   "costs_only": 1.0,
+   "management": 1.4,
+   "fitted": {
+    "p10": 1.0,
+    "p50": 1.3,
+    "p90": 1.6
+   }
+  },
+  "evidence_ids": [
+   "fixture-delta-guidance"
+  ]
+ }
+}

@@ -1,0 +1,106 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "headline": "Placeholder headline for the pooled recovery curve (fixture, not a finding)",
+ "plain_summary": [
+  "Placeholder sentence one about the pooled curve.",
+  "Placeholder sentence two.",
+  "Placeholder sentence three."
+ ],
+ "pooled": {
+  "curve": [
+   {
+    "quarters_after": 0,
+    "p10": 0.1,
+    "p50": 0.3,
+    "p90": 0.5,
+    "estimate": 0.4,
+    "p05": 0.05,
+    "p95": 0.55
+   },
+   {
+    "quarters_after": 1,
+    "p10": 0.25,
+    "p50": 0.45,
+    "p90": 0.65,
+    "estimate": 0.55,
+    "p05": 0.2,
+    "p95": 0.7
+   },
+   {
+    "quarters_after": 2,
+    "p10": 0.4,
+    "p50": 0.6,
+    "p90": 0.8,
+    "estimate": 0.7,
+    "p05": 0.35,
+    "p95": 0.85
+   },
+   {
+    "quarters_after": 3,
+    "p10": 0.5,
+    "p50": 0.7,
+    "p90": 0.9,
+    "estimate": 0.8,
+    "p05": 0.45,
+    "p95": 0.95
+   },
+   {
+    "quarters_after": 4,
+    "p10": 0.6,
+    "p50": 0.8,
+    "p90": 1.0,
+    "estimate": 0.9,
+    "p05": 0.55,
+    "p95": 1.05
+   }
+  ],
+  "one_year_share": {
+   "estimate": 0.9,
+   "p05": 0.55,
+   "p50": 0.8,
+   "p95": 1.05
+  }
+ },
+ "by_carrier": {
+  "table": [
+   {
+    "carrier": "AAA",
+    "name": "Placeholder airline A",
+    "status": "fitted"
+   },
+   {
+    "carrier": "BBB",
+    "name": "Placeholder airline B",
+    "status": "fitted"
+   },
+   {
+    "carrier": "CCC",
+    "name": "Placeholder airline C",
+    "status": "fitted"
+   }
+  ]
+ },
+ "comparison_with_united_only": {
+  "one_year_share_united_only": 1.0,
+  "one_year_share_pooled": 0.9,
+  "one_year_share_pooled_range": {
+   "p05": 0.55,
+   "p95": 1.05
+  }
+ },
+ "limits": [
+  "Placeholder limit A.",
+  "Placeholder limit B."
+ ],
+ "variants_tried": [
+  "Placeholder variant A"
+ ]
+}

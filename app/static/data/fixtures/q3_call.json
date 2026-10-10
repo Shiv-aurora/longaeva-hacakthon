@@ -1,0 +1,160 @@
+{
+ "fixture": true,
+ "generated_at": "2026-01-01T00:00:00Z",
+ "as_of": "2026-10-08",
+ "inputs": [
+  {
+   "path": "data/lab/placeholder_input_a.csv",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "path": "data/lab/placeholder_input_b.json",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "frozen_at": "2026-01-01T00:00:00Z",
+ "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+ "timestamp_proof": "q3_call.json.ots",
+ "data_cutoff": "2026-10-08",
+ "known_before_freeze": [
+  "Placeholder: an event that was public before the freeze"
+ ],
+ "chain": [
+  {
+   "link": "fuel_price_paid_usd_gal",
+   "p10": 2.8,
+   "p50": 3.0,
+   "p90": 3.2,
+   "management": 3.0
+  },
+  {
+   "link": "recovery_share",
+   "p10": 0.3,
+   "p50": 0.5,
+   "p90": 0.7,
+   "management": [
+    0.5,
+    0.6
+   ]
+  },
+  {
+   "link": "trasm_yoy",
+   "p10": 0.02,
+   "p50": 0.05,
+   "p90": 0.08,
+   "management": "above 0.05"
+  },
+  {
+   "link": "adj_eps_diluted",
+   "p10": 1.0,
+   "p50": 1.5,
+   "p90": 2.0,
+   "management": [
+    1.0,
+    2.0
+   ]
+  }
+ ],
+ "eps_samples_quantiles": [
+  [
+   0.01,
+   0.592
+  ],
+  [
+   0.05,
+   0.858
+  ],
+  [
+   0.1,
+   1.0
+  ],
+  [
+   0.15,
+   1.096
+  ],
+  [
+   0.2,
+   1.172
+  ],
+  [
+   0.25,
+   1.237
+  ],
+  [
+   0.3,
+   1.295
+  ],
+  [
+   0.35,
+   1.35
+  ],
+  [
+   0.4,
+   1.401
+  ],
+  [
+   0.45,
+   1.451
+  ],
+  [
+   0.5,
+   1.5
+  ],
+  [
+   0.55,
+   1.549
+  ],
+  [
+   0.6,
+   1.599
+  ],
+  [
+   0.65,
+   1.65
+  ],
+  [
+   0.7,
+   1.705
+  ],
+  [
+   0.75,
+   1.763
+  ],
+  [
+   0.8,
+   1.828
+  ],
+  [
+   0.85,
+   1.904
+  ],
+  [
+   0.9,
+   2.0
+  ],
+  [
+   0.95,
+   2.142
+  ],
+  [
+   0.99,
+   2.408
+  ]
+ ],
+ "odds": {
+  "below_range": 0.1,
+  "inside_range": 0.8,
+  "above_range": 0.1,
+  "above_consensus": 0.4
+ },
+ "scoring": {
+  "rule": "CRPS",
+  "baselines": [
+   "guidance_mid",
+   "consensus",
+   "costs_only",
+   "management"
+  ]
+ },
+ "outcome": null
+}
