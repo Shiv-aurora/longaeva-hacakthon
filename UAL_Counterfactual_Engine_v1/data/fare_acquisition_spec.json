@@ -1,0 +1,321 @@
+{
+  "version": "db1b-acquisition-0.1.0",
+  "catalog": "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-product",
+  "definition_source_sha256": "9556ee15a025dbaf2d24e3be69164e5eb4c68e18649421cf72de18eeaa889882",
+  "initial_first": "2013-Q1",
+  "initial_last": "2019-Q4",
+  "selection_first": "2020-Q1",
+  "selection_last": "2023-Q4",
+  "locked_first": "2024-Q1",
+  "sources": [
+    {
+      "text": "March 2013",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201303.REL05.03OCT2017.zip",
+      "quarter": "2013-Q1",
+      "published_on": "2017-10-03",
+      "release_number": 5
+    },
+    {
+      "text": "June 2013",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201306.REL06.29SEP2017.zip",
+      "quarter": "2013-Q2",
+      "published_on": "2017-09-29",
+      "release_number": 6
+    },
+    {
+      "text": "September 2013",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201309.REL08.30SEP2017.zip",
+      "quarter": "2013-Q3",
+      "published_on": "2017-09-30",
+      "release_number": 8
+    },
+    {
+      "text": "December 2013",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201312.REL06.30SEP2017.zip",
+      "quarter": "2013-Q4",
+      "published_on": "2017-09-30",
+      "release_number": 6
+    },
+    {
+      "text": "March 2014",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201403.REL05.27SEP2017.zip",
+      "quarter": "2014-Q1",
+      "published_on": "2017-09-27",
+      "release_number": 5
+    },
+    {
+      "text": "June 2014",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201406.REL06.04OCT2017.zip",
+      "quarter": "2014-Q2",
+      "published_on": "2017-10-04",
+      "release_number": 6
+    },
+    {
+      "text": "September 2014",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201409.REL03.30SEP2017.zip",
+      "quarter": "2014-Q3",
+      "published_on": "2017-09-30",
+      "release_number": 3
+    },
+    {
+      "text": "December 2014",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201412.REL03.04OCT2017.zip",
+      "quarter": "2014-Q4",
+      "published_on": "2017-10-04",
+      "release_number": 3
+    },
+    {
+      "text": "March 2015",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201503.REL05.26SEP2017.zip",
+      "quarter": "2015-Q1",
+      "published_on": "2017-09-26",
+      "release_number": 5
+    },
+    {
+      "text": "June 2015",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201506.REL05.26SEP2017.zip",
+      "quarter": "2015-Q2",
+      "published_on": "2017-09-26",
+      "release_number": 5
+    },
+    {
+      "text": "September 2015",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201509.REL04.28SEP2017.zip",
+      "quarter": "2015-Q3",
+      "published_on": "2017-09-28",
+      "release_number": 4
+    },
+    {
+      "text": "December 2015",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201512.REL02.27SEP2017.zip",
+      "quarter": "2015-Q4",
+      "published_on": "2017-09-27",
+      "release_number": 2
+    },
+    {
+      "text": "March 2016",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201603.REL02.23SEP2017.zip",
+      "quarter": "2016-Q1",
+      "published_on": "2017-09-23",
+      "release_number": 2
+    },
+    {
+      "text": "June 2016",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201606.REL02.23SEP2017.zip",
+      "quarter": "2016-Q2",
+      "published_on": "2017-09-23",
+      "release_number": 2
+    },
+    {
+      "text": "September 2016",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201609.REL02.24SEP2017.zip",
+      "quarter": "2016-Q3",
+      "published_on": "2017-09-24",
+      "release_number": 2
+    },
+    {
+      "text": "December 2016",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201612.REL02.24SEP2017.zip",
+      "quarter": "2016-Q4",
+      "published_on": "2017-09-24",
+      "release_number": 2
+    },
+    {
+      "text": "March 2017",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201703.REL03.30AUG2017.zip",
+      "quarter": "2017-Q1",
+      "published_on": "2017-08-30",
+      "release_number": 3
+    },
+    {
+      "text": "June 2017",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201706.REL05.15NOV2017.zip",
+      "quarter": "2017-Q2",
+      "published_on": "2017-11-15",
+      "release_number": 5
+    },
+    {
+      "text": "September 2017",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201709.REL02.30DEC2017.zip",
+      "quarter": "2017-Q3",
+      "published_on": "2017-12-30",
+      "release_number": 2
+    },
+    {
+      "text": "December 2017",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201712.REL02.03APR2018.zip",
+      "quarter": "2017-Q4",
+      "published_on": "2018-04-03",
+      "release_number": 2
+    },
+    {
+      "text": "March 2018",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201803.REL03.04JUL2018.zip",
+      "quarter": "2018-Q1",
+      "published_on": "2018-07-04",
+      "release_number": 3
+    },
+    {
+      "text": "June 2018",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201806.REL02.02OCT2018.zip",
+      "quarter": "2018-Q2",
+      "published_on": "2018-10-02",
+      "release_number": 2
+    },
+    {
+      "text": "September 2018",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201809.REL02.02FEB2019.zip",
+      "quarter": "2018-Q3",
+      "published_on": "2019-02-02",
+      "release_number": 2
+    },
+    {
+      "text": "December 2018",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201812.REL01.08APR2019.zip",
+      "quarter": "2018-Q4",
+      "published_on": "2019-04-08",
+      "release_number": 1
+    },
+    {
+      "text": "March 2019",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.201903.REL04.02NOV2019.zip",
+      "quarter": "2019-Q1",
+      "published_on": "2019-11-02",
+      "release_number": 4
+    },
+    {
+      "text": "June 2019",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.201906.REL03.13NOV2019.zip",
+      "quarter": "2019-Q2",
+      "published_on": "2019-11-13",
+      "release_number": 3
+    },
+    {
+      "text": "September 2019",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201909.REL02.08JAN2020.zip",
+      "quarter": "2019-Q3",
+      "published_on": "2020-01-08",
+      "release_number": 2
+    },
+    {
+      "text": "December 2019",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.201912.REL02.02APR2020.zip",
+      "quarter": "2019-Q4",
+      "published_on": "2020-04-02",
+      "release_number": 2
+    },
+    {
+      "text": "March 2020",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202003.REL02.02JUL2020.zip",
+      "quarter": "2020-Q1",
+      "published_on": "2020-07-02",
+      "release_number": 2
+    },
+    {
+      "text": "June 2020",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.202006.REL03.06OCT2020.zip",
+      "quarter": "2020-Q2",
+      "published_on": "2020-10-06",
+      "release_number": 3
+    },
+    {
+      "text": "September 2020",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202009.REL04.19JAN2021.zip",
+      "quarter": "2020-Q3",
+      "published_on": "2021-01-19",
+      "release_number": 4
+    },
+    {
+      "text": "December 2020",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202012.REL02.07APR2021.zip",
+      "quarter": "2020-Q4",
+      "published_on": "2021-04-07",
+      "release_number": 2
+    },
+    {
+      "text": "March 2021",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202103.REL03.21DEC2021.zip",
+      "quarter": "2021-Q1",
+      "published_on": "2021-12-21",
+      "release_number": 3
+    },
+    {
+      "text": "June 2021",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202106.REL02.05OCT2021.zip",
+      "quarter": "2021-Q2",
+      "published_on": "2021-10-05",
+      "release_number": 2
+    },
+    {
+      "text": "September 2021",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202109.REL08.03JUN2022.zip",
+      "quarter": "2021-Q3",
+      "published_on": "2022-06-03",
+      "release_number": 8
+    },
+    {
+      "text": "December 2021",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202112.REL03.03JUN2022.zip",
+      "quarter": "2021-Q4",
+      "published_on": "2022-06-03",
+      "release_number": 3
+    },
+    {
+      "text": "March 2022",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202203.REL03.14FEB2023.zip",
+      "quarter": "2022-Q1",
+      "published_on": "2023-02-14",
+      "release_number": 3
+    },
+    {
+      "text": "June 2022",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202206.REL03.27FEB2023.zip",
+      "quarter": "2022-Q2",
+      "published_on": "2023-02-27",
+      "release_number": 3
+    },
+    {
+      "text": "September 2022",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202209.REL05.28FEB2023.zip",
+      "quarter": "2022-Q3",
+      "published_on": "2023-02-28",
+      "release_number": 5
+    },
+    {
+      "text": "December 2022",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202212.REL02.28MAR2023.zip",
+      "quarter": "2022-Q4",
+      "published_on": "2023-03-28",
+      "release_number": 2
+    },
+    {
+      "text": "March 2023",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202303.REL04.24JUL2023.zip",
+      "quarter": "2023-Q1",
+      "published_on": "2023-07-24",
+      "release_number": 4
+    },
+    {
+      "text": "June 2023",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202306.REL01.28SEP2023.zip",
+      "quarter": "2023-Q2",
+      "published_on": "2023-09-28",
+      "release_number": 1
+    },
+    {
+      "text": "September 2023",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202309.REL02.19JAN2024.zip",
+      "quarter": "2023-Q3",
+      "published_on": "2024-01-19",
+      "release_number": 2
+    },
+    {
+      "text": "December 2023",
+      "url": "https://www.bts.gov/sites/bts.dot.gov/files/docs/legacy/additional-attachment-files/DB1B.PUBLIC.202312.REL01.27MAR2024.zip",
+      "quarter": "2023-Q4",
+      "published_on": "2024-03-27",
+      "release_number": 1
+    }
+  ],
+  "scope": "Public quarterly DB1B ticket samples with entirely US itineraries; current-download release-date reconstruction using filename publication proxies. No Canada/international fares, no DB1C concatenation, no monthly interpolation, no realized airline yield or causal elasticity claim."
+}
