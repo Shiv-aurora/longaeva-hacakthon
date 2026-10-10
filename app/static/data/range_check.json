@@ -1,0 +1,1786 @@
+{
+ "generated_at": "2026-10-10T08:33:21Z",
+ "as_of": "2026-06-30",
+ "inputs": [
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  },
+  {
+   "path": "data/monthly_anchors.json",
+   "sha256": "6f9f7c1e8e5ecc620c65131afbaa02058e2b20a246aee502a98043d0a2ce0640"
+  },
+  {
+   "path": "data/eia_gulf_coast_2026.csv",
+   "sha256": "2c9f374f817be328195ab55504666bb498bf473fedfe3a648bba7ae3f024981a"
+  },
+  {
+   "path": "data/lab/literature.json",
+   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+  },
+  {
+   "path": "app/static/data/fare_clock.json",
+   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+  },
+  {
+   "path": "data/lab/fuel_daily.csv",
+   "sha256": "3803f2602891ce2e597cf2fa062d7226ea24f35c1e5dde21a6a18d454a522af6"
+  },
+  {
+   "path": "app/static/data/cost_clock.json",
+   "sha256": "e2598bf54815ed943d0c8b812e4fcdc3bc0f4899d058d5aa84c270ffff77e1e2"
+  }
+ ],
+ "question": "Is the simulator's range the right width?",
+ "headline": "With demand noise at the assumed 3% a month, the simulator's 80% range held 25 of United's 33 unit-revenue outcomes in 2022-2026 (76%, against a nominal 80%); a value fitted on 2013-2019 (0.29%) held 20 (61%), so the assumption is kept.",
+ "plain_summary": [
+  "With demand noise at the assumed 3% a month, the simulator's 80% range held 25 of United's 33 unit-revenue outcomes in 2022-2026 (76%, against a nominal 80%); a value fitted on 2013-2019 (0.29%) held 20 (61%), so the assumption is kept.",
+  "The question is whether the simulator's range is the right width.",
+  "Compared: how far United's revenue per seat mile landed from a naive forecast made two, three and four quarters earlier (last year's quarter, moved by the latest year-over-year growth), against the gap between two simulated worlds at the same distance.",
+  "Roughly 8 in 10 is read as 70% to 90% inside: on 2022-2026 the assumed value passes and the fitted value fails.",
+  "On 2013-2019 the assumed value held 63 of 63 (100%), which is too wide for those years; the fitted value held 48 of 63 (76%) there.",
+  "The value tried and set aside is 0.29% a month, where the simulator matches the 2013-2019 spread. Leaving out any one year gives 0.00% to 0.73%; if every surprise were demand it would be 2.49%.",
+  "Operating margin, same comparison: the simulator's 80% range holds 42 of 42 (100%) outcomes in 2016-2019, which is too wide, and 28 of 33 (85%) in 2022-2026, which is about right.",
+  "Simulated margin gaps are 2.9 times the earlier spread two quarters out and 1.9 times at four; against the later one, 1.0 and 1.0 times.",
+  "Fuel volatility, not demand noise, sets most of the width. The no-shock range for 2026Q4 operating income is $2,455 million wide (P10 to P90). With demand noise switched off it is still $2,298 million (94%); with fuel noise switched off it is $1,557 million (63%).",
+  "Fuel volatility is measured over the 65 trading days before the cutoff (13 April 2026 to 16 July 2026). That stretch was 2.3 times as volatile as 2013-2019 and more volatile than 92% of such windows since 2013.",
+  "Simulated fuel-price gaps are 1.6 times the 2013-2019 spread two quarters out and 1.1 times at four; against 2022-2026, 1.3 and 1.1 times.",
+  "The no-shock range for 2026Q4 operating income is -$160 million to $2,296 million; the fitted value would make it -$113 million to $2,152 million, 8% narrower.",
+  "At today's fuel price ($4.67 a gallon paid), 37.9% of simulated runs have negative free cash flow over 12 months with measured behavior; the fitted value would make it 34.6%."
+ ],
+ "compared": {
+  "quantity": "unit_revenue",
+  "why": "Demand noise multiplies revenue, so it is tested on revenue. Dividing by seat miles takes out capacity, which the simulator plans and the history does not hold fixed. Total revenue per seat mile is used, not passenger revenue, because passenger revenue was reclassified in 2018.",
+  "history": "The miss of a naive seasonal forecast made h quarters earlier: log x[t] - log x[t-h] - (log x[t-4] - log x[t-4-h]), the change in year-over-year growth over h quarters. Seasonality and steady growth cancel.",
+  "simulator": "The gap between two independent simulated worlds in the no-shock revenue per seat mile of the matching reported quarter. A naive forecast's miss carries last year's surprise as well as this year's, so two draws are compared, not one.",
+  "horizons": [
+   {
+    "quarters_ahead": 2,
+    "simulator_period": "2026Q4"
+   },
+   {
+    "quarters_ahead": 3,
+    "simulator_period": "2027Q1"
+   },
+   {
+    "quarters_ahead": 4,
+    "simulator_period": "2027Q2"
+   }
+  ],
+  "left_out": "Any miss that uses a quarter from 2020Q1 to 2021Q4.",
+  "splits": {
+   "fit": {
+    "years": "2013-2019",
+    "outcomes": "2014Q3 to 2019Q4"
+   },
+   "check": {
+    "years": "2022-2026",
+    "outcomes": "2023Q3 to 2026Q2"
+   }
+  },
+  "also_compared": {
+   "operating_margin": "cross-check",
+   "fuel_price": "diagnosis"
+  }
+ },
+ "check": {
+  "quantity": "unit_revenue",
+  "years": "2022-2026",
+  "target_share": 0.8,
+  "roughly": [
+   0.7,
+   0.9
+  ],
+  "assumed": {
+   "demand_monthly_log_sd": 0.03,
+   "inside": 25,
+   "of": 33,
+   "share": 0.758,
+   "by_horizon": [
+    {
+     "quarters_ahead": 2,
+     "inside": 9,
+     "of": 12
+    },
+    {
+     "quarters_ahead": 3,
+     "inside": 8,
+     "of": 11
+    },
+    {
+     "quarters_ahead": 4,
+     "inside": 8,
+     "of": 10
+    }
+   ]
+  },
+  "fitted": {
+   "demand_monthly_log_sd": 0.0029,
+   "inside": 20,
+   "of": 33,
+   "share": 0.606,
+   "by_horizon": [
+    {
+     "quarters_ahead": 2,
+     "inside": 6,
+     "of": 12
+    },
+    {
+     "quarters_ahead": 3,
+     "inside": 7,
+     "of": 11
+    },
+    {
+     "quarters_ahead": 4,
+     "inside": 7,
+     "of": 10
+    }
+   ]
+  },
+  "passes": {
+   "assumed": true,
+   "fitted": false
+  },
+  "kept": "assumed",
+  "verdict": "Roughly 8 in 10 is read as 70% to 90% inside: on 2022-2026 the assumed value passes and the fitted value fails."
+ },
+ "fitted_variant": {
+  "status": "rejected",
+  "why": "On 2022-2026 its 80% range held 20 of 33 (61%) of real unit-revenue outcomes against 25 of 33 (76%) for the assumed value.",
+  "parameter": "demand_monthly_log_sd",
+  "assumed": 0.03,
+  "fitted": 0.0029,
+  "fit_years": [
+   2013,
+   2019
+  ],
+  "method": "The value at which the simulator's mean squared gap in unit revenue, horizons weighted by their number of outcomes, equals the history's on 2013-2019. The simulator runs as the lab runner runs it (measured behavior, no shock); the gap is interpolated between grid points. Nothing from the check years enters the fit.",
+  "observations": 63,
+  "target_rms_pct": 4.181,
+  "simulated_rms_at_fitted_pct": 4.18,
+  "at_lower_bound": false,
+  "at_upper_bound": false,
+  "simulation_standard_error": 0.0009,
+  "leave_one_year_out": {
+   "2014": 0.0033,
+   "2015": 0.0,
+   "2016": 0.0073,
+   "2017": 0.0,
+   "2018": 0.001,
+   "2019": 0.0063
+  },
+  "range_leaving_one_year_out": [
+   0.0,
+   0.0073
+  ],
+  "if_all_surprise_were_demand": {
+   "fitted": 0.0249,
+   "meaning": "The same fit with costs-only behavior, where fares do not follow fuel: an upper bound."
+  },
+  "coverage": {
+   "assumed": {
+    "fit": {
+     "inside": 63,
+     "of": 63,
+     "share": 1.0
+    },
+    "check": {
+     "inside": 25,
+     "of": 33,
+     "share": 0.758
+    }
+   },
+   "fitted": {
+    "fit": {
+     "inside": 48,
+     "of": 63,
+     "share": 0.762
+    },
+    "check": {
+     "inside": 20,
+     "of": 33,
+     "share": 0.606
+    }
+   }
+  },
+  "curve": [
+   {
+    "demand_monthly_log_sd": 0.0,
+    "simulated_rms_pct": 4.058
+   },
+   {
+    "demand_monthly_log_sd": 0.0025,
+    "simulated_rms_pct": 4.16
+   },
+   {
+    "demand_monthly_log_sd": 0.005,
+    "simulated_rms_pct": 4.301
+   },
+   {
+    "demand_monthly_log_sd": 0.0075,
+    "simulated_rms_pct": 4.477
+   },
+   {
+    "demand_monthly_log_sd": 0.01,
+    "simulated_rms_pct": 4.683
+   },
+   {
+    "demand_monthly_log_sd": 0.0125,
+    "simulated_rms_pct": 4.917
+   },
+   {
+    "demand_monthly_log_sd": 0.015,
+    "simulated_rms_pct": 5.173
+   },
+   {
+    "demand_monthly_log_sd": 0.0175,
+    "simulated_rms_pct": 5.45
+   },
+   {
+    "demand_monthly_log_sd": 0.02,
+    "simulated_rms_pct": 5.744
+   },
+   {
+    "demand_monthly_log_sd": 0.0225,
+    "simulated_rms_pct": 6.053
+   },
+   {
+    "demand_monthly_log_sd": 0.025,
+    "simulated_rms_pct": 6.374
+   },
+   {
+    "demand_monthly_log_sd": 0.0275,
+    "simulated_rms_pct": 6.705
+   },
+   {
+    "demand_monthly_log_sd": 0.03,
+    "simulated_rms_pct": 7.046
+   },
+   {
+    "demand_monthly_log_sd": 0.0325,
+    "simulated_rms_pct": 7.395
+   },
+   {
+    "demand_monthly_log_sd": 0.035,
+    "simulated_rms_pct": 7.75
+   },
+   {
+    "demand_monthly_log_sd": 0.0375,
+    "simulated_rms_pct": 8.111
+   },
+   {
+    "demand_monthly_log_sd": 0.04,
+    "simulated_rms_pct": 8.474
+   },
+   {
+    "demand_monthly_log_sd": 0.0425,
+    "simulated_rms_pct": 8.84
+   },
+   {
+    "demand_monthly_log_sd": 0.045,
+    "simulated_rms_pct": 9.207
+   },
+   {
+    "demand_monthly_log_sd": 0.0475,
+    "simulated_rms_pct": 9.573
+   },
+   {
+    "demand_monthly_log_sd": 0.05,
+    "simulated_rms_pct": 9.938
+   },
+   {
+    "demand_monthly_log_sd": 0.0525,
+    "simulated_rms_pct": 10.3
+   },
+   {
+    "demand_monthly_log_sd": 0.055,
+    "simulated_rms_pct": 10.659
+   },
+   {
+    "demand_monthly_log_sd": 0.0575,
+    "simulated_rms_pct": 11.014
+   },
+   {
+    "demand_monthly_log_sd": 0.06,
+    "simulated_rms_pct": 11.365
+   }
+  ],
+  "not_estimated": [
+   "persistence of fuel and demand noise (0.75 a month, fixed inside the engine)",
+   "fuel-demand correlation (0.25, assumed)",
+   "fuel noise (set by the engine from recent daily prices)"
+  ]
+ },
+ "quantities": {
+  "unit_revenue": {
+   "role": "checked",
+   "unit": "percent (log change x 100)",
+   "in_history": "total revenue / available seat miles",
+   "in_simulator": "revenue / available seat miles",
+   "history": {
+    "fit": [
+     {
+      "quarters_ahead": 2,
+      "n": 22,
+      "first": "2014Q3",
+      "last": "2019Q4",
+      "rms": 3.506,
+      "p10": -4.277,
+      "p90": 3.843
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 21,
+      "first": "2014Q4",
+      "last": "2019Q4",
+      "rms": 4.1,
+      "p10": -3.705,
+      "p90": 5.54
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 20,
+      "first": "2015Q1",
+      "last": "2019Q4",
+      "rms": 4.887,
+      "p10": -5.714,
+      "p90": 6.838
+     }
+    ],
+    "check": [
+     {
+      "quarters_ahead": 2,
+      "n": 12,
+      "first": "2023Q3",
+      "last": "2026Q2",
+      "rms": 8.864,
+      "p10": -5.51,
+      "p90": 10.415
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 11,
+      "first": "2023Q4",
+      "last": "2026Q2",
+      "rms": 9.678,
+      "p10": -5.955,
+      "p90": 10.749
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 10,
+      "first": "2024Q1",
+      "last": "2026Q2",
+      "rms": 8.505,
+      "p10": -4.79,
+      "p90": 7.147
+     }
+    ]
+   },
+   "simulator": {
+    "assumed": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -8.092,
+      "p90": 8.092,
+      "rms": 6.371
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -9.169,
+      "p90": 9.169,
+      "rms": 7.209
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -9.687,
+      "p90": 9.687,
+      "rms": 7.562
+     }
+    ],
+    "fitted": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -3.921,
+      "p90": 3.921,
+      "rms": 3.369
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -5.164,
+      "p90": 5.164,
+      "rms": 4.312
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -5.853,
+      "p90": 5.853,
+      "rms": 4.799
+     }
+    ]
+   },
+   "coverage": {
+    "assumed": {
+     "fit": {
+      "inside": 63,
+      "of": 63,
+      "share": 1.0,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 22,
+        "of": 22
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 21,
+        "of": 21
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 20,
+        "of": 20
+       }
+      ]
+     },
+     "check": {
+      "inside": 25,
+      "of": 33,
+      "share": 0.758,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 9,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 8,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 25,
+      "of": 30,
+      "share": 0.833,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 9,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 8,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 9
+       }
+      ]
+     }
+    },
+    "fitted": {
+     "fit": {
+      "inside": 48,
+      "of": 63,
+      "share": 0.762,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 17,
+        "of": 22
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 16,
+        "of": 21
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 15,
+        "of": 20
+       }
+      ]
+     },
+     "check": {
+      "inside": 20,
+      "of": 33,
+      "share": 0.606,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 6,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 7,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 7,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 20,
+      "of": 30,
+      "share": 0.667,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 6,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 7,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 7,
+        "of": 9
+       }
+      ]
+     }
+    }
+   },
+   "simulator_to_history_rms": {
+    "assumed": {
+     "fit": [
+      1.82,
+      1.76,
+      1.55
+     ],
+     "check": [
+      0.72,
+      0.74,
+      0.89
+     ]
+    },
+    "fitted": {
+     "fit": [
+      0.96,
+      1.05,
+      0.98
+     ],
+     "check": [
+      0.38,
+      0.45,
+      0.56
+     ]
+    }
+   }
+  },
+  "operating_margin": {
+   "role": "cross-check",
+   "unit": "points of revenue",
+   "in_history": "adjusted pre-tax income / total revenue (reported from 2014Q4; the table has no operating income)",
+   "in_simulator": "operating income / revenue",
+   "history": {
+    "fit": [
+     {
+      "quarters_ahead": 2,
+      "n": 15,
+      "first": "2016Q2",
+      "last": "2019Q4",
+      "rms": 2.684,
+      "p10": -3.285,
+      "p90": 3.451
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 14,
+      "first": "2016Q3",
+      "last": "2019Q4",
+      "rms": 3.645,
+      "p10": -5.724,
+      "p90": 3.138
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 13,
+      "first": "2016Q4",
+      "last": "2019Q4",
+      "rms": 4.306,
+      "p10": -5.967,
+      "p90": 4.739
+     }
+    ],
+    "check": [
+     {
+      "quarters_ahead": 2,
+      "n": 12,
+      "first": "2023Q3",
+      "last": "2026Q2",
+      "rms": 7.548,
+      "p10": -12.293,
+      "p90": 4.427
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 11,
+      "first": "2023Q4",
+      "last": "2026Q2",
+      "rms": 8.452,
+      "p10": -8.585,
+      "p90": 1.846
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 10,
+      "first": "2024Q1",
+      "last": "2026Q2",
+      "rms": 8.165,
+      "p10": -14.104,
+      "p90": 2.575
+     }
+    ]
+   },
+   "simulator": {
+    "assumed": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -9.829,
+      "p90": 9.829,
+      "rms": 7.798
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -9.952,
+      "p90": 9.952,
+      "rms": 7.903
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -10.096,
+      "p90": 10.096,
+      "rms": 8.071
+     }
+    ],
+    "fitted": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -9.282,
+      "p90": 9.282,
+      "rms": 7.431
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -9.186,
+      "p90": 9.186,
+      "rms": 7.449
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -9.516,
+      "p90": 9.516,
+      "rms": 7.645
+     }
+    ]
+   },
+   "coverage": {
+    "assumed": {
+     "fit": {
+      "inside": 42,
+      "of": 42,
+      "share": 1.0,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 15,
+        "of": 15
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 14,
+        "of": 14
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 13,
+        "of": 13
+       }
+      ]
+     },
+     "check": {
+      "inside": 28,
+      "of": 33,
+      "share": 0.848,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 28,
+      "of": 30,
+      "share": 0.933,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 9
+       }
+      ]
+     }
+    },
+    "fitted": {
+     "fit": {
+      "inside": 42,
+      "of": 42,
+      "share": 1.0,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 15,
+        "of": 15
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 14,
+        "of": 14
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 13,
+        "of": 13
+       }
+      ]
+     },
+     "check": {
+      "inside": 28,
+      "of": 33,
+      "share": 0.848,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 28,
+      "of": 30,
+      "share": 0.933,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 9
+       }
+      ]
+     }
+    }
+   },
+   "simulator_to_history_rms": {
+    "assumed": {
+     "fit": [
+      2.91,
+      2.17,
+      1.87
+     ],
+     "check": [
+      1.03,
+      0.94,
+      0.99
+     ]
+    },
+    "fitted": {
+     "fit": [
+      2.77,
+      2.04,
+      1.78
+     ],
+     "check": [
+      0.98,
+      0.88,
+      0.94
+     ]
+    }
+   }
+  },
+  "fuel_price": {
+   "role": "diagnosis",
+   "unit": "percent (log change x 100)",
+   "in_history": "price paid per gallon",
+   "in_simulator": "fuel expense / available seat miles (gallons per seat mile are fixed, so it moves with the price paid)",
+   "history": {
+    "fit": [
+     {
+      "quarters_ahead": 2,
+      "n": 22,
+      "first": "2014Q3",
+      "last": "2019Q4",
+      "rms": 20.059,
+      "p10": -23.923,
+      "p90": 20.651
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 21,
+      "first": "2014Q4",
+      "last": "2019Q4",
+      "rms": 27.53,
+      "p10": -35.563,
+      "p90": 33.116
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 20,
+      "first": "2015Q1",
+      "last": "2019Q4",
+      "rms": 33.237,
+      "p10": -41.291,
+      "p90": 41.305
+     }
+    ],
+    "check": [
+     {
+      "quarters_ahead": 2,
+      "n": 12,
+      "first": "2023Q3",
+      "last": "2026Q2",
+      "rms": 25.406,
+      "p10": -27.188,
+      "p90": 31.619
+     },
+     {
+      "quarters_ahead": 3,
+      "n": 11,
+      "first": "2023Q4",
+      "last": "2026Q2",
+      "rms": 27.604,
+      "p10": -16.648,
+      "p90": 30.68
+     },
+     {
+      "quarters_ahead": 4,
+      "n": 10,
+      "first": "2024Q1",
+      "last": "2026Q2",
+      "rms": 33.259,
+      "p10": -21.082,
+      "p90": 51.476
+     }
+    ]
+   },
+   "simulator": {
+    "assumed": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -42.303,
+      "p90": 42.303,
+      "rms": 32.699
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -44.357,
+      "p90": 44.357,
+      "rms": 34.385
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -45.405,
+      "p90": 45.405,
+      "rms": 35.085
+     }
+    ],
+    "fitted": [
+     {
+      "quarters_ahead": 2,
+      "period": "2026Q4",
+      "p10": -42.303,
+      "p90": 42.303,
+      "rms": 32.699
+     },
+     {
+      "quarters_ahead": 3,
+      "period": "2027Q1",
+      "p10": -44.357,
+      "p90": 44.357,
+      "rms": 34.385
+     },
+     {
+      "quarters_ahead": 4,
+      "period": "2027Q2",
+      "p10": -45.405,
+      "p90": 45.405,
+      "rms": 35.085
+     }
+    ]
+   },
+   "coverage": {
+    "assumed": {
+     "fit": {
+      "inside": 58,
+      "of": 63,
+      "share": 0.921,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 21,
+        "of": 22
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 19,
+        "of": 21
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 18,
+        "of": 20
+       }
+      ]
+     },
+     "check": {
+      "inside": 29,
+      "of": 33,
+      "share": 0.879,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 11,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 26,
+      "of": 30,
+      "share": 0.867,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 9,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 7,
+        "of": 9
+       }
+      ]
+     }
+    },
+    "fitted": {
+     "fit": {
+      "inside": 58,
+      "of": 63,
+      "share": 0.921,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 21,
+        "of": 22
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 19,
+        "of": 21
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 18,
+        "of": 20
+       }
+      ]
+     },
+     "check": {
+      "inside": 29,
+      "of": 33,
+      "share": 0.879,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 11,
+        "of": 12
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 8,
+        "of": 10
+       }
+      ]
+     },
+     "check_without_2022Q1": {
+      "inside": 26,
+      "of": 30,
+      "share": 0.867,
+      "by_horizon": [
+       {
+        "quarters_ahead": 2,
+        "inside": 10,
+        "of": 11
+       },
+       {
+        "quarters_ahead": 3,
+        "inside": 9,
+        "of": 10
+       },
+       {
+        "quarters_ahead": 4,
+        "inside": 7,
+        "of": 9
+       }
+      ]
+     }
+    }
+   },
+   "simulator_to_history_rms": {
+    "assumed": {
+     "fit": [
+      1.63,
+      1.25,
+      1.06
+     ],
+     "check": [
+      1.29,
+      1.25,
+      1.05
+     ]
+    },
+    "fitted": {
+     "fit": [
+      1.63,
+      1.25,
+      1.06
+     ],
+     "check": [
+      1.29,
+      1.25,
+      1.05
+     ]
+    }
+   }
+  }
+ },
+ "simulator": {
+  "no_shock": {
+   "assumed": {
+    "demand_monthly_log_sd": 0.03,
+    "fuel_usd_gal": 4.192,
+    "modes": {
+     "costs_only": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -638.3,
+         "p50": 1169.0,
+         "p90": 2554.6
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -578.9,
+         "p50": 1360.8,
+         "p90": 2879.0
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -594.4,
+         "p50": 1343.3,
+         "p90": 2885.0
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -578.4,
+         "p50": 1390.4,
+         "p90": 2898.4
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.3118
+     },
+     "management": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": 221.2,
+         "p50": 1206.0,
+         "p90": 2144.2
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": 342.4,
+         "p50": 1460.4,
+         "p90": 2561.6
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": 310.0,
+         "p50": 1446.8,
+         "p90": 2635.0
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 336.8,
+         "p50": 1458.8,
+         "p90": 2675.1
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.1005
+     },
+     "measured": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -159.7,
+         "p50": 1193.0,
+         "p90": 2295.5
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -7.2,
+         "p50": 1403.3,
+         "p90": 2607.6
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -9.5,
+         "p50": 1409.7,
+         "p90": 2639.8
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 44.5,
+         "p50": 1424.6,
+         "p90": 2698.3
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.1973
+     }
+    }
+   },
+   "fitted": {
+    "demand_monthly_log_sd": 0.0029,
+    "fuel_usd_gal": 4.192,
+    "modes": {
+     "costs_only": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -650.5,
+         "p50": 1196.9,
+         "p90": 2477.9
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -585.8,
+         "p50": 1396.2,
+         "p90": 2813.4
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -640.8,
+         "p50": 1391.5,
+         "p90": 2833.8
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -571.4,
+         "p50": 1427.7,
+         "p90": 2838.0
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.3054
+     },
+     "management": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": 380.9,
+         "p50": 1250.4,
+         "p90": 1878.1
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": 573.2,
+         "p50": 1484.0,
+         "p90": 2249.9
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": 555.3,
+         "p50": 1468.2,
+         "p90": 2325.0
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 561.6,
+         "p50": 1487.0,
+         "p90": 2376.7
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.0139
+     },
+     "measured": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -112.8,
+         "p50": 1226.5,
+         "p90": 2152.1
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": 90.9,
+         "p50": 1451.7,
+         "p90": 2426.2
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": 62.0,
+         "p50": 1461.1,
+         "p90": 2455.8
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 126.0,
+         "p50": 1493.1,
+         "p90": 2513.5
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.1625
+     }
+    }
+   }
+  },
+  "today": {
+   "status": "ok",
+   "request": {
+    "fuel_usd_gal": 4.675,
+    "fuel_shock_months": 12,
+    "horizon_months": 12
+   },
+   "fuel_as_of": "2026-10-06",
+   "assumed": {
+    "demand_monthly_log_sd": 0.03,
+    "fuel_usd_gal": 4.675,
+    "modes": {
+     "costs_only": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -1486.1,
+         "p50": 561.9,
+         "p90": 2102.3
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -1459.4,
+         "p50": 750.8,
+         "p90": 2430.3
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -1479.9,
+         "p50": 729.8,
+         "p90": 2416.1
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -1447.1,
+         "p50": 768.7,
+         "p90": 2439.7
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.5532
+     },
+     "management": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -202.4,
+         "p50": 875.7,
+         "p90": 1851.0
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": 162.9,
+         "p50": 1370.7,
+         "p90": 2532.1
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": 223.4,
+         "p50": 1448.2,
+         "p90": 2726.0
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 257.1,
+         "p50": 1460.0,
+         "p90": 2767.3
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.1493
+     },
+     "measured": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -806.2,
+         "p50": 752.9,
+         "p90": 1933.6
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -557.0,
+         "p50": 1050.7,
+         "p90": 2341.8
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -498.7,
+         "p50": 1125.7,
+         "p90": 2417.3
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -388.0,
+         "p50": 1189.0,
+         "p90": 2542.9
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.3785
+     }
+    }
+   },
+   "fitted": {
+    "demand_monthly_log_sd": 0.0029,
+    "fuel_usd_gal": 4.675,
+    "modes": {
+     "costs_only": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -1511.2,
+         "p50": 585.4,
+         "p90": 2044.0
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -1484.2,
+         "p50": 771.8,
+         "p90": 2379.7
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -1544.8,
+         "p50": 766.2,
+         "p90": 2408.3
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -1469.8,
+         "p50": 808.4,
+         "p90": 2407.1
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.5437
+     },
+     "management": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -82.4,
+         "p50": 916.1,
+         "p90": 1622.4
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": 357.4,
+         "p50": 1398.7,
+         "p90": 2249.1
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": 431.9,
+         "p50": 1469.9,
+         "p90": 2443.2
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": 439.4,
+         "p50": 1488.1,
+         "p90": 2502.0
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.0403
+     },
+     "measured": {
+      "quarters": [
+       {
+        "period": "2026Q4",
+        "operating_income_musd": {
+         "p10": -793.9,
+         "p50": 792.2,
+         "p90": 1803.9
+        }
+       },
+       {
+        "period": "2027Q1",
+        "operating_income_musd": {
+         "p10": -509.9,
+         "p50": 1100.4,
+         "p90": 2161.6
+        }
+       },
+       {
+        "period": "2027Q2",
+        "operating_income_musd": {
+         "p10": -467.2,
+         "p50": 1180.7,
+         "p90": 2264.7
+        }
+       },
+       {
+        "period": "2027Q3",
+        "operating_income_musd": {
+         "p10": -351.4,
+         "p50": 1259.7,
+         "p90": 2389.2
+        }
+       }
+      ],
+      "fcf_negative_12m": 0.3464
+     }
+    }
+   }
+  },
+  "width": {
+   "period": "2026Q4",
+   "quantity": "no-shock operating income, P10 to P90, measured behavior",
+   "musd": 2455.2,
+   "demand_noise_off_musd": 2298.2,
+   "share_left_with_demand_noise_off": 0.936,
+   "fuel_noise_off_musd": 1556.7,
+   "share_left_with_fuel_noise_off": 0.634,
+   "with_fitted_demand_noise_musd": 2264.9
+  },
+  "fuel_noise": {
+   "monthly_log_sd": 0.2159,
+   "trading_days": 65,
+   "from": "2026-04-13",
+   "to": "2026-07-16",
+   "rule": "standard deviation of the daily log changes in Gulf Coast jet fuel over the last trading days before the information cutoff, times the square root of 21 (app/data.py, app/monthly.py); the engine sets it, the lab runner does not",
+   "against_history": {
+    "status": "ok",
+    "source": {
+     "path": "data/lab/fuel_daily.csv",
+     "sha256": "3803f2602891ce2e597cf2fa062d7226ea24f35c1e5dde21a6a18d454a522af6"
+    },
+    "fit_years_monthly_log_sd": 0.0933,
+    "times_fit_years": 2.31,
+    "check_years_monthly_log_sd": 0.1551,
+    "times_check_years": 1.39,
+    "windows_since": "2013-01-01",
+    "windows": 3386,
+    "median_window_monthly_log_sd": 0.1,
+    "share_of_windows_less_volatile": 0.919
+   }
+  },
+  "fuel_share_of_revenue": {
+   "latest_quarter": "2026Q2",
+   "latest": 0.289,
+   "mean_fit_years": 0.228,
+   "mean_check_years": 0.234
+  }
+ },
+ "runner": {
+  "demand_monthly_log_sd": 0.03,
+  "status": "assumed",
+  "checked_on": "revenue per available seat mile against a naive seasonal forecast made 2 to 4 quarters earlier",
+  "check_years": [
+   2022,
+   2026
+  ],
+  "target_share": 0.8,
+  "coverage": {
+   "fit": {
+    "inside": 63,
+    "of": 63,
+    "share": 1.0
+   },
+   "check": {
+    "inside": 25,
+    "of": 33,
+    "share": 0.758
+   }
+  },
+  "check_passed": true,
+  "fitted_variant": {
+   "demand_monthly_log_sd": 0.0029,
+   "fit_years": [
+    2013,
+    2019
+   ],
+   "coverage": {
+    "fit": {
+     "inside": 48,
+     "of": 63,
+     "share": 0.762
+    },
+    "check": {
+     "inside": 20,
+     "of": 33,
+     "share": 0.606
+    }
+   },
+   "check_passed": false,
+   "used": false
+  },
+  "fuel_noise": {
+   "monthly_log_sd": 0.2159,
+   "trading_days": 65,
+   "from": "2026-04-13",
+   "to": "2026-07-16",
+   "times_fit_years": 2.31,
+   "share_of_windows_less_volatile": 0.919
+  },
+  "width": {
+   "period": "2026Q4",
+   "quantity": "no-shock operating income, P10 to P90, measured behavior",
+   "musd": 2455.2,
+   "demand_noise_off_musd": 2298.2,
+   "share_left_with_demand_noise_off": 0.936,
+   "fuel_noise_off_musd": 1556.7,
+   "share_left_with_fuel_noise_off": 0.634,
+   "with_fitted_demand_noise_musd": 2264.9
+  },
+  "statement": "Demand noise is an assumed 3% a month. Checked against United's unit revenue, 25 of 33 outcomes in 2022-2026 (76%) fell inside the simulator's 80% range. Fuel noise comes from the 65 trading days before the cutoff (13 April 2026 to 16 July 2026), an unusually volatile stretch: more volatile than 92% of such windows since 2013. It sets most of the range's width: with demand noise switched off, 94% of the width of 2026Q4 operating income remains. Source: app/static/data/range_check.json."
+ },
+ "limits": [
+  "The simulator has no seasonality. The history is compared through year-over-year growth, which removes it there; nothing is tested about seasonal quarters.",
+  "The fuel volatility window is short and recent: the 65 trading days before the cutoff (13 April 2026 to 16 July 2026), the quarter of the fuel shock. One quarter of daily prices sets most of the width measured here, and it is not changed here.",
+  "Few and overlapping outcomes: 33 check outcomes come from 12 quarters and 63 earlier outcomes from 22, so the counts are not independent. 76% against a nominal 80% is a difference of 1.4 outcomes.",
+  "The assumed value was kept because of its coverage on 2022-2026, so that figure is the reason for the choice, not an independent test of it.",
+  "The assumed value is too wide for 2013-2019 (63 of 63 inside). Unit revenue was 2.5 times as variable in 2022-2026 as in 2013-2019 two quarters out (root mean square 8.9% against 3.5%), so no single value fits both periods.",
+  "The rule keeps 2022Q1, a quarter still held down by the pandemic. Without it the check years hold 25 of 30 (83%) unit-revenue outcomes at the assumed value and 20 of 30 (67%) at the fitted one, and 28 of 30 (93%) margin outcomes. That count is a sensitivity, not the check.",
+  "The fitted value is near zero because, with demand noise at zero, fares following fuel noise already give the simulator 97% of the 2013-2019 spread in unit revenue. It depends on the simulator's fuel noise and on the measured recovery curve, and it carries simulation error of about 0.09% (one standard error at 10,000 simulated worlds).",
+  "Persistence (0.75 a month) is fixed inside the engine and the fuel-demand correlation (0.25) is left as assumed: about twenty overlapping outcomes per horizon cannot separate them from the noise level.",
+  "The simulator starts from 2026Q2, when fuel was 29% of revenue against 23% on average in 2013-2019, so the same percentage move in fuel swings its margin more.",
+  "The margin comparison uses adjusted pre-tax income, which includes interest and other non-operating items, because the quarterly table has no operating income.",
+  "A naive forecast's miss is compared with the gap between two simulated worlds. That is exact only if surprises a year apart are unrelated.",
+  "Ranges still leave out parameter and model uncertainty other than the recovery curve's."
+ ],
+ "method": {
+  "paths": 10000,
+  "seed": 1,
+  "mode": "measured",
+  "horizons_quarters_ahead": [
+   2,
+   3,
+   4
+  ],
+  "grid": [
+   0.0,
+   0.0025,
+   0.005,
+   0.0075,
+   0.01,
+   0.0125,
+   0.015,
+   0.0175,
+   0.02,
+   0.0225,
+   0.025,
+   0.0275,
+   0.03,
+   0.0325,
+   0.035,
+   0.0375,
+   0.04,
+   0.0425,
+   0.045,
+   0.0475,
+   0.05,
+   0.0525,
+   0.055,
+   0.0575,
+   0.06
+  ],
+  "engine_version": "monthly-fleet-0.7.0",
+  "information_cutoff": "2026-07-16",
+  "two_world_gap": "each simulated world minus the world half the path count further on"
+ }
+}

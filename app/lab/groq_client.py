@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 ENV_FILES = (ROOT / ".env.local", ROOT / ".env")
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
-# Model IDs checked on 2026-10-10 against Groq's documentation and this account's
+# Model IDs checked on 2026-10-09 against Groq's documentation and this account's
 # live model list (its chat models are the three in MODEL_CHAIN; the Qwen one is a preview):
 #   https://console.groq.com/docs/models              the two GPT-OSS models are production models, context 131,072
 #   https://console.groq.com/docs/tool-use            tool calling and JSON mode: all three; parallel tool calls: Qwen only
@@ -33,7 +33,7 @@ API_URL = "https://api.groq.com/openai/v1/chat/completions"
 # call occasionally comes back as HTTP 400 tool_use_failed; the max_completion_tokens
 # asked for is counted against the tokens-per-minute limit before the call runs.
 MODELS_DOC_URL = "https://console.groq.com/docs/models"
-MODELS_CHECKED_ON = "2026-10-10"
+MODELS_CHECKED_ON = "2026-10-09"
 DEFAULT_MODEL = "openai/gpt-oss-120b"
 FALLBACK_MODEL = "openai/gpt-oss-20b"
 LAST_MODEL = "qwen/qwen3.8-27b"

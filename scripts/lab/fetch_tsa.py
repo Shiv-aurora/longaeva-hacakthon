@@ -8,7 +8,7 @@ app/static/data/demand_signal.json from that store through the manifest, without
 network. A day TSA does not list stays absent: nothing is filled or estimated.
 
 Access: one request per second through curl with the project's declared
-User-Agent. On 2026-10-10 tsa.gov's edge (AkamaiGHost) answered 403 "Access
+User-Agent. On 2026-10-09 tsa.gov's edge (AkamaiGHost) answered 403 "Access
 Denied" to Python's httpx, with the declared agent and with a browser agent, and
 200 to curl with the declared agent. So curl is used and no browser is imitated.
 A refusal is recorded under failures with the status and the start of the body.
@@ -37,14 +37,14 @@ from app.source_store import byte_hash
 from scripts.lab.fetch_market import read_raw, relative, store_raw, write_csv
 
 BASE = "https://www.tsa.gov/travel/passenger-volumes"
-FIRST_YEAR = 2019  # .../passenger-volumes/2018 answered 404 on 2026-10-10.
+FIRST_YEAR = 2019  # .../passenger-volumes/2018 answered 404 on 2026-10-09.
 RAW = ROOT / "data" / "lab_raw" / "tsa"
 MANIFEST = ROOT / "data" / "lab" / "manifests" / "tsa.json"
 AGENT = "UAL Counterfactual Lab research"
 PAUSE = 1.0  # Seconds between requests.
 TERMS = ("Transportation Security Administration, U.S. Department of Homeland Security. US government data in the "
          "public domain; cite TSA as the source.")
-ACCESS = ("curl with the declared User-Agent '" + AGENT + "', one request per second. On 2026-10-10 the same request "
+ACCESS = ("curl with the declared User-Agent '" + AGENT + "', one request per second. On 2026-10-09 the same request "
           "from Python httpx was answered 403 Access Denied by the site's edge (AkamaiGHost), with the declared "
           "agent and with a browser agent; curl with the declared agent was answered 200. No browser is imitated.")
 REVISION_RULE = (

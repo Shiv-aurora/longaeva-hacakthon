@@ -76,7 +76,7 @@ PARAPHRASED = (
 # SHA-256 and no offset; quoted wording is as the reader returned it. Rerun the lookups to refresh these.
 _MARKET = "ual-quarterly-earnings-nongaap-eps-10-20-2026-2pt84"
 WEB = {
-    "period": "2026Q3", "retrieved_on": "2026-10-10",
+    "period": "2026Q3", "retrieved_on": "2026-10-09",
     "read_via": "page text returned by a web reader (a language model); wording not machine-checked",
     "report_date": {
         "value": "2026-10-20", "timing": "after market close", "call_date": "2026-10-21", "published_on": "2026-09-30",
@@ -85,7 +85,7 @@ WEB = {
         "quote": "The company will issue its third-quarter results and outlook after market close on Tuesday, October 20.",
     },
     "consensus_eps": {
-        "value": 2.84, "as_of": "2026-10-10", "source_url": "https://tickzen.app/stocks/ual/earnings",
+        "value": 2.84, "as_of": "2026-10-09", "source_url": "https://tickzen.app/stocks/ual/earnings",
         "quote": "Analysts expect EPS of $2.84.",
         "as_of_note": "The page prints no date; as_of is the day it was read.",
         "provider_note": "Tickzen, which says its estimates come from Yahoo Finance. It does not name the quarter "
@@ -98,13 +98,13 @@ WEB = {
                 "their pages and are not recorded.",
     },
     "market_odds_beat": {
-        "value": 0.6, "as_of": "2026-10-10", "volume_usd": 689.9,
+        "value": 0.6, "as_of": "2026-10-09", "volume_usd": 689.9,
         "source_url": "https://polymarket.com/event/" + _MARKET,
         "api_url": "https://gamma-api.polymarket.com/events?slug=" + _MARKET,
         "question": "Will United Airlines (UAL) beat quarterly earnings?", "threshold_eps": 2.84,
         "price_basis": "the Yes price the market publishes; it equals the midpoint of the best bid and best ask",
         "best_bid": 0.52, "best_ask": 0.68, "last_trade": 0.43, "liquidity_usd": 100.66,
-        "market_updated_at": "2026-10-10T06:22:33Z", "resolves_on": "2026-10-20",
+        "market_updated_at": "2026-10-09T06:22:33Z", "resolves_on": "2026-10-20",
         "note": "A thin market: about $690 traded in total, about $100 resting in the book and 16 points between "
                 "bid and ask, with the last trade at 43%. Treat the price as a weak signal.",
     },

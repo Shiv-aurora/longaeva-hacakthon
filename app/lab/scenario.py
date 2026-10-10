@@ -30,6 +30,9 @@ Scenario request (all fields optional; unknown fields are rejected):
                        fleet inside the shock window arrive m months late.
   capacity_response    "none" (default) or "measured": add the capacity change that
                        followed past fuel moves (app/static/data/capacity_response.json).
+  demand_monthly_log_sd  monthly demand noise (log standard deviation), 0 to 0.1. Default: the engine's
+                       assumed value. app/static/data/range_check.json tests that value against
+                       United's history; `demand_noise()` states the value and what the test found.
   horizon_months       12 to 22 reported months (default 12).
   seed                 0 to 1,000,000,000 (default 1).
   paths                200 to 20,000 simulated worlds (default DEFAULT_PATHS).
@@ -44,8 +47,9 @@ or {"status": "invalid", "errors": [...]}. Nothing is raised for a bad request. 
 computed with a response whose source kind is "synthetic" also carries "synthetic_response": true.
 
 Differences from the draft in docs/lab_contract.md:
-- Request gains `fuel_usd_gal`, `capacity_response` and `paths`. `fuel_shock_pct` is defined
-  on the price United pays (one reference price), not on the spot price the engine uses.
+- Request gains `fuel_usd_gal`, `capacity_response`, `demand_monthly_log_sd` and `paths`.
+  `fuel_shock_pct` is defined on the price United pays (one reference price), not on the spot
+  price the engine uses.
 - `{"status": "not_computed"}` is reported per mode, so the other modes still run. The
   top-level status stays "ok". `{"status": "invalid", "errors"}` is new.
 - Quarter rows gain `months`, `complete`, `operating_income_change_musd`,
@@ -58,7 +62,10 @@ Differences from the draft in docs/lab_contract.md:
   null values because the simulator does not model it.
 - `response_used` is keyed by mode (three curves are used, not one).
 - New top-level fields: `cached`, `request`, `paths`, `as_of`, `fuel`, `capacity_response`,
-  `per_share`, `monte_carlo`, `inputs`, `model`.
+  `per_share`, `monte_carlo`, `inputs`, `model`. `monte_carlo.demand_noise` carries the demand
+  noise used, whether it is the engine's assumption or was asked for, and what the range
+  check found: the coverage of the assumed value, the fitted value that was rejected, and
+  how much of the range's width comes from fuel noise.
 
 Grid request: {"x": {"driver", "values"}, "y": {"driver", "values"}, "metric", "period",
 "threshold", "direction", "mode", "base"}. Drivers: GRID_DRIVERS. `recovery_share` sets
@@ -80,7 +87,7 @@ capacity are set to zero because the engine models cuts only.
 
 Per-share conversion: change in operating income x (1 - tax rate) / diluted shares.
 Neither data/ual_q2_2026.json nor data/monthly_anchors.json carries a tax rate or a
-diluted share count (checked 2026-10-10), so both come from data/lab/ual_quarterly.csv:
+diluted share count (checked 2026-10-09), so both come from data/lab/ual_quarterly.csv:
 the latest quarter filed on or before the information cutoff, tax rate = 1 - net
 income / pretax income of that quarter. Without that file the per-share fields are null.
 
@@ -116,6 +123,7 @@ QUARTERLY_CSV = ROOT / "data" / "lab" / "ual_quarterly.csv"
 FUEL_DAILY = ROOT / "data" / "lab" / "fuel_daily.csv"
 COST_CLOCK = ROOT / "app" / "static" / "data" / "cost_clock.json"
 DEMAND_SIGNAL = ROOT / "app" / "static" / "data" / "demand_signal.json"
+RANGE_CHECK = ROOT / "app" / "static" / "data" / "range_check.json"
 INFORMATION_CUTOFF = "2026-07-16"
 DEFAULT_PATHS = 10000
 MODES = ("costs_only", "management", "measured")
@@ -125,12 +133,13 @@ ENGINE_FUEL_PCT = (-60, 100)
 ENGINE_MONTHS = 24
 BOUNDS = {"fuel_shock_pct": (-50, 80), "fuel_shock_months": (1, 24), "capacity_change_pct": (-90, 0),
           "demand_shock_pct": (-80, 100), "horizon_months": (12, 22), "seed": (0, 1_000_000_000),
-          "paths": (200, 20000), "delivery_delay.aircraft": (0, 1000), "delivery_delay.months": (0, 24)}
+          "paths": (200, 20000), "delivery_delay.aircraft": (0, 1000), "delivery_delay.months": (0, 24),
+          "demand_monthly_log_sd": (0, .1)}
 INTEGERS = {"fuel_shock_months", "horizon_months", "seed", "paths", "delivery_delay.aircraft", "delivery_delay.months"}
 DEFAULTS = {"fuel_shock_months": 6, "capacity_change_pct": 0.0, "demand_shock_pct": 0.0,
             "horizon_months": 12, "seed": 1, "paths": DEFAULT_PATHS}
 FIELDS = ("fuel_shock_pct", "fuel_usd_gal", "fuel_shock_months", "capacity_change_pct", "demand_shock_pct",
-          "delivery_delay", "capacity_response", "horizon_months", "seed", "paths")
+          "delivery_delay", "capacity_response", "demand_monthly_log_sd", "horizon_months", "seed", "paths")
 BRIDGE_STEPS = ("fuel cost", "fare recovery", "capacity", "demand", "profit sharing", "net")
 CAPACITY_GROUPS = 8
 GRID_FIELDS = ("x", "y", "metric", "period", "threshold", "direction", "mode", "base")
@@ -163,11 +172,25 @@ def _lead_months(cutoff: str) -> int:
     return (3 - (first - 1) % 3) % 3
 
 
+def demand_noise(path: Path | None = None) -> dict:
+    """The engine's assumed monthly demand noise and, once the range check is built, what that check found about it."""
+    path = RANGE_CHECK if path is None else Path(path)
+    engine = MonthlyScenario.demand_monthly_log_sd
+    name = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else path.name
+    block = _built(path).get("runner")
+    assumed = {"monthly_log_sd": engine, "source": "engine_default", "engine_default": engine}
+    if not isinstance(block, dict) or not isinstance(block.get("statement"), str):
+        return {**assumed, "check": None, "reason": f"{name} {'does not carry a usable check' if path.is_file() else 'has not been built'}"}
+    if block.get("demand_monthly_log_sd") != engine:
+        return {**assumed, "check": None, "reason": f"{name} tested a different value ({block.get('demand_monthly_log_sd')!r})"}
+    return {**assumed, "check": {**block, "path": name}}
+
+
 def _context() -> dict:
     snapshot, fuel = load_snapshot(), load_fuel()
     known = [r for r in fuel if r["date"] <= INFORMATION_CUTOFF]
     return {"snapshot": snapshot, "fuel": fuel, "baseline": baseline(snapshot, INFORMATION_CUTOFF),
-            "spot": known[-1], "latest": fuel[-1], "lead": _lead_months(INFORMATION_CUTOFF)}
+            "spot": known[-1], "latest": fuel[-1], "lead": _lead_months(INFORMATION_CUTOFF), "noise": demand_noise()}
 
 
 def baseline_fuel_usd_gal() -> dict:
@@ -250,9 +273,10 @@ def _number(errors: list, name: str, value, default=None):
     return int(value) if whole else float(value)
 
 
-def _validate(request: dict) -> tuple[dict, list[str], bool]:
+def _validate(request: dict, noise: dict | None = None) -> tuple[dict, list[str], bool]:
     """Canonical request, problems, and whether the fuel fields are usable for the range check."""
     errors: list[str] = []
+    noise = demand_noise() if noise is None else noise
     unknown = sorted(set(request) - set(FIELDS), key=str)
     if unknown:
         errors.append(f"unknown field(s) {unknown}; allowed fields are {list(FIELDS)}")
@@ -283,6 +307,7 @@ def _validate(request: dict) -> tuple[dict, list[str], bool]:
     if canonical["capacity_response"] not in ("none", "measured"):
         errors.append(f'capacity_response must be "none" or "measured"; got {canonical["capacity_response"]!r}')
         canonical["capacity_response"] = "none"
+    canonical["demand_monthly_log_sd"] = _number(errors, "demand_monthly_log_sd", request.get("demand_monthly_log_sd"), noise["monthly_log_sd"])
     return canonical, errors, fuel_ok
 
 
@@ -319,7 +344,7 @@ def _eligible_aircraft(c: dict, req: dict) -> int:
 
 def _checked(request: dict, c: dict) -> tuple[dict, dict | None, float, list[str]]:
     """Canonical request, its fuel block, the engine's fuel percent, and every problem found."""
-    req, errors, fuel_ok = _validate(request)
+    req, errors, fuel_ok = _validate(request, c["noise"])
     fuel, engine_pct = _fuel(req, c, errors) if fuel_ok else (None, 0.0)
     eligible = _eligible_aircraft(c, req)
     if req["delivery_delay"]["aircraft"] > eligible:
@@ -335,7 +360,8 @@ def _engine_scenario(req: dict, c: dict, engine_pct: float, paths: int | None = 
                            paths=req["paths"] if paths is None else paths, seed=req["seed"], fuel_shock_pct=engine_pct,
                            demand_shock_pct=req["demand_shock_pct"], capacity_shock_pct=req["capacity_change_pct"],
                            delivery_delay_months=req["delivery_delay"]["months"], delivery_aircraft_count=aircraft or None,
-                           onset_month=c["lead"] + 1, duration_months=req["fuel_shock_months"])
+                           onset_month=c["lead"] + 1, duration_months=req["fuel_shock_months"],
+                           demand_monthly_log_sd=req["demand_monthly_log_sd"])
 
 
 def _periods(months: list[str], lead: int) -> dict[str, list[int]]:
@@ -471,14 +497,29 @@ def _mode(r: dict, months: list[str], lead: int, per_share: dict, capacity_on: b
     return output, error
 
 
-def _assumptions(fuel: dict, per_share: dict, start: str, capacity: dict) -> list[str]:
+def _noise_used(req: dict, noise: dict) -> dict:
+    """What a result says about demand noise: the value used, whose it is, and the range check behind the assumed value."""
+    value, engine, check = req["demand_monthly_log_sd"], noise["engine_default"], noise["check"]
+    if value != engine:
+        note = (f"Demand noise is set by the request at {value:.2%} a month, not the assumed {engine:.0%}."
+                + (f" The range check in {check['path']} applies to the assumed value only." if check else ""))
+    elif check:
+        note = check["statement"]
+    else:
+        note = (f"Demand noise is an assumed {engine:.0%} a month and has not been checked against history: {noise['reason']}. "
+                "Fuel noise uses the volatility of the last trading days before the cutoff.")
+    return {"monthly_log_sd": value, "source": "engine_default" if value == engine else "request", "engine_default": engine,
+            "check": check, "note": note}
+
+
+def _assumptions(fuel: dict, per_share: dict, start: str, capacity: dict, noise: dict) -> list[str]:
     engine = MonthlyScenario()
     return [
         f"Starting point: United's Q2 2026 business as reported by {INFORMATION_CUTOFF} (four markets, fleet plan, costs, cash). "
-        "Quarterly totals are spread evenly over months; no seasonality is modelled. Fuel moves after that date are not in the no-shock reference.",
+        "Quarterly totals are spread evenly over months; no seasonality is modeled. Fuel moves after that date are not in the no-shock reference.",
         f"Fuel: the reference is the {fuel['reference_usd_gal']:.2f} US dollars a gallon United paid in Q2 2026. The shock moves that price to "
         f"{fuel['level_usd_gal']:.2f} on the central path for {fuel['held_months']} months from {start}, then {fuel['after_hold']}. "
-        "Simulated paths still vary around it: monthly fuel and demand noise use pre-cutoff fuel volatility and assumed persistence and correlation.",
+        "Simulated paths still vary around it; the persistence of fuel and demand noise and their correlation are assumed. " + noise["note"],
         "Response: every monthly change in the fuel price starts its own clock, and the recovery curve gives the share of that change, "
         "times gallons burned, that comes back as revenue by quarter after the change.",
         "Fare response is symmetric: a falling fuel price is given back at the same speed. A temporary shock is therefore "
@@ -495,7 +536,7 @@ def _assumptions(fuel: dict, per_share: dict, start: str, capacity: dict) -> lis
           ["The measured capacity response was requested but is not built, so capacity follows the plan: " + capacity["reason"] + "."]
           if capacity["status"] == "not_computed" else []),
         f"Free cash flow moves with after-tax operating income ({engine.marginal_cash_tax_fraction:.0%} assumed cash tax) around the Q2 2026 cash run rate; capital spending stays at that run rate. "
-        "No financing, hedging, working-capital timing or profit sharing is modelled.",
+        "No financing, hedging, working-capital timing or profit sharing is modeled.",
         "Bridge steps are means across paths over the first 12 reported months, applied in the order fuel cost, fare recovery, "
         "capacity (with delivery delays and any measured capacity response), demand; they add up to net.",
         ("Per share: change in operating income x (1 - tax rate) / diluted shares, with the tax rate and share count of the quarter ended "
@@ -564,12 +605,14 @@ def run_scenario(request: dict, response_modes: dict | None = None) -> dict:
     modes, ready, absent = _modes(response_modes)
     capacity = _capacity(req)
     per_share = per_share_inputs()
+    noise = _noise_used(req, c["noise"])
     cited = [*ready.values(), *([capacity] if isinstance(capacity, R.Response) else [])]
     inputs = [_file(ANCHORS), _file(FUEL_CSV)] + [{"path": m.source["path"], "sha256": m.source["sha256"]}
                                                   for m in cited if {"path", "sha256"} <= set(m.source)]
     if per_share["available"]:
         inputs.append({k: per_share["source"][k] for k in ("path", "sha256")})
-    identity = {"request": req, "information_cutoff": INFORMATION_CUTOFF, "code_sha256": CODE_SHA256,
+    identity = {"request": req, "demand_noise": [noise["note"], noise["check"]],
+                "information_cutoff": INFORMATION_CUTOFF, "code_sha256": CODE_SHA256,
                 "evidence": digest(c["snapshot"]), "fuel": digest(c["fuel"]),
                 "responses": {name: ready[name].fingerprint if name in ready else "not_computed: " + absent[name] for name in modes},
                 "capacity": capacity.fingerprint if isinstance(capacity, R.Response) else None if capacity is None else str(capacity),
@@ -612,9 +655,9 @@ def run_scenario(request: dict, response_modes: dict | None = None) -> dict:
         "per_share": per_share,
         "monte_carlo": {"paths": req["paths"], "seed": req["seed"],
                         "method": f"standard error by batch means: the statistic on {BATCHES} disjoint groups of paths, spread / sqrt({BATCHES})",
-                        "standard_error": errors_by_mode},
+                        "standard_error": errors_by_mode, "demand_noise": noise},
         "inputs": inputs, "model": {"engine_version": VERSION, "code_sha256": CODE_SHA256, "code_files": list(CODE_FILES)},
-        "assumptions": _assumptions(fuel, per_share, raw["months"][lead], capacity_used)}
+        "assumptions": _assumptions(fuel, per_share, raw["months"][lead], capacity_used, noise)}
     if any(m.source.get("kind") == "synthetic" for m in cited):
         result["synthetic_response"] = True
     return _keep(run_id, result, started)
@@ -757,7 +800,7 @@ def run_grid(request: dict, response_modes: dict | None = None) -> dict:
             checked[x, y] = (*_checked(_cell_request(base, cell), c), cell.get("recovery_share"))
             errors.extend(e for e in checked[x, y][3] if e not in errors)
     lead = c["lead"]
-    canonical = next(iter(checked.values()))[0] if checked else _validate(base)[0]
+    canonical = next(iter(checked.values()))[0] if checked else _validate(base, c["noise"])[0]
     periods = _periods(month_sequence(INFORMATION_CUTOFF, lead + canonical["horizon_months"]), lead)
     period = request.get("period") or ("12m" if metric != "operating_margin" else next(iter(periods)))
     allowed = ["12m"] if metric in ("fcf_12m_musd", "operating_income_12m_musd") else [*periods, *(["12m"] if metric == "eps_change" else [])]
@@ -865,7 +908,9 @@ def today_request(apply_demand: bool = False) -> dict:
 
     The model's information cutoff does not move: today's fuel enters as a level against the
     Q2 2026 reference. The demand reading is context; it becomes a demand shock only when
-    apply_demand is true.
+    apply_demand is true. `limits.delivery_delay_max_aircraft` gives, for each hold length
+    from 1 to 12 months, the most aircraft a delivery delay may name (the mainline aircraft
+    the fleet plan delivers in that window).
     """
     spot = _latest_fuel()
     if spot is None:
@@ -899,10 +944,10 @@ def today_request(apply_demand: bool = False) -> dict:
         if apply_demand:
             request["demand_shock_pct"] = demand["yoy_pct"]
             basis.append({"field": "demand_shock_pct", "value": demand["yoy_pct"], "date": demand["as_of"], "source": [_file(DEMAND_SIGNAL)],
-                          "how": f"{demand['period']} to date, travellers against the same days a year earlier ({demand['days_used']} days). "
+                          "how": f"{demand['period']} to date, travelers against the same days a year earlier ({demand['days_used']} days). "
                                  "Approximation: a national year-over-year change is used as United's demand shock against plan."})
         else:
-            assumptions.append(f"Demand is left at plan. For context, travellers in {demand['period']} to date are {demand['yoy_pct']:+.2f}% "
+            assumptions.append(f"Demand is left at plan. For context, travelers in {demand['period']} to date are {demand['yoy_pct']:+.2f}% "
                                f"against a year earlier ({demand['days_used']} days, as of {demand['as_of']}).")
     elif apply_demand:
         assumptions.append("A demand shock was asked for but no demand reading is built, so demand is left at plan.")
@@ -914,6 +959,7 @@ def today_request(apply_demand: bool = False) -> dict:
                           f"today's fuel enters as a level against the {fuel['reference_usd_gal']:.2f} reference ({fuel['shock_pct']:+.1f}%).")
     return {"status": "ok", "request": request, "basis": basis, "information_cutoff": INFORMATION_CUTOFF,
             "context": {"fuel": {"spot_usd_gal": spot["usd_gal"], "date": spot["date"], "converted_with_cost_clock": usable, **fuel}, "demand": demand},
+            "limits": {"delivery_delay_max_aircraft": {str(months): _eligible_aircraft(c, {"fuel_shock_months": months}) for months in range(1, 13)}},
             "assumptions": assumptions}
 
 
@@ -954,6 +1000,12 @@ def validate_response(result) -> list[str]:
          and (priced or isinstance(result["per_share"].get("reason"), str)), "per_share must carry sourced inputs or a reason")
     need(set(MODES) <= set(result["modes"]), f"modes must include {list(MODES)}")
     need(result["capacity_response"].get("status") in ("not_requested", "not_computed", "ok"), "capacity_response needs a status")
+    noise = result["monte_carlo"].get("demand_noise") if isinstance(result["monte_carlo"], dict) else None
+    need(isinstance(noise, dict) and set(noise) == {"monthly_log_sd", "source", "engine_default", "check", "note"}
+         and number(noise["monthly_log_sd"]) and noise["source"] in ("request", "engine_default")
+         and (noise["source"] == "request") == (noise["monthly_log_sd"] != noise["engine_default"])
+         and (noise["check"] is None or isinstance(noise["check"], dict)) and isinstance(noise["note"], str),
+         "monte_carlo.demand_noise must state the value, whose it is and the check behind the assumed value")
 
     def bridge(rows, where):
         need(isinstance(rows, list) and [row.get("step") for row in rows] == list(BRIDGE_STEPS), f"{where} must list the steps {list(BRIDGE_STEPS)}")

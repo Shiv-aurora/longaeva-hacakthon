@@ -49,7 +49,7 @@ NOTES = {
     "fuel": "Current history, not a real-time vintage: earlier prints may have been revised by the publisher.",
     "yahoo": "close is Yahoo's split-adjusted close; adj_close also folds in dividends and is restated after "
              "each one, so it depends on the retrieval date. Yahoo computes adj_close in 32-bit floats: two "
-             "retrievals minutes apart on 2026-10-10 had identical closes but adj_close values about one part "
+             "retrievals minutes apart on 2026-10-09 had identical closes but adj_close values about one part "
              "in a million apart, so rebuild from the stored raw file when an exact match matters.",
     "HO=F": " Continuous front-month NY Harbor ULSD future as Yahoo defines it; Yahoo does not document roll "
             "dates or whether a close is the exchange settlement.",

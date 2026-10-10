@@ -1,7 +1,7 @@
 {
  "status": "ok",
- "run_id": "4d85f8b2e5bf9a5992a61af4c7e036c7d71809e5d5dfc97d8409bbd89aee946c",
- "elapsed_ms": 426,
+ "run_id": "5a749c68d32dfe151250963f66257778e634dab65f06e2786792b29319e21653",
+ "elapsed_ms": 526,
  "cached": false,
  "request": {
   "fuel_shock_pct": 25.0,
@@ -16,7 +16,8 @@
    "aircraft": 0,
    "months": 0
   },
-  "capacity_response": "none"
+  "capacity_response": "none",
+  "demand_monthly_log_sd": 0.03
  },
  "paths": 10000,
  "as_of": {
@@ -1156,6 +1157,13 @@
     "fcf_negative_12m": 0.0052,
     "eps_change_12m_p50": 0.0143
    }
+  },
+  "demand_noise": {
+   "monthly_log_sd": 0.03,
+   "source": "engine_default",
+   "engine_default": 0.03,
+   "check": null,
+   "note": "Demand noise is an assumed 3% a month and has not been checked against history: tests/fixtures/lab_scenario/absent_range_check.json has not been built. Fuel noise uses the volatility of the last trading days before the cutoff."
   }
  },
  "inputs": [
@@ -1178,7 +1186,7 @@
  ],
  "model": {
   "engine_version": "monthly-fleet-0.7.0",
-  "code_sha256": "72a3fa127128cb919eeef55d2186358852edf34bf3a3b02adf9fba243dc2ffbe",
+  "code_sha256": "1ce06f3e47cd7f9749818a06efb039e34be0e0b59895590a4a68bde91a7761c5",
   "code_files": [
    "app/monthly.py",
    "app/fleet.py",
@@ -1190,8 +1198,8 @@
   ]
  },
  "assumptions": [
-  "Starting point: United's Q2 2026 business as reported by 2026-07-16 (four markets, fleet plan, costs, cash). Quarterly totals are spread evenly over months; no seasonality is modelled. Fuel moves after that date are not in the no-shock reference.",
-  "Fuel: the reference is the 4.19 US dollars a gallon United paid in Q2 2026. The shock moves that price to 5.24 on the central path for 6 months from 2026-10, then fades by half every 2 months. Simulated paths still vary around it: monthly fuel and demand noise use pre-cutoff fuel volatility and assumed persistence and correlation.",
+  "Starting point: United's Q2 2026 business as reported by 2026-07-16 (four markets, fleet plan, costs, cash). Quarterly totals are spread evenly over months; no seasonality is modeled. Fuel moves after that date are not in the no-shock reference.",
+  "Fuel: the reference is the 4.19 US dollars a gallon United paid in Q2 2026. The shock moves that price to 5.24 on the central path for 6 months from 2026-10, then fades by half every 2 months. Simulated paths still vary around it; the persistence of fuel and demand noise and their correlation are assumed. Demand noise is an assumed 3% a month and has not been checked against history: tests/fixtures/lab_scenario/absent_range_check.json has not been built. Fuel noise uses the volatility of the last trading days before the cutoff.",
   "Response: every monthly change in the fuel price starts its own clock, and the recovery curve gives the share of that change, times gallons burned, that comes back as revenue by quarter after the change.",
   "Fare response is symmetric: a falling fuel price is given back at the same speed. A temporary shock is therefore under-recovered while it builds and over-recovered while it fades.",
   "The recovery share is defined on revenue net of volume effects: no fare-demand elasticity, pass-through cap or fare-step limit is applied on top of it. `fare_change_pct` shows the average fare change that the recovery implies.",
@@ -1199,7 +1207,7 @@
   "Management's path is United's own statements about one shock. The fuel increase began in spring 2026, so 2026Q2 is quarter 0 of that shock, 2026Q3 quarter 1 and 2026Q4 quarter 2. Later quarters are taken as full recovery.",
   "Every mode, the no-shock reference and every bridge step use the same simulated fuel and demand paths, so differences are caused by the shock and the response alone.",
   "Capacity and demand changes and the delivery-delay window use the same months as the fuel shock. Capacity can only be cut. 70% of non-fuel cost is assumed fixed when capacity changes; that share is an assumption, not a fit, and a cut can raise simulated profit when empty seats absorb it.",
-  "Free cash flow moves with after-tax operating income (21% assumed cash tax) around the Q2 2026 cash run rate; capital spending stays at that run rate. No financing, hedging, working-capital timing or profit sharing is modelled.",
+  "Free cash flow moves with after-tax operating income (21% assumed cash tax) around the Q2 2026 cash run rate; capital spending stays at that run rate. No financing, hedging, working-capital timing or profit sharing is modeled.",
   "Bridge steps are means across paths over the first 12 reported months, applied in the order fuel cost, fare recovery, capacity (with delivery delays and any measured capacity response), demand; they add up to net.",
   "Per share: change in operating income x (1 - tax rate) / diluted shares, with the tax rate and share count of the quarter ended 2026-06-30. Interest, profit sharing and share-count changes are held fixed.",
   "Probabilities are shares of simulated paths under these assumptions, not calibrated event probabilities. Ranges exclude parameter and model uncertainty other than the recovery curve's. Months more than 12 after the cutoff are exploratory in the engine's model card."

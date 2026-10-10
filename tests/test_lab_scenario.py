@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import platform
+import re
 
 import numpy as np
 import pytest
@@ -40,6 +41,7 @@ def example_response() -> dict:
     """
     S.clear_cache()
     R.CAPACITY_RESPONSE = FIXTURES / "absent_capacity_response.json"
+    S.RANGE_CHECK = FIXTURES / "absent_range_check.json"
     return S.run_scenario(DEFAULT_REQUEST, {"measured": synthetic_measured()})
 
 
@@ -50,9 +52,18 @@ def capacity_file(path, curve=(0, -.3, -.6, -.8, -.8), spread=.2) -> None:
     path.write_text(json.dumps({"as_of": "2026-09-30", "curve": rows, "curve_draws": draws.tolist()}))
 
 
+def range_check_file(path, value=.03) -> None:
+    """A synthetic range check with the block the runner quotes, as the builder would write it. Not a measurement."""
+    cover = {"fit": {"inside": 10, "of": 10, "share": 1.0}, "check": {"inside": 8, "of": 10, "share": .8}}
+    path.write_text(json.dumps({"runner": {"demand_monthly_log_sd": value, "status": "assumed", "check_years": [2022, 2026], "coverage": cover,
+                                           "check_passed": True, "fitted_variant": {"demand_monthly_log_sd": .004, "used": False},
+                                           "width": {"share_left_with_demand_noise_off": .9},
+                                           "statement": "Demand noise is an assumed 3% a month. Synthetic check: 8 of 10 outcomes inside."}}))
+
+
 @pytest.fixture(autouse=True)
 def pinned_inputs(tmp_path, monkeypatch):
-    """Other builders write the measured curves, clocks and quarterly table; tests must not depend on their state."""
+    """Other builders write the measured curves, clocks, range check and quarterly table; tests must not depend on their state."""
     table = tmp_path / "ual_quarterly.csv"
     with table.open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=QUARTERLY_COLUMNS, restval="")
@@ -67,6 +78,7 @@ def pinned_inputs(tmp_path, monkeypatch):
     monkeypatch.setattr(R, "CAPACITY_RESPONSE", tmp_path / "capacity_response.json")
     monkeypatch.setattr(S, "COST_CLOCK", tmp_path / "cost_clock.json")
     monkeypatch.setattr(S, "DEMAND_SIGNAL", tmp_path / "demand_signal.json")
+    monkeypatch.setattr(S, "RANGE_CHECK", tmp_path / "range_check.json")
     S.clear_cache()
     yield
     S.clear_cache()
@@ -396,6 +408,9 @@ def test_nonsense_requests_return_invalid_with_explicit_bounds_and_never_raise()
         "delay too many": ({"delivery_delay": {"aircraft": 500, "months": 6}}, "delivery_delay.aircraft must be at most"),
         "delay outside window": ({"fuel_shock_months": 1, "delivery_delay": {"aircraft": 1, "months": 6}}, "at most 0"),
         "capacity option": ({"capacity_response": "fitted"}, 'capacity_response must be "none" or "measured"'),
+        "noise too high": ({"demand_monthly_log_sd": .5}, "demand_monthly_log_sd must be between 0 and 0.1"),
+        "noise negative": ({"demand_monthly_log_sd": -.01}, "demand_monthly_log_sd must be between 0 and 0.1"),
+        "noise as text": ({"demand_monthly_log_sd": "3%"}, "demand_monthly_log_sd must be a number between 0 and 0.1"),
     }
     for name, (request, message) in cases.items():
         result = S.run_scenario(request)
@@ -404,6 +419,28 @@ def test_nonsense_requests_return_invalid_with_explicit_bounds_and_never_raise()
     many = S.run_scenario({"fuel_shock_pct": 400, "seed": "x", "horizon_months": 99})
     assert len(many["errors"]) == 3
     assert S.run_scenario({"fuel_shock_pct": None, "delivery_delay": None, "paths": 200})["status"] == "ok"
+
+
+def test_aircraft_limit_is_stated_in_the_error_the_page_reads_and_in_today_request(tmp_path, monkeypatch):
+    # The dashboard reads the limit out of this error text with the pattern below, clamps its slider and reruns.
+    # Do not reword the error without changing app/static/lab/lab.js.
+    pattern = re.compile(r"delivery_delay\.aircraft must be at most (\d+)")
+    c = S._context()
+    limits = {months: S._eligible_aircraft(c, {"fuel_shock_months": months}) for months in range(1, 13)}
+    assert list(limits.values()) == sorted(limits.values()) and limits[1] == 0 < limits[12]  # a longer window takes in more deliveries
+    for months, limit in limits.items():
+        over = S.run_scenario(small(fuel_shock_months=months, delivery_delay={"aircraft": limit + 1, "months": 6}))
+        found = [pattern.search(error) for error in over["errors"]]
+        assert over["status"] == "invalid" and [int(m.group(1)) for m in found if m] == [limit], (months, over)
+        if limit:
+            assert S.run_scenario(small(fuel_shock_months=months, delivery_delay={"aircraft": limit, "months": 6}))["status"] == "ok"
+    # The same limits without provoking an error.
+    fuel = tmp_path / "fuel_daily.csv"
+    fuel.write_text("date,usd_per_gallon\n2026-10-02,4.500\n")
+    monkeypatch.setattr(S, "FUEL_DAILY", fuel)
+    today = S.today_request()
+    assert today["status"] == "ok" and today["limits"] == {"delivery_delay_max_aircraft": {str(months): limit for months, limit in limits.items()}}
+    json.dumps(today, allow_nan=False)
 
 
 def test_compare_subtracts_p50s_and_probabilities_per_mode_and_quarter():
@@ -488,6 +525,56 @@ def test_monte_carlo_error_is_reported_and_shrinks_with_paths():
     gap = abs(few["modes"]["costs_only"]["next_12m"]["operating_income_change_musd"]["p50"]
               - many["modes"]["costs_only"]["next_12m"]["operating_income_change_musd"]["p50"])
     assert gap < 5 * math.hypot(a, b)
+
+
+def test_demand_noise_stays_at_the_engines_assumption_states_its_check_and_can_be_overridden():
+    engine = MonthlyScenario().demand_monthly_log_sd
+    unchecked = S.run_scenario(small())
+    noise = unchecked["monte_carlo"]["demand_noise"]
+    assert unchecked["request"]["demand_monthly_log_sd"] == noise["monthly_log_sd"] == noise["engine_default"] == engine == .03
+    assert noise["source"] == "engine_default" and noise["check"] is None
+    assert "an assumed 3% a month" in noise["note"] and "has not been checked" in noise["note"] and "has not been built" in noise["note"]
+    assert unchecked["assumptions"][1].endswith(noise["note"])
+
+    # The range check does not move the value. It adds what the check found.
+    range_check_file(S.RANGE_CHECK)
+    checked = S.run_scenario(small())
+    block = checked["monte_carlo"]["demand_noise"]
+    assert checked["modes"] == unchecked["modes"] and checked["request"] == unchecked["request"] and checked["run_id"] != unchecked["run_id"]
+    assert block["source"] == "engine_default" and block["monthly_log_sd"] == .03
+    assert block["check"]["path"] == str(S.RANGE_CHECK.name) and block["check"]["coverage"]["check"] == {"inside": 8, "of": 10, "share": .8}
+    assert block["check"]["fitted_variant"] == {"demand_monthly_log_sd": .004, "used": False}
+    assert block["note"] == "Demand noise is an assumed 3% a month. Synthetic check: 8 of 10 outcomes inside."
+    assert checked["assumptions"][1].endswith(block["note"]) and S.validate_response(checked) == []
+    assert [item["path"] for item in checked["inputs"]] == [item["path"] for item in unchecked["inputs"]]  # no number depends on the file
+    assert stable(S.run_scenario(small(demand_monthly_log_sd=.03))) == stable(checked)  # naming the assumed value changes nothing
+    c = S._context()
+    req, _, engine_pct, _ = S._checked(small(), c)
+    assert S._engine_scenario(req, c, engine_pct).demand_monthly_log_sd == .03
+
+    # A request sets another value, and is told that the check is not about it.
+    asked = S.run_scenario(small(demand_monthly_log_sd=.012))
+    used = asked["monte_carlo"]["demand_noise"]
+    assert asked["request"]["demand_monthly_log_sd"] == used["monthly_log_sd"] == .012 and used["source"] == "request"
+    assert "set by the request at 1.20% a month, not the assumed 3%" in used["note"] and "applies to the assumed value only" in used["note"]
+    assert asked["modes"] != checked["modes"] and asked["run_id"] != checked["run_id"] and S.validate_response(asked) == []
+    req, _, engine_pct, _ = S._checked(small(demand_monthly_log_sd=.012), c)
+    assert S._engine_scenario(req, c, engine_pct).demand_monthly_log_sd == .012
+    assert S.run_scenario(small(demand_monthly_log_sd=0))["status"] == "ok"
+
+    # The grid has the same default and the same override, stated in its base.
+    assert S.run_grid(GRID)["base"]["demand_monthly_log_sd"] == .03
+    assert S.run_grid({**GRID, "base": {**GRID["base"], "demand_monthly_log_sd": .012}})["base"]["demand_monthly_log_sd"] == .012
+
+    # A check of some other value, or a file without one, is not quoted.
+    range_check_file(S.RANGE_CHECK, value=.012)
+    other = S.demand_noise()
+    assert other["monthly_log_sd"] == engine and other["check"] is None and "tested a different value (0.012)" in other["reason"]
+    for broken in ({"runner": {"demand_monthly_log_sd": .03}}, {"fixture": True, "runner": {"demand_monthly_log_sd": .03, "statement": "x"}}, []):
+        S.RANGE_CHECK.write_text(json.dumps(broken))
+        fallback = S.demand_noise()
+        assert fallback["monthly_log_sd"] == engine and fallback["check"] is None and "does not carry a usable check" in fallback["reason"]
+    assert S.run_scenario(small())["modes"] == unchecked["modes"]
 
 
 def test_management_paths_are_united_statements_on_quarters_after_the_shock():

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T07:01:48Z",
+ "generated_at": "2026-10-10T08:33:43Z",
  "as_of": "2026-10-06",
  "inputs": [
   {
@@ -834,7 +834,7 @@
    "after_hold": "fades by half every 2 months",
    "given_as": "fuel_usd_gal"
   },
-  "run_id": "7f0da853f1656d62adc109f3c24e875d667b793f530738a3656b4c92e9684461",
+  "run_id": "3af45f290528ec418bd396f3d7783a9f34776268780934132d30a65930173ed1",
   "paths": 10000,
   "starts_from": "2026-07-16",
   "shock_starts": "2026-10",
@@ -1219,9 +1219,9 @@
   "definition": "One run of the business simulator with today's fuel price held for twelve months, against the same simulated worlds with fuel at its second-quarter 2026 level. operating_income_change_musd and eps_change are against that reference; eps_change is after tax only.",
   "assumptions": [
    "The model still starts from United's Q2 2026 business as reported by 2026-07-16; today's fuel enters as a level against the 4.19 reference (+11.5%).",
-   "Demand is left at plan. For context, travellers in 2026Q4 to date are +2.33% against a year earlier (8 days, as of 2026-10-08).",
-   "Starting point: United's Q2 2026 business as reported by 2026-07-16 (four markets, fleet plan, costs, cash). Quarterly totals are spread evenly over months; no seasonality is modelled. Fuel moves after that date are not in the no-shock reference.",
-   "Fuel: the reference is the 4.19 US dollars a gallon United paid in Q2 2026. The shock moves that price to 4.67 on the central path for 12 months from 2026-10, then fades by half every 2 months. Simulated paths still vary around it: monthly fuel and demand noise use pre-cutoff fuel volatility and assumed persistence and correlation.",
+   "Demand is left at plan. For context, travelers in 2026Q4 to date are +2.33% against a year earlier (8 days, as of 2026-10-08).",
+   "Starting point: United's Q2 2026 business as reported by 2026-07-16 (four markets, fleet plan, costs, cash). Quarterly totals are spread evenly over months; no seasonality is modeled. Fuel moves after that date are not in the no-shock reference.",
+   "Fuel: the reference is the 4.19 US dollars a gallon United paid in Q2 2026. The shock moves that price to 4.67 on the central path for 12 months from 2026-10, then fades by half every 2 months. Simulated paths still vary around it; the persistence of fuel and demand noise and their correlation are assumed. Demand noise is an assumed 3% a month. Checked against United's unit revenue, 25 of 33 outcomes in 2022-2026 (76%) fell inside the simulator's 80% range. Fuel noise comes from the 65 trading days before the cutoff (13 April 2026 to 16 July 2026), an unusually volatile stretch: more volatile than 92% of such windows since 2013. It sets most of the range's width: with demand noise switched off, 94% of the width of 2026Q4 operating income remains. Source: app/static/data/range_check.json.",
    "Response: every monthly change in the fuel price starts its own clock, and the recovery curve gives the share of that change, times gallons burned, that comes back as revenue by quarter after the change.",
    "Fare response is symmetric: a falling fuel price is given back at the same speed. A temporary shock is therefore under-recovered while it builds and over-recovered while it fades."
   ]
