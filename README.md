@@ -1,4 +1,6 @@
-# UAL Counterfactual Engine · V1
+# UAL Counterfactual Engine | Stage 2 research prototype
+
+**Judges: start with [STAGE2_SUBMISSION.md](STAGE2_SUBMISSION.md).** It summarizes what is implemented, what the observed public evidence supports, how to run the monthly simulator, and the limits of the fitted research. The private repository intentionally excludes original multi-GB archives and generated local study artifacts. Its latest 387 locally passing tests, recorded in `docs/local_development.md`, are software and source-verification results, not validated investment alpha.
 
 The main application is a monthly analyst workstation for testing how aircraft
 delivery delays and fuel changes affect United's operating capacity and cash flow.

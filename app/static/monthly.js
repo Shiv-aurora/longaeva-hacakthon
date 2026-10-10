@@ -159,8 +159,25 @@
     svg+=`<text x="${left}" y="${bottom+25}" fill="#8395a7" font-size="12">${run.months[0]}</text><text x="${right}" y="${bottom+25}" text-anchor="end" fill="#8395a7" font-size="12">${run.months.at(-1)}</text>`;
     el('monthlyChart').innerHTML=svg;
   }
+  function renderJudgeSummary(run) {
+    const scenario=run.scenario, summary=run.summary;
+    const movements=[
+      scenario.fuel_shock_pct ? `fuel ${scenario.fuel_shock_pct>0?'+':''}${scenario.fuel_shock_pct}%` : null,
+      scenario.demand_shock_pct ? `demand ${scenario.demand_shock_pct>0?'+':''}${scenario.demand_shock_pct}%` : null,
+      scenario.delivery_delay_months ? `${scenario.delivery_delay_months}-month fleet entry delay` : null,
+      scenario.aircraft_unavailable_pct ? `${scenario.aircraft_unavailable_pct}% aircraft outage` : null
+    ].filter(Boolean);
+    el('judgeSummaryDescription').textContent=(movements.length?movements.join(' · '):'No external shock selected')+` across ${scenario.geography==='all'?'all four markets':scenario.geography.replace('_',' ')}. ${scenario.horizon_months}-month comparison uses paired no-shock paths and ${scenario.response_mode==='frozen'?'frozen pricing':'an assumed constrained pricing response'}.`;
+    el('judgeOperatingIncome').textContent=money(summary.cumulative_operating_income_impact_musd.p50);
+    el('judgeFcf').textContent=money(summary.cumulative_fcf_impact_musd.p50);
+    el('judgePolicy').textContent=money(summary.response_contribution_to_fcf_musd.p50);
+    el('judgeRange').textContent=money(summary.cumulative_fcf_impact_musd.p10)+' to '+money(summary.cumulative_fcf_impact_musd.p90);
+    const count=scenario.delivery_aircraft_count;
+    el('judgeSummaryScope').textContent=`Inputs: ${fmt(scenario.paths)} paired paths · ${scenario.information_cutoff} information cutoff · ${scenario.response_lag_months}-month pricing lag`+(scenario.delivery_delay_months?` · ${count==null?'all eligible fleet entries':count+' requested fleet entries'}; actual scheduled/queued counts are shown in fleet feasibility`:'')+'. This is a modeled sensitivity, not a forecast from a validated management policy.';
+    el('judgeSummary').hidden=false;
+  }
   function render(run) {
-    current=run; plot(run);renderCashFunding(run);renderPurchaseFunding(run);renderRetention(run);
+    current=run; plot(run);renderCashFunding(run);renderPurchaseFunding(run);renderRetention(run);renderJudgeSummary(run);
     invalidateConvergence('Saved run updated · check its sampling stability.');
     el('fcfImpact').textContent=money(run.summary.cumulative_fcf_impact_musd.p50);
     el('policyImpact').textContent=money(run.summary.response_contribution_to_fcf_musd.p50);
@@ -219,6 +236,27 @@
       render(body);return body;
     } catch(error) {el('monthlyStatus').textContent='Scenario failed: '+error.message;return null} finally {el('monthlyRun').disabled=false;for(const button of document.querySelectorAll('[data-preset]'))button.disabled=false;updateThesisState();if(current&&!thesisIsCurrent())el('monthlyStatus').textContent='Saved scenario displayed · inputs changed during the run. Run again to update results.'}
   }
+  el('judgeDemo').addEventListener('click', async () => {
+    if(el('monthlyRun').disabled){el('judgeDemoStatus').textContent='A scenario is still running. Please try again when it completes.';return}
+    const settings={cutoff:'2026-07-16',fuelShock:'20',demandShock:'0',capacityShock:'0',market:'all',
+      horizonMonths:'12',onsetMonths:'1',durationMonths:'9',entryDelay:'9',
+      deliveryGroup:'all',deliveryCount:'30',unavailable:'0',availabilityGroup:'all',
+      contractShock:'0',lagMonths:'2',mode:'assumed_constrained',
+      sparePct:'2',scheduleGrowthPct:'100',contractFixedPct:'70',nonfuelFixedPct:'70'};
+    for(const [id,value] of Object.entries(settings))el(id).value=value;
+    restoreCashPlan(null);restorePurchasePlan(null);restoreRetentionPlan(null);
+    for(const button of document.querySelectorAll('[data-preset]'))button.setAttribute('aria-pressed','false');
+    el('presetStatus').textContent='Earlier judge stress case · 20% fuel · aggregate capex · no explicit purchase or retention schedule.';
+    const fleetDetails=el('entryDelay').closest('details');if(fleetDetails)fleetDetails.open=true;
+    el('monthlyForm').dispatchEvent(new Event('input',{bubbles:true}));
+    el('judgeDemo').disabled=true;
+    el('judgeDemoStatus').textContent='Running illustrative judge scenario against the current monthly engine…';
+    try {
+      const result=await run();
+      if(result){el('judgeDemoStatus').textContent='Scenario complete. Review modeled operating income, FCF and uncertainty below.';el('judgeSummary').scrollIntoView({behavior:'smooth',block:'start'})}
+      else el('judgeDemoStatus').textContent='Scenario did not complete. Inspect the visible run status and inputs.';
+    }finally{el('judgeDemo').disabled=false}
+  });
   el('monthlyForm').addEventListener('submit',run);
   el('monthlyForm').addEventListener('input',()=>{if(current)el('monthlyStatus').textContent='Inputs changed · run to update results'});
   el('monthlyForm').addEventListener('input',()=>{updateThesisState();el('thesisDownloads').hidden=true;el('thesisStatus').textContent=thesisIsCurrent()?'Scenario matches the saved run · export to save the current notes.':'Scenario inputs changed · run again before exporting.'});

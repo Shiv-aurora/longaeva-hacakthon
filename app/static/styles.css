@@ -14,3 +14,11 @@
 @media (max-width:400px){.site-width{padding:0 12px}.topbar{padding:12px}.brandmark{height:36px;width:43px;font-size:24px}.brandtext strong{font-size:10px;letter-spacing:1px}.brandtext small{font-size:8px;letter-spacing:0}.hero h1{font-size:40px}.hero p{font-size:13px}.kpi-title{font-size:9px}.kpi-number{font-size:22px}.panel-head{gap:5px}.tag{font-size:8px}.chart-legend{gap:11px}.breakdown-row{font-size:11px}}
 
 .model-chain{border-top:1px solid var(--border);margin-top:28px;padding-top:22px}.chain-title{font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;color:var(--mint)}.chain-steps{display:flex;align-items:center;gap:11px;margin-top:15px}.chain-steps>div:not(.chain-arrow){display:grid;gap:6px;flex:1;min-width:0;background:#13212b;border:1px solid #2b3f49;padding:14px 11px;border-radius:4px}.chain-steps small{font:9px 'IBM Plex Mono',monospace;letter-spacing:.2px;color:var(--muted)}.chain-steps strong{font-size:13px;font-weight:600}.chain-steps span{font-size:10px;line-height:1.45;color:var(--muted)}.chain-arrow{color:var(--teal);font-size:18px}.model-chain p{font-size:11px;color:var(--muted);line-height:1.6;margin:14px 0 0}@media(max-width:500px){.chain-steps{display:grid;grid-template-columns:1fr;gap:5px}.chain-arrow{text-align:center;transform:rotate(90deg)}.chain-steps>div:not(.chain-arrow){min-height:auto}}
+
+/* Main Stage 2 entry point; daily fuel page remains a separate research pilot. */
+.stage2-gateway{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,270px);gap:22px;align-items:center;padding:22px;margin:10px 0 26px;background:#14202b;border:1px solid var(--border2);border-radius:6px}
+.stage2-gateway h2{font-size:clamp(19px,2.5vw,28px);margin:7px 0}
+.stage2-gateway p{font-size:13px;line-height:1.55;color:var(--sub);margin:0}
+.stage2-gateway-link{text-decoration:none;gap:14px;max-width:100%;line-height:1.3}
+.stage2-gateway-link:hover{background:#8ee9dd}
+@media(max-width:740px){.stage2-gateway{grid-template-columns:1fr}.stage2-gateway-link{width:100%}}

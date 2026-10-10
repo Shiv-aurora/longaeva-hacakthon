@@ -112,3 +112,24 @@ textarea:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outli
   .result-reading .micro{font-size:9px}
   .workspace footer{padding:10px 0}
 }
+
+/* Judge-first narrative. The scenario uses the existing engine, not canned results. */
+.judge-demo{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,290px);gap:24px;align-items:center;margin:0 0 24px;border:1px solid var(--border2)}
+.judge-demo h2,.judge-summary h2{margin:8px 0 10px;font-size:clamp(22px,2.8vw,30px)}
+.judge-demo p{line-height:1.55;margin:8px 0 0;color:var(--sub)}
+.judge-demo .micro,.judge-summary .micro{font-size:12px;color:var(--sub)}
+.judge-demo-action{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.judge-demo-action button{width:100%;min-height:48px}
+.judge-demo-action p{margin:0}
+.judge-summary{scroll-margin-top:18px;margin:24px 0}
+.judge-summary>p:not(.micro){line-height:1.65;color:var(--sub)}
+.judge-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}
+.judge-summary-grid>div{border:1px solid var(--border);border-radius:6px;padding:14px;min-width:0}
+.judge-summary-grid span{display:block;font-size:11px;color:var(--sub);line-height:1.5;min-height:34px}
+.judge-summary-grid strong{display:block;margin-top:6px;font-size:clamp(17px,2.1vw,25px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.judge-boundary{border-left:3px solid var(--amber);padding-left:12px;margin-top:12px}
+@media(max-width:850px){.judge-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.judge-demo{grid-template-columns:1fr}.judge-demo-action{max-width:none}.judge-summary-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:375px){.judge-summary-grid{grid-template-columns:1fr}}
+
+.legacy-judge-case{margin:20px 0}.legacy-judge-case>summary{color:var(--sub);cursor:pointer;margin-bottom:16px}

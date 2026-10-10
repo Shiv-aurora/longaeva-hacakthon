@@ -71,3 +71,10 @@ The primary controls, chart and three metrics fit a 1366×769 desktop viewport;
 the 389×843 mobile layout scrolls without horizontal overflow. No browser console
 errors or warnings were observed. These checks establish implementation behavior,
 not forecast calibration or validation of assumed airline responses.
+
+After integrating the newer GitHub judge handoff and packaging commits, the full
+suite passed **387 tests in 113.81 seconds**, with the same existing Starlette/httpx
+deprecation warning. The preserved 20% fuel judge stress case also completed in
+the browser under Evidence, while the primary Combined case retained its verified
+cash and capacity results. The earlier judge case uses aggregate capex and remains
+distinct from the explicit purchase/retention example.
