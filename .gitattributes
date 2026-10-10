@@ -1,3 +1,5 @@
 # Preserve proposal PDFs as binary source documents and CSV input bytes verbatim.
 *.pdf binary
-*.csv -text
+*.csv -text whitespace=-blank-at-eol
+# Empty source cells and CRLF are meaningful acquisition bytes, not code style.
+UAL_Counterfactual_Engine_v1/data/eia_2026_weekly_source.txt -text whitespace=-blank-at-eol
