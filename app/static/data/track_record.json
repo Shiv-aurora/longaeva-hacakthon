@@ -1,0 +1,2667 @@
+{
+ "generated_at": "2026-10-10T07:01:02Z",
+ "as_of": "2026-10-09",
+ "inputs": [
+  {
+   "path": "data/lab/ual_guidance.json",
+   "sha256": "e1e02f1acf73e1b6593e655f96e6558d46fb92a97d47e7211be339895da9191b"
+  },
+  {
+   "path": "data/lab/ual_quarterly.csv",
+   "sha256": "0e4a627e32708518ceb1a2e954d7712536cf2c1d18c0eac2e04a807a5ce507a0"
+  },
+  {
+   "path": "data/lab/fuel_daily.csv",
+   "sha256": "3803f2602891ce2e597cf2fa062d7226ea24f35c1e5dde21a6a18d454a522af6"
+  },
+  {
+   "path": "data/lab/prices_daily.csv",
+   "sha256": "c403296a2a80568e2c2198b08767fd9391393dccfa1d0c7c9c7306407e76199a"
+  },
+  {
+   "path": "app/static/data/fare_clock.json",
+   "sha256": "39df16acfa8c61e33fcd4a842df49f946560c6afe046503d62b8d2c6f8a00e4e"
+  },
+  {
+   "path": "data/lab/literature.json",
+   "sha256": "00322ecfddcd5ff98d63270d55f8eac2ccf92cfd463297072cecff43d85cc1b8"
+  },
+  {
+   "path": "data/lab/dal_check.json",
+   "sha256": "de5f6d3e45df1f437decbb57a4fb2d45ae731fb96195df7c7c607913427bf920"
+  }
+ ],
+ "seed": 20261010,
+ "test_split": "computed once, after the method was chosen on 2020-2023",
+ "splits": {
+  "fit": [
+   2013,
+   2019
+  ],
+  "select": [
+   2020,
+   2023
+  ],
+  "test": [
+   2024,
+   2026
+  ]
+ },
+ "headline": "In the 10 guided quarters from 2024 to mid-2026, marking United's midpoint to fuel with the measured recovery share missed reported earnings by $0.26 a share on average, no closer than the midpoint itself ($0.26) and against $0.26 if no fuel cost were recovered.",
+ "plain_summary": [
+  "In the 10 guided quarters from 2024 to mid-2026, marking United's midpoint to fuel with the measured recovery share missed reported earnings by $0.26 a share on average, no closer than the midpoint itself ($0.26) and against $0.26 if no fuel cost were recovered.",
+  "United gave a quarterly EPS range for 15 quarters, the first in 2022Q4; 14 of them have reported results and are replayed here (0 in 2013-2019, 4 in 2020-2023, 10 from 2024 onward).",
+  "The method was chosen on the 4 quarters before 2024: the fitted call with late fuel moves treated as not recovered had the lowest score (average CRPS 0.314 US dollars a share, against 0.321 for the plain fitted call). So few quarters cannot tell close variants apart: the choice is a rule fixed in advance, not evidence that the variant is better.",
+  "From 2024 onward (10 quarters) the average miss was $0.26 a share for the fitted call, $0.26 for United's midpoint and $0.26 for costs only. The fitted call was closer than the midpoint in 5 of 10 quarters.",
+  "CRPS, which also rewards a sensible range, was 0.16 for the fitted call and 0.26 for the midpoint as a single number. Give the midpoint the same range and it scores 0.15: the range does the work, not the fuel marking.",
+  "2026Q1: fuel cost $0.64 a share more than assumed. United reported $1.19; its midpoint was $1.25, the fitted call $0.63. The midpoint was closer.",
+  "2026Q2: fuel cost $0.59 a share less than assumed. United reported $1.99; its midpoint was $1.50, the fitted call $2.10. The fitted call was closer.",
+  "United's result fell inside the fitted call's P10-P90 range in 8 of 10 quarters; a well-sized range would hold about 8 in 10.",
+  "United stated a recovery share for 1 past quarter; using it missed by $0.17 a share there.",
+  "Fuel price check (8 quarters): United's stated price was 25 cents a gallon from the price it later reported on average; the cost clock at quarter end was 6 cents away.",
+  "Results-day check, 2024 onward (10 quarters): one dollar of gap between the fitted call and the midpoint went with a +8.0 percentage point move in United's market-hedged shares over the results day and the next (90% range -2.0 to +18.0, which spans zero); the two had the same sign in 6 of 10 quarters.",
+  "Delta's September 2026 quarter: guided $2.00 to $2.50 at about $3.15 a gallon, paid $3.61, reported $1.72. Costs only gives $1.65; the fitted share gives $1.88."
+ ],
+ "method": {
+  "what_is_replayed": "The full simulator cannot be re-run in past years: it is calibrated to United's business as of July 2026. This replay uses the same chain the simulator's measured mode uses: fuel price paid from the cost clock, the same-quarter recovery share from the fare clock as it would have been estimated at the time, then tax, profit sharing and share count.",
+  "steps": [
+   "Guidance: the latest quarterly adjusted EPS range United issued before the quarter's results, and the fuel price stated with it. Where none was stated, the cost clock's estimate on the guidance date.",
+   "Fuel at quarter end: the cost clock's estimate with every fuel price of the quarter, refitted on reports published before quarter end.",
+   "Fuel surprise: quarter-end price minus assumed price, times the gallons of the same quarter a year earlier, times (1 - tax rate) and (1 - profit-sharing rate), over diluted shares.",
+   "Calls: guidance_mid = midpoint; costs_only = midpoint minus the surprise; management = midpoint minus (1 - stated share) x surprise; fitted = midpoint minus (1 - measured same-quarter share) x surprise.",
+   "Range: the fitted call plus each earlier miss of United against its own midpoint, less their middle value; P10 and P90 are read off those values once 3 exist.",
+   "Scores: average miss (MAE) and CRPS in US dollars a share; for a single-number call CRPS is the miss."
+  ],
+  "forecast_date": "Each forecast is made at the quarter's last day, about three weeks before results.",
+  "variants": {
+   "fitted": "Midpoint minus the part of the fuel surprise that the recovery curve says does not come back in the same quarter.",
+   "habit": "The same, plus United's habit of landing above or below its own midpoint: the middle value of its earlier misses, once at least 3 exist.",
+   "late_moves": "The same, but fuel that moved after the middle of the quarter (or after the guidance date, if later) is treated as not recovered at all in that quarter.",
+   "clock_bias": "The same, with the cost clock's fuel price shifted by the middle value of its own earlier misses against reported prices (at least 3), where United stated a fuel price."
+  }
+ },
+ "profit_sharing": {
+  "rate": 0.189,
+  "tiers": {
+   "base": 0.036,
+   "top_tier": 0.12,
+   "above_prior_year": 0.033
+  },
+  "source_id": "ual-2026q2-investor-update",
+  "source": "notes field of that entry in data/lab/literature.json",
+  "verified_quote": false,
+  "caveat": "Read from the notes field of the literature entry, which paraphrases the investor update; not a machine-verified quote. Assumes every tier applies at the margin.",
+  "treatment": "Applied at the margin to every quarter; results are shown with and without it."
+ },
+ "quarters": [
+  {
+   "period": "2022Q4",
+   "split": "select",
+   "guided_on": "2022-10-18",
+   "guidance_low": 2.0,
+   "guidance_high": 2.25,
+   "guidance_mid": 2.125,
+   "guidance_evidence_id": "ual-2022q3-ex992-adj-eps-2022q4",
+   "forecast_as_of": "2022-12-31",
+   "results_on": "2023-01-17",
+   "actual_eps": 2.46,
+   "miss_against_midpoint": 0.335,
+   "computed": true,
+   "fuel_assumed": 3.61,
+   "fuel_assumed_source": "stated",
+   "fuel_assumed_evidence_id": "ual-2022q3-ex992-fuel-assumption-2022q4",
+   "fuel_assumed_as_stated": 3.61,
+   "fuel_realized": 3.603866,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 3.54,
+   "fuel_surprise_usd_gal": -0.006134,
+   "gallons_m": 814.0,
+   "gallons_quarter": "2021Q4",
+   "fuel_surprise_musd": -4.992971,
+   "tax_rate": 0.183001,
+   "diluted_shares_m": 329.5,
+   "tax_and_shares_quarter": "2022Q3",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.01004,
+   "fuel_surprise_per_share_without_profit_sharing": -0.01238,
+   "recovery_share": 0.214019,
+   "recovery_curve_fitted_through": "2019Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 0,
+   "range_source": "none: fewer than 3 earlier guided quarters",
+   "calls": {
+    "guidance_mid": 2.125,
+    "costs_only": 2.13504,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": 2.167251,
+     "p90": null
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 2.125,
+    "costs_only": 2.13738,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": 2.177098,
+     "p90": null
+    }
+   },
+   "error": {
+    "guidance_mid": -0.335,
+    "costs_only": -0.32496,
+    "management": null,
+    "fitted": -0.292749
+   },
+   "crps_fitted": 0.292749,
+   "inside_p10_p90": null,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2022q3-ex992-adj-eps-2022q4",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "fuel price assumed: guidance record ual-2022q3-ex992-fuel-assumption-2022q4",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2021Q4",
+     "dated": "2022-01-19"
+    },
+    {
+     "what": "tax rate and share count: results for 2022Q3",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "recovery curve fitted through 2019Q4",
+     "dated": "2020-01-21"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2022Q3",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2022-12-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2022-11-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2022-10-18"
+    }
+   ],
+   "variants": {
+    "fitted": {
+     "p10": null,
+     "p50": 2.132891,
+     "p90": null
+    },
+    "habit": {
+     "p10": null,
+     "p50": 2.132891,
+     "p90": null
+    },
+    "late_moves": {
+     "p10": null,
+     "p50": 2.167251,
+     "p90": null
+    },
+    "clock_bias": {
+     "p10": null,
+     "p50": 2.106445,
+     "p90": null
+    }
+   }
+  },
+  {
+   "period": "2023Q1",
+   "split": "select",
+   "guided_on": "2023-03-13",
+   "guidance_low": -1.0,
+   "guidance_high": -0.6,
+   "guidance_mid": -0.8,
+   "guidance_evidence_id": "ual-2022q4-8k-adj-eps-2023q1",
+   "forecast_as_of": "2023-03-31",
+   "results_on": "2023-04-18",
+   "actual_eps": -0.63,
+   "miss_against_midpoint": 0.17,
+   "computed": true,
+   "fuel_assumed": 3.36,
+   "fuel_assumed_source": "stated",
+   "fuel_assumed_evidence_id": "ual-2022q4-8k-fuel-assumption-2023q1",
+   "fuel_assumed_as_stated": [
+    3.31,
+    3.41
+   ],
+   "fuel_realized": 3.299621,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 3.33,
+   "fuel_surprise_usd_gal": -0.060379,
+   "gallons_m": 775.0,
+   "gallons_quarter": "2022Q1",
+   "fuel_surprise_musd": -46.793693,
+   "tax_rate": 0.253982,
+   "diluted_shares_m": 330.4,
+   "tax_and_shares_quarter": "2022Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.085687,
+   "fuel_surprise_per_share_without_profit_sharing": -0.105657,
+   "recovery_share": 0.214019,
+   "recovery_curve_fitted_through": "2019Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 1,
+   "range_source": "none: fewer than 3 earlier guided quarters",
+   "calls": {
+    "guidance_mid": -0.8,
+    "costs_only": -0.714313,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": -0.725716,
+     "p90": null
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": -0.8,
+    "costs_only": -0.694343,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": -0.708404,
+     "p90": null
+    }
+   },
+   "error": {
+    "guidance_mid": -0.17,
+    "costs_only": -0.084313,
+    "management": null,
+    "fitted": -0.095716
+   },
+   "crps_fitted": 0.095716,
+   "inside_p10_p90": null,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2022q4-8k-adj-eps-2023q1",
+     "dated": "2023-03-13"
+    },
+    {
+     "what": "fuel price assumed: guidance record ual-2022q4-8k-fuel-assumption-2023q1",
+     "dated": "2023-03-13"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2022Q1",
+     "dated": "2022-04-20"
+    },
+    {
+     "what": "tax rate and share count: results for 2022Q4",
+     "dated": "2023-01-17"
+    },
+    {
+     "what": "recovery curve fitted through 2019Q4",
+     "dated": "2020-01-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2022Q4",
+     "dated": "2023-01-17"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2022Q4",
+     "dated": "2023-01-17"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2023-03-31"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2023-01-17"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2023-03-13"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2023-01-17"
+    }
+   ],
+   "variants": {
+    "fitted": {
+     "p10": null,
+     "p50": -0.732651,
+     "p90": null
+    },
+    "habit": {
+     "p10": null,
+     "p50": -0.732651,
+     "p90": null
+    },
+    "late_moves": {
+     "p10": null,
+     "p50": -0.725716,
+     "p90": null
+    },
+    "clock_bias": {
+     "p10": null,
+     "p50": -0.739869,
+     "p90": null
+    }
+   }
+  },
+  {
+   "period": "2023Q2",
+   "split": "select",
+   "guided_on": "2023-04-18",
+   "guidance_low": 3.5,
+   "guidance_high": 4.0,
+   "guidance_mid": 3.75,
+   "guidance_evidence_id": "ual-2023q1-ex992-adj-eps-2023q2",
+   "forecast_as_of": "2023-06-30",
+   "results_on": "2023-07-19",
+   "actual_eps": 5.03,
+   "miss_against_midpoint": 1.28,
+   "computed": true,
+   "fuel_assumed": 2.9,
+   "fuel_assumed_source": "stated",
+   "fuel_assumed_evidence_id": "ual-2023q1-ex992-fuel-assumption-2023q2",
+   "fuel_assumed_as_stated": [
+    2.8,
+    3.0
+   ],
+   "fuel_realized": 2.5723,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.66,
+   "fuel_surprise_usd_gal": -0.3277,
+   "gallons_m": 912.0,
+   "gallons_quarter": "2022Q2",
+   "fuel_surprise_musd": -298.862698,
+   "tax_rate": 0.253982,
+   "diluted_shares_m": 330.4,
+   "tax_and_shares_quarter": "2022Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.54727,
+   "fuel_surprise_per_share_without_profit_sharing": -0.674809,
+   "recovery_share": 0.214019,
+   "recovery_curve_fitted_through": "2019Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 2,
+   "range_source": "none: fewer than 3 earlier guided quarters",
+   "calls": {
+    "guidance_mid": 3.75,
+    "costs_only": 4.29727,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": 4.175425,
+     "p90": null
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 3.75,
+    "costs_only": 4.424809,
+    "management": null,
+    "fitted": {
+     "p10": null,
+     "p50": 4.274569,
+     "p90": null
+    }
+   },
+   "error": {
+    "guidance_mid": -1.28,
+    "costs_only": -0.73273,
+    "management": null,
+    "fitted": -0.854575
+   },
+   "crps_fitted": 0.854575,
+   "inside_p10_p90": null,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2023q1-ex992-adj-eps-2023q2",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "fuel price assumed: guidance record ual-2023q1-ex992-fuel-assumption-2023q2",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2022Q2",
+     "dated": "2022-07-20"
+    },
+    {
+     "what": "tax rate and share count: results for 2022Q4",
+     "dated": "2023-01-17"
+    },
+    {
+     "what": "recovery curve fitted through 2019Q4",
+     "dated": "2020-01-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2023Q1",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2023Q1",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2023-06-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2023-05-16"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2023-04-18"
+    }
+   ],
+   "variants": {
+    "fitted": {
+     "p10": null,
+     "p50": 4.180144,
+     "p90": null
+    },
+    "habit": {
+     "p10": null,
+     "p50": 4.180144,
+     "p90": null
+    },
+    "late_moves": {
+     "p10": null,
+     "p50": 4.175425,
+     "p90": null
+    },
+    "clock_bias": {
+     "p10": null,
+     "p50": 4.153161,
+     "p90": null
+    }
+   }
+  },
+  {
+   "period": "2023Q3",
+   "split": "select",
+   "guided_on": "2023-07-19",
+   "guidance_low": 3.85,
+   "guidance_high": 4.35,
+   "guidance_mid": 4.1,
+   "guidance_evidence_id": "ual-2023q2-ex992-adj-eps-2023q3",
+   "forecast_as_of": "2023-09-30",
+   "results_on": "2023-10-17",
+   "actual_eps": 3.65,
+   "miss_against_midpoint": -0.45,
+   "computed": true,
+   "fuel_assumed": 2.65,
+   "fuel_assumed_source": "stated",
+   "fuel_assumed_evidence_id": "ual-2023q2-ex992-fuel-assumption-2023q3",
+   "fuel_assumed_as_stated": [
+    2.5,
+    2.8
+   ],
+   "fuel_realized": 2.963637,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.95,
+   "fuel_surprise_usd_gal": 0.313637,
+   "gallons_m": 985.0,
+   "gallons_quarter": "2022Q3",
+   "fuel_surprise_musd": 308.93247,
+   "tax_rate": 0.224946,
+   "diluted_shares_m": 331.5,
+   "tax_and_shares_quarter": "2023Q2",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.585778,
+   "fuel_surprise_per_share_without_profit_sharing": 0.722291,
+   "recovery_share": 0.214019,
+   "recovery_curve_fitted_through": "2019Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 3,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 4.1,
+    "costs_only": 3.514222,
+    "management": null,
+    "fitted": {
+     "p10": 3.484665,
+     "p50": 3.616665,
+     "p90": 4.372665
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 4.1,
+    "costs_only": 3.377709,
+    "management": null,
+    "fitted": {
+     "p10": 3.372026,
+     "p50": 3.504026,
+     "p90": 4.260026
+    }
+   },
+   "error": {
+    "guidance_mid": 0.45,
+    "costs_only": -0.135778,
+    "management": null,
+    "fitted": -0.033335
+   },
+   "crps_fitted": 0.011112,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [
+    {
+     "issued_on": "2023-09-06",
+     "value": [
+      2.95,
+      3.05
+     ],
+     "guidance_record_id": "ual-2023q2-8k-fuel-assumption-2023q3"
+    }
+   ],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2023q2-ex992-adj-eps-2023q3",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "fuel price assumed: guidance record ual-2023q2-ex992-fuel-assumption-2023q3",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2022Q3",
+     "dated": "2022-10-18"
+    },
+    {
+     "what": "tax rate and share count: results for 2023Q2",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "recovery curve fitted through 2019Q4",
+     "dated": "2020-01-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2023Q2",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2023Q2",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2023-09-29"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2023-08-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2023-07-19"
+    }
+   ],
+   "variants": {
+    "fitted": {
+     "p10": 3.50759,
+     "p50": 3.63959,
+     "p90": 4.39559
+    },
+    "habit": {
+     "p10": 3.84259,
+     "p50": 3.97459,
+     "p90": 4.73059
+    },
+    "late_moves": {
+     "p10": 3.484665,
+     "p50": 3.616665,
+     "p90": 4.372665
+    },
+    "clock_bias": {
+     "p10": 3.470204,
+     "p50": 3.602204,
+     "p90": 4.358204
+    }
+   }
+  },
+  {
+   "period": "2024Q1",
+   "split": "test",
+   "guided_on": "2024-01-22",
+   "guidance_low": -0.85,
+   "guidance_high": -0.35,
+   "guidance_mid": -0.6,
+   "guidance_evidence_id": "ual-2023q4-ex992-adj-eps-2024q1",
+   "forecast_as_of": "2024-03-31",
+   "results_on": "2024-04-16",
+   "actual_eps": -0.15,
+   "miss_against_midpoint": 0.45,
+   "computed": true,
+   "fuel_assumed": 2.788835,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.833575,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.88,
+   "fuel_surprise_usd_gal": 0.04474,
+   "gallons_m": 952.0,
+   "gallons_quarter": "2023Q1",
+   "fuel_surprise_musd": 42.592519,
+   "tax_rate": 0.22179,
+   "diluted_shares_m": 331.3,
+   "tax_and_shares_quarter": "2023Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.081139,
+   "fuel_surprise_per_share_without_profit_sharing": 0.100048,
+   "recovery_share": 0.214019,
+   "recovery_curve_fitted_through": "2019Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 4,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": -0.6,
+    "costs_only": -0.681139,
+    "management": null,
+    "fitted": {
+     "p10": -1.167485,
+     "p50": -0.650985,
+     "p90": 0.093015
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": -0.6,
+    "costs_only": -0.700048,
+    "management": null,
+    "fitted": {
+     "p10": -1.179367,
+     "p50": -0.662867,
+     "p90": 0.081133
+    }
+   },
+   "error": {
+    "guidance_mid": -0.45,
+    "costs_only": -0.531139,
+    "management": null,
+    "fitted": -0.500985
+   },
+   "crps_fitted": 0.236743,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2023q4-ex992-adj-eps-2024q1",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2023-10-17"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2023Q1",
+     "dated": "2023-04-18"
+    },
+    {
+     "what": "tax rate and share count: results for 2023Q4",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "recovery curve fitted through 2019Q4",
+     "dated": "2020-01-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2023Q3",
+     "dated": "2023-10-17"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2023Q4",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2024-03-28"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2024-02-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2024-01-22"
+    }
+   ]
+  },
+  {
+   "period": "2024Q2",
+   "split": "test",
+   "guided_on": "2024-05-28",
+   "guidance_low": 3.75,
+   "guidance_high": 4.25,
+   "guidance_mid": 4.0,
+   "guidance_evidence_id": "ual-2024q1-8k-adj-eps-2024q2",
+   "forecast_as_of": "2024-06-30",
+   "results_on": "2024-07-17",
+   "actual_eps": 4.14,
+   "miss_against_midpoint": 0.14,
+   "computed": true,
+   "fuel_assumed": 2.756455,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.75158,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.76,
+   "fuel_surprise_usd_gal": -0.004875,
+   "gallons_m": 1062.0,
+   "gallons_quarter": "2023Q2",
+   "fuel_surprise_musd": -5.177453,
+   "tax_rate": 0.22179,
+   "diluted_shares_m": 331.3,
+   "tax_and_shares_quarter": "2023Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.009863,
+   "fuel_surprise_per_share_without_profit_sharing": -0.012162,
+   "recovery_share": 0.163135,
+   "recovery_curve_fitted_through": "2024Q1",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 5,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 4.0,
+    "costs_only": 4.009863,
+    "management": null,
+    "fitted": {
+     "p10": 3.472863,
+     "p50": 4.009863,
+     "p90": 4.622863
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 4.0,
+    "costs_only": 4.012162,
+    "management": null,
+    "fitted": {
+     "p10": 3.475162,
+     "p50": 4.012162,
+     "p90": 4.625162
+    }
+   },
+   "error": {
+    "guidance_mid": -0.14,
+    "costs_only": -0.130137,
+    "management": null,
+    "fitted": -0.130137
+   },
+   "crps_fitted": 0.060082,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2024q1-8k-adj-eps-2024q2",
+     "dated": "2024-05-28"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2024-05-28"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2023Q2",
+     "dated": "2023-07-19"
+    },
+    {
+     "what": "tax rate and share count: results for 2023Q4",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "recovery curve fitted through 2024Q1",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2024Q1",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2024Q1",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2024-06-28"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2024-05-28"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2024-04-16"
+    }
+   ]
+  },
+  {
+   "period": "2024Q3",
+   "split": "test",
+   "guided_on": "2024-07-17",
+   "guidance_low": 2.75,
+   "guidance_high": 3.25,
+   "guidance_mid": 3.0,
+   "guidance_evidence_id": "ual-2024q2-ex992-adj-eps-2024q3",
+   "forecast_as_of": "2024-09-30",
+   "results_on": "2024-10-15",
+   "actual_eps": 3.33,
+   "miss_against_midpoint": 0.33,
+   "computed": true,
+   "fuel_assumed": 2.680574,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.519171,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.56,
+   "fuel_surprise_usd_gal": -0.161403,
+   "gallons_m": 1132.0,
+   "gallons_quarter": "2023Q3",
+   "fuel_surprise_musd": -182.708115,
+   "tax_rate": 0.239218,
+   "diluted_shares_m": 333.9,
+   "tax_and_shares_quarter": "2024Q2",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.337616,
+   "fuel_surprise_per_share_without_profit_sharing": -0.416295,
+   "recovery_share": 0.15534,
+   "recovery_curve_fitted_through": "2024Q2",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 6,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 3.0,
+    "costs_only": 3.337616,
+    "management": null,
+    "fitted": {
+     "p10": 2.893818,
+     "p50": 3.301318,
+     "p90": 3.913818
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 3.0,
+    "costs_only": 3.416295,
+    "management": null,
+    "fitted": {
+     "p10": 2.964038,
+     "p50": 3.371538,
+     "p90": 3.984038
+    }
+   },
+   "error": {
+    "guidance_mid": -0.33,
+    "costs_only": 0.007616,
+    "management": null,
+    "fitted": -0.028682
+   },
+   "crps_fitted": 0.042667,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2024q2-ex992-adj-eps-2024q3",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2023Q3",
+     "dated": "2023-10-17"
+    },
+    {
+     "what": "tax rate and share count: results for 2024Q2",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "recovery curve fitted through 2024Q2",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2024Q2",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2024Q2",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2024-09-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2024-08-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2024-07-17"
+    }
+   ]
+  },
+  {
+   "period": "2024Q4",
+   "split": "test",
+   "guided_on": "2024-10-15",
+   "guidance_low": 2.5,
+   "guidance_high": 3.0,
+   "guidance_mid": 2.75,
+   "guidance_evidence_id": "ual-2024q3-ex992-adj-eps-2024q4",
+   "forecast_as_of": "2024-12-31",
+   "results_on": "2025-01-21",
+   "actual_eps": 3.26,
+   "miss_against_midpoint": 0.51,
+   "computed": true,
+   "fuel_assumed": 2.260429,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.288503,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.4,
+   "fuel_surprise_usd_gal": 0.028074,
+   "gallons_m": 1059.0,
+   "gallons_quarter": "2023Q4",
+   "fuel_surprise_musd": 29.730662,
+   "tax_rate": 0.249611,
+   "diluted_shares_m": 332.7,
+   "tax_and_shares_quarter": "2024Q3",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.054382,
+   "fuel_surprise_per_share_without_profit_sharing": 0.067056,
+   "recovery_share": 0.155753,
+   "recovery_curve_fitted_through": "2024Q3",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 7,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 2.75,
+    "costs_only": 2.695618,
+    "management": null,
+    "fitted": {
+     "p10": 2.270511,
+     "p50": 2.696511,
+     "p90": 3.148511
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 2.75,
+    "costs_only": 2.682944,
+    "management": null,
+    "fitted": {
+     "p10": 2.258045,
+     "p50": 2.684045,
+     "p90": 3.136045
+    }
+   },
+   "error": {
+    "guidance_mid": -0.51,
+    "costs_only": -0.564382,
+    "management": null,
+    "fitted": -0.563489
+   },
+   "crps_fitted": 0.397254,
+   "inside_p10_p90": false,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2024q3-ex992-adj-eps-2024q4",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2023Q4",
+     "dated": "2024-01-22"
+    },
+    {
+     "what": "tax rate and share count: results for 2024Q3",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "recovery curve fitted through 2024Q3",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2024Q3",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2024Q3",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2024-12-31"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2024-11-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2024-10-15"
+    }
+   ]
+  },
+  {
+   "period": "2025Q1",
+   "split": "test",
+   "guided_on": "2025-01-21",
+   "guidance_low": 0.75,
+   "guidance_high": 1.25,
+   "guidance_mid": 1.0,
+   "guidance_evidence_id": "ual-2024q4-ex992-adj-eps-2025q1",
+   "forecast_as_of": "2025-03-31",
+   "results_on": "2025-04-15",
+   "actual_eps": 0.91,
+   "miss_against_midpoint": -0.09,
+   "computed": true,
+   "fuel_assumed": 2.581374,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.479363,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.53,
+   "fuel_surprise_usd_gal": -0.102011,
+   "gallons_m": 1025.0,
+   "gallons_quarter": "2024Q1",
+   "fuel_surprise_musd": -104.561424,
+   "tax_rate": 0.246366,
+   "diluted_shares_m": 334.5,
+   "tax_and_shares_quarter": "2024Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.191054,
+   "fuel_surprise_per_share_without_profit_sharing": -0.235579,
+   "recovery_share": 0.132355,
+   "recovery_curve_fitted_through": "2024Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 8,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 1.0,
+    "costs_only": 1.191054,
+    "management": null,
+    "fitted": {
+     "p10": 0.805572,
+     "p50": 1.175072,
+     "p90": 1.583572
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 1.0,
+    "costs_only": 1.235579,
+    "management": null,
+    "fitted": {
+     "p10": 0.846371,
+     "p50": 1.215871,
+     "p90": 1.624371
+    }
+   },
+   "error": {
+    "guidance_mid": 0.09,
+    "costs_only": 0.281054,
+    "management": null,
+    "fitted": 0.265072
+   },
+   "crps_fitted": 0.143179,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2024q4-ex992-adj-eps-2025q1",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2024Q1",
+     "dated": "2024-04-16"
+    },
+    {
+     "what": "tax rate and share count: results for 2024Q4",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "recovery curve fitted through 2024Q4",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2024Q4",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2024Q4",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2025-03-31"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2025-02-14"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2025-01-21"
+    }
+   ]
+  },
+  {
+   "period": "2025Q2",
+   "split": "test",
+   "guided_on": "2025-04-15",
+   "guidance_low": 3.25,
+   "guidance_high": 4.25,
+   "guidance_mid": 3.75,
+   "guidance_evidence_id": "ual-2025q1-ex992-adj-eps-2025q2",
+   "forecast_as_of": "2025-06-30",
+   "results_on": "2025-07-16",
+   "actual_eps": 3.87,
+   "miss_against_midpoint": 0.12,
+   "computed": true,
+   "fuel_assumed": 2.193431,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.237971,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.34,
+   "fuel_surprise_usd_gal": 0.04454,
+   "gallons_m": 1134.0,
+   "gallons_quarter": "2024Q2",
+   "fuel_surprise_musd": 50.508486,
+   "tax_rate": 0.190377,
+   "diluted_shares_m": 333.0,
+   "tax_and_shares_quarter": "2025Q1",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.099592,
+   "fuel_surprise_per_share_without_profit_sharing": 0.122801,
+   "recovery_share": 0.128127,
+   "recovery_curve_fitted_through": "2025Q1",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 9,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 3.75,
+    "costs_only": 3.650408,
+    "management": null,
+    "fitted": {
+     "p10": 3.1689,
+     "p50": 3.6609,
+     "p90": 3.9949
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 3.75,
+    "costs_only": 3.627199,
+    "management": null,
+    "fitted": {
+     "p10": 3.148135,
+     "p50": 3.640135,
+     "p90": 3.974135
+    }
+   },
+   "error": {
+    "guidance_mid": -0.12,
+    "costs_only": -0.219592,
+    "management": null,
+    "fitted": -0.2091
+   },
+   "crps_fitted": 0.142495,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2025q1-ex992-adj-eps-2025q2",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2024Q2",
+     "dated": "2024-07-17"
+    },
+    {
+     "what": "tax rate and share count: results for 2025Q1",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "recovery curve fitted through 2025Q1",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2025Q1",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2025Q1",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2025-06-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2025-05-16"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2025-04-15"
+    }
+   ]
+  },
+  {
+   "period": "2025Q3",
+   "split": "test",
+   "guided_on": "2025-07-16",
+   "guidance_low": 2.25,
+   "guidance_high": 2.75,
+   "guidance_mid": 2.5,
+   "guidance_evidence_id": "ual-2025q2-ex992-adj-eps-2025q3",
+   "forecast_as_of": "2025-09-30",
+   "results_on": "2025-10-15",
+   "actual_eps": 2.78,
+   "miss_against_midpoint": 0.28,
+   "computed": true,
+   "fuel_assumed": 2.446021,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.378008,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.43,
+   "fuel_surprise_usd_gal": -0.068013,
+   "gallons_m": 1170.0,
+   "gallons_quarter": "2024Q3",
+   "fuel_surprise_musd": -79.575621,
+   "tax_rate": 0.220353,
+   "diluted_shares_m": 327.2,
+   "tax_and_shares_quarter": "2025Q2",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.153775,
+   "fuel_surprise_per_share_without_profit_sharing": -0.189612,
+   "recovery_share": 0.150721,
+   "recovery_curve_fitted_through": "2025Q2",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 10,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.653775,
+    "management": null,
+    "fitted": {
+     "p10": 2.24632,
+     "p50": 2.62232,
+     "p90": 2.95932
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 2.5,
+    "costs_only": 2.689612,
+    "management": null,
+    "fitted": {
+     "p10": 2.274826,
+     "p50": 2.650826,
+     "p90": 2.987826
+    }
+   },
+   "error": {
+    "guidance_mid": -0.28,
+    "costs_only": -0.126225,
+    "management": null,
+    "fitted": -0.15768
+   },
+   "crps_fitted": 0.085294,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2025q2-ex992-adj-eps-2025q3",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2024Q3",
+     "dated": "2024-10-15"
+    },
+    {
+     "what": "tax rate and share count: results for 2025Q2",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "recovery curve fitted through 2025Q2",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2025Q2",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2025Q2",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2025-09-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2025-08-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2025-07-16"
+    }
+   ]
+  },
+  {
+   "period": "2025Q4",
+   "split": "test",
+   "guided_on": "2025-10-15",
+   "guidance_low": 3.0,
+   "guidance_high": 3.5,
+   "guidance_mid": 3.25,
+   "guidance_evidence_id": "ual-2025q3-ex992-adj-eps-2025q4",
+   "forecast_as_of": "2025-12-31",
+   "results_on": "2026-01-20",
+   "actual_eps": 3.1,
+   "miss_against_midpoint": -0.15,
+   "computed": true,
+   "fuel_assumed": 2.349863,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.403468,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.49,
+   "fuel_surprise_usd_gal": 0.053605,
+   "gallons_m": 1115.0,
+   "gallons_quarter": "2024Q4",
+   "fuel_surprise_musd": 59.769772,
+   "tax_rate": 0.243825,
+   "diluted_shares_m": 326.9,
+   "tax_and_shares_quarter": "2025Q3",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.112127,
+   "fuel_surprise_per_share_without_profit_sharing": 0.138258,
+   "recovery_share": 0.1548,
+   "recovery_curve_fitted_through": "2025Q3",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 11,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 3.25,
+    "costs_only": 3.137873,
+    "management": null,
+    "fitted": {
+     "p10": 2.810277,
+     "p50": 3.180277,
+     "p90": 3.410277
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 3.25,
+    "costs_only": 3.111742,
+    "management": null,
+    "fitted": {
+     "p10": 2.794029,
+     "p50": 3.164029,
+     "p90": 3.394029
+    }
+   },
+   "error": {
+    "guidance_mid": 0.15,
+    "costs_only": 0.037873,
+    "management": null,
+    "fitted": 0.080277
+   },
+   "crps_fitted": 0.05248,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2025q3-ex992-adj-eps-2025q4",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2024Q4",
+     "dated": "2025-01-21"
+    },
+    {
+     "what": "tax rate and share count: results for 2025Q3",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "recovery curve fitted through 2025Q3",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2025Q3",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2025Q3",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2025-12-31"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2025-11-14"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2025-10-15"
+    }
+   ]
+  },
+  {
+   "period": "2026Q1",
+   "split": "test",
+   "guided_on": "2026-01-20",
+   "guidance_low": 1.0,
+   "guidance_high": 1.5,
+   "guidance_mid": 1.25,
+   "guidance_evidence_id": "ual-2025q4-ex992-adj-eps-2026q1",
+   "forecast_as_of": "2026-03-31",
+   "results_on": "2026-04-21",
+   "actual_eps": 1.19,
+   "miss_against_midpoint": -0.06,
+   "computed": true,
+   "fuel_assumed": 2.27937,
+   "fuel_assumed_source": "cost_clock",
+   "fuel_assumed_evidence_id": null,
+   "fuel_assumed_as_stated": null,
+   "fuel_realized": 2.584069,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 2.78,
+   "fuel_surprise_usd_gal": 0.304699,
+   "gallons_m": 1067.0,
+   "gallons_quarter": "2025Q1",
+   "fuel_surprise_musd": 325.113665,
+   "tax_rate": 0.212075,
+   "diluted_shares_m": 327.0,
+   "tax_and_shares_quarter": "2025Q4",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": 0.635321,
+   "fuel_surprise_per_share_without_profit_sharing": 0.783379,
+   "recovery_share": 0.152567,
+   "recovery_curve_fitted_through": "2025Q4",
+   "management_share": null,
+   "management_evidence_id": null,
+   "earlier_misses_n": 12,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 1.25,
+    "costs_only": 0.614679,
+    "management": null,
+    "fitted": {
+     "p10": 0.264442,
+     "p50": 0.633442,
+     "p90": 0.912442
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 1.25,
+    "costs_only": 0.466621,
+    "management": null,
+    "fitted": {
+     "p10": 0.120755,
+     "p50": 0.489755,
+     "p90": 0.768755
+    }
+   },
+   "error": {
+    "guidance_mid": 0.06,
+    "costs_only": -0.575321,
+    "management": null,
+    "fitted": -0.556558
+   },
+   "crps_fitted": 0.389783,
+   "inside_p10_p90": false,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2025q4-ex992-adj-eps-2026q1",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): last fuel price used",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "fuel price assumed (cost clock on the guidance date): latest report inside the cost clock",
+     "dated": "2025-10-15"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2025Q1",
+     "dated": "2025-04-15"
+    },
+    {
+     "what": "tax rate and share count: results for 2025Q4",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "recovery curve fitted through 2025Q4",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2025Q4",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2025Q4",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2026-03-31"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2026-01-20"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2026-02-13"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2026-01-20"
+    }
+   ]
+  },
+  {
+   "period": "2026Q2",
+   "split": "test",
+   "guided_on": "2026-04-21",
+   "guidance_low": 1.0,
+   "guidance_high": 2.0,
+   "guidance_mid": 1.5,
+   "guidance_evidence_id": "ual-2026q1-ex992-adj-eps-2026q2",
+   "forecast_as_of": "2026-06-30",
+   "results_on": "2026-07-15",
+   "actual_eps": 1.99,
+   "miss_against_midpoint": 0.49,
+   "computed": true,
+   "fuel_assumed": 4.3,
+   "fuel_assumed_source": "stated",
+   "fuel_assumed_evidence_id": "ual-2026q1-ex992-fuel-assumption-2026q2",
+   "fuel_assumed_as_stated": 4.3,
+   "fuel_realized": 4.05076,
+   "fuel_realized_source": "cost clock at quarter end, refitted on reports published before then",
+   "fuel_reported": 4.19,
+   "fuel_surprise_usd_gal": -0.24924,
+   "gallons_m": 1188.0,
+   "gallons_quarter": "2025Q2",
+   "fuel_surprise_musd": -296.097421,
+   "tax_rate": 0.196552,
+   "diluted_shares_m": 326.8,
+   "tax_and_shares_quarter": "2026Q1",
+   "profit_sharing_rate": 0.189,
+   "fuel_surprise_per_share": -0.59038,
+   "fuel_surprise_per_share_without_profit_sharing": -0.727965,
+   "recovery_share": 0.201063,
+   "recovery_curve_fitted_through": "2026Q1",
+   "management_share": 0.45,
+   "management_evidence_id": "ual-2026q1-ex992-fuel-recovery-2026q2",
+   "earlier_misses_n": 13,
+   "range_source": "earlier misses against the midpoint",
+   "calls": {
+    "guidance_mid": 1.5,
+    "costs_only": 2.09038,
+    "management": 1.824709,
+    "fitted": {
+     "p10": 1.791242,
+     "p50": 2.099242,
+     "p90": 2.427242
+    }
+   },
+   "calls_without_profit_sharing": {
+    "guidance_mid": 1.5,
+    "costs_only": 2.227965,
+    "management": 1.900381,
+    "fitted": {
+     "p10": 1.930893,
+     "p50": 2.238893,
+     "p90": 2.566893
+    }
+   },
+   "error": {
+    "guidance_mid": -0.49,
+    "costs_only": 0.10038,
+    "management": -0.165291,
+    "fitted": 0.109242
+   },
+   "crps_fitted": 0.086952,
+   "inside_p10_p90": true,
+   "later_fuel_statements": [],
+   "uses": [
+    {
+     "what": "EPS range: guidance record ual-2026q1-ex992-adj-eps-2026q2",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "fuel price assumed: guidance record ual-2026q1-ex992-fuel-assumption-2026q2",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "gallons of the same quarter a year earlier: results for 2025Q2",
+     "dated": "2025-07-16"
+    },
+    {
+     "what": "tax rate and share count: results for 2026Q1",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "recovery curve fitted through 2026Q1",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "recovery share United stated: guidance record ual-2026q1-ex992-fuel-recovery-2026q2",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "United's earlier misses against its midpoint, through 2026Q1",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "the cost clock's earlier misses, through 2026Q1",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): last fuel price used",
+     "dated": "2026-06-30"
+    },
+    {
+     "what": "fuel price at quarter end (cost clock): latest report inside the cost clock",
+     "dated": "2026-04-21"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: last fuel price used",
+     "dated": "2026-05-15"
+    },
+    {
+     "what": "cost clock at the middle of the quarter: latest report inside the cost clock",
+     "dated": "2026-04-21"
+    }
+   ]
+  }
+ ],
+ "scores": [
+  {
+   "model": "guidance_mid",
+   "split": "test",
+   "n": 10,
+   "mae": 0.262,
+   "crps": 0.262,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "costs_only",
+   "split": "test",
+   "n": 10,
+   "mae": 0.257372,
+   "crps": 0.257372,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "management",
+   "split": "test",
+   "n": 1,
+   "mae": 0.165291,
+   "crps": 0.165291,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "fitted",
+   "split": "test",
+   "n": 10,
+   "mae": 0.260122,
+   "crps": 0.163693,
+   "inside_p10_p90": 0.8,
+   "n_with_range": 10
+  }
+ ],
+ "scores_by_split": {
+  "fit": [
+   {
+    "model": "guidance_mid",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   }
+  ],
+  "select": [
+   {
+    "model": "guidance_mid",
+    "split": "select",
+    "n": 4,
+    "mae": 0.55875,
+    "crps": 0.55875,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "select",
+    "n": 4,
+    "mae": 0.319445,
+    "crps": 0.319445,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "select",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "select",
+    "n": 4,
+    "mae": 0.319094,
+    "crps": 0.313538,
+    "inside_p10_p90": 1.0,
+    "n_with_range": 1
+   }
+  ],
+  "test": [
+   {
+    "model": "guidance_mid",
+    "split": "test",
+    "n": 10,
+    "mae": 0.262,
+    "crps": 0.262,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "test",
+    "n": 10,
+    "mae": 0.257372,
+    "crps": 0.257372,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "test",
+    "n": 1,
+    "mae": 0.165291,
+    "crps": 0.165291,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "test",
+    "n": 10,
+    "mae": 0.260122,
+    "crps": 0.163693,
+    "inside_p10_p90": 0.8,
+    "n_with_range": 10
+   }
+  ]
+ },
+ "scores_without_profit_sharing": [
+  {
+   "model": "guidance_mid",
+   "split": "test",
+   "n": 10,
+   "mae": 0.262,
+   "crps": 0.262,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "costs_only",
+   "split": "test",
+   "n": 10,
+   "mae": 0.297309,
+   "crps": 0.297309,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "management",
+   "split": "test",
+   "n": 1,
+   "mae": 0.089619,
+   "crps": 0.089619,
+   "inside_p10_p90": null,
+   "n_with_range": 0
+  },
+  {
+   "model": "fitted",
+   "split": "test",
+   "n": 10,
+   "mae": 0.293627,
+   "crps": 0.186062,
+   "inside_p10_p90": 0.8,
+   "n_with_range": 10
+  }
+ ],
+ "scores_without_profit_sharing_by_split": {
+  "fit": [
+   {
+    "model": "guidance_mid",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "fit",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   }
+  ],
+  "select": [
+   {
+    "model": "guidance_mid",
+    "split": "select",
+    "n": 4,
+    "mae": 0.55875,
+    "crps": 0.55875,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "select",
+    "n": 4,
+    "mae": 0.316111,
+    "crps": 0.316111,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "select",
+    "n": 0,
+    "mae": null,
+    "crps": null,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "select",
+    "n": 4,
+    "mae": 0.315678,
+    "crps": 0.291349,
+    "inside_p10_p90": 1.0,
+    "n_with_range": 1
+   }
+  ],
+  "test": [
+   {
+    "model": "guidance_mid",
+    "split": "test",
+    "n": 10,
+    "mae": 0.262,
+    "crps": 0.262,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "costs_only",
+    "split": "test",
+    "n": 10,
+    "mae": 0.297309,
+    "crps": 0.297309,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "management",
+    "split": "test",
+    "n": 1,
+    "mae": 0.089619,
+    "crps": 0.089619,
+    "inside_p10_p90": null,
+    "n_with_range": 0
+   },
+   {
+    "model": "fitted",
+    "split": "test",
+    "n": 10,
+    "mae": 0.293627,
+    "crps": 0.186062,
+    "inside_p10_p90": 0.8,
+    "n_with_range": 10
+   }
+  ]
+ },
+ "scores_note": "`scores` holds the quarters from 2024 onward, the only ones the method never saw; `scores_by_split` holds every period. mae and crps are in US dollars a share. inside_p10_p90 is the share of quarters with a range (n_with_range) whose result fell inside it; null for single-number calls. `fitted` is the chosen variant.",
+ "fitted_against_midpoint": {
+  "select": {
+   "n": 4,
+   "fitted_minus_midpoint_crps": -0.245212,
+   "lo": -0.428791,
+   "hi": -0.066276,
+   "level": 0.9,
+   "quarters_fitted_closer": 4,
+   "note": "Negative favours the fitted call. The range is a bootstrap over quarters and is too narrow with this few quarters.",
+   "like_for_like": {
+    "fitted_crps": 0.313538,
+    "midpoint_with_the_same_range_crps": 0.53125,
+    "midpoint_as_a_single_number_crps": 0.55875,
+    "note": "CRPS rewards a call for carrying a range. Here the midpoint is given the same range as the fitted call (the same earlier misses, centred on the midpoint), so the two differ only in the fuel marking. This line is a reading aid added after the test quarters were scored; it is not one of the pre-listed models."
+   },
+   "largest_fuel_surprises": [
+    {
+     "period": "2023Q3",
+     "fuel_surprise_per_share": 0.585778,
+     "actual_eps": 3.65,
+     "guidance_mid": 4.1,
+     "fitted_p50": 3.616665,
+     "closer": "fitted"
+    },
+    {
+     "period": "2023Q2",
+     "fuel_surprise_per_share": -0.54727,
+     "actual_eps": 5.03,
+     "guidance_mid": 3.75,
+     "fitted_p50": 4.175425,
+     "closer": "fitted"
+    }
+   ]
+  },
+  "test": {
+   "n": 10,
+   "fitted_minus_midpoint_crps": -0.098307,
+   "lo": -0.196297,
+   "hi": 0.006015,
+   "level": 0.9,
+   "quarters_fitted_closer": 5,
+   "note": "Negative favours the fitted call. The range is a bootstrap over quarters and is too narrow with this few quarters.",
+   "like_for_like": {
+    "fitted_crps": 0.163693,
+    "midpoint_with_the_same_range_crps": 0.153628,
+    "midpoint_as_a_single_number_crps": 0.262,
+    "note": "CRPS rewards a call for carrying a range. Here the midpoint is given the same range as the fitted call (the same earlier misses, centred on the midpoint), so the two differ only in the fuel marking. This line is a reading aid added after the test quarters were scored; it is not one of the pre-listed models."
+   },
+   "largest_fuel_surprises": [
+    {
+     "period": "2026Q1",
+     "fuel_surprise_per_share": 0.635321,
+     "actual_eps": 1.19,
+     "guidance_mid": 1.25,
+     "fitted_p50": 0.633442,
+     "closer": "guidance_mid"
+    },
+    {
+     "period": "2026Q2",
+     "fuel_surprise_per_share": -0.59038,
+     "actual_eps": 1.99,
+     "guidance_mid": 1.5,
+     "fitted_p50": 2.099242,
+     "closer": "fitted"
+    }
+   ]
+  }
+ },
+ "selection": {
+  "chosen": "late_moves",
+  "rule": "Lowest average CRPS over the replayed quarters of 2013-2023; the plain fitted call keeps ties. Decided before any quarter from 2024 onward was scored, and identical whether or not those quarters are loaded.",
+  "n": 4,
+  "n_by_split": {
+   "fit": 0,
+   "select": 4
+  },
+  "quarters": [
+   "2022Q4",
+   "2023Q1",
+   "2023Q2",
+   "2023Q3"
+  ],
+  "table": {
+   "fitted": {
+    "crps": 0.320772,
+    "mae": 0.322507,
+    "n": 4
+   },
+   "habit": {
+    "crps": 0.373551,
+    "mae": 0.401051,
+    "n": 4
+   },
+   "late_moves": {
+    "crps": 0.313538,
+    "mae": 0.319094,
+    "n": 4
+   },
+   "clock_bias": {
+    "crps": 0.339049,
+    "mae": 0.347015,
+    "n": 4
+   }
+  }
+ },
+ "variants_tried": [
+  "fitted: Midpoint minus the part of the fuel surprise that the recovery curve says does not come back in the same quarter. On the 4 guided quarters before 2024: average CRPS 0.321 and average miss 0.323 US dollars a share. Not chosen; never scored on 2024 onward.",
+  "habit: The same, plus United's habit of landing above or below its own midpoint: the middle value of its earlier misses, once at least 3 exist. On the 4 guided quarters before 2024: average CRPS 0.374 and average miss 0.401 US dollars a share. Not chosen; never scored on 2024 onward.",
+  "late_moves: The same, but fuel that moved after the middle of the quarter (or after the guidance date, if later) is treated as not recovered at all in that quarter. On the 4 guided quarters before 2024: average CRPS 0.314 and average miss 0.319 US dollars a share. Chosen; scored once on 2024 onward.",
+  "clock_bias: The same, with the cost clock's fuel price shifted by the middle value of its own earlier misses against reported prices (at least 3), where United stated a fuel price. On the 4 guided quarters before 2024: average CRPS 0.339 and average miss 0.347 US dollars a share. Not chosen; never scored on 2024 onward.",
+  "Profit sharing: every call is also computed after tax only (calls_without_profit_sharing, scores_without_profit_sharing). That is a second accounting treatment of the same calls, not a variant that could be chosen."
+ ],
+ "fuel_price_test": {
+  "n": 8,
+  "mae_guided": 0.2475,
+  "mae_marked": 0.056634,
+  "mae_clock_on_statement_date": 0.189602,
+  "marked_closer_in": 6,
+  "definition": "mae_guided: average distance between the first fuel price United stated for a quarter and the price per gallon it later reported. mae_marked: the same for the cost clock's estimate at quarter end, with the clock refitted only on reports published before that date. mae_clock_on_statement_date: the clock on the day United stated its price, a like-for-like comparison. US dollars per gallon.",
+  "unit": "USD per gallon",
+  "by_split": {
+   "fit": {
+    "n": 0,
+    "mae_guided": null,
+    "mae_marked": null,
+    "mae_clock_on_statement_date": null,
+    "marked_closer_in": 0
+   },
+   "select": {
+    "n": 7,
+    "mae_guided": 0.267143,
+    "mae_marked": 0.044833,
+    "mae_clock_on_statement_date": 0.207572,
+    "marked_closer_in": 6
+   },
+   "test": {
+    "n": 1,
+    "mae_guided": 0.11,
+    "mae_marked": 0.13924,
+    "mae_clock_on_statement_date": 0.063809,
+    "marked_closer_in": 0
+   }
+  },
+  "with_pandemic_quarters": {
+   "n": 12,
+   "mae_guided": 0.196667,
+   "mae_marked": 0.052693,
+   "mae_clock_on_statement_date": 0.154798,
+   "marked_closer_in": 8
+  },
+  "rule": "Quarters where United stated a fuel price before the quarter ended and the cost clock had at least 8 reports behind it. 2020Q1 to 2021Q4 are left out of the headline numbers, as in the cost clock's own scores, and kept in `quarters`.",
+  "note": "The two are not given the same information: United states its price about three weeks into the quarter, the clock at quarter end has seen the whole quarter's fuel prices. That is the point of marking guidance to fuel.",
+  "quarters": [
+   {
+    "period": "2020Q1",
+    "split": "select",
+    "pandemic": true,
+    "stated_on": "2020-01-21",
+    "guidance_record_id": "ual-2019q4-ex992-fuel-assumption-2020q1",
+    "fuel_guided": 2.09,
+    "fuel_marked": 1.836331,
+    "fuel_clock_on_statement_date": null,
+    "fuel_reported": 1.9,
+    "error_guided": 0.19,
+    "error_marked": -0.063669,
+    "error_clock_on_statement_date": null
+   },
+   {
+    "period": "2021Q2",
+    "split": "select",
+    "pandemic": true,
+    "stated_on": "2021-04-19",
+    "guidance_record_id": "ual-2021q1-ex991-fuel-assumption-2021q2",
+    "fuel_guided": 1.83,
+    "fuel_marked": 1.934403,
+    "fuel_clock_on_statement_date": 1.902257,
+    "fuel_reported": 1.97,
+    "error_guided": -0.14,
+    "error_marked": -0.035597,
+    "error_clock_on_statement_date": -0.067743
+   },
+   {
+    "period": "2021Q3",
+    "split": "select",
+    "pandemic": true,
+    "stated_on": "2021-07-20",
+    "guidance_record_id": "ual-2021q2-ex991-fuel-assumption-2021q3",
+    "fuel_guided": 2.17,
+    "fuel_marked": 2.085997,
+    "fuel_clock_on_statement_date": 2.071564,
+    "fuel_reported": 2.14,
+    "error_guided": 0.03,
+    "error_marked": -0.054003,
+    "error_clock_on_statement_date": -0.068436
+   },
+   {
+    "period": "2021Q4",
+    "split": "select",
+    "pandemic": true,
+    "stated_on": "2021-10-19",
+    "guidance_record_id": "ual-2021q3-ex991-fuel-assumption-2021q4",
+    "fuel_guided": 2.39,
+    "fuel_marked": 2.384025,
+    "fuel_clock_on_statement_date": 2.459785,
+    "fuel_reported": 2.41,
+    "error_guided": -0.02,
+    "error_marked": -0.025975,
+    "error_clock_on_statement_date": 0.049785
+   },
+   {
+    "period": "2022Q1",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2022-01-19",
+    "guidance_record_id": "ual-2021q4-ex991-fuel-assumption-2022q1",
+    "fuel_guided": 2.51,
+    "fuel_marked": 2.789926,
+    "fuel_clock_on_statement_date": 2.623609,
+    "fuel_reported": 2.88,
+    "error_guided": -0.37,
+    "error_marked": -0.090074,
+    "error_clock_on_statement_date": -0.256391
+   },
+   {
+    "period": "2022Q2",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2022-04-20",
+    "guidance_record_id": "ual-2022q1-ex992-fuel-assumption-2022q2",
+    "fuel_guided": 3.43,
+    "fuel_marked": 4.159443,
+    "fuel_clock_on_statement_date": 3.959431,
+    "fuel_reported": 4.18,
+    "error_guided": -0.75,
+    "error_marked": -0.020557,
+    "error_clock_on_statement_date": -0.220569
+   },
+   {
+    "period": "2022Q3",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2022-07-20",
+    "guidance_record_id": "ual-2022q2-ex992-fuel-assumption-2022q3",
+    "fuel_guided": 3.81,
+    "fuel_marked": 3.817615,
+    "fuel_clock_on_statement_date": 3.839026,
+    "fuel_reported": 3.81,
+    "error_guided": 0.0,
+    "error_marked": 0.007615,
+    "error_clock_on_statement_date": 0.029026
+   },
+   {
+    "period": "2022Q4",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2022-10-18",
+    "guidance_record_id": "ual-2022q3-ex992-fuel-assumption-2022q4",
+    "fuel_guided": 3.61,
+    "fuel_marked": 3.603866,
+    "fuel_clock_on_statement_date": 3.780332,
+    "fuel_reported": 3.54,
+    "error_guided": 0.07,
+    "error_marked": 0.063866,
+    "error_clock_on_statement_date": 0.240332
+   },
+   {
+    "period": "2023Q1",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2023-01-17",
+    "guidance_record_id": "ual-2022q4-ex992-fuel-assumption-2023q1",
+    "fuel_guided": 3.19,
+    "fuel_marked": 3.299621,
+    "fuel_clock_on_statement_date": 3.700256,
+    "fuel_reported": 3.33,
+    "error_guided": -0.14,
+    "error_marked": -0.030379,
+    "error_clock_on_statement_date": 0.370256
+   },
+   {
+    "period": "2023Q2",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2023-04-18",
+    "guidance_record_id": "ual-2023q1-ex992-fuel-assumption-2023q2",
+    "fuel_guided": 2.9,
+    "fuel_marked": 2.5723,
+    "fuel_clock_on_statement_date": 2.640569,
+    "fuel_reported": 2.66,
+    "error_guided": 0.24,
+    "error_marked": -0.0877,
+    "error_clock_on_statement_date": -0.019431
+   },
+   {
+    "period": "2023Q3",
+    "split": "select",
+    "pandemic": false,
+    "stated_on": "2023-07-19",
+    "guidance_record_id": "ual-2023q2-ex992-fuel-assumption-2023q3",
+    "fuel_guided": 2.65,
+    "fuel_marked": 2.963637,
+    "fuel_clock_on_statement_date": 2.632998,
+    "fuel_reported": 2.95,
+    "error_guided": -0.3,
+    "error_marked": 0.013637,
+    "error_clock_on_statement_date": -0.317002
+   },
+   {
+    "period": "2026Q2",
+    "split": "test",
+    "pandemic": false,
+    "stated_on": "2026-04-21",
+    "guidance_record_id": "ual-2026q1-ex992-fuel-assumption-2026q2",
+    "fuel_guided": 4.3,
+    "fuel_marked": 4.05076,
+    "fuel_clock_on_statement_date": 4.126191,
+    "fuel_reported": 4.19,
+    "error_guided": 0.11,
+    "error_marked": -0.13924,
+    "error_clock_on_statement_date": -0.063809
+   }
+  ]
+ },
+ "delta_check": {
+  "period": "2026Q3",
+  "airline": "DAL",
+  "guided_on": "2026-07-10",
+  "reported_on": "2026-10-09",
+  "guidance_low": 2.0,
+  "guidance_high": 2.5,
+  "actual_eps": 1.72,
+  "fuel_assumed": 3.15,
+  "fuel_realized": 3.61,
+  "fuel_realized_source": "reported (adjusted price per gallon)",
+  "fuel_surprise_usd_gal": 0.46,
+  "gallons_m": 1138,
+  "gallons_quarter": "2025Q3",
+  "fuel_surprise_musd": 523.48,
+  "tax_rate": 0.2443,
+  "diluted_shares_m": 658,
+  "profit_sharing_rate": null,
+  "profit_sharing_note": "Delta's profit-sharing rate is not in the committed files, so the per-share figure is after tax only and overstates the hit to earnings.",
+  "fuel_surprise_per_share": 0.601206,
+  "recovery_share_used": 0.385846,
+  "recovery_share_range_used": [
+   0.11869,
+   0.49851
+  ],
+  "calls": {
+   "guidance_mid": 2.25,
+   "costs_only": 1.648794,
+   "management": null,
+   "fitted": {
+    "p10": 1.720151,
+    "p50": 1.880767,
+    "p90": 1.948501
+   }
+  },
+  "implied_recovery_share": 0.118439,
+  "implied_recovery_share_note": "The share that would make the chain land on Delta's reported EPS, if fuel were the only reason for the miss. It is arithmetic on one quarter, not an estimate.",
+  "management_note": "Delta stated no recovery share, so there is no management call.",
+  "note": "A worked example, not a forecast: Delta reported on 2026-10-09, before this file was built. The fuel price is the one Delta reported, the recovery share is United's same-quarter share as estimated for 2026Q3, and the range uses only the spread of that share (P10 to P90 of the fare clock's draws).",
+  "evidence_ids": [
+   "dal-2026q2-ex991-2026q3-eps-low",
+   "dal-2026q2-ex991-2026q3-eps-high",
+   "dal-2026q2-ex991-2026q3-fuel-price-assumed-usd-gal",
+   "dal-2026q3-ex991-2026q3-adj-eps-diluted",
+   "dal-2026q3-ex991-2026q3-fuel-price-adj-usd-gal"
+  ],
+  "other_record_ids": [
+   "dal-2026q3-ex991-2025q3-fuel-gallons-m",
+   "dal-2026q2-ex991-2026q2-diluted-shares-m"
+  ],
+  "ids_note": "evidence_ids: Delta's range, assumed fuel price, reported EPS and reported fuel price. other_record_ids: the year-ago gallons and the June-quarter share count, which are records in data/lab/dal_check.json."
+ },
+ "results_day_test": {
+  "question": "Across the replayed quarters, does the fitted call minus United's midpoint at quarter end predict United's share price move on the results day and the day after, with the market's move taken out?",
+  "definition": "gap_usd_per_share is the fitted P50 minus the guidance midpoint, known at quarter end. hedged_return is United's log return minus beta times the S&P 500 fund's, summed over the results day and the next session, with beta from the previous 252 sessions only. slope is the change in that return per one dollar of gap (0.05 means five percentage points per dollar), with a 90% Newey-West range. hit_rate is the share of quarters where the two have the same sign.",
+  "pre_specified": true,
+  "by_split": {
+   "fit": {
+    "n": 0,
+    "slope": null,
+    "sign": null,
+    "lo": null,
+    "hi": null,
+    "hit_rate": null,
+    "n_hits": null,
+    "n_nonzero": null
+   },
+   "select": {
+    "n": 4,
+    "slope": 0.133208,
+    "sign": "positive",
+    "lo": null,
+    "hi": null,
+    "hit_rate": 0.75,
+    "n_hits": 3,
+    "n_nonzero": 4,
+    "interval_note": "Fewer than five quarters: no interval is given."
+   },
+   "test": {
+    "n": 10,
+    "slope": 0.079748,
+    "sign": "positive",
+    "lo": -0.02006,
+    "hi": 0.179556,
+    "hit_rate": 0.6,
+    "n_hits": 6,
+    "n_nonzero": 10
+   },
+   "all": {
+    "n": 14,
+    "slope": 0.09782,
+    "sign": "positive",
+    "lo": 0.03191,
+    "hi": 0.16373,
+    "hit_rate": 0.642857,
+    "n_hits": 9,
+    "n_nonzero": 14
+   }
+  },
+  "points": [
+   {
+    "period": "2022Q4",
+    "split": "select",
+    "results_on": "2023-01-17",
+    "next_session": "2023-01-18",
+    "gap_usd_per_share": 0.042251,
+    "hedged_return": -0.029856
+   },
+   {
+    "period": "2023Q1",
+    "split": "select",
+    "results_on": "2023-04-18",
+    "next_session": "2023-04-19",
+    "gap_usd_per_share": 0.074284,
+    "hedged_return": 0.087217
+   },
+   {
+    "period": "2023Q2",
+    "split": "select",
+    "results_on": "2023-07-19",
+    "next_session": "2023-07-20",
+    "gap_usd_per_share": 0.425425,
+    "hedged_return": 0.036866
+   },
+   {
+    "period": "2023Q3",
+    "split": "select",
+    "results_on": "2023-10-17",
+    "next_session": "2023-10-18",
+    "gap_usd_per_share": -0.483335,
+    "hedged_return": -0.073428
+   },
+   {
+    "period": "2024Q1",
+    "split": "test",
+    "results_on": "2024-04-16",
+    "next_session": "2024-04-17",
+    "gap_usd_per_share": -0.050985,
+    "hedged_return": 0.182873
+   },
+   {
+    "period": "2024Q2",
+    "split": "test",
+    "results_on": "2024-07-17",
+    "next_session": "2024-07-18",
+    "gap_usd_per_share": 0.009863,
+    "hedged_return": 0.012648
+   },
+   {
+    "period": "2024Q3",
+    "split": "test",
+    "results_on": "2024-10-15",
+    "next_session": "2024-10-16",
+    "gap_usd_per_share": 0.301318,
+    "hedged_return": 0.130412
+   },
+   {
+    "period": "2024Q4",
+    "split": "test",
+    "results_on": "2025-01-21",
+    "next_session": "2025-01-22",
+    "gap_usd_per_share": -0.053489,
+    "hedged_return": -0.013085
+   },
+   {
+    "period": "2025Q1",
+    "split": "test",
+    "results_on": "2025-04-15",
+    "next_session": "2025-04-16",
+    "gap_usd_per_share": 0.175072,
+    "hedged_return": 0.066563
+   },
+   {
+    "period": "2025Q2",
+    "split": "test",
+    "results_on": "2025-07-16",
+    "next_session": "2025-07-17",
+    "gap_usd_per_share": -0.0891,
+    "hedged_return": 0.036477
+   },
+   {
+    "period": "2025Q3",
+    "split": "test",
+    "results_on": "2025-10-15",
+    "next_session": "2025-10-16",
+    "gap_usd_per_share": 0.12232,
+    "hedged_return": -0.044554
+   },
+   {
+    "period": "2025Q4",
+    "split": "test",
+    "results_on": "2026-01-20",
+    "next_session": "2026-01-21",
+    "gap_usd_per_share": -0.069723,
+    "hedged_return": -0.003882
+   },
+   {
+    "period": "2026Q1",
+    "split": "test",
+    "results_on": "2026-04-21",
+    "next_session": "2026-04-22",
+    "gap_usd_per_share": -0.616558,
+    "hedged_return": -0.083097
+   },
+   {
+    "period": "2026Q2",
+    "split": "test",
+    "results_on": "2026-07-15",
+    "next_session": "2026-07-16",
+    "gap_usd_per_share": 0.599242,
+    "hedged_return": -0.009695
+   }
+  ],
+  "note": "United reports after the market closes, so the reaction is mostly in the next session; both days are summed as specified. Reported whatever it shows."
+ },
+ "limits": [
+  "United gave quarterly EPS ranges only from 2022Q4. Before that it guided a pre-tax margin, which this replay does not convert. So there are no replayed quarters in 2013-2019, 4 in 2020-2023 and 10 from 2024 onward: every score here rests on few quarters.",
+  "Guided quarters without a replay row: 2026Q3 (not yet reported). 2023Q4 has no verified quarterly EPS range in data/lab/ual_guidance.json and is not replayed.",
+  "This replays the chain the simulator's measured mode uses, not the simulator: the simulator is calibrated to the 2026 business and cannot be started in an earlier year.",
+  "United stated a fuel price for 5 of the replayed quarters (2022Q4, 2023Q1, 2023Q2, 2023Q3, 2026Q2). For the others the assumption is the cost clock's estimate on the guidance date, so the surprise there is only the move in spot fuel after guidance.",
+  "The fuel price at quarter end is the cost clock's estimate, not the reported price, because the reported price comes out with the results. The clock's coefficients are re-estimated only on reports published before each date, but its specification and starting year were chosen once on 2013-2023, so replays of 2022 and 2023 use a specification picked with those years in view.",
+  "Profit sharing: 18.9% of pre-tax earnings at the margin, the sum of three tiers read from the notes on United's July 2026 investor update in data/lab/literature.json. That is a paraphrase, not a verified quote, and the tiers are the 2026 ones applied to every year. United's own July 2026 arithmetic ($575 million = $1.12 a share, a verified quote) is consistent with it. Every call and score is also shown after tax only.",
+  "Tax rate and share count: the latest profitable quarter reported on or before the guidance date, tax rate = 1 - net income / pre-tax income of that quarter (the simulator's rule). The guidance comes out in the same release as that quarter's results.",
+  "The range around the fitted call is the spread of United's earlier misses against its own midpoint, centred on the call. It needs 3 earlier guided quarters, so the first 3 replayed quarters have no range, and early ranges rest on three or four misses.",
+  "The recovery curve's two-parameter form was chosen by the fare clock after it had seen 2024-2026. Each quarter's curve here is estimated only on earlier quarters, but the form itself is not free of hindsight.",
+  "Everything that moves earnings other than fuel after guidance (demand, storms, labour deals, one-off items) is in the misses, not in the chain."
+ ]
+}
