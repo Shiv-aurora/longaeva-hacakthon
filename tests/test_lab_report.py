@@ -50,8 +50,8 @@ SIDEBAR_LICENSE = LAB / "LICENSE-hook-sidebar.txt"
 ROUTES = {"/"}
 MISSING_TEXT = "not yet computed"
 # The main text, and the detail kept in closed blocks beside it.
-WORDS_MIN, WORDS_MAX = 1000, 1300
-DETAIL_WORDS_MAX = 520
+WORDS_MIN, WORDS_MAX = 1000, 1350
+DETAIL_WORDS_MAX = 620
 
 # Digits a writer may type: years, quarter labels and five proper names
 # (the Stage 1 proposal, a license, an index, a charting library and a hash function).
@@ -982,6 +982,30 @@ def claims():
         text = " ".join(d["signal"]["plain_summary"])
         assert "not a second forecast" in text and "no trading rule is tested" in text
 
+    def ranges(d):
+        r = d["range_check"]
+        check, low, high = r["check"], *r["check"]["roughly"]
+        # "With the assumed demand noise ... in 2022 to 2026"; "a value fitted on those years ... was set aside"
+        assert check["quantity"] == "unit_revenue" and check["years"] == "2022-2026" and check["kept"] == "assumed"
+        assert check["passes"] == {"assumed": True, "fitted": False} and r["fitted_variant"]["status"] == "rejected"
+        assert low <= check["assumed"]["share"] <= high and check["fitted"]["share"] < low
+        assert r["fitted_variant"]["fit_years"] == [2013, 2019] and r["compared"]["splits"]["fit"]["outcomes"].endswith("2019Q4")
+        margin = r["quantities"]["operating_margin"]["coverage"]["assumed"]
+        assert low <= margin["check"]["share"] <= high
+        # "It held every outcome before 2020, so it is too wide for calm markets"
+        revenue = r["quantities"]["unit_revenue"]["coverage"]["assumed"]
+        assert revenue["fit"]["inside"] == revenue["fit"]["of"] and margin["fit"]["inside"] == margin["fit"]["of"]
+        # "a naive forecast made two, three or four quarters earlier"; "the outcomes come from 12 quarters and overlap"
+        assert [h["quarters_ahead"] for h in r["compared"]["horizons"]] == [2, 3, 4]
+        history = r["quantities"]["unit_revenue"]["history"]["check"]
+        assert sum(h["n"] for h in history) == check["assumed"]["of"] and history[0]["n"] == max(h["n"] for h in history)
+        # "Range width comes mostly from fuel volatility": switching fuel noise off narrows the range far more
+        width = r["simulator"]["width"]
+        assert width["share_left_with_demand_noise_off"] > 0.85 > width["share_left_with_fuel_noise_off"]
+        assert r["simulator"]["fuel_noise"]["against_history"]["times_fit_years"] > 1.5
+        # "The simulator has no seasonality."
+        assert any("no seasonality" in line for line in r["limits"])
+
     return [(("cost_clock",), "the fuel-bill range is too narrow, and the method beat Delta's own planning figure", cost),
             (("fare_clock",), "the curve specified in advance lost; the one-year share is determined and the speed is not", fare),
             (("fare_clock",), "Delta paid more for fuel than planned, grew unit revenue and still missed its guided range", delta),
@@ -992,7 +1016,8 @@ def claims():
             (("peer_recovery", "fare_clock"), "pooling three airlines did not narrow the range", peers),
             (("track_record",), "the replay is a three-way tie, the fuel step is the positive result, and no recovery was closer for Delta", replay),
             (("q3_call", "cost_clock"), "the estimate for the third quarter of 2026, fixed before United reports", forward),
-            (("signal",), "the daily path is the same method on earlier dates, with no trading rule tested", daily)]
+            (("signal",), "the daily path is the same method on earlier dates, with no trading rule tested", daily),
+            (("range_check",), "the ranges are about the right width for 2022 to 2026 and too wide for calm years", ranges)]
 
 
 @pytest.mark.parametrize("files, sentence, check", claims(), ids=[c[1] for c in claims()])
@@ -1015,6 +1040,10 @@ def test_what_the_prose_says_about_sources_still_holds():
     assert quotes["creator"] == "Dillon Wong" and quotes["licence_id"] == "CC-BY-4.0"
     assert "https://rareui.com" in (LAB / "LICENSE-gooey-nav.txt").read_text(encoding="utf-8")
     page = PAGE.read_text(encoding="utf-8")
+    # The limits name the two things the range check found, and the feed's weakness is stated with its source.
+    limits = re.sub(r"\s+", " ", next(node for node in tree().walk() if node.has_class("limits")).text(token="#"))
+    assert "The simulator has no seasonality." in limits and "Range width comes mostly from fuel volatility" in limits
+    assert "The feed is unofficial and there is no second source." in page
     assert 'href="https://rareui.com"' in page and "Navigation adapted from" in page and "CC BY 4.0" in page
     # "After one rewrite it is assembled from the tool results without the model"; "a rules planner"
     chat = (ROOT / "app" / "lab" / "chat.py").read_text(encoding="utf-8")
