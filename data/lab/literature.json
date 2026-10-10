@@ -1,0 +1,1672 @@
+{
+  "generated_at": "2026-10-10T05:30:28Z",
+  "entries": [
+    {
+      "id": "dong-atallah-galdo-2025-jatm",
+      "authors": "Dong, C.; Atallah, G.; Galdo, J.",
+      "year": 2025,
+      "title": "Cost pass-through in the U.S. aviation industry",
+      "venue": "Journal of Air Transport Management 127, 102823",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0969699725000869",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "In U.S. airline data for 2000 to 2019, a 10% rise in fuel price raises legacy-carrier airfares by 0.172% and low-cost-carrier airfares by 0.351%, so the fare elasticity to fuel is small.",
+      "numbers": [
+        {
+          "label": "Legacy-carrier airfare change for a 10% fuel price increase",
+          "value": 0.172,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "When facing a 10 % increase in fuel prices, legacy carriers’ (low-cost carriers’) airfare increases by 0.172 % (0.351 %)."
+        },
+        {
+          "label": "Low-cost-carrier airfare change for a 10% fuel price increase",
+          "value": 0.351,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "When facing a 10 % increase in fuel prices, legacy carriers’ (low-cost carriers’) airfare increases by 0.172 % (0.351 %)."
+        },
+        {
+          "label": "Sample end year",
+          "value": 2019,
+          "unit": "year",
+          "quote": "Study of the disparities in the pass-through of fuel costs across U.S. airline companies from 2000 to 2019."
+        }
+      ],
+      "sample": {
+        "period": "2000 to 2019",
+        "geography": "United States",
+        "frequency": "quarterly (stated in the thesis version, entry dong-2024-thesis-ch1; the abstract does not state it)"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Publisher page fetched with the Exa fetch tool; only the highlights, abstract and title footnote were returned (the page is marked open access, but the article body was not in the fetched text).",
+      "notes": "Matches the lead (0.172% legacy, 0.351% low-cost). The published highlight does not say 'same quarter'; the thesis chapter the article says it is based on does, and reports the lag structure (see dong-2024-thesis-ch1). Fares are average ticket prices built from the DB1B ticket sample per the thesis; the abstract and the thesis do not mention fuel surcharges, and the thesis treats ancillary fees (bags, on-board services) as separate from the ticket fare. Conversion to a recovery share (formula only, not computed): share of the fuel cost increase recovered through revenue = (fare elasticity to the fuel price) multiplied by (passenger revenue per passenger or per seat mile) divided by (fuel cost per passenger or per seat mile), i.e. the elasticity divided by fuel cost as a share of passenger revenue, over the same horizon and holding traffic constant. The elasticity here is 0.0172 (legacy) or 0.0351 (low-cost) per 1% in the same quarter. Neither the article page nor the thesis reports fuel cost per passenger for the sample, so the share is not computed."
+    },
+    {
+      "id": "dong-2024-thesis-ch1",
+      "authors": "Dong, C.",
+      "year": 2024,
+      "title": "Studies on the Aviation Industry Based on Industrial Organization, Part I: Cost Pass-through in the U.S. Aviation Industry",
+      "venue": "Ph.D. thesis, University of Ottawa (the chapter the 2025 JATM article is based on)",
+      "url": "https://ruor.uottawa.ca/bitstreams/71a0c993-c632-4bbd-9446-3bffa8dbaf3d/download",
+      "kind": "paper",
+      "relevance": "lag",
+      "also_relevant": [
+        "pass_through"
+      ],
+      "finding": "With the current quarter plus three lags of jet fuel price, a 10% industry-wide fuel price increase raises legacy-carrier fares by 0.172% in the same quarter and about 0.56% cumulatively over four quarters, so roughly two thirds of the fare response arrives after the first quarter.",
+      "numbers": [
+        {
+          "label": "Legacy carriers, same-quarter fare change for a 10% industry-wide jet fuel price increase",
+          "value": 0.172,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "would lead to a legacy carrier airfare raise of 0.172% in the same quarter, with a total influence of 0.563% across all four quarters"
+        },
+        {
+          "label": "Legacy carriers, four-quarter cumulative fare change for a 10% increase (Table 4, column 4 text)",
+          "value": 0.563,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "would lead to a legacy carrier airfare raise of 0.172% in the same quarter, with a total influence of 0.563% across all four quarters"
+        },
+        {
+          "label": "Low-cost carriers, four-quarter cumulative fare change for a 10% increase (Table 4, column 4 text)",
+          "value": 1.28,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "legacy carriers will raise their airfare by 0.563% during the entire year, while LCC carriers would raise their prices by 1.28%"
+        },
+        {
+          "label": "Low-cost carriers, same-quarter fare change for a 10% increase",
+          "value": 0.351,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "legacy carriers’ airfare increases by 0.172% in the same quarter, while low-cost carriers’ airfare increases by 0.351%"
+        },
+        {
+          "label": "Legacy carriers, four-quarter cumulative (introduction wording, differs from the Table 4 text)",
+          "value": 0.572,
+          "unit": "percent change in airfare per 10 percent change in fuel price",
+          "quote": "Four quarters’ cumulated pass-through for legacy carriers and low-cost carriers are 0.572% and 1.289%, respectively."
+        },
+        {
+          "label": "Legacy carriers, same-quarter fare change for a 10% firm-specific fuel cost increase",
+          "value": 0.384,
+          "unit": "percent change in airfare per 10 percent change in firm-level fuel cost",
+          "quote": "would lead to a legacy carrier’s airfare increase of 0.384% in the same quarter"
+        },
+        {
+          "label": "Legacy carriers, four-quarter cumulative for a firm-specific increase",
+          "value": 0.373,
+          "unit": "percent change in airfare per 10 percent change in firm-level fuel cost",
+          "quote": "in all four quarters is 0.373%, which is less than the number obtained with the industry-wide cost change situation at 0.563%"
+        },
+        {
+          "label": "Observations (round-trip sample, Table 3)",
+          "value": 3300297,
+          "unit": "product-quarter observations",
+          "quote": "N 3,300,297"
+        },
+        {
+          "label": "Mean round-trip airfare and mean jet fuel price (Table 3 row: mean, sd, min, max)",
+          "value": 245.71,
+          "unit": "USD (inflation-adjusted); jet fuel mean 2.04 USD per gallon",
+          "quote": "Airfare 245.71 90.89 45.96 2,595.89 JetFuelPrice 2.04 0.78 0.80 4.01"
+        },
+        {
+          "label": "Number of lags of fuel cost",
+          "value": 3,
+          "unit": "quarterly lags",
+          "quote": "We use three lags of the fuel cost data since some of the aviation companies use a hedging contract"
+        },
+        {
+          "label": "Sample start and end",
+          "value": 2000,
+          "unit": "year (first quarter of 2000 to fourth quarter of 2019)",
+          "quote": "The time interval used in this paper is from the first quarter of 2000 to the fourth quarter of 2019."
+        }
+      ],
+      "sample": {
+        "period": "2000Q1 to 2019Q4",
+        "geography": "United States, domestic routes (DB1B 10% ticket sample merged with T-100)",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "PDF downloaded from the University of Ottawa repository and converted to text; quotes machine-checked against that text.",
+      "notes": "Lag structure is reported: log-log fixed-effects model with the current quarter and three lagged quarters of fuel price; the preferred column (4) adds AR(1) errors and an instrument for market concentration. Fuel price is the EIA quarterly refiner price to end users (industry-wide) or the carrier's own average fuel cost (firm-specific). Fare is the average DB1B ticket price of a carrier-market product in a quarter, inflation-adjusted; a word search of the thesis finds no mention of surcharges. Internal inconsistencies in the source: four-quarter cumulative effects are given as 0.572%/1.289% in the introduction but 0.563%/1.28% in the results text; the ultra-low-cost figure is -0.971% in the introduction and -0.097% in the results. Use the results-text values and flag the discrepancy. The thesis also cites Shi (2017) for a larger estimate (see shi-2017-cited-in-dong). Conversion to a recovery share (formula only, not computed): share of the fuel cost increase recovered through revenue = (fare elasticity to the fuel price) multiplied by (passenger revenue per passenger or per seat mile) divided by (fuel cost per passenger or per seat mile), i.e. the elasticity divided by fuel cost as a share of passenger revenue, over the same horizon and holding traffic constant. The thesis reports mean fare and mean jet fuel price but not fuel burn per passenger, so fuel cost per passenger is not available in the source and the share is not computed."
+    },
+    {
+      "id": "gayle-lin-2021-ei",
+      "authors": "Gayle, P. G.; Lin, Y.",
+      "year": 2021,
+      "title": "Cost Pass-through in Commercial Aviation: Theory and Evidence",
+      "venue": "Economic Inquiry 59(2), 803-828 (read as MPRA Paper 102018, deposited 2020)",
+      "url": "https://mpra.ub.uni-muenchen.de/102018/1/MPRA_paper_102018.pdf",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "hedging"
+      ],
+      "finding": "For U.S. domestic coach fares in 2013Q3 to 2015Q4 the mean crude-oil-to-airfare elasticity is slightly negative (-0.065), and it falls further the more fuel an airline has hedged; with the hedging effect switched off the mean is about zero (0.0045).",
+      "numbers": [
+        {
+          "label": "Mean crude oil to airfare pass-through elasticity (all effects on)",
+          "value": -0.065,
+          "unit": "elasticity (percent fare change per 1 percent crude price change)",
+          "quote": "reveal a negative mean crude oil-airfare pass-through rate/elasticity of -0.065"
+        },
+        {
+          "label": "Share of products with a negative estimated pass-through rate",
+          "value": 86.7,
+          "unit": "percent of products",
+          "quote": "the vast majority (approximately 86.7%) do"
+        },
+        {
+          "label": "Mean elasticity with the influence of hedging set to zero",
+          "value": 0.0045,
+          "unit": "elasticity",
+          "quote": "is positive and equal to 0.0045, suggesting that a 10% decline in the crude-oil price would have resulted in a mean 0.045% decrease in airfares"
+        },
+        {
+          "label": "Mean elasticity with hedging and distance effects both set to zero",
+          "value": 0.66,
+          "unit": "elasticity",
+          "quote": "rate is 0.66, with 100% of the products in our sample having a positive"
+        },
+        {
+          "label": "Change in elasticity per 1 point of fuel hedging ratio",
+          "value": -0.005,
+          "unit": "elasticity change per 1 percent of fuel hedged",
+          "quote": "pass-through elasticity is expected to decline by 0.005 in magnitude for every 1% increase in the relevant airline’s jet fuel hedging ratio"
+        },
+        {
+          "label": "Observations",
+          "value": 603745,
+          "unit": "product-quarter observations",
+          "quote": "There are 603,745 observations across 147,073 markets."
+        },
+        {
+          "label": "Hedging ratio range in sample (upper end)",
+          "value": 50,
+          "unit": "percent of fuel consumption hedged",
+          "quote": "the value of Hedge varies from 0% to 50%"
+        },
+        {
+          "label": "Fuel share of operating expenses, four major U.S. airlines, 2014",
+          "value": 32,
+          "unit": "percent of total operating expenses",
+          "quote": "accounts for approximately 32% of their respective total operating expenses"
+        },
+        {
+          "label": "Sample period start (2013Q3 to 2015Q4)",
+          "value": 2013,
+          "unit": "year",
+          "quote": "U.S. domestic coach-class airline tickets over the period 2013Q3 to 2015Q4"
+        }
+      ],
+      "sample": {
+        "period": "2013Q3 to 2015Q4",
+        "geography": "United States, domestic coach-class tickets (DB1B 10% sample)",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "MPRA PDF downloaded and converted to text; quotes machine-checked against that text. The Wiley page was seen only as an abstract.",
+      "notes": "The elasticity is to the crude oil price, not to jet fuel or to the airline's fuel bill, and the sample is a period of falling oil prices, so it mostly measures how much of a decline reached fares. Hedging result: the pass-through rate 'decreases with airline fuel hedging ratios'. United states in its 10-K that it does not hedge, so the no-hedging counterfactual is the closer comparison, but it is a model counterfactual, not a direct estimate. Conversion to a recovery share (formula only, not computed): share recovered = (crude-to-fare elasticity) divided by (the elasticity of the airline's fuel cost per passenger to the crude price) and then divided by (fuel cost as a share of passenger revenue). The source gives fuel as a share of operating expenses (about 32% in 2014) but not as a share of fare revenue, and does not give the crude-to-jet link, so the share is not computed."
+    },
+    {
+      "id": "koopmans-lieshout-2016-jatm",
+      "authors": "Koopmans, C.; Lieshout, R.",
+      "year": 2016,
+      "title": "Airline cost changes: To what extent are they passed through to the passenger?",
+      "venue": "Journal of Air Transport Management 53, 1-11",
+      "url": "https://ideas.repec.org/a/eee/jaitra/v53y2016icp1-11.html",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "asymmetry"
+      ],
+      "finding": "Economic theory applied to concentrated, differentiated airline markets implies that a cost change hitting one airline is passed through at less than half, while a sector-wide cost change is passed through at more than half.",
+      "numbers": [
+        {
+          "label": "Upper bound on pass-through of a firm-specific cost change (stated as 'less than half')",
+          "value": 50,
+          "unit": "percent of the cost change (bound, stated in words)",
+          "quote": "firmspecific cost changes will be passed through by a rate of less than half"
+        },
+        {
+          "label": "Lower bound on pass-through of a sector-wide cost change (stated as 'more than half')",
+          "value": 50,
+          "unit": "percent of the cost change (bound, stated in words)",
+          "quote": "sector-wide cost changes are passed through by a rate of more than half"
+        },
+        {
+          "label": "Pass-through rate often assumed in practice",
+          "value": 100,
+          "unit": "percent of the cost change",
+          "quote": "A pass-through rate of 100% is often assumed based on the reasoning that the aviation sector is highly competitive."
+        }
+      ],
+      "sample": {
+        "period": "not applicable (theory and market-concentration review)",
+        "geography": "all airline markets in the world (concentration analysis)",
+        "frequency": "not applicable"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded and machine-checked; the same abstract was seen on the University of Amsterdam repository page. Body text was seen only as search-tool excerpts of a PDF mirror.",
+      "notes": "Not an empirical estimate: the bounds come from a Cournot oligopoly argument, and the abstract writes them in words ('half'), so the value 50 is a bound, not a point. Nothing is said about timing. A fuel price shock is a sector-wide cost change, so the 'more than half' bound is the relevant one for 2026; the abstract also lists exceptions (congested airports, cross-subsidisation). Conversion: the pass-through rate here is already a share of the per-unit cost change that ends up in price; to turn it into a share of the fuel bill recovered through revenue it must be multiplied by the ratio of traffic after the price rise to traffic before, which the paper does not quantify."
+    },
+    {
+      "id": "chuang-2020-eb",
+      "authors": "Chuang, S.-H.",
+      "year": 2020,
+      "title": "Cost pass-through in the airline industry: price responses and asymmetries",
+      "venue": "Economics Bulletin 40(1), 639-652",
+      "url": "http://www.accessecon.com/Pubs/EB/2020/Volume40/EB-20-V40-I1-P55.pdf",
+      "kind": "paper",
+      "relevance": "lag",
+      "also_relevant": [
+        "asymmetry",
+        "pass_through"
+      ],
+      "finding": "In U.S. fare data for 2006 to 2016, fuel cost shocks reach fares mainly within the same quarter, and increases are passed on more than decreases (1.6 cents versus about 1 cent of fare per dollar of flight fuel cost).",
+      "numbers": [
+        {
+          "label": "Same-quarter fare change per one-dollar positive fuel cost shock",
+          "value": 1.6,
+          "unit": "US cents of fare per passenger per 1 USD of flight fuel cost",
+          "quote": "a one-dollar positive cost shock leads on average to a 1.6-cent increase in the fare"
+        },
+        {
+          "label": "Same-quarter fare change per one-dollar negative fuel cost shock (number spelled out in the source)",
+          "value": 1.0,
+          "unit": "US cents of fare per passenger per 1 USD of flight fuel cost",
+          "quote": "while a one-dollar negative cost shock leads on average to a one-cent decrease in the fare"
+        },
+        {
+          "label": "Long-run pass-through, low end",
+          "value": 1.2,
+          "unit": "US cents of fare per passenger per 1 USD of flight fuel cost",
+          "quote": "before returning to the long run pass-through at around 1.2 to 1.3 cents for both positive and negative shocks"
+        },
+        {
+          "label": "Long-run pass-through, high end",
+          "value": 1.3,
+          "unit": "US cents of fare per passenger per 1 USD of flight fuel cost",
+          "quote": "before returning to the long run pass-through at around 1.2 to 1.3 cents for both positive and negative shocks"
+        },
+        {
+          "label": "Quarters in sample",
+          "value": 44,
+          "unit": "quarters",
+          "quote": "Our data cover 2006 to 2016, with a total of 44 quarters."
+        },
+        {
+          "label": "Seats and load factor in the paper's own illustration",
+          "value": 150,
+          "unit": "seats, with 80 percent occupied",
+          "quote": "For a typical short-haul aircraft that can sit 150 people, assuming that 80% of the seats are occupied"
+        }
+      ],
+      "sample": {
+        "period": "2006 to 2016 (44 quarters)",
+        "geography": "United States, domestic tickets (DB1B, about ten percent of tickets)",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "PDF downloaded from the journal site and converted to text; quotes machine-checked against that text.",
+      "notes": "Timing: 'we find the effect of cost shocks on airfare to occur mainly within the same quarter'; four quarterly lags are included, and the one-quarter-lag effect is still significant but smaller. Symmetry between increases and decreases is rejected in every regression, yet the long-run level is the same for both. The author warns: 'we caution against interpreting our results as price stickiness until better data frequency is available'. The cost variable is a constructed minimum fuel cost of operating the flight (fuel price x aircraft fuel burn per nautical mile x distance), so the unit is cents of one passenger's fare per dollar of the whole flight's fuel cost. Fares are DB1B ticket fares; surcharges are not discussed. Conversion to a recovery share: multiply the cents-per-dollar figure by the number of passengers on the flight. All inputs for the paper's own illustration are in this source (150 seats, 80% occupied = 120 passengers), so, as our arithmetic on the paper's numbers: 1.6 cents x 120 = 1.92 dollars of fare revenue per dollar of fuel cost for increases in the same quarter, 1.0 cent x 120 = 1.20 for decreases, and 1.2 to 1.3 cents x 120 = 1.44 to 1.56 in the long run. The paper itself says the estimate 'can then be translated into over-shifting'. These are illustrations for one assumed aircraft, not sample-wide recovery shares."
+    },
+    {
+      "id": "wolter-ehlers-luetjens-gollnick-2021-jatm",
+      "authors": "Wolter, A. H.; Ehlers, T.; Luetjens, K.; Gollnick, V.",
+      "year": 2021,
+      "title": "Commodity price pass-through in the US airline industry and the hidden perks of consolidation",
+      "venue": "Journal of Air Transport Management 95, 102100",
+      "url": "https://ideas.repec.org/a/eee/jaitra/v95y2021ics0969699721000831.html",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "lag",
+        "asymmetry"
+      ],
+      "finding": "The paper tests how far U.S. airlines pass lagged jet fuel prices through to scaled operating revenues and concludes that the extent depends on the competitive situation an airline faces; the abstract gives no magnitude.",
+      "numbers": [],
+      "sample": {
+        "period": "not stated in the abstract",
+        "geography": "United States airlines",
+        "frequency": "not stated in the abstract"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded; the publisher page returned only the title and reference list, and the DLR repository page marks the paper as not open access.",
+      "notes": "Only the abstract could be read, so no pass-through number, lag length or sample period is recorded. Abstract wording checked against the downloaded page: 'empirically examines the ability of US airlines to pass-through lagged jet fuel prices to scaled operating revenues'. This is the published design closest to our revenue-based definition (revenue, not ticket fares). The DLR repository lists 'Asymmetric fuel price pass-through' among the keywords. Conversion (formula only): if the paper reports the change in operating revenue per available seat mile per one-dollar change in the jet fuel price per gallon, the recovery share is that coefficient divided by gallons burned per available seat mile; whether it reports this could not be confirmed."
+    },
+    {
+      "id": "wadud-2015-tra",
+      "authors": "Wadud, Z.",
+      "year": 2015,
+      "title": "Imperfect reversibility of air transport demand: Effects of air fare, fuel prices and price transmission",
+      "venue": "Transportation Research Part A: Policy and Practice 72, 16-26 (read as the accepted manuscript)",
+      "url": "https://eprints.whiterose.ac.uk/id/eprint/83855/1/manuscript%20accepted%20TRA%20-%20repository.pdf",
+      "kind": "paper",
+      "relevance": "asymmetry",
+      "also_relevant": [
+        "pass_through"
+      ],
+      "finding": "In U.S. monthly data for 1979 to 2012 the implied elasticity of air fares to jet fuel price is 0.423 when fuel rises above its previous maximum, 0.100 when it rises below that maximum, and not statistically different from zero when fuel falls.",
+      "numbers": [
+        {
+          "label": "Implied air fare elasticity to fuel price, fuel rising above its previous maximum",
+          "value": 0.423,
+          "unit": "elasticity",
+          "quote": "Air fare elasticity wrt fuel price (δ) 0.423*** 0.100*** Insig."
+        },
+        {
+          "label": "Implied air fare elasticity to fuel price, fuel recovering below its previous maximum",
+          "value": 0.1,
+          "unit": "elasticity",
+          "quote": "Air fare elasticity wrt fuel price (δ) 0.423*** 0.100*** Insig."
+        },
+        {
+          "label": "Ratio of the two elasticities (hysteresis in price transmission)",
+          "value": 4.2,
+          "unit": "ratio",
+          "quote": "a large hysteresis effect in price transmissions to air fare (δmax/δrec≈4.2)"
+        },
+        {
+          "label": "Sample start (1979 to 2012)",
+          "value": 1979,
+          "unit": "year",
+          "quote": "with temporal coverage from 1979 to 2012"
+        }
+      ],
+      "sample": {
+        "period": "1979 to 2012",
+        "geography": "United States",
+        "frequency": "monthly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Accepted manuscript PDF downloaded from White Rose Research Online and converted to text; quotes machine-checked against that text.",
+      "notes": "The fare elasticities are implied, not estimated directly: they are the ratio of the demand elasticity to fuel price over the demand elasticity to air fare (the paper's Eq. 4), each estimated in a separate dynamic demand model with first and twelfth lags of the dependent variable. For falling fuel prices the paper says 'falling fuel prices have no statistically significant effect on air fare'. The fare series is the monthly BLS air travel price index rescaled to annual Airlines for America fares; demand is revenue passenger enplanements per capita per day. No lag profile of the fare response is reported. Conversion to a recovery share (formula only, not computed): share of the fuel cost increase recovered through revenue = (fare elasticity to the fuel price) multiplied by (passenger revenue per passenger or per seat mile) divided by (fuel cost per passenger or per seat mile), i.e. the elasticity divided by fuel cost as a share of passenger revenue, over the same horizon and holding traffic constant. The paper does not report fuel cost as a share of fares, so the share is not computed."
+    },
+    {
+      "id": "jiang-que-2022-afl",
+      "authors": "Jiang, Y.; Que, T.",
+      "year": 2022,
+      "title": "Asymmetric Pricing and Airline Performance",
+      "venue": "Applied Finance Letters 11",
+      "url": "https://ojs.aut.ac.nz/applied-finance-letters/1/article/download/522/152",
+      "kind": "paper",
+      "relevance": "asymmetry",
+      "also_relevant": [
+        "stock_reaction",
+        "pass_through"
+      ],
+      "finding": "For U.S. airlines in 2001 to 2016, raising ticket prices, whether fuel cost is rising or falling, goes with higher sales growth and stock returns than cutting them, most of all for airlines that raise prices more than peers when fuel cost rises.",
+      "numbers": [
+        {
+          "label": "Median ratio of price change to fuel cost change, quarters when fuel cost rises",
+          "value": 0.007,
+          "unit": "ratio of percentage changes",
+          "quote": "median of the ratio between price change and fuel cost change is 0.007 in fuel increasing subsample, and -0.015 in fuel decreasing subsample"
+        },
+        {
+          "label": "Median ratio of price change to fuel cost change, quarters when fuel cost falls",
+          "value": -0.015,
+          "unit": "ratio of percentage changes",
+          "quote": "median of the ratio between price change and fuel cost change is 0.007 in fuel increasing subsample, and -0.015 in fuel decreasing subsample"
+        },
+        {
+          "label": "Observations in the initial sample",
+          "value": 144927,
+          "unit": "year-quarter-market-carrier observations",
+          "quote": "we obtain 144,927 year-quarter-market-carrier observations in the initial sample"
+        },
+        {
+          "label": "Sample start (2001:Q1 to 2016:Q4)",
+          "value": 2001,
+          "unit": "year",
+          "quote": "between 2001:Q1 and 2016:Q4"
+        }
+      ],
+      "sample": {
+        "period": "2001Q1 to 2016Q4",
+        "geography": "United States (DB1B fares, BTS fuel cost, Compustat, CRSP)",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Article PDF downloaded from the journal site (reached through the DOI 10.24135/afl.v11i.522) and converted to text; quotes machine-checked.",
+      "notes": "This is the paper the lead described. A related paper by the same authors with M. Yu (Financial Review 2022) documents the asymmetry itself; see jiang-que-yu-2022-finrev. The Degree of Asymmetry is the absolute value of the percentage change in price per mile divided by the percentage change in fuel cost. The median ratios are from a footnote of untabulated results; a negative ratio in fuel-falling quarters means the typical fare rose while fuel cost fell. The results are associations in a panel regression with market-carrier and year-quarter fixed effects, not a forecast. Conversion to a recovery share (formula only, not computed): share of the fuel cost increase recovered through revenue = (fare elasticity to the fuel price) multiplied by (passenger revenue per passenger or per seat mile) divided by (fuel cost per passenger or per seat mile), i.e. the elasticity divided by fuel cost as a share of passenger revenue, over the same horizon and holding traffic constant. The median ratio is a same-quarter percent-per-percent figure at the carrier-market level; the paper gives no fuel cost share of fares, so the share is not computed."
+    },
+    {
+      "id": "jiang-que-yu-2022-finrev",
+      "authors": "Jiang, Y.; Que, T.; Yu, M.",
+      "year": 2022,
+      "title": "Price asymmetries in the US airline industry",
+      "venue": "The Financial Review 57(4), 793-814",
+      "url": "https://ideas.repec.org/a/bla/finrev/v57y2022i4p793-814.html",
+      "kind": "paper",
+      "relevance": "asymmetry",
+      "also_relevant": [],
+      "finding": "The average U.S. airfare rises when fuel cost rises but does not fall when fuel cost declines, and the asymmetry is larger where airlines share institutional owners and in concentrated markets.",
+      "numbers": [],
+      "sample": {
+        "period": "not stated in the abstract",
+        "geography": "United States",
+        "frequency": "not stated in the abstract"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded; abstract only.",
+      "notes": "Not in the original lead list; added because it is the companion paper that establishes the asymmetry. Abstract wording: 'the average airfare increases in response to rising fuel cost but does not decrease in response to declining fuel cost'. No magnitudes are given in the abstract."
+    },
+    {
+      "id": "pal-mitra-2022-eneeco",
+      "authors": "Pal, D.; Mitra, S. K.",
+      "year": 2022,
+      "title": "Do airfares respond asymmetrically to fuel price changes? A multiple threshold nonlinear ARDL model",
+      "venue": "Energy Economics 111",
+      "url": "https://ideas.repec.org/a/eee/eneeco/v111y2022ics0140988322002729.html",
+      "kind": "paper",
+      "relevance": "asymmetry",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "Using monthly U.S. data from January 2000 to June 2019, this paper finds no evidence that airfares adjust asymmetrically to changes in crude oil and jet fuel prices.",
+      "numbers": [
+        {
+          "label": "Sample start (January 2000 to June 2019, monthly)",
+          "value": 2000,
+          "unit": "year",
+          "quote": "Using monthly U.S. data spreading over January 2000 to June 2019"
+        }
+      ],
+      "sample": {
+        "period": "January 2000 to June 2019",
+        "geography": "United States",
+        "frequency": "monthly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded and machine-checked; abstract only.",
+      "notes": "Not in the original lead list; added because it contradicts the asymmetry findings of Wadud (2015), Chuang (2020) and Jiang, Que and Yu (2022) at the monthly frequency our industry clock uses. The abstract adds that the absence of evidence 'does not support the presumption that the response of airfares to the changes in fuel prices is always symmetric'. No magnitudes are given in the abstract."
+    },
+    {
+      "id": "wang-gao-2020-jatm",
+      "authors": "Wang, H.; Gao, X.",
+      "year": 2020,
+      "title": "Oil price dynamics and airline earnings predictability",
+      "venue": "Journal of Air Transport Management 87, 101854",
+      "url": "https://ideas.repec.org/a/eee/jaitra/v87y2020ics0969699720300302.html",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "scoring",
+        "hedging"
+      ],
+      "finding": "For 30 airlines over 1994 to 2017, demand-driven oil shocks raise quarterly airline earnings, earnings are harder to predict in oil-volatile quarters, supply-driven shocks hurt predictability more than demand-driven ones, and fuel hedging does not moderate the effect.",
+      "numbers": [
+        {
+          "label": "Airlines in sample",
+          "value": 30,
+          "unit": "airlines",
+          "quote": "quarterly earnings and their predictability with a sample of 30 airlines"
+        }
+      ],
+      "sample": {
+        "period": "1994 to 2017",
+        "geography": "not stated in the abstract",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded and machine-checked; the publisher page returned only the title and reference list, so the body was not read.",
+      "notes": "Abstract only. Design as stated there: the effect of oil price dynamics on quarterly earnings and on their predictability, where predictability is measured by 'the earnings variability based on common benchmarks and the quality of analyst forecasts issued early in the quarter'. The reference list includes Kilian (2009), which suggests the supply and demand shocks follow that decomposition, but this was not confirmed in the text. Difference from our work as far as the abstract shows: it explains how predictable earnings are across many airlines, it does not estimate a recovery share by quarter, and it does not issue or score a dated forecast for a named quarter. No coefficients are given in the abstract. The first finding (the revenue effect of demand-driven oil shocks 'dominates the cost effect of aviation fuels') is a warning that an oil price rise driven by demand looks like more than 100% recovery, so the source of the shock matters for any recovery estimate."
+    },
+    {
+      "id": "driesprong-jacobsen-maat-2008-jfe",
+      "authors": "Driesprong, G.; Jacobsen, B.; Maat, B.",
+      "year": 2008,
+      "title": "Striking oil: Another puzzle?",
+      "venue": "Journal of Financial Economics 89(2), 307-327",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X08000901",
+      "kind": "paper",
+      "relevance": "stock_reaction",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "Monthly changes in oil prices predict the following month's stock market returns in many countries with a negative sign, which the authors read as investors under-reacting to oil news.",
+      "numbers": [
+        {
+          "label": "Countries in the stock market sample",
+          "value": 48,
+          "unit": "countries",
+          "quote": "Using stock market data from 48 countries, a world market index, and price series of several types of oil, we find that they do."
+        },
+        {
+          "label": "Size of a one-standard-deviation oil price shock",
+          "value": 10,
+          "unit": "percent (approximate)",
+          "quote": "an oil price shock of one standard deviation (around 10%) predictably lowers world market returns by 1%"
+        },
+        {
+          "label": "Predicted change in world market return after that shock",
+          "value": -1,
+          "unit": "percent, following month",
+          "quote": "an oil price shock of one standard deviation (around 10%) predictably lowers world market returns by 1%"
+        }
+      ],
+      "sample": {
+        "period": "not stated in the passages read",
+        "geography": "48 countries and a world market index",
+        "frequency": "monthly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Publisher abstract page read through the Exa search tool (abstract and the opening of the introduction); a direct download was blocked, so these quotes were not machine-checked. The abstract was also checked on the downloaded RePEc page.",
+      "notes": "The predictability is for broad market indices, not for airline stocks; the paper says it is weaker in sectors where the oil effect is a dominant first-order effect. Abstract: 'A rise in oil prices drastically lowers future stock returns' and the relation 'strengthens once we introduce lags of several trading days'. Later out-of-sample evidence on this result was not reviewed here."
+    },
+    {
+      "id": "hong-torous-valkanov-2007-jfe",
+      "authors": "Hong, H.; Torous, W.; Valkanov, R.",
+      "year": 2007,
+      "title": "Do industries lead stock markets?",
+      "venue": "Journal of Financial Economics 83(2), 367-396 (read as the December 2005 draft)",
+      "url": "https://www.columbia.edu/~hh2679/industry-12-05-05.pdf",
+      "kind": "paper",
+      "relevance": "stock_reaction",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "Returns of 14 of 34 U.S. industry portfolios, petroleum among them, forecast the overall stock market one month ahead and some two months ahead, consistent with information spreading slowly across markets.",
+      "numbers": [
+        {
+          "label": "Industries that predict the market one month ahead (spelled out in the source)",
+          "value": 14,
+          "unit": "of 34 industries",
+          "quote": "Over the period of 1946 to 2002, we find that fourteen out of thirty-four industries"
+        },
+        {
+          "label": "Longest lead of industry returns over the market (spelled out in the source)",
+          "value": 2,
+          "unit": "months",
+          "quote": "can forecast the stock market by up to two months"
+        },
+        {
+          "label": "Share of simulations in which that many industries predict the market by chance",
+          "value": 0.04,
+          "unit": "percent of simulations",
+          "quote": "in only 0.04% of the simulations fourteen or more industries forecast the market"
+        }
+      ],
+      "sample": {
+        "period": "1946 to 2002 (United States); 1973 to 2002 for eight other markets",
+        "geography": "United States and the eight largest non-U.S. stock markets",
+        "frequency": "monthly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Author's draft PDF (dated December 5, 2005) downloaded and converted to text; quotes machine-checked. The published abstract on the publisher page carries the same findings.",
+      "notes": "Supports the idea that sector information reaches prices with a delay; it concerns industries leading the market, not fuel leading airline stocks. The paper notes that high returns for industries such as petroleum 'mean just the opposite' of good news for the market."
+    },
+    {
+      "id": "carter-rogers-simkins-2006-fm",
+      "authors": "Carter, D. A.; Rogers, D. A.; Simkins, B. J.",
+      "year": 2006,
+      "title": "Does Hedging Affect Firm Value? Evidence from the US Airline Industry",
+      "venue": "Financial Management 35(1), 53-86",
+      "url": "https://ideas.repec.org/a/bla/finmgt/v35y2006i1p53-86.html",
+      "kind": "paper",
+      "relevance": "hedging",
+      "also_relevant": [],
+      "finding": "Among U.S. airlines in 1992 to 2003, jet fuel hedging is positively related to firm value, with a hedging premium that may be as large as 10%, mostly through hedging's interaction with investment.",
+      "numbers": [
+        {
+          "label": "Hedging premium, upper estimate",
+          "value": 10,
+          "unit": "percent of firm value",
+          "quote": "is greater than the 5% documented in Allayannis and Weston (2001), and might be as large as 10%"
+        },
+        {
+          "label": "Hedging premium benchmark from earlier work",
+          "value": 5,
+          "unit": "percent of firm value",
+          "quote": "is greater than the 5% documented in Allayannis and Weston (2001), and might be as large as 10%"
+        }
+      ],
+      "sample": {
+        "period": "1992 to 2003",
+        "geography": "United States airlines",
+        "frequency": "not stated in the abstract"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "RePEc abstract page downloaded and machine-checked; the same abstract was seen on SSRN through the search tool.",
+      "notes": "Abstract only. The mechanism claimed is lower under-investment cost, not better pass-through. The sample ends in 2003; United's 10-K for 2025 states it does not hedge, and its CFO said on the April 2026 call that 'hedging is a poor policy'."
+    },
+    {
+      "id": "kristjanpoller-concha-2016-apen",
+      "authors": "Kristjanpoller, W. D.; Concha, D.",
+      "year": 2016,
+      "title": "Impact of fuel price fluctuations on airline stock returns",
+      "venue": "Applied Energy 178, 496-504",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0306261916308649",
+      "kind": "paper",
+      "relevance": "stock_reaction",
+      "also_relevant": [],
+      "finding": "For 56 listed IATA airlines between January 2008 and October 2013, changes in crude oil and jet fuel prices have a strong positive association with airline stock returns at daily frequency, the opposite of the sign a pure cost effect would give.",
+      "numbers": [
+        {
+          "label": "Airlines studied",
+          "value": 56,
+          "unit": "airlines",
+          "quote": "In order to solve this puzzle, 56 airlines were studied"
+        },
+        {
+          "label": "Sample start (January 2008 to October 2013)",
+          "value": 2008,
+          "unit": "year",
+          "quote": "The period analyzed is between January 2008 and October 2013 for 56 airlines"
+        }
+      ],
+      "sample": {
+        "period": "January 2008 to October 2013",
+        "geography": "worldwide (airlines associated with IATA, several stock markets)",
+        "frequency": "daily, with monthly comparisons"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Publisher abstract page read through the Exa search tool (highlights, abstract and summary paragraphs); a direct download was blocked, so these quotes were not machine-checked. The first half of the abstract was checked on the downloaded RePEc page.",
+      "notes": "Sign reported: positive. 'The main results show a strong positive influence of fuel price fluctuation on a daily basis.' The authors explain it by market inertia and by oil price rises signalling economic growth. The sample is the 2008 crisis and recovery, when oil and equities moved together, so the sign should not be assumed for a supply-driven fuel shock such as 2026. They also report that the effect is smaller at monthly than at daily frequency and that lagged oil changes keep a positive effect. Models are GARCH; no coefficient was visible in the passages read."
+    },
+    {
+      "id": "gneiting-raftery-2007-jasa",
+      "authors": "Gneiting, T.; Raftery, A. E.",
+      "year": 2007,
+      "title": "Strictly Proper Scoring Rules, Prediction, and Estimation",
+      "venue": "Journal of the American Statistical Association 102(477)",
+      "url": "https://sites.stat.washington.edu/people/raftery/Research/PDF/Gneiting2007jasa.pdf",
+      "kind": "paper",
+      "relevance": "scoring",
+      "also_relevant": [],
+      "finding": "A scoring rule is strictly proper when the forecaster's expected score is maximised only by reporting the true distribution, and the continuous ranked probability score (CRPS) has this property for distributions with a finite first moment.",
+      "numbers": [],
+      "sample": {
+        "period": "not applicable (theory)",
+        "geography": "not applicable",
+        "frequency": "not applicable"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Article PDF downloaded from the author's university page and converted to text; the statements below were machine-checked against that text.",
+      "notes": "No empirical number is taken from this paper. Exact wording checked: 'It is strictly proper if the maximum is unique.'; 'The CRPS is proper relative to the class P and strictly proper relative to the subclass P1 of the Borel probability measures that have finite first moment.'; the CRPS 'generalizes the absolute error'; it 'might serve as a standard score in evaluating probabilistic forecasts of real-valued variables'. The paper defines the CRPS in positive orientation and notes it is typically used in negative orientation, where smaller is better. In that orientation 'it generalizes the absolute error to which it reduces if F is a deterministic forecast', and 'Thus the CRPS provides a direct way to compare deterministic and probabilistic forecasts', which is what lets us score a point baseline such as the guidance midpoint against a distribution on one scale. It also proposes the interval score for prediction intervals, 'a utility function that addresses width as well as coverage'."
+    },
+    {
+      "id": "dichev-huang-lee-zhao-ssrn-4547337",
+      "authors": "Dichev, I. D.; Huang, X.; Lee, D. K. K.; Zhao, J.",
+      "year": 2023,
+      "title": "Estimating and Using Distributional Forecasts of Earnings",
+      "venue": "SSRN working paper 4547337 (posted 27 August 2023, last revised 6 May 2025)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4547337",
+      "kind": "paper",
+      "relevance": "scoring",
+      "also_relevant": [
+        "guidance_claim"
+      ],
+      "finding": "Machine-learning forecasts of the whole distribution of a firm's quarterly earnings are well calibrated, and the ranges in management and analyst forecasts are too narrow.",
+      "numbers": [
+        {
+          "label": "Hedge return from trading on the distributional forecast around earnings announcements",
+          "value": 80,
+          "unit": "basis points over the three-day announcement window",
+          "quote": "produces hedge returns of about 80 basis points over the three-day earnings announcement window"
+        }
+      ],
+      "sample": {
+        "period": "not stated in the abstract",
+        "geography": "not stated in the abstract",
+        "frequency": "quarterly (firm-quarter earnings announcements)"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "SSRN abstract page read through the Exa search tool; a direct download was blocked, so the quote was not machine-checked.",
+      "notes": "The current SSRN abstract does not mention the CRPS. The CRPS evaluation is in the earlier draft of the same paper, recorded separately as dichev-huang-lee-zhao-2023-draft. Abstract wording on guidance: 'ranges in management and financial analyst forecasts are too narrow, severely underestimating the variability of future earnings'."
+    },
+    {
+      "id": "dichev-huang-lee-zhao-2023-draft",
+      "authors": "Dichev, I. D.; Huang, X.; Lee, D. K. K.; Zhao, J.",
+      "year": 2023,
+      "title": "You have a point - but a point is not enough: The case for distributional forecasts of earnings",
+      "venue": "Working paper draft dated November 15, 2023 (earlier version of SSRN 4547337)",
+      "url": "https://business.columbia.edu/sites/default/files-efs/imce-uploads/ADP/Spring%202024/Dichev%20Huang%20Lee%20Zhao%202023.pdf",
+      "kind": "paper",
+      "relevance": "scoring",
+      "also_relevant": [
+        "guidance_claim"
+      ],
+      "finding": "Scored with the CRPS, full distributional forecasts of quarterly earnings cut the score by 36% on average against an OLS point forecast, and the typical management forecast range has only a 30% chance of covering actual earnings.",
+      "numbers": [
+        {
+          "label": "Average CRPS reduction, distributional forecast versus OLS mean forecast",
+          "value": 36,
+          "unit": "percent reduction in CRPS",
+          "quote": "the average reduction doubles to 36%, and strictly improves upon its own mean forecasts in every year"
+        },
+        {
+          "label": "Average CRPS reduction, nonparametric mean forecast versus OLS mean forecast",
+          "value": 18,
+          "unit": "percent reduction in CRPS",
+          "quote": "This switch results in a strict improvement in each year, with an average reduction of 18%."
+        },
+        {
+          "label": "Chance that the typical management forecast range covers actual earnings",
+          "value": 30,
+          "unit": "percent",
+          "quote": "we estimate that the typical management forecast range has only a 30% chance of covering actual earnings"
+        },
+        {
+          "label": "Test period start (2011 to 2021)",
+          "value": 2011,
+          "unit": "year",
+          "quote": "Our test period is 2011-2021."
+        },
+        {
+          "label": "Hedge return in this draft",
+          "value": 60,
+          "unit": "basis points over the three-day announcement window",
+          "quote": "produces hedge returns of about 60 basis points over the three-day earnings announcement window"
+        }
+      ],
+      "sample": {
+        "period": "data 2001 to 2021, test period 2011 to 2021, each test year trained on the preceding ten years",
+        "geography": "not stated in the passages read",
+        "frequency": "quarterly (firm-quarter earnings announcements)"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Draft PDF downloaded from a Columbia Business School seminar page and converted to text; quotes machine-checked.",
+      "notes": "This draft, not the current SSRN abstract, is where the CRPS is used: 'we use the CRPS as the criterion for evaluating the accuracy of our distributional forecasts', citing Gneiting and Raftery (2007). The draft describes the CRPS as extending the mean squared error to distributions, whereas Gneiting and Raftery describe it as generalising the absolute error; cite the latter for the definition. The 30% coverage figure is the closest published benchmark for how often a management guidance range contains the outcome; it is a cross-firm average, not specific to airlines. The hedge return is 60 basis points in this draft and 80 in the current SSRN abstract."
+    },
+    {
+      "id": "bailey-lopez-de-prado-2014-jpm",
+      "authors": "Bailey, D. H.; Lopez de Prado, M.",
+      "year": 2014,
+      "title": "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality",
+      "venue": "Journal of Portfolio Management 40(5), 94-107 (read as the July 31, 2014 author version)",
+      "url": "https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf",
+      "kind": "paper",
+      "relevance": "backtest_rigour",
+      "also_relevant": [],
+      "finding": "The Deflated Sharpe Ratio tests whether a backtested Sharpe ratio is significant after adjusting for the number of strategies tried and for non-normal returns.",
+      "numbers": [],
+      "sample": {
+        "period": "not applicable (method)",
+        "geography": "not applicable",
+        "frequency": "not applicable"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Author-hosted PDF downloaded and converted to text; the statements below were machine-checked. The SSRN abstract (2460551) was seen through the search tool and matches.",
+      "notes": "No empirical number is taken from this paper. Exact wording checked: 'DSR is a PSR where the rejection threshold is adjusted to reflect the multiplicity of trials.' and 'its expected maximum is greater than zero, even if the true SR is zero'. Inputs the method needs, as listed in the paper: the number of independent trials, the variance of the Sharpe ratios across trials, the sample length, and the skewness and kurtosis of returns. This is why every variant tried has to be recorded. The formula itself did not survive text extraction and was not transcribed."
+    },
+    {
+      "id": "harvey-liu-zhu-2016-rfs",
+      "authors": "Harvey, C. R.; Liu, Y.; Zhu, H.",
+      "year": 2016,
+      "title": "... and the Cross-Section of Expected Returns",
+      "venue": "The Review of Financial Studies 29(1), 5-68",
+      "url": "https://academic.oup.com/rfs/article/29/1/5/1843824",
+      "kind": "paper",
+      "relevance": "backtest_rigour",
+      "also_relevant": [],
+      "finding": "Because hundreds of return factors have been tried, the usual significance cutoff is too lenient and a newly proposed factor should clear a t-statistic above 3.0.",
+      "numbers": [
+        {
+          "label": "Recommended minimum t-statistic for a new factor",
+          "value": 3.0,
+          "unit": "t-statistic",
+          "quote": "A new factor needs to clear a much higher hurdle, with a t-statistic greater than 3.0."
+        },
+        {
+          "label": "Factors catalogued",
+          "value": 316,
+          "unit": "factors",
+          "quote": "We obtain t-ratios for each of the 316 factors discovered, including the ones in working papers.",
+          "source_url": "https://www.nber.org/system/files/working_papers/w20592/w20592.pdf"
+        },
+        {
+          "label": "Papers reviewed",
+          "value": 313,
+          "unit": "published works and selected working papers",
+          "quote": "In total, we focus on 313 published works and selected working papers.",
+          "source_url": "https://www.nber.org/system/files/working_papers/w20592/w20592.pdf"
+        }
+      ],
+      "sample": {
+        "period": "first empirical tests in 1967 to the time of writing",
+        "geography": "not applicable (survey of published factor tests)",
+        "frequency": "not applicable"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Publisher abstract read through the Exa search tool (not machine-checked); the two counts were machine-checked against the downloaded NBER working paper 20592, whose abstract says 't-ratio greater than 3.0'.",
+      "notes": "The hurdle is derived for asset-pricing factors in the cross-section of returns; we use it as a rule of thumb for multiple testing, not as a derived threshold for our own signal. The abstract concludes: 'most claimed research findings in financial economics are likely false'."
+    },
+    {
+      "id": "ual-fy2025-10k",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "Annual Report on Form 10-K for the fiscal year ended December 31, 2025 (filed 2026-02-12)",
+      "venue": "SEC EDGAR, accession 0000100517-26-000023",
+      "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000023/ual-20251231.htm",
+      "kind": "filing",
+      "relevance": "hedging",
+      "also_relevant": [
+        "pass_through"
+      ],
+      "finding": "United does not hedge fuel, used 4,663 million gallons at an average of $2.44 per gallon in 2025, and says a one-dollar change in the price of a barrel of aircraft fuel changes projected 2026 fuel expense by about $116 million.",
+      "numbers": [
+        {
+          "label": "Fuel gallons consumed, 2025",
+          "value": 4663,
+          "unit": "million gallons",
+          "quote": "| 2025 | 4,663 | $11,396 | $2.44 | 21% |"
+        },
+        {
+          "label": "Fuel expense, 2025",
+          "value": 11396,
+          "unit": "USD millions",
+          "quote": "| 2025 | 4,663 | $11,396 | $2.44 | 21% |"
+        },
+        {
+          "label": "Average fuel price per gallon, 2025",
+          "value": 2.44,
+          "unit": "USD per gallon",
+          "quote": "| 2025 | 4,663 | $11,396 | $2.44 | 21% |"
+        },
+        {
+          "label": "Fuel as a share of total operating expense, 2025",
+          "value": 21,
+          "unit": "percent",
+          "quote": "| 2025 | 4,663 | $11,396 | $2.44 | 21% |"
+        },
+        {
+          "label": "Change in projected 2026 fuel expense per one-dollar change in the price of a barrel of aircraft fuel (Item 7A)",
+          "value": 116,
+          "unit": "USD millions per 1 USD per barrel",
+          "quote": "barrel of aircraft fuel would change the Company's 2026 projected fuel expense by approximately $116 million."
+        },
+        {
+          "label": "Change in aircraft fuel expense, 2025 versus 2024 (Item 7)",
+          "value": -360,
+          "unit": "USD millions (a decrease of 3.1 percent)",
+          "quote": "Aircraft fuel expense decreased $360 million, or 3.1%, in 2025 as compared to 2024,"
+        }
+      ],
+      "sample": {
+        "period": "fiscal year 2025 (table also gives 2024 and 2023)",
+        "geography": "United Airlines system, including regional carriers flying under capacity purchase agreements",
+        "frequency": "annual"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "sec.gov document. The Item 1 fuel table and policy sentence were seen verbatim in the Exa tool's text of the document (the table row is quoted as that tool rendered it, with cell separators). Items 1A, 7 and 7A lie beyond what that tool returned and were read with the WebFetch reader at offsets 100000 and 200000; that reader is a language model that returned the sentences in short segments, and the $116 million string was confirmed in a second call.",
+      "notes": "Hedging policy, Item 1: 'The Company's current strategy is to not enter into financial transactions to hedge the market price exposure of its expected fuel consumption, although the Company regularly reviews its strategy based on market conditions and other factors.' Item 1A: 'The Company does not currently hedge the market price of its future fuel requirements.' Item 7A: 'current strategy is to not enter into transactions to hedge fuel price volatility'. The Item 7A sensitivity is per barrel and refers to projected 2026 consumption; converting it to dollars per gallon needs the gallons-per-barrel factor, which is not in the filing, so it is not converted here. The filing states no pass-through or recovery assumption. Purchase contracts 'customarily do not provide material protection against changes in market prices'."
+    },
+    {
+      "id": "ual-2026q1-investor-update",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "Investor Update, issue date April 21, 2026 (Exhibit 99.2 to Form 8-K)",
+      "venue": "SEC EDGAR, accession 0000100517-26-000089",
+      "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000089/ual_erx03312026xex992.htm",
+      "kind": "filing",
+      "relevance": "guidance_claim",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "United's April 2026 guidance assumed that its revenue recovers 40% to 50% of the fuel price increases in the second quarter, 70% to 80% in the third quarter and 85% to 100% in the fourth quarter of 2026.",
+      "numbers": [
+        {
+          "label": "Assumed recovery, 2026Q2, low",
+          "value": 40,
+          "unit": "percent of the fuel price increases",
+          "quote": "Guidance assumes United’s revenue recovers 40% to 50% of the fuel price increases in the second quarter"
+        },
+        {
+          "label": "Assumed recovery, 2026Q2, high",
+          "value": 50,
+          "unit": "percent of the fuel price increases",
+          "quote": "Guidance assumes United’s revenue recovers 40% to 50% of the fuel price increases in the second quarter"
+        },
+        {
+          "label": "Assumed recovery, 2026Q3, low",
+          "value": 70,
+          "unit": "percent of the fuel price increases",
+          "quote": "70% to 80% of the fuel price increases in the third quarter"
+        },
+        {
+          "label": "Assumed recovery, 2026Q3, high",
+          "value": 80,
+          "unit": "percent of the fuel price increases",
+          "quote": "70% to 80% of the fuel price increases in the third quarter"
+        },
+        {
+          "label": "Assumed recovery, 2026Q4, low",
+          "value": 85,
+          "unit": "percent of the fuel price increases",
+          "quote": "85% to 100% of the fuel price increases in the fourth quarter 2026"
+        },
+        {
+          "label": "Assumed recovery, 2026Q4, high",
+          "value": 100,
+          "unit": "percent of the fuel price increases",
+          "quote": "85% to 100% of the fuel price increases in the fourth quarter 2026"
+        },
+        {
+          "label": "Assumed average aircraft fuel price, 2026Q2 (table cell)",
+          "value": 4.3,
+          "unit": "USD per gallon (approximate)",
+          "quote": "~$4.30"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, 2026Q2, low (table cell)",
+          "value": 1.0,
+          "unit": "USD per share",
+          "quote": "$1.00 - $2.00"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, 2026Q2, high (table cell)",
+          "value": 2.0,
+          "unit": "USD per share",
+          "quote": "$1.00 - $2.00"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, full year 2026, low (table cell)",
+          "value": 7.0,
+          "unit": "USD per share",
+          "quote": "$7.00 - $11.00"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, full year 2026, high (table cell)",
+          "value": 11.0,
+          "unit": "USD per share",
+          "quote": "$7.00 - $11.00"
+        },
+        {
+          "label": "Capacity target, third and fourth quarters 2026, upper end",
+          "value": 2,
+          "unit": "percent year over year",
+          "quote": "targeting year-over-year capacity to be flat to up approximately 2% in both the third and fourth quarters of 2026"
+        },
+        {
+          "label": "Profit sharing accrual expected, 2026Q2, low",
+          "value": 50,
+          "unit": "USD millions",
+          "quote": "the Company expects to accrue between $50 million and $95 million in the second quarter of 2026"
+        },
+        {
+          "label": "Profit sharing accrual expected, 2026Q2, high",
+          "value": 95,
+          "unit": "USD millions",
+          "quote": "the Company expects to accrue between $50 million and $95 million in the second quarter of 2026"
+        }
+      ],
+      "sample": {
+        "period": "guidance for 2026Q2, 2026Q3, 2026Q4 and full year 2026, issued 2026-04-21",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "sec.gov exhibit read in full with the Exa fetch tool; each quoted string was then confirmed present by a second reader (WebFetch).",
+      "notes": "Primary wording, complete sentence under the heading 'Revenue': 'Guidance assumes United’s revenue recovers 40% to 50% of the fuel price increases in the second quarter, 70% to 80% of the fuel price increases in the third quarter and 85% to 100% of the fuel price increases in the fourth quarter 2026.' This confirms the secondary report in the lead (40-50%, 70-80%, 85-100%). It is worded as an assumption behind the guidance, about revenue recovering 'fuel price increases', with no formula, no baseline and no statement of which revenue counts. The fuel assumption is 'the Gulf Coast jet forward curve as of Friday, April 17, 2026'. The apostrophe in 'United’s' is typographic in the fetched text."
+    },
+    {
+      "id": "ual-2026q1-earnings-release",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "First-quarter 2026 earnings news release, April 21, 2026 (Exhibit 99.1 to Form 8-K)",
+      "venue": "SEC EDGAR, accession 0000100517-26-000089",
+      "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000089/ual_erx03312026xex991.htm",
+      "kind": "filing",
+      "relevance": "guidance_claim",
+      "also_relevant": [],
+      "finding": "United's first-quarter 2026 release reports a $340 million year-over-year increase in fuel expense and says its capacity and revenue initiatives are intended to recapture it over the long term, without giving a percentage.",
+      "numbers": [
+        {
+          "label": "Increase in fuel expense, 2026Q1 versus 2025Q1",
+          "value": 340,
+          "unit": "USD millions",
+          "quote": "including a $340 million increase in fuel expense compared to the first quarter of 2025"
+        },
+        {
+          "label": "Average fuel price per gallon, 2026Q1",
+          "value": 2.78,
+          "unit": "USD per gallon",
+          "quote": "Average fuel price per gallon of $2.78."
+        },
+        {
+          "label": "TRASM change, 2026Q1",
+          "value": 6.9,
+          "unit": "percent year over year",
+          "quote": "TRASM up 6.9% compared to first-quarter 2025."
+        }
+      ],
+      "sample": {
+        "period": "2026Q1, released 2026-04-21",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "sec.gov exhibit read with the Exa fetch tool (first 7,000 characters); each quoted string was confirmed present by a second reader (WebFetch), which also found no quarter-specific recovery percentage in the release.",
+      "notes": "Wording: 'United's capacity and revenue initiatives are intended to recapture this increase over the long term'. The percentages are in the Investor Update furnished with the same 8-K (ual-2026q1-investor-update)."
+    },
+    {
+      "id": "ual-2026q1-earnings-call",
+      "authors": "United Airlines Holdings, Inc. (S. Kirby, A. Nocella, M. Leskinen)",
+      "year": 2026,
+      "title": "First-quarter 2026 earnings conference call, April 22, 2026 (transcript)",
+      "venue": "The Motley Fool transcript",
+      "url": "https://www.fool.com/earnings/call-transcripts/2026/06/02/united-airlines-ual-q1-2026-earnings-transcript/",
+      "kind": "transcript",
+      "relevance": "guidance_claim",
+      "also_relevant": [
+        "lag",
+        "hedging"
+      ],
+      "finding": "On the April 2026 call United's management said it expects to recapture 40% to 50% of the increased fuel cost in the second quarter, 70% to 80% in the third and 85% to 100% by the fourth, and that recovering 100% requires yields to rise by about 15% to 20%.",
+      "numbers": [
+        {
+          "label": "Expected recapture, 2026Q2 (CFO), low",
+          "value": 40,
+          "unit": "percent of the increased fuel cost",
+          "quote": "recapture 40% to 50% of the increased fuel cost in the second quarter, 70% to 80% in the third quarter"
+        },
+        {
+          "label": "Expected recapture, 2026Q3 (CFO), low",
+          "value": 70,
+          "unit": "percent of the increased fuel cost",
+          "quote": "recapture 40% to 50% of the increased fuel cost in the second quarter, 70% to 80% in the third quarter"
+        },
+        {
+          "label": "Expected recapture, 2026Q3 (CFO), high",
+          "value": 80,
+          "unit": "percent of the increased fuel cost",
+          "quote": "recapture 40% to 50% of the increased fuel cost in the second quarter, 70% to 80% in the third quarter"
+        },
+        {
+          "label": "Expected recapture, 2026Q4 (CFO), low",
+          "value": 85,
+          "unit": "percent of the increased fuel cost",
+          "quote": "and 85% to 100% by the fourth quarter"
+        },
+        {
+          "label": "Yield increase needed to recover 100% of fuel costs (CEO), low",
+          "value": 15,
+          "unit": "percent increase in yields",
+          "quote": "to recover 100% of fuel costs, yields need to increase by about 15% to 20%"
+        },
+        {
+          "label": "Yield increase needed to recover 100% of fuel costs (CEO), high",
+          "value": 20,
+          "unit": "percent increase in yields",
+          "quote": "to recover 100% of fuel costs, yields need to increase by about 15% to 20%"
+        },
+        {
+          "label": "Share of 2026Q2 capacity sold before the fuel price rise",
+          "value": 23,
+          "unit": "percent of capacity",
+          "quote": "we sold 23% of our Q2 and 8% of our Q3 capacity at lower price points prior to the rise in jet fuel costs"
+        },
+        {
+          "label": "Share of 2026Q3 capacity sold before the fuel price rise",
+          "value": 8,
+          "unit": "percent of capacity",
+          "quote": "we sold 23% of our Q2 and 8% of our Q3 capacity at lower price points prior to the rise in jet fuel costs"
+        },
+        {
+          "label": "Sell-in yields for future travel, latest week",
+          "value": 20,
+          "unit": "percent year over year",
+          "quote": "sell-in yields for all future travel are now up 20% year-over-year"
+        },
+        {
+          "label": "Higher fuel bill in 2026Q1",
+          "value": 340,
+          "unit": "USD millions",
+          "quote": "even with a $340 million higher fuel bill in the quarter"
+        },
+        {
+          "label": "Fuel price assumed for 2026Q2",
+          "value": 4.3,
+          "unit": "USD per gallon",
+          "quote": "anchored by an all-in fuel average price of approximately $4.30 per gallon"
+        }
+      ],
+      "sample": {
+        "period": "call held 2026-04-22, about 2026Q1 results and the 2026 outlook",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "secondary",
+      "read_via": "Transcript page downloaded and machine-checked. Marked secondary because it is a third-party transcription of management's remarks; the same passages were seen in several other transcripts through the search tool.",
+      "notes": "How United frames recovery here, since no formula is given: the CEO said 'our goal is to do whatever it takes to recover 100% of the increase in jet fuel prices as quickly as possible' and 'to recover 100% of fuel costs, yields need to increase by about 15% to 20%', and tied it to cutting capacity; so recovery is framed as higher yields (prices) covering the higher fuel cost. He also said 'Realistically, there probably isn't enough time to make up 100% of the fuel price increase this year.' The lag is explained by seats already sold at old prices (23% of Q2, 8% of Q3). The chief commercial officer said 'fuel is a pass-through' and 'in 2Q, we expect to recover between 40% and 50% of the current increase'. An analyst asked how quickly United recovered the 2022 fuel spike; no number was given in the answer. The CFO said 'hedging is a poor policy'. Transcription differences: two other transcripts print 'capture' where this one prints 'recapture' in the CFO's sentence."
+    },
+    {
+      "id": "ual-2026q2-investor-update",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "Investor Update, issue date July 15, 2026 (Exhibit 99.2 to Form 8-K)",
+      "venue": "SEC EDGAR, accession 0000100517-26-000135",
+      "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex992.htm",
+      "kind": "filing",
+      "relevance": "guidance_claim",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "On 15 July 2026 United said it expects to recover 80% to 90% of the fuel price increase in the third quarter and 100% by the fourth quarter of 2026, with third-quarter guidance built on a fuel price of about $3.69 per gallon.",
+      "numbers": [
+        {
+          "label": "Expected recovery, 2026Q3, low",
+          "value": 80,
+          "unit": "percent of the fuel price increase",
+          "quote": "recover 80% to 90% of the fuel price increase in the third quarter and 100% of the fuel price increase by the fourth quarter"
+        },
+        {
+          "label": "Expected recovery, 2026Q3, high",
+          "value": 90,
+          "unit": "percent of the fuel price increase",
+          "quote": "recover 80% to 90% of the fuel price increase in the third quarter and 100% of the fuel price increase by the fourth quarter"
+        },
+        {
+          "label": "Expected recovery by 2026Q4",
+          "value": 100,
+          "unit": "percent of the fuel price increase",
+          "quote": "recover 80% to 90% of the fuel price increase in the third quarter and 100% of the fuel price increase by the fourth quarter"
+        },
+        {
+          "label": "Assumed all-in average fuel price, 2026Q3",
+          "value": 3.69,
+          "unit": "USD per gallon",
+          "quote": "assumes an all-in average fuel price per gallon of approximately $3.69 based on the Gulf Coast jet forward curve as of July 14, 2026"
+        },
+        {
+          "label": "Increase in third-quarter fuel cost since the beginning of July",
+          "value": 575,
+          "unit": "USD millions",
+          "quote": "fuel for the Company has increased $575 million or $1.12 in adjusted diluted earnings per share"
+        },
+        {
+          "label": "The same increase expressed per share",
+          "value": 1.12,
+          "unit": "USD of adjusted diluted earnings per share",
+          "quote": "fuel for the Company has increased $575 million or $1.12 in adjusted diluted earnings per share"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, 2026Q3, low",
+          "value": 2.5,
+          "unit": "USD per share",
+          "quote": "of $2.50-$3.50 for the third quarter of 2026 and $9.00-$11.00 for the full year 2026"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, 2026Q3, high",
+          "value": 3.5,
+          "unit": "USD per share",
+          "quote": "of $2.50-$3.50 for the third quarter of 2026 and $9.00-$11.00 for the full year 2026"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, full year 2026, low",
+          "value": 9.0,
+          "unit": "USD per share",
+          "quote": "of $2.50-$3.50 for the third quarter of 2026 and $9.00-$11.00 for the full year 2026"
+        },
+        {
+          "label": "Adjusted diluted EPS guidance, full year 2026, high",
+          "value": 11.0,
+          "unit": "USD per share",
+          "quote": "of $2.50-$3.50 for the third quarter of 2026 and $9.00-$11.00 for the full year 2026"
+        },
+        {
+          "label": "Profit sharing accrual expected, 2026Q3, low",
+          "value": 135,
+          "unit": "USD millions",
+          "quote": "the Company expects to accrue between $135 million and $220 million in the third quarter of 2026"
+        },
+        {
+          "label": "Profit sharing accrual expected, 2026Q3, high",
+          "value": 220,
+          "unit": "USD millions",
+          "quote": "the Company expects to accrue between $135 million and $220 million in the third quarter of 2026"
+        },
+        {
+          "label": "TRASM growth, 2026Q2, which Q3 and Q4 are expected to exceed",
+          "value": 12.1,
+          "unit": "percent year over year",
+          "quote": "growth to exceed the second quarter 2026, which was up 12.1% year-over-year"
+        },
+        {
+          "label": "Share-based compensation used in the profit sharing calculation, 2026Q3",
+          "value": 40,
+          "unit": "USD millions",
+          "quote": "will be approximately $40 million for the third quarter of 2026"
+        }
+      ],
+      "sample": {
+        "period": "guidance for 2026Q3, 2026Q4 and full year 2026, issued 2026-07-15",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "sec.gov exhibit read in full with the Exa fetch tool; each quoted string was then confirmed present by a second reader (WebFetch). Quotes stop before superscript footnote markers.",
+      "notes": "Primary wording, complete sentence under the heading 'Revenue': 'The Company expects to recover 80% to 90% of the fuel price increase in the third quarter and 100% of the fuel price increase by the fourth quarter of 2026.' The exhibit does not define 'recover', does not say against which baseline the 'fuel price increase' is measured, and does not say how much of the second-quarter increase was recovered (that is in the news release, ual-2026q2-earnings-release). Fuel: 'the Company is introducing a new policy to base its guidance on the most current fuel prices'; the $575 million or $1.12 is the increase 'Since the beginning of July' and 'for the third quarter alone'. United expects to be above the high end of the EPS ranges 'if fuel prices return to early July prices'. Profit sharing is the sum of three tiers: about 3.6% of adjusted pre-tax earnings up to and above a 6.9% margin, about 6.0% up to $2.5 billion and about 12.0% above it, and about 3.3% of earnings above the prior year's."
+    },
+    {
+      "id": "ual-2026q2-earnings-release",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "Second-quarter 2026 earnings news release, July 15, 2026 (Exhibit 99.1 to Form 8-K)",
+      "venue": "SEC EDGAR, accession 0000100517-26-000135",
+      "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000135/ual_erx06302026xex991.htm",
+      "kind": "filing",
+      "relevance": "guidance_claim",
+      "also_relevant": [
+        "pass_through"
+      ],
+      "finding": "United reported that second-quarter 2026 fuel expense was up $2.3 billion, or 84%, year over year and that the Company recovered approximately half of this increase.",
+      "numbers": [
+        {
+          "label": "Share of the second-quarter fuel expense increase recovered (stated as 'approximately half')",
+          "value": 50,
+          "unit": "percent of the year-over-year fuel expense increase (approximate, stated in words)",
+          "quote": "In the second quarter fuel expense was up $2.3 billion, or 84% year-over-year and the Company recovered approximately half of this increase."
+        },
+        {
+          "label": "Increase in fuel expense, 2026Q2 versus 2025Q2",
+          "value": 2.3,
+          "unit": "USD billions",
+          "quote": "In the second quarter fuel expense was up $2.3 billion, or 84% year-over-year and the Company recovered approximately half of this increase."
+        },
+        {
+          "label": "Increase in fuel expense, 2026Q2 versus 2025Q2, percent",
+          "value": 84,
+          "unit": "percent",
+          "quote": "In the second quarter fuel expense was up $2.3 billion, or 84% year-over-year and the Company recovered approximately half of this increase."
+        },
+        {
+          "label": "Expected recovery, 2026Q3, low",
+          "value": 80,
+          "unit": "percent of the increase",
+          "quote": "In the third quarter the Company expects to recover approximately 80% to 90% of the increase, and 100% by the fourth quarter."
+        },
+        {
+          "label": "Expected recovery, 2026Q3, high",
+          "value": 90,
+          "unit": "percent of the increase",
+          "quote": "In the third quarter the Company expects to recover approximately 80% to 90% of the increase, and 100% by the fourth quarter."
+        },
+        {
+          "label": "Added fuel expense expected for full-year 2026 versus the start-of-year expectation",
+          "value": 6,
+          "unit": "USD billions (stated as 'nearly')",
+          "quote": "United expects nearly $6 billion in added fuel expense for full-year 2026 compared to the expectation at the start of the year"
+        },
+        {
+          "label": "Average fuel price per gallon, 2026Q2",
+          "value": 4.19,
+          "unit": "USD per gallon",
+          "quote": "Average fuel price per gallon of $4.19."
+        },
+        {
+          "label": "Total operating revenue, 2026Q2",
+          "value": 17.7,
+          "unit": "USD billions (up 16.0 percent)",
+          "quote": "Total operating revenue of $17.7 billion, up 16.0% compared to second-quarter 2025."
+        },
+        {
+          "label": "TRASM change, 2026Q2",
+          "value": 12.1,
+          "unit": "percent year over year",
+          "quote": "TRASM up 12.1% compared to second-quarter 2025."
+        },
+        {
+          "label": "Capacity change, 2026Q2",
+          "value": 3.5,
+          "unit": "percent year over year",
+          "quote": "Capacity up 3.5% compared to second-quarter 2025."
+        },
+        {
+          "label": "Yield change, 2026Q2",
+          "value": 12,
+          "unit": "percent",
+          "quote": "Yields were up 12% during the quarter"
+        }
+      ],
+      "sample": {
+        "period": "2026Q2, released 2026-07-15",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "sec.gov exhibit read with the Exa fetch tool (text and the start of the statement of operations); each quoted string and the three table rows cited in the notes were confirmed by a second reader (WebFetch).",
+      "notes": "This is the only primary statement found of how much was actually recovered, and the only one that names the base: the year-over-year increase in fuel expense. United gives no formula and does not say which revenue is counted or what revenue it would have had without the fuel shock; a second reader asked directly whether the release defines the calculation answered no. Check on the definition, using only this release's statement of operations (three months ended June 30, USD millions): aircraft fuel 5,110 versus 2,775; total operating revenue 17,672 versus 15,236; passenger revenue 16,100 versus 13,836. Our arithmetic: fuel rose 2,335, total revenue rose 2,436 and passenger revenue rose 2,264, so raw revenue growth was about 1.04 times (total) or 0.97 times (passenger) the fuel increase. 'Approximately half' therefore cannot be the raw ratio of revenue growth to fuel growth; United must be netting out revenue it would have earned anyway (capacity growth, underlying demand), and that baseline is not disclosed. Our recovery measure needs its own stated baseline and should be compared with United's claim on that understanding. The full-year figure uses a different base ('compared to the expectation at the start of the year', at oil prices as of July 14)."
+    },
+    {
+      "id": "ual-2026q2-earnings-call",
+      "authors": "United Airlines Holdings, Inc. (S. Kirby, A. Nocella, M. Leskinen)",
+      "year": 2026,
+      "title": "Second-quarter 2026 earnings conference call, July 16, 2026 (transcript)",
+      "venue": "AlphaStreet transcript",
+      "url": "https://news.alphastreet.com/united-airlines-holdings-inc-ual-q2-2026-earnings-call-transcript/",
+      "kind": "transcript",
+      "relevance": "guidance_claim",
+      "also_relevant": [
+        "asymmetry",
+        "lag"
+      ],
+      "finding": "On the July 2026 call United's CFO said the airline recaptured 50% of the increase in fuel expense in the second quarter and expects to recover 80% to 90% in the third quarter and all of it by the fourth.",
+      "numbers": [
+        {
+          "label": "Share of the second-quarter fuel expense increase recaptured (CFO)",
+          "value": 50,
+          "unit": "percent of the increase in fuel expense",
+          "quote": "In the quarter, we were able to recapture 50% of the increase in fuel expense."
+        },
+        {
+          "label": "Expected recovery, 2026Q3 (CFO), low",
+          "value": 80,
+          "unit": "percent",
+          "quote": "we expect to recover 80% to 90% in the third quarter and full recovery by the fourth quarter"
+        },
+        {
+          "label": "Expected recovery, 2026Q3 (CFO), high",
+          "value": 90,
+          "unit": "percent",
+          "quote": "we expect to recover 80% to 90% in the third quarter and full recovery by the fourth quarter"
+        },
+        {
+          "label": "Second-quarter revenue growth cited with 'about half' recovery (CEO)",
+          "value": 16,
+          "unit": "percent",
+          "quote": "second quarter revenues up 16%, recovering about half the increase in fuel price for the period"
+        },
+        {
+          "label": "Year-over-year fuel headwind, 2026Q2",
+          "value": 2.3,
+          "unit": "USD billions",
+          "quote": "despite a $2.3 billion year-over-year headwind from fuel"
+        },
+        {
+          "label": "Fuel price underpinning 2026Q3 guidance",
+          "value": 3.69,
+          "unit": "USD per gallon",
+          "quote": "underpinned with an all-in fuel price of approximately $3.69, based on Tuesday’s curve"
+        },
+        {
+          "label": "July fuel price spike in EPS terms (CEO)",
+          "value": 1.12,
+          "unit": "USD per share",
+          "quote": "The fuel price spike this month is equal to $1.12 of EPS."
+        },
+        {
+          "label": "Fuel price increase since early July, low",
+          "value": 15,
+          "unit": "percent",
+          "quote": "Since early July, fuel prices have increased 15% to 20%, and our guidance reflects that pressure."
+        },
+        {
+          "label": "Fuel price increase since early July, high",
+          "value": 20,
+          "unit": "percent",
+          "quote": "Since early July, fuel prices have increased 15% to 20%, and our guidance reflects that pressure."
+        },
+        {
+          "label": "Share of third-quarter capacity already booked",
+          "value": 58,
+          "unit": "percent",
+          "quote": "Currently, we’re booked about 58% booked through Q3"
+        },
+        {
+          "label": "Share of the price increase the CEO attributes to structural cost increases rather than capacity",
+          "value": 90,
+          "unit": "percent of the price increase",
+          "quote": "90% of it is the structural change that happened with cost increases."
+        }
+      ],
+      "sample": {
+        "period": "call held 2026-07-16, about 2026Q2 results and the 2026Q3 and Q4 outlook",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "secondary",
+      "read_via": "Transcript page downloaded and machine-checked. Marked secondary because it is a third-party transcription; the same passages were seen in four other transcripts through the search tool.",
+      "notes": "No definition of recovery is given on the call; a word search of the transcript for recover, recapture, pass-through and offset finds only the statements quoted here. The CEO says revenue growth is 'recovering about half the increase in fuel price' and the CFO says 'recapture 50% of the increase in fuel expense', so price and expense are used interchangeably. Two remarks cut against a clean attribution of revenue gains to fuel. Asked why prices have gone up, the CEO answered 'It’s not fuel price, and it’s not capacity' and attributed about 90% to structural cost inflation shared by all airlines. He also described the asymmetry directly: 'There was another fare increase this week as fuel started to go back up, and there were no fare decreases when fuel went down.' The CFO expects 'crack spreads to remain elevated for the remainder of the year'."
+    },
+    {
+      "id": "ual-2026q2-10q",
+      "authors": "United Airlines Holdings, Inc.",
+      "year": 2026,
+      "title": "Quarterly Report on Form 10-Q for the quarter ended June 30, 2026 (filed 2026-07-16), Item 2 passages",
+      "venue": "SEC EDGAR, accession 0000100517-26-000139 (Item 2 read on a mirror)",
+      "url": "https://ebs.publicnow.com/view/3C0110D0DFA3EF64FBC6A69D93FDCD2A5DFE3B32",
+      "kind": "filing",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "guidance_claim"
+      ],
+      "finding": "United's second-quarter 2026 10-Q attributes a $2.3 billion (84.1%) rise in fuel expense mainly to a higher price per gallon and a $2.3 billion (16.4%) rise in passenger revenue mainly to a 12.1% increase in yield; no recovery percentage was found in the passages read.",
+      "numbers": [
+        {
+          "label": "Increase in aircraft fuel expense, 2026Q2 versus 2025Q2",
+          "value": 2.3,
+          "unit": "USD billions (84.1 percent)",
+          "quote": "Aircraft fuel expense increased $2.3 billion, or 84.1%, in the second quarter of 2026 as compared to the year-ago period"
+        },
+        {
+          "label": "Increase in passenger revenue, 2026Q2 versus 2025Q2",
+          "value": 2.3,
+          "unit": "USD billions (16.4 percent)",
+          "quote": "Passenger revenue increased $2.3 billion, or 16.4%, in the second quarter of 2026 as compared to the year-ago period"
+        },
+        {
+          "label": "Increase in yield, 2026Q2",
+          "value": 12.1,
+          "unit": "percent",
+          "quote": "primarily due to a 12.1% increase in yield and a 5.4% increase in the number of passengers flown"
+        },
+        {
+          "label": "Increase in passengers flown, 2026Q2",
+          "value": 5.4,
+          "unit": "percent",
+          "quote": "primarily due to a 12.1% increase in yield and a 5.4% increase in the number of passengers flown"
+        }
+      ],
+      "sample": {
+        "period": "2026Q2 (three months ended June 30, 2026) versus 2025Q2",
+        "geography": "United Airlines system",
+        "frequency": "quarterly"
+      },
+      "verified": true,
+      "quality": "primary",
+      "read_via": "Item 2 sentences were seen as verbatim excerpts returned by the Exa search tool from a mirror of the filing (the listed url) and from a second mirror (app.edgar.tools). The sec.gov copy (https://www.sec.gov/Archives/edgar/data/100517/000010051726000139/ual-20260630.htm) was fetched but its text stopped before Item 2; its income statement matches the release. A direct download of the mirror was blocked, so these quotes were not machine-checked.",
+      "notes": "Only excerpts of Item 2 were read, so the absence of a recovery definition in the 10-Q is not established. The same excerpts show the operating statistics row for average price per gallon of fuel including taxes: $4.19 versus $2.34, up 79.4%. Conversion to a recovery share (formula only): share recovered = (passenger or total revenue in the quarter minus the revenue United would have had without the fuel shock) divided by (fuel expense in the quarter minus the fuel expense it would have had without the shock). The filing gives actual revenue and actual fuel expense for both years but neither no-shock baseline, so the share is not computed here; see ual-2026q2-earnings-release for the raw year-over-year changes."
+    },
+    {
+      "id": "ubs-2026-03-ual-pass-through-45",
+      "authors": "UBS (analyst Atul Maheswari), as quoted in a news article",
+      "year": 2026,
+      "title": "UBS Eyes Possible Bottom In Airline Stocks After Bear Market",
+      "venue": "Longbridge news page dated 2026-03-17 (the same text appears on freedombunker.com with that date)",
+      "url": "https://longbridge.com/en/news/279467992.md",
+      "kind": "analyst_note_secondary",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "guidance_claim"
+      ],
+      "finding": "A UBS note from mid-March 2026, as quoted in a news article, assumed about 45% fuel pass-through for United for fiscal 2026 when it cut its estimates.",
+      "numbers": [
+        {
+          "label": "UBS assumed fuel pass-through rate for United, fiscal 2026",
+          "value": 45,
+          "unit": "percent (approximate)",
+          "quote": "We assume ~45% fuel pass through rates for UAL for FY'26."
+        },
+        {
+          "label": "UBS fiscal 2026 EPS estimate for United after the cut",
+          "value": 10.22,
+          "unit": "USD per share (was 13.56)",
+          "quote": "UAL: We lower FY'26 EPS estimate to $10.22 from $13.56 while our FY'27 EPS estimate goes to $14.87 from $16.28."
+        },
+        {
+          "label": "UBS price target for United after the cut",
+          "value": 134,
+          "unit": "USD per share (was 147)",
+          "quote": "Our new PT is $134 vs. $147 previously."
+        },
+        {
+          "label": "RASM increase UBS says is needed to offset each $0.25 per gallon of fuel, low",
+          "value": 200,
+          "unit": "basis points of RASM per 0.25 USD per gallon",
+          "quote": "for every $0.25/gallon increase in fuel RASM would need to increase by 200-250 bps to fully offset the fuel drag"
+        },
+        {
+          "label": "RASM increase UBS says is needed to offset each $0.25 per gallon of fuel, high",
+          "value": 250,
+          "unit": "basis points of RASM per 0.25 USD per gallon",
+          "quote": "for every $0.25/gallon increase in fuel RASM would need to increase by 200-250 bps to fully offset the fuel drag"
+        },
+        {
+          "label": "UBS assumed pass-through for Delta, fiscal 2026",
+          "value": 50,
+          "unit": "percent",
+          "quote": "assuming 50% pass through of higher fuel costs"
+        }
+      ],
+      "sample": {
+        "period": "note published around 2026-03-16, assumption for fiscal 2026",
+        "geography": "United States airlines",
+        "frequency": "annual"
+      },
+      "verified": true,
+      "quality": "secondary",
+      "read_via": "News page downloaded and machine-checked; it reproduces bullet points attributed to the UBS note. The UBS note itself was not seen (see ubs-2026-03-original-note).",
+      "notes": "Confirms the lead (about 45%) at the level of a secondary report. The excerpt does not define the pass-through rate; from the sentence on RASM it appears to mean the share of higher fuel cost offset by higher unit revenue. It is a full-year average made five weeks before United published its own quarterly path, and before the July fuel move. Conversion: if the rate is the share of the fuel cost increase offset by revenue, it is already in our units as a full-year average; it says nothing about the quarterly profile."
+    },
+    {
+      "id": "ubs-2026-03-investing-com-range",
+      "authors": "Investing.com (Sam Boughedda), reporting a UBS note by Atul Maheswari",
+      "year": 2026,
+      "title": "UBS cuts price targets on airline stocks amid 'significant uncertainty'",
+      "venue": "Investing.com article republished on Yahoo Finance Canada, March 16, 2026",
+      "url": "https://ca.finance.yahoo.com/news/ubs-cuts-price-targets-airline-144817964.html",
+      "kind": "analyst_note_secondary",
+      "relevance": "pass_through",
+      "also_relevant": [],
+      "finding": "A news report of the same UBS note says UBS assumed fuel pass-through rates of 30% to 50% across U.S. airlines and jet fuel of roughly $3 per gallon in the second half of 2026.",
+      "numbers": [
+        {
+          "label": "UBS assumed fuel pass-through rates across its airline coverage, low",
+          "value": 30,
+          "unit": "percent",
+          "quote": "UBS now assumes roughly $3-per-gallon jet fuel in the second half of 2026 and fuel pass-through rates of 30% to 50%"
+        },
+        {
+          "label": "UBS assumed fuel pass-through rates across its airline coverage, high",
+          "value": 50,
+          "unit": "percent",
+          "quote": "UBS now assumes roughly $3-per-gallon jet fuel in the second half of 2026 and fuel pass-through rates of 30% to 50%"
+        },
+        {
+          "label": "UBS assumed jet fuel price, second half of 2026",
+          "value": 3,
+          "unit": "USD per gallon (approximate)",
+          "quote": "UBS now assumes roughly $3-per-gallon jet fuel in the second half of 2026 and fuel pass-through rates of 30% to 50%"
+        },
+        {
+          "label": "UBS price target for United",
+          "value": 134,
+          "unit": "USD per share (was 147)",
+          "quote": "United to $134 from $147"
+        }
+      ],
+      "sample": {
+        "period": "article dated 2026-03-16",
+        "geography": "United States airlines",
+        "frequency": "annual"
+      },
+      "verified": true,
+      "quality": "secondary",
+      "read_via": "News page downloaded and machine-checked.",
+      "notes": "This report gives only the range across airlines, not United's 45%. The fuel assumption (about $3 in the second half) is far below the $3.69 United assumed for the third quarter in July, so the earnings estimates in this note predate the fuel prices United now guides on."
+    },
+    {
+      "id": "ubs-2026-03-original-note",
+      "authors": "UBS (analyst Atul Maheswari)",
+      "year": 2026,
+      "title": "UBS research note on U.S. airlines lowering estimates and price targets (title not known)",
+      "venue": "UBS research (client distribution)",
+      "url": null,
+      "kind": "analyst_note_secondary",
+      "relevance": "pass_through",
+      "also_relevant": [],
+      "finding": "The original UBS note that reportedly assumes about 45% fuel pass-through for United could not be opened.",
+      "numbers": [],
+      "sample": {
+        "period": "reported as published on Monday 2026-03-16",
+        "geography": "United States airlines",
+        "frequency": "annual"
+      },
+      "verified": false,
+      "quality": "secondary",
+      "read_via": "Not read.",
+      "notes": "Not verified: bank research is distributed to clients and no public copy was found, so the note's own wording, its definition of pass-through and its figure 1 and figure 2 were not seen. Everything recorded about it comes from the two news reports above."
+    },
+    {
+      "id": "shi-2017-cited-in-dong",
+      "authors": "Shi (2017), as cited in Dong (2024)",
+      "year": 2017,
+      "title": "Not identified; cited as 'Shi (2017)' in Dong's thesis literature review",
+      "venue": "Unknown (original not located)",
+      "url": "https://ruor.uottawa.ca/bitstreams/71a0c993-c632-4bbd-9446-3bffa8dbaf3d/download",
+      "kind": "paper",
+      "relevance": "pass_through",
+      "also_relevant": [
+        "lag"
+      ],
+      "finding": "According to Dong's thesis, an earlier study found that a 10% increase in fuel cost raises airfare by 1.2% in the same quarter and by 1.7% over the next four quarters in total.",
+      "numbers": [
+        {
+          "label": "Same-quarter fare change for a 10% fuel cost increase, as reported second-hand",
+          "value": 1.2,
+          "unit": "percent change in airfare per 10 percent change in fuel cost",
+          "quote": "a 10% increase in the fuel cost will boost the final airfare by 1.2% in the same quarter"
+        },
+        {
+          "label": "Total effect over the next four quarters, as reported second-hand",
+          "value": 1.7,
+          "unit": "percent change in airfare per 10 percent change in fuel cost",
+          "quote": "with a total effect for the next four quarters adding up to 1.7%"
+        }
+      ],
+      "sample": {
+        "period": "not known",
+        "geography": "not known",
+        "frequency": "quarterly, as described"
+      },
+      "verified": false,
+      "quality": "secondary",
+      "read_via": "Only the one-sentence summary in Dong's thesis was read (machine-checked against the thesis text).",
+      "notes": "Not verified: the original paper was not located or opened, and its full reference was not captured. The figures are Dong's summary and are about seven times Dong's own same-quarter estimate for legacy carriers, so they should not be plotted as a published estimate until the original is read."
+    }
+  ]
+}
