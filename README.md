@@ -63,6 +63,12 @@ difference between them is the airline's response and nothing else:
 - **Fuel price.** By the end of a quarter the fuel model is 6 cents a gallon from
   the price United later reports. United's stated assumption is 25 cents away
   (8 quarters).
+- **Are the ranges the right width?** With the assumed demand noise, the
+  simulator's 80% range held 25 of United's 33 unit-revenue outcomes in 2022-2026
+  (76%) and 28 of 33 operating-margin outcomes (85%). It held every outcome in
+  the calm years before 2020, so it is too wide for calm markets. Fuel
+  volatility, measured over the 65 trading days before the cutoff (2.3 times as
+  volatile as 2013-2019), sets most of the width.
 - **Delta, Q3 2026.** Guided $2.00 to $2.50 at about $3.15 a gallon, paid $3.61,
   reported $1.72 on 9 October. No recovery gives $1.65; the measured share gives
   $1.88.
@@ -90,6 +96,10 @@ Reported in the app and the report, not removed:
 - On earnings, marking guidance to fuel tied the midpoint (above).
 - The fuel model's ranges held the reported price in 3 of 10 test quarters.
 - No capacity response and no tradable delay in the stock were found.
+- A demand-noise value fitted on 2013-2019 covered only 61% of later outcomes
+  and was set aside for the assumed one.
+- The simulator has no seasonality: every quarter looks alike, while United's
+  first quarter is much weaker than its second.
 - A placeholder check in the agent can pass a figure placed beside the wrong words.
 
 ## Against the Stage 1 proposal
