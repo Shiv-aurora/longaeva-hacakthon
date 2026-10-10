@@ -2151,7 +2151,7 @@
       seal.appendChild(el("span", null, [el("b", { text: days != null && days < 0 ? "Reported " : "Next check " }), fmt.day(meta.report_date) +
         (days == null ? "" : days > 1 ? ", in " + days + " days" : days === 1 ? ", tomorrow" : days === 0 ? ", today" : "")]));
     }
-    seal.appendChild(el("span", null, [el("b", { text: "Frozen " }), fmt.stamp(c.frozen_at)]));
+    seal.appendChild(el("span", null, [el("b", { text: "Frozen " }), fmt.day(c.frozen_at)]));   // the exact time is in the drawer
     if (c.sha256) seal.appendChild(el("span", { title: "The estimate's fingerprint, first 12 characters. Copy gives all 64: " + c.sha256 }, [el("b", { text: "SHA-256 " }), el("span", { class: "hash", text: fmt.hashShort(c.sha256) }), " ", copyButton(c.sha256)]));
     if (c.timestamp_proof && !FIXTURES) seal.appendChild(el("a", { href: DATA + c.timestamp_proof, download: true, text: "Proof (.ots)" }));
 
