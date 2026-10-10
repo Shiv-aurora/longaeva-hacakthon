@@ -9,7 +9,8 @@ def test_judge_entry_points_have_real_controls_and_warnings():
     landing = client.get("/")
     monthly = client.get("/monthly")
     assert landing.status_code == monthly.status_code == 200
-    assert landing.content == monthly.content
+    assert landing.content == client.get("/lab").content
+    assert monthly.content == client.get("/research").content
     assert 'role="tablist"' in monthly.text
     assert 'id="judgeDemo"' in monthly.text
     assert 'id="judgeSummary"' in monthly.text

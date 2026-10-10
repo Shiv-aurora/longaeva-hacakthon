@@ -19,8 +19,10 @@ def test_simulate_endpoint_and_validation():
 
 def test_website_and_template():
     assert client.get('/').status_code==200
-    assert client.get('/').content == client.get('/monthly').content
-    assert b'monthly.js' in client.get('/').content
+    assert client.get('/').content == client.get('/lab').content
+    assert b'lab.js' in client.get('/').content
+    assert client.get('/monthly').content == client.get('/research').content
+    assert b'monthly.js' in client.get('/monthly').content
     assert client.get('/fuel-pilot').status_code==200
     assert b'Price shocks.' in client.get('/fuel-pilot').content
     assert client.get('/static/quotes_template.csv').status_code==200

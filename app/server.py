@@ -227,7 +227,7 @@ class TargetInversionPayload(BaseModel):
 
 @app.get("/")
 def index():
-    return FileResponse(STATIC / "monthly.html")
+    return FileResponse(STATIC / "lab" / "index.html")
 
 @app.get("/lab")
 def lab_index():
