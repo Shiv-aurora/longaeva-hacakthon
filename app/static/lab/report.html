@@ -8,12 +8,13 @@
   <meta name="description" content="How the United Airlines simulator works, what was measured from history to build it, how it is checked against reality, and where it fails.">
   <link rel="icon" href="data:,">
   <script>
-    /* Apply a saved theme before first paint so the page never flashes. */
+    /* Light is the default; dark applies only once a visitor has chosen it with the toggle. Set before first paint so the page never flashes. */
     (function () {
+      var theme = "light";
       try {
-        var saved = localStorage.getItem("lab-theme");
-        if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
-      } catch (error) { /* storage can be unavailable; the system setting still applies */ }
+        if (localStorage.getItem("lab-theme") === "dark") theme = "dark";
+      } catch (error) { /* storage can be unavailable; the page stays light */ }
+      document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
   <link rel="preload" href="/static/lab/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
