@@ -1,0 +1,22 @@
+{
+  "version": "utilization-selection-spec-0.1.0",
+  "target": "quarterly P52 airborne hours / aircraft days assigned, summed across detailed financial regions and passenger/combined aircraft configurations within a certificate carrier and NB/WB group",
+  "carriers": ["UA", "DL", "AA"],
+  "groups": ["narrowbody", "widebody"],
+  "fit_first": "2013-Q1",
+  "fit_last": "2019-Q4",
+  "selection_first": "2020-Q1",
+  "selection_last": "2023-Q4",
+  "locked_first": "2024-Q1",
+  "horizons_quarters": [1, 2, 4],
+  "ridge_penalties": [0.1, 1.0, 10.0, 100.0],
+  "features": "intercept, utilization lag 1 and lag 4, five series offsets, group-specific Q2/Q3/Q4 seasonal offsets; feature standardization fitted on training rows only",
+  "baselines": ["seasonal_persistence", "fixed_training_seasonal_mean"],
+  "selection_metric": "equal-weight mean of series-by-horizon MAE across the common eligible origin/target set; ties use the first declared ridge penalty",
+  "forecast_rule": "frozen training coefficients; recursive multi-quarter predictions without intermediate future observations; bounded [0,24] airborne hours/day",
+  "point_scores": ["MAE", "RMSE", "mean_error"],
+  "regimes": {"2020": "disruption", "2021": "disruption", "2022": "recovery", "2023": "recovery"},
+  "uncertainty": "No calibrated forecast intervals or causal claims in this first estimation artifact. Residual/parameter uncertainty and whole-engine evaluation remain required.",
+  "vintage": "October 2026 current-download reconstruction; no historical as-of claim",
+  "frozen_before_selection_run": true
+}
