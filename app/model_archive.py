@@ -239,8 +239,18 @@ def replay_saved(path, kind, archive_root=ARCHIVE_ROOT):
     descriptor = verify_bundle(bundle_id, kind, root)
     if descriptor["code_sha256"] != m["code_sha256"] or m["python_version"] != descriptor["environment"]["python"] or m["numpy_version"] != descriptor["environment"]["numpy"]:
         raise ValueError("Saved manifest code or environment differs from registered source")
+    worker_path = str(root.resolve() / bundle_id / "replay_worker.py")
+    command = [sys.executable, "-I", "-B", worker_path, kind]
+    if os.environ.get("VERCEL") == "1":
+        # Vercel injects installed dependencies outside Python's normal prefix.
+        # Isolated replay admits only the package roots already loaded by this
+        # process, never paths or executable code supplied in a run record.
+        package_roots = sorted({str(Path(sys.modules[name].__file__).resolve().parent.parent)
+                                for name in ("numpy", "duckdb")})
+        bootstrap = "import json,runpy,sys; sys.path.extend(json.loads(sys.argv[1])); target=sys.argv[2]; sys.argv=sys.argv[2:]; runpy.run_path(target,run_name='__main__')"
+        command = [sys.executable, "-I", "-B", "-c", bootstrap, json.dumps(package_roots), worker_path, kind]
     try:
-        worker = subprocess.run([sys.executable, "-I", "-B", str(root.resolve() / bundle_id / "replay_worker.py"), kind],
+        worker = subprocess.run(command,
             input=json.dumps(saved, allow_nan=False), capture_output=True, text=True, cwd=root.resolve() / bundle_id,
             timeout=1800 if kind == "convergence" else 120, check=False)
     except subprocess.TimeoutExpired as e:
