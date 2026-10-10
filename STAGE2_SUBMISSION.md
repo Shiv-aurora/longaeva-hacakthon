@@ -43,6 +43,8 @@ Original public archives and generated Parquet/model-run/code-bundle stores are 
 
 ## Run and inspect
 
+Before final upload, run `python -m pytest -q tests/test_stage2_judge_flow.py` and the full suite locally. GitHub documentation records an earlier full 385-test pass; the added judge-flow changes require a fresh local run.
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
@@ -54,7 +56,7 @@ python -m uvicorn app.server:app --host 127.0.0.1 --port 8000
 
 Open `http://127.0.0.1:8000/monthly`. If a data-dependent research scorecard is unavailable in a clean checkout, consult its `docs/` rebuild and verification instructions. The primary simulator relies on committed curated inputs and does not claim access to unavailable private research archives.
 
-**Fast demo path:** open the monthly simulator, change a fuel/fleet constraint, compare the paired policy scenarios, inspect cash/FCF results, run the two-axis failure search, invert one operating target and export the one-page thesis with an explicit falsification checkpoint.
+**Fast demo path:** open `/monthly` and select **RUN JUDGE SCENARIO**. The preset runs the actual monthly engine with an illustrative 20% fuel shock, a nine-month delay to 30 eligible fleet entries, and a two-month assumed pricing lag. Review the resulting operating-income/FCF summary, paired policies, fleet feasibility and uncertainty. Then explore **What breaks?**, **What must be true?**, and the one-page thesis export. For a timed walkthrough see `docs/stage2_judge_demo.md`.
 
 **Deployment:** Run locally by default. The current FastAPI server and file-upload paths are not authenticated; do not expose it publicly without access controls and input review.
 
