@@ -1,0 +1,64 @@
+Field Name	Description	Support Table
+Net Income
+NetIncome	98990 - Net Income, Profit or Loss (-) (000)	
+Operating Profit or Loss
+OpProfitLoss	79990 - Operating Profit or Loss (-) (000)	
+Operating Revenues
+TransRevPax	39010 - Transport Revenues - Scheduled Passenger (000)	
+Mail	39050 - Mail (000)	
+TotalProperty	39060 - Property - Freight And Passenger Baggage (000)	
+PropFreight	39061 - Property - Freight (000)	
+PropBag	39062 - Property - Passenger Baggage Fees (000)	
+TotalCharter	39070 - Charter - Passenger And Property (000)	
+CharterPax	39071 - Charter - Passenger (000)	
+CharterProp	39072 - Charter - Property (000)	
+TotalMiscRev	39190 - Reservation Cancellation Fees And Misc Operating Revenues (000)	
+ResCancelFees	39191 - Reservation Cancellation Fees (000)	
+MiscOpRev	39192 - Miscellaneous Operating Revenues (000)	
+PubSvcRevenue	48080 - Public Service Revenues Subsidy (-) (000)	
+TransRevenue	48980 - Transport Related Revenues (000)	
+OpRevenues	49990 - Total Operating Revenues (000)	
+Operating Expenses
+FlyingOps	51000 - Flying Operations (000)	
+Maintenance	54000 - Maintenance (000)	
+PaxService	55000 - Passenger Service (000)	
+AircftServices	64000 - Aircraft And Traffic Servicing (000)	
+PromotionSales	67000 - Promotion And Sales (000)	
+GeneralAdmin	68000 - General And Administrative (000)	
+GeneralServices	69000 - General And Administrative (000)	
+DeprecAmort	70000 - Depreciation And Amortization (000)	
+TransExpenses	71000 - Transport Related Expenses (000)	
+OpExpenses	71990 - Total Operating Expenses (000)	
+NonOperating Income and Expenses
+InterestLongDebt	81810 - Interest On Long-Term Debt And Capital Leases, Income/Expense (-) (000)	
+InterestExpOth	81820 - Other Interest Expense, Income/Expense (-) (000)	
+ForeignExGains	81850 - Foreign Exchange Gains And Losses, Income/Expense (-) (000)	
+CapGainsProp	81885 - Capital Gains And Losses, Income/Expense (-) (000)	
+CapGainsOther	81886 - Capital Gains And Losses, Income/Expense (-) (000)	
+OtherIncomeNet	81890 - Other Income And Expenses - Net, Income/Expense (-) (000)	
+NonOpIncome	81990 - Nonoperating Income And Expense, Income/Expense (-) (000)	
+Income Before Income Tax
+IncomePreTax	89990 - Income Before Income Tax, Profit or Loss (-) (000)	
+Income Taxes For Current Period
+IncomeTax	91000 - Income Taxes For Current Period, Credit (-) (000)	
+IncomeBeforeOth	91990 - Income Before Accounts 9600, 9796, 9797, And 9800, Profit or Loss (-) (000)	
+Discontinued Operations and Extraordinary Items
+DiscontOps	96000 - Discontinued Operations, Income/Expense (-) (000)	
+ExtraItems	97960 - Extraordinary Items, Income/Expense (-) (000)	
+IncomeTaxExtra	97970 - Income Taxes Applicable To Extraordinary Items, Credit (-) (000)	
+IncomeTaxCredits	97990 - Income Before Accounting Changes, Profit or Loss (-) (000)	
+Accounting Changes
+AcctgChanges	98000 - Accounting Changes, Income/Expense (-) (000)	
+Carrier Information
+AirlineID	An identification number assigned by US DOT to identify a unique airline (carrier). A unique airline (carrier) is defined as one holding and reporting under the same DOT certificate regardless of its Code, Name, or holding company/corporation.	Get Lookup Table
+UniqueCarrier	Unique Carrier Code. When the same code has been used by multiple carriers, a numeric suffix is used for earlier users, for example, PA, PA(1), PA(2). Use this field for analysis across a range of years.	Get Lookup Table
+UniqueCarrierName	Unique Carrier Name. When the same name has been used by multiple carriers, a numeric suffix is used for earlier users, for example, Air Caribbean, Air Caribbean (1).	
+Carrier	Code assigned by IATA and commonly used to identify a carrier. As the same code may have been assigned to different carriers over time, the code is not always unique. For analysis, use the Unique Carrier Code.	Get Lookup Table
+CarrierName	Carrier Name	
+UniqCarrierEntity	Unique Entity for a Carrier's Operation Region.	Get Lookup Table
+CarrierRegion	Carrier's Operation Region. Carriers Report Data by Operation Region	Get Lookup Table
+CarrierGroupNew	Carrier Group New	Get Lookup Table
+CarrierGroup	Carrier Group Code. Used in Legacy Analysis	Get Lookup Table
+Time Period Information
+Year	Year	
+Quarter	Quarter (1-4)	Get Lookup Table

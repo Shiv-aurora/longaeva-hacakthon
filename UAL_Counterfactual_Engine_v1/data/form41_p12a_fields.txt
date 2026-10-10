@@ -1,0 +1,65 @@
+Field Name	Description	Support Table
+Time Period Information
+Year	Year	
+Quarter	Quarter (1-4)	Get Lookup Table
+Month	Month	Get Lookup Table
+Carrier Information
+AirlineID	An identification number assigned by US DOT to identify a unique airline (carrier). A unique airline (carrier) is defined as one holding and reporting under the same DOT certificate regardless of its Code, Name, or holding company/corporation.	Get Lookup Table
+UniqueCarrier	Unique Carrier Code. When the same code has been used by multiple carriers, a numeric suffix is used for earlier users, for example, PA, PA(1), PA(2). Use this field for analysis across a range of years.	Get Lookup Table
+Carrier	Code assigned by IATA and commonly used to identify a carrier. As the same code may have been assigned to different carriers over time, the code is not always unique. For analysis, use the Unique Carrier Code.	Get Lookup Table
+CarrierName	Carrier Name	
+CarrierGroupNew	Carrier Group New	Get Lookup Table
+Fuel Consumption: Scheduled Service: Domestic
+SALAGallons	Scheduled Service Domestic Intra Alaska - Fuel Consumption (Gallons)	
+SDOMGallons	Scheduled Service Domestic Non-Alaskan - Fuel Consumption (Gallons)	
+STDOMGallons	Total Scheduled Domestic, Fuel Consumption (Gallons)	
+Fuel Consumption: Scheduled Service: International
+SATLGallons	Scheduled Service International Atlantic - Fuel Consumption (Gallons)	
+SPACGallons	Scheduled Service International Pacific - Fuel Consumption (Gallons)	
+SLATGallons	Scheduled Service International Latin America - Fuel Consumption (Gallons)	
+SINTGallons	Scheduled Service International Subtotal - Fuel Consumption (Gallons)	
+Fuel Consumption: Scheduled Service: Total
+TSGallons	Total Scheduled Service - Fuel Consumption (Gallons)	
+Fuel Consumption: Non Scheduled Service: Domestic
+NALAGallons	Non Scheduled Service Domestic Intra Alaska - Fuel Consumption (Gallons)	
+NDOMGallons	Non Scheduled Service Domestic Non-Alaskan - Fuel Consumption (Gallons)	
+NTDOMGallons	Total Non-Scheduled Domestic, Fuel Consumption (Gallons)	
+Fuel Consumption: Non Scheduled Service: International
+NATLGallons	Non Scheduled Service International Atlantic - Fuel Consumption (Gallons)	
+NPACGallons	Non Scheduled Service International Pacific - Fuel Consumption (Gallons)	
+NLATGallons	Non Scheduled Service International Latin America - Fuel Consumption (Gallons)	
+MACGallons	Non Scheduled Service International MAC - Military Airlift Command Operations (Includes Passenger/Cargo Military Contracted Flights) - Fuel Consumption (Gallons)	
+NINTGallons	Non Scheduled Service International Subtotal - Fuel Consumption (Gallons)	
+Fuel Consumption: Non Scheduled Service: Total
+TNGallons	Total Non Scheduled Service - Fuel Consumption (Gallons)	
+Fuel Consumption: Totals
+TDOMTGallons	Total Domestic - Fuel Consumption (Gallons)	
+TINTGallons	Total International - Fuel Consumption (Gallons)	
+TotalGallons	Grand Total - Fuel Consumption (Gallons)	
+Fuel Cost: Scheduled Service: Domestic
+SALACost	Scheduled Service Domestic Intra Alaska - Fuel Cost (Dollars)	
+SDOMCost	Scheduled Service Domestic Non-Alaskan - Fuel Cost (Dollars)	
+STDOMCost	Total Scheduled Domestic, Fuel Cost (Dollars)	
+Fuel Cost: Scheduled Service: International
+SATLCost	Scheduled Service International Atlantic - Fuel Cost (Dollars)	
+SPACCost	Scheduled Service International Pacific - Fuel Cost (Dollars)	
+SLATCost	Scheduled Service International Latin America - Fuel Cost (Dollars)	
+SINTCost	Scheduled Service International Subtotal - Fuel Cost (Dollars)	
+Fuel Cost: Scheduled Service: Total
+TSCost	Total Scheduled Service - Fuel Cost (Dollars)	
+Fuel Cost: Non Scheduled Service: Domestic
+NALACost	Non Scheduled Service Domestic Intra Alaska - Fuel Cost (Dollars)	
+NDOMCost	Non Scheduled Service Domestic Non-Alaskan - Fuel Cost (Dollars)	
+NTDOMCost	Total Non-Scheduled Domestic, Fuel Cost (Dollars)	
+Fuel Cost: Non Scheduled Service: International
+NATLCost	Non Scheduled Service International Atlantic - Fuel Cost (Dollars)	
+NPACCost	Non Scheduled Service International Pacific - Fuel Cost (Dollars)	
+NLATCost	Non Scheduled Service International Latin America - Fuel Cost (Dollars)	
+MACCost	Non Scheduled Service International MAC - Military Airlift Command Operations (Includes Passenger/Cargo Military Contracted Flights) - Fuel Cost (Dollars)	
+NINTCost	Non Scheduled Service International Subtotal - Fuel Cost (Dollars)	
+Fuel Cost: Non Scheduled Service: Total
+TNCost	Total Non Scheduled Service - Fuel Cost (Dollars)	
+Fuel Cost: Totals
+TDOMTCost	Total Domestic - Fuel Cost (Dollars)	
+TINTCost	Total International - Fuel Cost (Dollars)	
+TotalCost	Grand Total - Fuel Cost (Dollars)	

@@ -1,0 +1,77 @@
+Field Name	Description	Support Table
+Flying Operations
+PilotFlyOps	51230 - Pilots And Copilots (000)	
+OthFltFlyOps	51240 - Other Flight Personnel (000)	
+TrainFlyOps	51281 - Trainees And Instructors (000)	
+PersExpFlyOps	51360 - Personnel Expenses (000)	
+ProFlyOps	51410 - Professional And Technical Fees And Expenses (000)	
+InterchgFlyOps	51437 - Aircraft Interchange Charges (000)	
+FuelFlyOps	51451 - Aircraft Fuel (000)	
+OilFlyOps	51452 - Aircraft Oil (000)	
+RentalFlyOps	51470 - Rentals (000)	
+OtherFlyOps	51530 - Other Supplies (000)	
+InsFlyOps	51551 - Insurance Purchased - General (000)	
+BenefitsFlyOps	51570 - Employee Benefits And Pensions (000)	
+IncidentFlyOps	51580 - Injuries, Loss, And Damage (000)	
+PayTaxFlyOps	51680 - Taxes - Payroll (000)	
+OthTaxFlyOps	51690 - Taxes - Other Than Payroll (000)	
+OtherExpFlyOps	51710 - Other Expenses (000)	
+TotFlyOps	51990 - Total Flying Operations (000)	
+Direct Maintenance - Flight Equipment
+AirframeLabor	52251 - Labor - Airframes (000)	
+EngineLabor	52252 - Labor - Aircraft Engines (000)	
+AirframeRepair	52431 - Airframe Repairs (000)	
+EngineRepairs	52432 - Aircraft Engine Repairs (000)	
+InterchgCharg	52437 - Aircraft Interchange Charges (000)	
+AirframeMaterials	52461 - Materials - Airframes (000)	
+EngineMaterials	52462 - Materials - Aircraft Engines (000)	
+AirframeAllow	52721 - Airworthiness Allowance Provisions - Airframes (000)	
+AirframeOverhauls	52723 - Airframe Overhauls Deferred, Credit (-) (000)	
+EngineAllow	52726 - Airworthiness Allowance Provisions - Aircraft Engines (000)	
+EngineOverhauls	52728 - Aircraft Engine Overhauls Deferred, Credit (-) (000)	
+TotDirMaint	52780 - Total Direct Maintenance - Flight Equipment (000)	
+Applied Maintenance Burden - Flight Equipment
+ApMtBurden	52796 - Applied Maintenance Burden - Flight Equipment (000)	
+TotFltMaintMemo	52990 - Total Flight Equipment Maintenance (000)	
+Net Obsolescence And Deterioration - Expendable Parts
+NetObsolParts	70739 - Net Obsolescence And Deterioration - Expendable Parts (000)	
+Depreciation - Flight Equipment
+AirframeDep	70751 - Airframes (000)	
+EngineDep	70752 - Aircraft Engines (000)	
+PartsDep	70753 - Airframe Parts (000)	
+EngPartsDep	70754 - Aircraft Engine Parts (000)	
+OthFltEquipDep	70755 - Other Flight Equipment (000)	
+OthFltEquipDepGrpI	70756 - Total Depreciation (7075.1 - 7075.5) (000)	
+Amortization Flight Equipment
+FltEquipAExp	70761 - Amortization Expense - Capital Leases - Flight Equipment (000)	
+Expense Of Interchange Aircraft
+FlyOpsExpIA	70981 - Flying Operations (000)	
+Aircraft Operating Expense (Direct Operating Expense)
+TotAirOpExpenses	70989 - Total Aircraft Operating Expense (Direct Operating Expense) (000)	
+Other Depreciation and Amortization (Non-Flight Equipment)
+DevNPreopExp	70741 - Amortization - Developmental And Preop. Expense (000)	
+OthIntangibles	70742 - Amortization - Other Intangibles (000)	
+EquipNHangarDep	70758 - Depreciation - Maintenance Equipment And Hangars (000)	
+GPropDep	70759 - Depreciation - General Ground Property (000)	
+CapLeasesDep	70762 - Amortization - Capital Leases (000)	
+Traffic Elements
+TotalAirHours	Z6500 - Total Aircraft Airborne Hours (000) - The time the aircraft leaves the ground until the time it touches the ground again.	
+AirDaysAssign	Z8100 - Aircraft Days Assigned (000) - The number of days the aircraft (owned or leased) is available for service.	
+AirFuelIssued	Z9210 - Aircraft Fuel Issued in gallons (000) - The amount of fuel issued during the reporting period for revenue and non-revenue flights.	
+Aircraft Information
+AircraftConfig	Aircraft Configuration	Get Lookup Table
+AircraftGroup	Aircraft Group	Get Lookup Table
+AircraftType	Aircraft Type	Get Lookup Table
+Carrier Information
+AirlineID	An identification number assigned by US DOT to identify a unique airline (carrier). A unique airline (carrier) is defined as one holding and reporting under the same DOT certificate regardless of its Code, Name, or holding company/corporation.	Get Lookup Table
+UniqueCarrier	Unique Carrier Code. When the same code has been used by multiple carriers, a numeric suffix is used for earlier users, for example, PA, PA(1), PA(2). Use this field for analysis across a range of years.	Get Lookup Table
+UniqueCarrierName	Unique Carrier Name. When the same name has been used by multiple carriers, a numeric suffix is used for earlier users, for example, Air Caribbean, Air Caribbean (1).	
+Carrier	Code assigned by IATA and commonly used to identify a carrier. As the same code may have been assigned to different carriers over time, the code is not always unique. For analysis, use the Unique Carrier Code.	Get Lookup Table
+CarrierName	Carrier Name	
+UniqCarrierEntity	Unique Entity for a Carrier's Operation Region.	Get Lookup Table
+CarrierRegion	Carrier's Operation Region. Carriers Report Data by Operation Region	Get Lookup Table
+CarrierGroupNew	Carrier Group New	Get Lookup Table
+CarrierGroup	Carrier Group Code. Used in Legacy Analysis	Get Lookup Table
+Time Period Information
+Year	Year	
+Quarter	Quarter (1-4)	Get Lookup Table
