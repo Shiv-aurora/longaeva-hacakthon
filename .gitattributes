@@ -1,0 +1,3 @@
+# Preserve proposal PDFs as binary source documents and CSV input bytes verbatim.
+*.pdf binary
+*.csv -text

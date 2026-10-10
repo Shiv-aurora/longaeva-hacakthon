@@ -1,0 +1,27 @@
+# Local runtimes, credentials and operating-system metadata.
+.DS_Store
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/dist/
+
+# Original distribution archive and generated previews are retained locally.
+/*.zip
+/tmp/
+/UAL_Counterfactual_Engine_v1/tmp/
+/UAL_Counterfactual_Engine_v1/output/
+/UAL_Counterfactual_Engine_v1/screenshots/
+
+# Multi-GB acquisitions and immutable run stores have a separate local lifecycle.
+# Keep small public baseline inputs, declarations and acquisition manifests.
+/UAL_Counterfactual_Engine_v1/data/*
+!/UAL_Counterfactual_Engine_v1/data/README.md
+!/UAL_Counterfactual_Engine_v1/data/*.json
+!/UAL_Counterfactual_Engine_v1/data/*.csv
+!/UAL_Counterfactual_Engine_v1/data/*_fields.txt
+!/UAL_Counterfactual_Engine_v1/data/eia_2026_weekly_source.txt
+/UAL_Counterfactual_Engine_v1/data/user_quotes.csv

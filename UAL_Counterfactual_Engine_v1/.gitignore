@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/warehouse/
+data/runs/
+data/user_quotes.csv
+.env
+node_modules/
+dist/
