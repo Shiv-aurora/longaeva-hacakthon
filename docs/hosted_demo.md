@@ -41,3 +41,20 @@ npx --yes vercel@63.1.2 --scope shiv-aroras-projects-083eab8d promote DEPLOYMENT
 
 The linked project/credentials remain ignored. Never include `.env.local` or
 `.vercel` in source archives.
+
+## Production verification
+
+Production deployment `dpl_4GohtEsYZ9PH49fgCrCkenkJvs5y` serves code commit
+`a3eff8d` at `https://ual-twin.vercel.app`. Its FastAPI build completed in 12
+seconds. Unauthenticated requests to the public page and health API return 200.
+The live 10,000-path Combined case matches local P10/P50/P90 FCF impacts exactly:
+−2259.9783 / −1608.4809 / −1159.9858 million USD, with ending-cash P50
+13567.9951 million USD. Hosted Python is 3.12.14; its environment-bound run ID
+therefore differs from the local environment's receipt.
+
+Both nine-point inverse grids completed on Vercel. The failure grid had two failed
+frozen-policy points and zero assumed-response failures; the target grid had six
+and seven compatible points respectively. These are tested-grid counts. The
+exported PDF has one page, its JSON references the verified run, and the native
+HTTP attachment bytes match the inline verified PDF. The final runtime error-log
+query returned no entries; this is a bounded smoke check, not continuous monitoring.

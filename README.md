@@ -11,6 +11,9 @@ simulated outcome ranges are not calibrated forecasts or investment signals.
 
 Open the server root (`/`) or `/monthly` for the main application. The original
 daily fuel sensitivity pilot remains available at `/fuel-pilot`.
+The hosted demonstration is [ual-twin.vercel.app](https://ual-twin.vercel.app).
+Large sampling studies and generated historical research caches remain local;
+see [hosting scope](docs/hosted_demo.md).
 See [submission brief](docs/submission_brief.md),
 [demo walkthrough](docs/demo_walkthrough.md), and
 [case verification](docs/demo_case_verification.md).
