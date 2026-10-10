@@ -1,8 +1,8 @@
 # Lab contract: files, ownership and JSON shapes
 
 This is the working agreement between the data, analysis, AI and front-end parts
-of the "grade the promise" build. If code and this file disagree, fix one of them
-in the same change.
+of the UAL Counterfactual Lab build. If code and this file disagree, fix one of
+them in the same change.
 
 ## What we are building
 
@@ -246,8 +246,42 @@ document text at `char_start:char_end` and the value parses from the quote.
 banner. A missing or unbuilt file renders an explicit "not computed yet" state,
 never a silent blank and never fixture values.
 
-## API (wave 2+)
+## API
 
-`app/lab/api.py` exposes a FastAPI `APIRouter` with prefix `/api/lab`:
-`POST /chat` and `POST /scenario`. `app/server.py` includes it; nothing else in
-`app/lab/` imports `app.server`.
+`app/lab/api.py` exposes a FastAPI `APIRouter` with prefix `/api/lab`.
+`app/server.py` includes it; nothing else in `app/lab/` imports `app.server`.
+
+| Route | What it does |
+|---|---|
+| `GET /status` | Whether the language model is configured, which data files are built, whether the simulator is connected |
+| `GET /today` | The scenario request that matches the latest fuel print, and what it rests on (`{"status": "ok", "request": {...}, "basis": [...]}`) |
+| `POST /scenario` | One simulator run in three behaviour modes. No language model involved |
+| `POST /grid` | The simulator over two drivers against a threshold ("What breaks", "What must be true") |
+| `POST /chat` | One agent turn as a single JSON object: plan, tool calls, checked report |
+| `POST /chat/stream` | The same turn as Server-Sent Events |
+
+Pages: `/lab` is the application, `/report` the technical report, `/research`
+and `/monthly` the earlier workstation.
+
+A scenario response carries `status`, `run_id`, `cached`, `elapsed_ms`, `request`,
+`paths`, `as_of`, `fuel`, `modes` (`costs_only`, `management`, `measured`, each with
+`quarters`, `next_12m`, `prob`, `bridge`), `bridge_per_share`, `response_used`,
+`capacity_response`, `per_share`, `monte_carlo`, `inputs`, `model` and
+`assumptions`. An invalid request returns `{"status": "invalid", "errors": [...]}`.
+
+## Notes on shapes as built
+
+- Summary text: every output has `headline` (one sentence). `plain_summary` is a
+  list of sentences in `fare_clock`, `market_clock` and `peer_recovery`, and a
+  single string in the others; readers must accept both.
+- Guidance records (`data/lab/ual_guidance.json`): a full year is labelled like
+  `2026FY`; a range is `value: [low, high]` with `low` and `high` beside it; each
+  record also has `qualifier`, `baseline_year`, `context_before`/`context_after`
+  and revision fields.
+- `fare_clock.json`: `curve` and `curve_draws` are the smooth two-parameter curve
+  the simulator uses (chosen after the locked test was seen, and flagged as such);
+  `curve_unrestricted` is the pre-specified five-lag curve that lost that test;
+  `smooth.expanding` holds the curve as estimated at each past quarter.
+- Outputs added after the first draft of this file: `capacity_response.json`,
+  `peer_recovery.json` (United, American and Delta pooled; a cross-check, not an
+  input to the simulator), `demand_signal.json`, `daily_fares_2022.json`.
