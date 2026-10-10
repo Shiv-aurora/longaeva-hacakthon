@@ -1,4 +1,5 @@
-"""Groq chat-completions client: one call, explicit timeouts, bounded retries.
+"""Groq chat-completions client: one call, explicit timeouts, bounded retries, and a
+chain of models to fall through when one is rate-limited.
 
 The key comes from GROQ_API_KEY (process environment first, then .env.local and
 .env in the project root). It is sent only in the Authorization header and never
@@ -16,9 +17,9 @@ ENV_FILES = (ROOT / ".env.local", ROOT / ".env")
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # Model IDs checked on 2026-10-10 against Groq's documentation and this account's
-# live model list (chat models on the account: these two and qwen/qwen3.8-27b, a preview):
-#   https://console.groq.com/docs/models              both are production models, context 131,072
-#   https://console.groq.com/docs/tool-use            tool calling and JSON mode: both; parallel tool calls: neither
+# live model list (its chat models are the three in MODEL_CHAIN; the Qwen one is a preview):
+#   https://console.groq.com/docs/models              the two GPT-OSS models are production models, context 131,072
+#   https://console.groq.com/docs/tool-use            tool calling and JSON mode: all three; parallel tool calls: Qwen only
 #   https://console.groq.com/docs/structured-outputs  json_schema with strict: true: both
 #   https://console.groq.com/docs/rate-limits         free plan, per model: 30 requests/min, 1,000 requests/day,
 #                                                     8,000 tokens/min, 200,000 tokens/day
@@ -35,15 +36,25 @@ MODELS_DOC_URL = "https://console.groq.com/docs/models"
 MODELS_CHECKED_ON = "2026-10-10"
 DEFAULT_MODEL = "openai/gpt-oss-120b"
 FALLBACK_MODEL = "openai/gpt-oss-20b"
+LAST_MODEL = "qwen/qwen3.8-27b"
+# Rate limits are per model, so each of these has its own minute. A request with no
+# model named walks the chain in this order.
+MODEL_CHAIN = (DEFAULT_MODEL, FALLBACK_MODEL, LAST_MODEL)
+# https://console.groq.com/docs/reasoning: the values each model accepts, cheapest first.
+REASONING_EFFORT = {DEFAULT_MODEL: ("low", "medium", "high"), FALLBACK_MODEL: ("low", "medium", "high"),
+                    LAST_MODEL: ("none", "default")}
 
 TIMEOUT = httpx.Timeout(connect=5.0, read=30.0, write=10.0, pool=5.0)
 MAX_ATTEMPTS = 3
 BACKOFF_SECONDS = (0.5, 1.5)
-# A longer wait than this cannot fit inside a web request; fail and let the caller decide.
-MAX_RETRY_AFTER_SECONDS = 8.0
+# A rate-limited model is waited for and retried only when the caller named it and Groq
+# asks for no more than this. A request walking the chain moves on at once.
+MAX_RETRY_AFTER_SECONDS = 2.0
 
 _TRANSPORT: httpx.BaseTransport | None = None  # tests install an httpx.MockTransport
 _sleep = time.sleep
+_clock = time.monotonic
+_cooling: dict[str, float] = {}  # model -> the time on _clock at which its rate limit should have cleared
 
 
 class GroqNotConfigured(RuntimeError):
@@ -106,15 +117,26 @@ def default_model() -> str:
 
 
 def supports_reasoning_effort(model: str) -> bool:
-    # https://console.groq.com/docs/reasoning: low | medium | high on the GPT-OSS models.
-    return model in (DEFAULT_MODEL, FALLBACK_MODEL)
+    return model in REASONING_EFFORT
 
 
-def _candidates(model: str | None) -> list[str]:
-    if model:
-        return [model]
+def _effort(model: str, asked: str | None) -> str | None:
+    """The reasoning effort to send to this model: what was asked for if it takes that
+    value, else its cheapest; nothing for a model whose values are not known."""
+    allowed = REASONING_EFFORT.get(model, ())
+    return None if asked is None or not allowed else asked if asked in allowed else allowed[0]
+
+
+def model_chain() -> list[str]:
+    """The models a request with no model named tries, in order."""
     first = default_model()
-    return [first] + [name for name in (DEFAULT_MODEL, FALLBACK_MODEL) if name != first][:1]
+    return [first] + [name for name in MODEL_CHAIN if name != first]
+
+
+def cooling() -> dict[str, float]:
+    """Seconds until each rate-limited model should be free again."""
+    now = _clock()
+    return {name: round(until - now, 1) for name, until in _cooling.items() if until > now}
 
 
 def _scrub(text: str, key: str) -> str:
@@ -153,7 +175,18 @@ def _retry_wait(response: httpx.Response, attempt: int) -> float | None:
     return None if asked > MAX_RETRY_AFTER_SECONDS else max(wait, asked)
 
 
-def _request(client: httpx.Client, key: str, payload: dict) -> dict:
+def _limits(response: httpx.Response) -> dict:
+    """What the response headers say is left of this model's minute and day."""
+    found = {}
+    for name, header in (("remaining_tokens", "x-ratelimit-remaining-tokens"), ("remaining_requests", "x-ratelimit-remaining-requests")):
+        try:
+            found[name] = int(float(response.headers.get(header, "")))
+        except ValueError:
+            pass
+    return found
+
+
+def _request(client: httpx.Client, key: str, payload: dict, patient: bool = True) -> dict:
     for attempt in range(MAX_ATTEMPTS):
         last = attempt == MAX_ATTEMPTS - 1
         failed = ""
@@ -176,8 +209,8 @@ def _request(client: httpx.Client, key: str, payload: dict) -> dict:
                 data = None
             if not isinstance(data, dict) or not isinstance(data.get("choices"), list) or not data["choices"]:
                 raise GroqError("Groq returned no usable completion.", status=200)
-            return data
-        if not last and (response.status_code == 429 or response.status_code >= 500):
+            return {**data, "rate_limit": _limits(response)}
+        if not last and ((response.status_code == 429 and patient) or response.status_code >= 500):
             wait = _retry_wait(response, attempt)
             if wait is not None:
                 _sleep(wait)
@@ -196,11 +229,17 @@ def chat_completion(messages, *, tools=None, tool_choice=None, response_format=N
                     temperature=0, max_tokens=None, reasoning_effort=None) -> dict:
     """POST one chat completion and return Groq's response (OpenAI chat-completions format).
 
-    With `model=None` the request uses GROQ_MODEL or DEFAULT_MODEL and moves to the
-    fallback once if that model is rate limited, unavailable or retired; read the
-    model that answered from the response's "model". An explicit `model` is used as given.
-    `max_tokens` is sent as max_completion_tokens (reasoning tokens count toward it).
-    Raises GroqNotConfigured without a key and GroqError on any failure.
+    With `model=None` the request starts at GROQ_MODEL or DEFAULT_MODEL and falls through
+    MODEL_CHAIN, moving on at once when a model is rate limited, unavailable or retired. A
+    model that answered 429 is left alone until the wait Groq asked for has passed, so a
+    burst does not spend requests on it. Read the model that answered from the response's
+    "model"; "fell_through" lists the models passed over as {model, status, retry_after},
+    and "rate_limit" what the headers say is left ({remaining_tokens, remaining_requests}).
+    An explicit `model` is used as given, with a short wait and retry if it is rate limited.
+    `max_tokens` is sent as max_completion_tokens (reasoning tokens count toward it), and
+    `reasoning_effort` is fitted to what each model accepts.
+    Raises GroqNotConfigured without a key and GroqError on any failure; when every model
+    is rate limited the error has status 429 and the shortest `retry_after`.
     """
     key = _setting("GROQ_API_KEY")
     if not key:
@@ -214,14 +253,27 @@ def chat_completion(messages, *, tools=None, tool_choice=None, response_format=N
         payload["response_format"] = response_format
     if max_tokens is not None:
         payload["max_completion_tokens"] = max_tokens
-    if reasoning_effort is not None:
-        payload["reasoning_effort"] = reasoning_effort
-    names = _candidates(model)
+    names = [model] if model else model_chain()
+    passed: list[dict] = []
+    failure: GroqError | None = None
     with httpx.Client(timeout=TIMEOUT, transport=_TRANSPORT) as client:
-        for index, name in enumerate(names):
+        for name in names:
+            resting = cooling().get(name) if not model else None
+            if resting:
+                passed.append({"model": name, "status": 429, "retry_after": resting})
+                continue
+            effort = _effort(name, reasoning_effort)
             try:
-                return _request(client, key, {**payload, "model": name})
+                data = _request(client, key, {**payload, "model": name, **({"reasoning_effort": effort} if effort else {})}, patient=bool(model))
+                return {**data, "fell_through": passed}
             except GroqError as error:
-                if index + 1 == len(names) or not _try_next_model(error):
+                failure = error
+                if error.status == 429 and error.retry_after:
+                    _cooling[name] = _clock() + error.retry_after
+                if not _try_next_model(error):
                     raise
-    raise GroqError("Groq request failed.")
+                passed.append({"model": name, "status": error.status, "retry_after": error.retry_after})
+    waits = [entry["retry_after"] for entry in passed if entry["status"] == 429 and entry["retry_after"] is not None]
+    if passed and all(entry["status"] == 429 for entry in passed):
+        raise GroqError("Groq rate limit reached (HTTP 429).", status=429, code="rate_limit_exceeded", retry_after=min(waits) if waits else None)
+    raise failure or GroqError("Groq request failed.")

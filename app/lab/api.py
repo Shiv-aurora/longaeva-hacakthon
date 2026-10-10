@@ -2,10 +2,12 @@
 
 `app/server.py` includes `router`. These endpoints are public, so every request is
 bounded in size, each client has a token bucket, model calls have a daily ceiling,
-and nothing a user typed is ever written to a log.
+and nothing a user typed is ever written to a log. The chat needs no language model:
+without a key, past the daily ceiling or while the model is rate-limited, the rules
+planner in `chat` answers and says so.
 """
 from __future__ import annotations
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Literal
 import json
 import logging
@@ -26,14 +28,21 @@ MAX_BODY_BYTES = 64_000
 MAX_MESSAGE_CHARS = chat.MAX_MESSAGE_CHARS
 MAX_HISTORY_MESSAGES = 12
 MAX_HISTORY_CHARS = 2_000
-RATE_BURST = 4               # turns a client may start at once
+RATE_BURST = 4               # chat turns a client may start at once
 RATE_REFILL_SECONDS = 15.0   # one more turn every 15 s
+# The simulator routes call no model and a run takes about half a second, so a page
+# with sliders may use them freely: 60 scenario runs and 12 grids a minute per client.
+SCENARIO_BURST, SCENARIO_REFILL_SECONDS = 60, 1.0
+GRID_BURST, GRID_REFILL_SECONDS = 12, 5.0
 # Groq's free plan gives each model 1,000 requests and 200,000 tokens a day; a turn
-# takes about 4 to 8 model calls. Override with LAB_DAILY_MODEL_CALLS.
+# takes 2 to 4 model calls. Past this the rules planner answers. Override with LAB_DAILY_MODEL_CALLS.
 DAILY_MODEL_CALLS = 600
 MAX_TRACKED_CLIENTS = 5_000
-UNAVAILABLE = "The AI service is busy or unavailable. Try again shortly."
-BUDGET_USED = "Today's AI budget is used. The simulator and the data pages still work."
+FAILED = "The turn could not be finished. Try again."
+AGENT_NOTES = {"model": "A language model plans the work and words the report from facts that code fills in. "
+                        "The rules planner takes over when the model is rate-limited.",
+               "rules": "Running in rules mode: no language model is being called. The rules planner reads the common "
+                        "question shapes, and every figure still comes from the simulator and the committed outputs."}
 
 
 def _daily_cap() -> int:
@@ -94,7 +103,9 @@ class RateLimiter:
             return True
 
 
-_limiter = RateLimiter()
+_limiter = RateLimiter()  # /chat and /chat/stream, and the day's model calls
+_scenario_limiter = RateLimiter(SCENARIO_BURST, SCENARIO_REFILL_SECONDS, daily_model_calls=0)
+_grid_limiter = RateLimiter(GRID_BURST, GRID_REFILL_SECONDS, daily_model_calls=0)
 
 
 class ChatTurn(BaseModel):
@@ -118,17 +129,11 @@ def _client(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
-def _admit(request: Request) -> None:
-    wait = _limiter.admit(_client(request))
+def _admit(request: Request, limiter: RateLimiter | None = None) -> None:
+    wait = (limiter or _limiter).admit(_client(request))
     if wait:
         raise HTTPException(status_code=429, detail="Too many requests. Wait a few seconds and try again.",
                             headers={"Retry-After": str(math.ceil(wait))})
-
-
-def _budget_error() -> HTTPException:
-    now = datetime.now(timezone.utc)
-    midnight = datetime(now.year, now.month, now.day, tzinfo=timezone.utc) + timedelta(days=1)
-    return HTTPException(status_code=429, detail=BUDGET_USED, headers={"Retry-After": str(int((midnight - now).total_seconds()) + 1)})
 
 
 async def _read(request: Request):
@@ -160,17 +165,28 @@ async def _chat_request(request: Request) -> tuple[str, list[dict]]:
         raise HTTPException(status_code=422, detail=f"History is too long (maximum {MAX_HISTORY_MESSAGES} messages "
                                                     f"of {MAX_HISTORY_CHARS} characters)")
     _admit(request)
-    if not _limiter.model_calls_left():
-        raise _budget_error()
     return message, [turn.model_dump() for turn in body.history]
+
+
+def _agent() -> str:
+    return "model" if chat.agent_mode() == "model" and _limiter.model_calls_left() else "rules"
 
 
 @router.get("/status")
 def lab_status():
-    return {"ai_configured": groq_client.is_configured(), "model": groq_client.default_model(),
+    """What is connected. `agent` is "model" or "rules": in rules mode the chat still answers,
+    through the rules planner, so there is no "not configured" state for the page to handle.
+    `models` is the order a turn falls through on a rate limit; `models_resting` the seconds
+    until a rate-limited one is free."""
+    configured = groq_client.is_configured()
+    agent = _agent()
+    return {"ai_configured": configured, "agent": agent, "agent_note": AGENT_NOTES[agent],
+            "model": groq_client.default_model() if configured else None, "models": groq_client.model_chain() if configured else [],
+            "models_resting": groq_client.cooling(), "suggested": list(chat.CAN_ASK),
             "data_files": chat.data_files(), "simulator": chat.scenario_connected(), "simulator_parts": chat.simulator_parts(),
             "limits": {"max_message_chars": MAX_MESSAGE_CHARS, "max_history_messages": MAX_HISTORY_MESSAGES,
-                       "max_history_chars": MAX_HISTORY_CHARS, "max_tool_calls": chat.MAX_TOOL_CALLS}}
+                       "max_history_chars": MAX_HISTORY_CHARS, "max_tool_calls": chat.MAX_TOOL_CALLS,
+                       "model_calls_left_today": _limiter.model_calls_left()}}
 
 
 @router.post("/chat")
@@ -178,25 +194,15 @@ async def lab_chat(request: Request):
     """One analyst turn as a single JSON object.
 
     Request:  {"message": "...", "history": [{"role": "user" | "assistant", "content": "..."}]}
-    Response: the result documented on `chat.iter_chat` ({status, answer, verified,
-    report, steps, charts, evidence_ids, scenarios, grids, ...}), or
-    {"status": "not_configured"} when there is no API key. A turn takes one token
-    from the client's bucket however many steps it runs; each model call counts
-    against the daily ceiling. Errors: 413, 422, 429 (with Retry-After) and 503.
+    Response: the result documented on `chat.iter_chat` ({status, answer, verified, note,
+    planned_by, written_by, report, facts, steps, charts, evidence_ids, scenarios, grids,
+    usage, ...}). There is always an answer: with no API key, a rate-limited model or a
+    spent daily ceiling the rules planner plans and writes it (planned_by "rules"). A turn
+    takes one token from the client's bucket however many steps it runs; each model call
+    counts against the daily ceiling. Errors: 413, 422 and 429 (with Retry-After).
     """
-    if not groq_client.is_configured():
-        return {"status": "not_configured"}
     message, history = await _chat_request(request)
-    try:
-        return await run_in_threadpool(chat.run_chat, message, history, allow_call=_limiter.spend_model_call)
-    except groq_client.GroqNotConfigured:
-        return {"status": "not_configured"}
-    except chat.BudgetExhausted:
-        raise _budget_error() from None
-    except groq_client.GroqError as error:
-        # The message is a status and an error code: no key and nothing the user typed.
-        log.warning("lab chat: upstream failure: %s", error)
-        raise HTTPException(status_code=503, detail=UNAVAILABLE) from error
+    return await run_in_threadpool(chat.run_chat, message, history, allow_call=_limiter.spend_model_call)
 
 
 def _event(name: str, data: dict) -> str:
@@ -208,13 +214,10 @@ def _events(message: str, history: list[dict]):
     try:
         for name, payload in chat.iter_chat(message, history, allow_call=_limiter.spend_model_call):
             yield _event(name, payload)
-    except groq_client.GroqNotConfigured:
-        yield _event("final", {"status": "not_configured"})
-    except chat.BudgetExhausted:
-        yield _event("error", {"status": "budget_used", "detail": BUDGET_USED})
-    except groq_client.GroqError as error:
-        log.warning("lab chat: upstream failure: %s", error)
-        yield _event("error", {"status": "unavailable", "detail": UNAVAILABLE})
+    except Exception as error:  # the stream has started, so a failure has to arrive as an event
+        # The type only: an exception's text can quote what the user typed.
+        log.warning("lab chat: turn failed: %s", type(error).__name__)
+        yield _event("error", {"status": "error", "detail": FAILED})
 
 
 @router.post("/chat/stream")
@@ -224,13 +227,9 @@ async def lab_chat_stream(request: Request):
     Same request and same pre-flight errors as /chat. Events, in order:
       event: step    data: {kind, name, args, summary, elapsed_ms}   one per step, as it happens
       event: final   data: the /chat response                        always last on success
-      event: error   data: {status, detail}                          instead of final if the model fails
+      event: error   data: {status, detail}                          instead of final if the turn breaks
     """
-    if not groq_client.is_configured():
-        events = iter([_event("final", {"status": "not_configured"})])
-    else:
-        events = _events(*await _chat_request(request))
-    return StreamingResponse(events, media_type="text/event-stream",
+    return StreamingResponse(_events(*await _chat_request(request)), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"})
 
 
@@ -244,6 +243,7 @@ async def lab_scenario(request: Request):
        "delivery_delay": {"aircraft": 0, "months": 0}, "horizon_months": 12, "seed": 1}
       "fuel_usd_gal" may be given instead of "fuel_shock_pct". Any other key is a 422:
       the simulator has no such input.
+    Its own limit, apart from the chat's: 60 runs a minute per client.
     Response: the simulator's result with the cleaned request added:
       {"status": "ok", "file": null, "request": {...}, "run_id": "...", "elapsed_ms": 0,
        "modes": {"costs_only": {...}, "management": {...}, "measured": {...}},
@@ -252,13 +252,15 @@ async def lab_scenario(request: Request):
     the simulator module or its measured response exists.
     """
     body = await _read(request)
-    _admit(request)
+    _admit(request, _scenario_limiter)
     return _simulator_reply(await run_in_threadpool(chat.run_scenario, body))
 
 
 def _simulator_reply(result: dict) -> dict:
     if result.get("status") == "invalid":
-        raise HTTPException(status_code=422, detail=result.get("reason") or "Invalid request")
+        # The agent's wrappers give one `reason`; the simulator's own results give an `errors` list.
+        errors = result.get("errors") if isinstance(result.get("errors"), list) else []
+        raise HTTPException(status_code=422, detail=result.get("reason") or "; ".join(str(item) for item in errors) or "Invalid request")
     if result.get("status") == "error":
         raise HTTPException(status_code=503, detail="The simulator failed on this request")
     return result
@@ -272,15 +274,17 @@ async def lab_grid(request: Request):
       {"x": {"driver": "fuel_shock_pct", "values": [-20, 0, 20, 40]}, "y": {"driver": "demand_shock_pct", "values": [-6, -3, 0, 3]},
        "metric": "fcf_12m_musd", "threshold": 0, "direction": "below", "mode": "measured", "base": {"horizon_months": 12}}
       -> {"status": "ok", "file": null, "metric": ..., "cells": [{"x", "y", "prob", "p50"}], "boundary": [{"x", "y"}], "paths", "elapsed_ms"}
-    {"status": "not_computed", "file": null, "reason": "..."} until run_grid exists; 422 with its reasons for a request it refuses.
+    {"status": "not_computed", "file": null, "reason": "..."} where run_grid is absent; 422 with its reasons for a request it refuses.
+    Its own limit, apart from the chat's: 12 grids a minute per client.
     """
     body = await _read(request)
-    _admit(request)
+    _admit(request, _grid_limiter)
     return _simulator_reply(await run_in_threadpool(chat.run_grid, body))
 
 
 @router.get("/today")
 def lab_today():
     """The scenario request that matches the latest fuel data and what it rests on
-    (app.lab.scenario.today_request), or {"status": "not_computed", ...} until that exists."""
+    (app.lab.scenario.today_request): {"status": "ok", "file": null, "request": {...}, "basis": [...], "context": {...}},
+    or {"status": "not_computed", ...} where that function is absent."""
     return _simulator_reply(chat.today_request())
