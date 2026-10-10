@@ -1,0 +1,9 @@
+{
+  "title": "Illustrative fuel-shock sensitivity",
+  "hypothesis": "Illustrative analyst hypothesis: under these assumed responses, repricing partly offsets the modeled cash-flow loss from a temporary fuel shock. This is a sensitivity test, not a forecast or investment recommendation.",
+  "reference": "frozen_policy",
+  "checkpoint_on": "2026-10-31",
+  "checkpoint": "Review the next published quarterly fuel expense, passenger yield and cash-flow disclosures against the modeled response assumptions.",
+  "checkpoint_source": "https://ir.united.com/financial-information/quarterly-results",
+  "falsification": "Revisit the hypothesis if disclosed yield and fuel costs show no assumed offset, cash timing contradicts the simplified bridge, or operational constraints make the assumed pricing/capacity response infeasible."
+}
